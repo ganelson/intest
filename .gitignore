@@ -1,0 +1,36 @@
+# This gitignore was automatically written by inweb -gitignore
+# and is not intended for human editing
+
+debug-log.txt
+Woven/
+Tangled/
+!Tangled/*.preform
+Tests/intest-history.txt
+Tests/Transient/
+Tests/hashes.intest
+Tests/_Results_Actual/
+
+*.DS_Store
+Examples/dc/Tests/intest-history.txt
+Examples/dc/Tests/Cases/_actual/
+Workspace/T*/diff_output*.txt
+Workspace/T*/Example.inform/Source/story.ni
+Workspace/T*/Example.inform/Build/auto.inf
+Workspace/T*/Example.inform/Build/*.txt
+Workspace/T*/Example.inform/Build/*.z8
+Workspace/T*/Example.inform/Build/*.ulx
+Workspace/T*/Example.inform/Build/*.html
+Workspace/T*/Example.inform/Index/*.html
+Workspace/T*/Example.inform/Index/*.xml
+Workspace/T*/Example.inform/Index/Details/*.html
+Workspace/T*/Example.inform/manifest.plist
+Workspace/T*/Example.inform/Metadata.iFiction
+Workspace/T*/Example.inform/Release.blurb
+Workspace/T*/Example.inform/Skein.skein
+Workspace/T*/Example.materials/
+Workspace/T*/Transient/
+Workspace/T*/Transient/Documentation/
+Workspace/T*/Transient/Documentation/Census/
+Workspace/T*/Transient/Documentation/Extensions/
+Workspace/T*/Transient/Telemetry/
+

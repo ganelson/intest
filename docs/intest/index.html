@@ -1,0 +1,121 @@
+<html>
+	<head>
+		<title>intest 2.0</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+	</head>
+
+	<body>
+		<ul class="crumbs"><li><a href="../webs.html">&#9733;</a></li><li><b>intest 2.0</b></li></ul>
+		<p class="purpose">A text-based command-line tool for testing other command-line tools.</p>
+		<hr>
+		<ul class="chapterlist">
+			<li>
+				<p><a name="P"></a><spon class="chaptertitle">Preliminaries</span></p>
+				<p><span class="purpose">The Intest user guide.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="P-iti.html"><spon class="sectiontitle">Introduction to Intest</span></a> -
+						<span class="purpose">What Intest is, and a simple example of what it can do.</span></p>
+					</li>
+					<li>
+						<p><a href="P-iatcl.html"><spon class="sectiontitle">Intest at the Command Line</span></a> -
+						<span class="purpose">Intest is controlled with a flexible range of command-line instructions.</span></p>
+					</li>
+					<li>
+						<p><a href="P-wir.html"><spon class="sectiontitle">Writing Intest Recipes</span></a> -
+						<span class="purpose">A guide to writing in Delia, Intest's recipe language.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Top Level</span></p>
+				<p><span class="purpose">Starting up, and parsing the user's requirements.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="1-bsc.html"><spon class="sectiontitle">Basics</span></a> -
+						<span class="purpose">Some fundamental definitions.</span></p>
+					</li>
+					<li>
+						<p><a href="1-mn.html"><spon class="sectiontitle">Main</span></a> -
+						<span class="purpose">The top level, which decides what is to be done and then carries this plan out.</span></p>
+					</li>
+					<li>
+						<p><a href="1-cla.html"><spon class="sectiontitle">Command Line Arguments</span></a> -
+						<span class="purpose">To parse the command line arguments with which intest was called, and to handle any errors it needs to issue.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="2"></a><spon class="chaptertitle">Chapter 2: Test Cases and Instructions</span></p>
+				<p><span class="purpose">Surveying the universe of test cases, and deciding what to do with them.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="2-rf.html"><spon class="sectiontitle">Recipe Files</span></a> -
+						<span class="purpose">To parse recipe files and/or using commands typed at the command line.</span></p>
+					</li>
+					<li>
+						<p><a href="2-gv.html"><spon class="sectiontitle">Global Variables</span></a> -
+						<span class="purpose">To manage a set of text variables held in common among all test cases.</span></p>
+					</li>
+					<li>
+						<p><a href="2-act.html"><spon class="sectiontitle">Actions</span></a> -
+						<span class="purpose">To parse and carry out requests to do something.</span></p>
+					</li>
+					<li>
+						<p><a href="2-th.html"><spon class="sectiontitle">The Historian</span></a> -
+						<span class="purpose">To preserve a recent command history on disc.</span></p>
+					</li>
+					<li>
+						<p><a href="2-te.html"><spon class="sectiontitle">The Extractor</span></a> -
+						<span class="purpose">To extract the text of a test case from its file on disc.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: Performing Tests</span></p>
+				<p><span class="purpose">Scheduling tests across multiple threads, and then carrying them out.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="3-ts.html"><spon class="sectiontitle">The Scheduler</span></a> -
+						<span class="purpose">To queue and then distribute the load of tests.</span></p>
+					</li>
+					<li>
+						<p><a href="3-th.html"><spon class="sectiontitle">The Hasher</span></a> -
+						<span class="purpose">To optimise by storing MD5 hashes of known-to-be-correct output.</span></p>
+					</li>
+					<li>
+						<p><a href="3-td.html"><spon class="sectiontitle">The Differ</span></a> -
+						<span class="purpose">To provide text matching in the style of the Unix tool diff.</span></p>
+					</li>
+					<li>
+						<p><a href="3-tr.html"><spon class="sectiontitle">The Reporter</span></a> -
+						<span class="purpose">To produce reports for use in the Inform user interface app.</span></p>
+					</li>
+					<li>
+						<p><a href="3-skn.html"><spon class="sectiontitle">Skeins</span></a> -
+						<span class="purpose">To build and compare skein threads.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="4"></a><spon class="chaptertitle">Chapter 4: Recipes</span></p>
+				<p><span class="purpose">Compiling a textual description of how to carry out a test, and also doing so.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="4-tdc.html"><spon class="sectiontitle">The Delia Compiler</span></a> -
+						<span class="purpose">To compile a recipe for how to perform a test.</span></p>
+					</li>
+					<li>
+						<p><a href="4-tt.html"><spon class="sectiontitle">The Tester</span></a> -
+						<span class="purpose">To run a compiled recipe on a single test case.</span></p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<hr>
+	</body>
+
+</html>
+

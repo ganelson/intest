@@ -1,0 +1,12 @@
+-cases 'intest/Examples/dc/Tests/Cases'
+
+-recipe
+	set: $A = $PATH/_actual/$CASE.txt
+	set: $I = $PATH/_ideal/$CASE.txt
+	step: dc $[$PATH/$CASE.txt$] >$A 2>&1
+	or: 'failed dc' $A
+	show: $A
+	match text: $A $I
+	or: 'produced the wrong output'
+	pass: 'passed'
+-end
