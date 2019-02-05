@@ -17,7 +17,6 @@ Workspace/T*/Example.inform/manifest.plist
 Workspace/T*/Example.inform/Metadata.iFiction
 Workspace/T*/Example.inform/Release.blurb
 Workspace/T*/Example.inform/Skein.skein
-Workspace/T*/Example.materials/
 Workspace/T*/Transient/
 Workspace/T*/Transient/Documentation/
 Workspace/T*/Transient/Documentation/Census/
