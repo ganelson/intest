@@ -32,6 +32,10 @@ int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count, int 
 	int n = thread_count;
 	if (n < 0) n = 0; /* if we're not multi-tasking, use thread 0's work area */
 	pathname *Thread_Work_Area = Scheduler::work_area(n);
+	pathname *Example_materials =
+		Pathnames::subfolder(Thread_Work_Area, I"Example.materials");
+	Pathnames::create_in_file_system(Example_materials);
+	
 	Tester::purge_work_area(n);
 	int passed = TRUE;
 	@<Perform and report on the test@>;

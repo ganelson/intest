@@ -1,6 +1,8 @@
 -cases 'intest/Examples/dc/Tests/Cases'
 
 -recipe
+	mkdir: $PATH/_actual
+	mkdir: $PATH/_ideal
 	set: $A = $PATH/_actual/$CASE.txt
 	set: $I = $PATH/_ideal/$CASE.txt
 	step: dc $[$PATH/$CASE.txt$] >$A 2>&1
