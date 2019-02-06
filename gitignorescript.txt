@@ -1,6 +1,9 @@
 {basics}
 
 *.DS_Store
+
+intest.mk
+
 Examples/dc/Tests/intest-history.txt
 Examples/dc/Tests/Cases/_actual/
 Workspace/T*/diff_output*.txt
