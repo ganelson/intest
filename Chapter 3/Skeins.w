@@ -171,11 +171,11 @@ status line early in play. We don't want that.
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, line_text, L"(%c*?)/T%d+/(%c*)")) {
 		Str::clear(line_text);
-		WRITE_TO(line_text, "Txx/%S", mr.exp[0], mr.exp[1]);
+		WRITE_TO(line_text, "Txx/%S", mr.exp[1]);
 	}
 	while (Regexp::match(&mr, line_text, L"(%c*?)\\T%d+\\(%c*)")) {
 		Str::clear(line_text);
-		WRITE_TO(line_text, "Txx\\%S", mr.exp[0], mr.exp[1]);
+		WRITE_TO(line_text, "Txx\\%S", mr.exp[1]);
 	}
 
 @ Let us not pretend that this is a properly capable XML reader: it's
