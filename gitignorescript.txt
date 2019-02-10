@@ -13,6 +13,8 @@ Workspace/T*/Example.inform/Build/*.txt
 Workspace/T*/Example.inform/Build/*.z8
 Workspace/T*/Example.inform/Build/*.ulx
 Workspace/T*/Example.inform/Build/*.html
+Workspace/T*/Example.inform/Build/*.zblorb
+Workspace/T*/Example.inform/Build/*.gblorb
 Workspace/T*/Example.inform/Index/*.html
 Workspace/T*/Example.inform/Index/*.xml
 Workspace/T*/Example.inform/Index/Details/*.html

@@ -17,7 +17,7 @@
 parse tree in memory.
 </p>
 
-<p class="inwebparagraph">Note that there are several different action types which can bring us here --
+<p class="inwebparagraph">Note that there are several different action types which can bring us here &mdash;
 <code class="display"><span class="extract">-test</span></code>, <code class="display"><span class="extract">-show</span></code>, <code class="display"><span class="extract">-bless</span></code>, and so on &mdash; and that the meaning of commands
 in the recipe may depend on what we're trying to do with it.
 </p>
@@ -47,6 +47,10 @@ performance is greatly reduced if so.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">thread_count</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; 0) </span><span class="identifier">n</span><span class="plain"> = 0; </span>    <span class="comment">if we're not multi-tasking, use thread 0's work area</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">Thread_Work_Area</span><span class="plain"> = </span><span class="functiontext">Scheduler::work_area</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">);</span>
+        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">Example_materials</span><span class="plain"> =</span>
+            <span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">Thread_Work_Area</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Example.materials"</span><span class="plain">);</span>
+        <span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">Example_materials</span><span class="plain">);</span>
+
         <span class="functiontext">Tester::purge_work_area</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">passed</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Perform and report on the test</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
@@ -1250,7 +1254,7 @@ in, one line at a time. (Each line is expanded.)
 
 <p class="endnote">The structure token_expand_state is private to this section.</p>
 
-<!--End of weave: 825 lines from a web of 15150-->
+<!--End of weave: 829 lines from a web of 15211-->
 	</body>
 </html>
 

@@ -281,7 +281,11 @@ status line early in play. We don't want that.
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line_text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?)/T%d+/(%c*)"</span><span class="plain">)) {</span>
             <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">line_text</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line_text</span><span class="plain">, </span><span class="string">"%S/Txx/%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line_text</span><span class="plain">, </span><span class="string">"Txx/%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+        <span class="plain">}</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line_text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?)\</span><span class="plain">\</span><span class="string">T%d+\</span><span class="plain">\</span><span class="string">(%c*)"</span><span class="plain">)) {</span>
+            <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">line_text</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line_text</span><span class="plain">, </span><span class="string">"Txx\</span><span class="plain">\</span><span class="string">%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -447,7 +451,7 @@ we are at a node whose contents we care about:
 <p class="endnote">This code is used in <a href="#SP5_4">&#167;5.4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP5_5"></a><b>&#167;5.5.  </b>This code is used only for matching problem message output from the I7
-compiler. We ignore <code class="display"><span class="extract">Offending filename</span></code> lines for much the reason above --
+compiler. We ignore <code class="display"><span class="extract">Offending filename</span></code> lines for much the reason above &mdash;
 they exist only in fatal file-system problem messages in any case. A line
 in the form
 </p>
@@ -878,7 +882,7 @@ to compare the two.
 
 <p class="endnote">The function Skeins::test_i7_skein is used in 2/act (<a href="2-act.html#SP8_2">&#167;8.2</a>).</p>
 
-<!--End of weave: 572 lines from a web of 15150-->
+<!--End of weave: 576 lines from a web of 15211-->
 	</body>
 </html>
 
