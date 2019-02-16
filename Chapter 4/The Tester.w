@@ -23,11 +23,21 @@ performance is greatly reduced if so.
 =
 int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count, int action_type) {
 	if (tc == NULL) internal_error("no test case");
-	CREATE_MUTEX(mutex);
+	int passed = TRUE;
 	if (splitting_logs) {
+		CREATE_MUTEX(mutex);
 		LOCK_MUTEX(mutex);
 		DL = &(thread_slots[thread_count].split_log);
+		@<Actually test@>;
+		DL = NULL;
+		UNLOCK_MUTEX(mutex);
+	} else {
+		@<Actually test@>;
 	}
+	return passed;
+}
+
+@<Actually test@> =
 	pathname *Work_Area = Globals::to_pathname(I"workspace");
 	int n = thread_count;
 	if (n < 0) n = 0; /* if we're not multi-tasking, use thread 0's work area */
@@ -37,14 +47,7 @@ int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count, int 
 	Pathnames::create_in_file_system(Example_materials);
 	
 	Tester::purge_work_area(n);
-	int passed = TRUE;
 	@<Perform and report on the test@>;
-	if (splitting_logs) {
-		DL = NULL;
-		UNLOCK_MUTEX(mutex);
-	}
-	return passed;
-}
 
 @ The "brackets" here are used in the summary text; |[5]|, |(5)| and |-5-| are
 all possible.
@@ -728,6 +731,7 @@ void Tester::expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
 	}
 	WRITE("%S", unsubstituted);
 	LOGIF(VARIABLES, "To %S\n", unsubstituted);
+	Regexp::dispose_of(&mr);
 }
 
 @ Quote expansion is similar, but treats the text as something which needs

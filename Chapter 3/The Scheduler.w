@@ -133,7 +133,7 @@ As elegant as the Unix pthread model is, it's unfortunate that we are
 expected to specify explicitly what stack size to allocate our work threads.
 We will simply choose a Very Big Number and hope for the best.
 
-@d STACK_SIZE_PER_WORK_THREAD 0x1000000
+@d STACK_SIZE_PER_WORK_THREAD 0x8000000
 
 =
 void Scheduler::start_work_on_slot(int s) {
@@ -141,6 +141,15 @@ void Scheduler::start_work_on_slot(int s) {
 		internal_error("tried to start second thread in same slot");
 	thread_slots[s].availability = WORKING_THREAD;
 	Platform::init_thread(&thread_slots[s].attributes, STACK_SIZE_PER_WORK_THREAD);
+	if (TRACE_THREADING) {
+		PRINT("Work on slot %d: ", s);
+		test *T;
+		LOOP_OVER(T, test)
+			if (T->allocated_to == s) {
+				PRINT("T%d:%S ", T->allocation_id, T->to_be_tested->test_case_name);
+			}
+		PRINT("\n");
+	}
 	int rc = Platform::create_thread(&(thread_slots[s].work_thread),
 		&(thread_slots[s].attributes),
 		Scheduler::perform_work,
