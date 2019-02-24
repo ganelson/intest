@@ -1,3 +1,2 @@
-Manual
 The Revealing Science of God	1	3K27	April 2006	First Perl version
-The Remembering	2	*6P93	1 January 2019	Ported to C and generalised
+The Remembering	2	*9Z99	31 December 9999	Ported to C and generalised
