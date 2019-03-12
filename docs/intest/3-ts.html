@@ -154,7 +154,7 @@ to the Skein-reading code.)
 
 <p class="endnote">The function Scheduler::initialise_slots is used in <a href="#SP9">&#167;9</a>.</p>
 
-<p class="endnote">The function Scheduler::work_area is used in 4/tt (<a href="4-tt.html#SP1">&#167;1</a>, <a href="4-tt.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Scheduler::work_area is used in 4/tt (<a href="4-tt.html#SP1_1">&#167;1.1</a>, <a href="4-tt.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>This is the only place in Intest where we invoke the dark magic of pthread
 library calls. The main Intest thread will call <code class="display"><span class="extract">pthread_create</span></code> to
@@ -180,7 +180,7 @@ We will simply choose a Very Big Number and hope for the best.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">STACK_SIZE_PER_WORK_THREAD</span><span class="plain"> 0</span><span class="identifier">x1000000</span>
+    <span class="definitionkeyword">define</span> <span class="constant">STACK_SIZE_PER_WORK_THREAD</span><span class="plain"> 0</span><span class="identifier">x8000000</span>
 </pre>
 
 <pre class="display">
@@ -189,6 +189,15 @@ We will simply choose a Very Big Number and hope for the best.
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to start second thread in same slot"</span><span class="plain">);</span>
         <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> = </span><span class="constant">WORKING_THREAD</span><span class="plain">;</span>
         <span class="functiontext">Platform::init_thread</span><span class="plain">(&amp;</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.attributes</span><span class="plain">, </span><span class="constant">STACK_SIZE_PER_WORK_THREAD</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="constant">TRACE_THREADING</span><span class="plain">) {</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Work on slot %d: "</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
+            <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">;</span>
+            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span><span class="reserved"> test</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocated_to</span><span class="plain"> == </span><span class="identifier">s</span><span class="plain">) {</span>
+                    <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"T%d:%S "</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext">Platform::create_thread</span><span class="plain">(&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.work_thread</span><span class="plain">),</span>
             <span class="plain">&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.attributes</span><span class="plain">),</span>
             <span class="functiontext">Scheduler::perform_work</span><span class="plain">,</span>
@@ -666,7 +675,9 @@ against asteroid impacts, but still, one likes to be safe.
 
 <p class="endnote">This code is used in <a href="#SP10">&#167;10</a>.</p>
 
-<!--End of weave: 451 lines from a web of 15211-->
+<hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Chapter 3: Performing Tests.)</i></li><li><a href="3-th.html">Continue with 'The Hasher'</a></li></ul><hr class="tocbar">
+<!--End of weave: 460 lines from a web of 15277-->
 	</body>
 </html>
 

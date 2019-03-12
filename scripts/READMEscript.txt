@@ -1,4 +1,5 @@
-# Intest version 2 'The Remembering'
+@-> ../README.md
+# Intest @version(intest)
 
 ## About Intest
 
@@ -24,4 +25,3 @@ with its own repository: [ganelson/inweb](https://github.com/ganelson/inweb).
 not be bash). This should create a suitable makefile, and then make Intest.
 For any future builds, you can simply type "make".
 * For a simple test, try e.g. "intest/Tangled/intest -help".
-
