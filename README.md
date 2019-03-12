@@ -20,8 +20,7 @@ to human-readable forms. The woven form can [be browsed here](docs/webs.html).
 with its own repository: [ganelson/inweb](https://github.com/ganelson/inweb).
 * Clone Intest as "work/intest".
 * Change the current directory to "work".
-* Run "bash scripts/first.sh" (or whatever shell you prefer: it need
+* Run "bash intest/scripts/first.sh" (or whatever shell you prefer: it need
 not be bash). This should create a suitable makefile, and then make Intest.
-For any future builds, you can simply type "make".
-* For a simple test, try e.g. "intest/Tangled/intest -help".
-
+For any future builds, it is enough to "make -f intest/intest.mk".
+* For a simple test, try "intest/Tangled/intest -help".
