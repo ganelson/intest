@@ -14,6 +14,16 @@ Intest is a literate program: it is written in ANSI C, but in the form of
 a "web". This means it can either be "tangled" to an executable, or "woven"
 to human-readable forms. The woven form can [be browsed here](docs/webs.html).
 
+## Licence
+
+Except as noted, copyright in material in this repository (the "Package") is
+held by Graham Nelson (the "Author"), who retains copyright so that there is
+a single point of reference. As from the first date of this repository
+becoming public, the Package is placed under the [Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
+This is a highly permissive licence, used by Perl among other notable projects,
+recognised by the Open Source Initiative as open and by the Free Software
+Foundation as free in both senses.
+
 ## Build Instructions
 
 * Create a directory to work in, called, say, "work".
