@@ -199,7 +199,7 @@ test case alphabetically;
 produce an enormous list, but |-using| can cut that down. To give an example
 from Inform,
 
-	|$ intest/Tangled/intest inform7 -using -extension 'Internal/Extensions/Emily Short/Locksmith.i7x' -do -catalogue|
+	|$ intest/Tangled/intest inform7 -using -extension 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x' -do -catalogue|
 	|Locksmith Example A = John Malkovich's Toilet|
 	|Locksmith Example B = Tobacco|
 	|Locksmith Example C = Rekeying|
@@ -245,7 +245,7 @@ by compiling this test case; the script being drawn from the
 line inside the source, if one is present. If no script is there, this
 produces empty output, but does not throw an error. For example:
 
-	|$ intest -using -extension 'Internal/Extensions/Emily Short/Locksmith.i7x' -do -script C|
+	|$ intest -using -extension 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x' -do -script C|
 
 prints out the command script for Example C of Locksmith:
 
