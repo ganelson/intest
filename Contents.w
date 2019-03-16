@@ -2,8 +2,6 @@ Title: intest
 Author: Graham Nelson
 Purpose: A text-based command-line tool for testing other command-line tools.
 Language: InC
-Declare Section Usage: Off
-Web Syntax Version: 2
 Licence: Artistic License 2.0
 Version Name: The Remembering
 Version Number: 2.0
