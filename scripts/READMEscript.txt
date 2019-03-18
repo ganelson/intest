@@ -8,11 +8,17 @@ command-line tools. Although it was written for development work on the Inform
 programming language (see [ganelson/inform](https://github.com/ganelson/inform)),
 it's a general-purpose tool.
 
-A comprehensive Intest manual can be [read here](docs/intest/P-iti.html).
-
 Intest is a literate program: it is written in ANSI C, but in the form of
 a "web". This means it can either be "tangled" to an executable, or "woven"
-to human-readable forms. The woven form can [be browsed here](docs/webs.html).
+to human-readable forms. The woven form is: [&#9733;&nbsp;intest](docs/intest/index.html).
+
+For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](docs/intest/P-iti).
+
+__Disclaimer__. Because this is a private repository (until the next public
+release of Inform, when it will open), its GitHub pages server cannot be
+enabled yet. As a result links marked &#9733; below lead only to raw HTML
+source, not to served web pages. They can in the mean time be browsed offline
+as static HTML files stored in "docs".
 
 ## Licence
 
@@ -26,66 +32,66 @@ Foundation as free in both senses.
 
 ## Build Instructions
 
-* Create a directory to work in, called, say, "work".
-* Clone and build Inweb as "work/inweb". Inweb is a literate programming tool,
-with its own repository: [ganelson/inweb](https://github.com/ganelson/inweb).
-* Clone Intest as "work/intest".
-* Change the current directory to "work".
-* Run "bash intest/scripts/first.sh" (or whatever shell you prefer: it need
-not be bash). This should create a suitable makefile, and then make Intest.
-For any future builds, it is enough to "make -f intest/intest.mk".
-* For a simple test, try "intest/Tangled/intest -help".
+Make a directory in which to work: let's call this "work". Then:
+
+* Change the current directory to "work": "cd work"
+* Build Inweb as "work/inweb": see its repository [here](https://github.com/ganelson/inweb)
+* Clone Inweb: "git clone https://github.com/ganelson/intest.git"
+* Perform the initial compilation: "bash intest/scripts/first.sh"
+* Test that all is well: "intest/Tangled/intest -help".
+
+You should now have a working copy of Intest. To build it again, simply: "make -f intest/intest.mk"
+
+### Colophon
+
+This README.mk file was generated automatically by Inpolicy (see the
+[Inform repository](https://github.com/ganelson/inform)), and should not
+be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
+
 @-> ../docs/webs.html
 @define web(program, manual)
 	<li>
-		<p><a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
+		<p>&#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
 		@version(@program)
 		- <span class="purpose">@purpose(@program)</span>
 		Documentation is <a href="@program/@manual.html">here</a>.</p>
 	</li>
 @end
+@define xweb(program)
+	<li>
+		<p>&#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
+		@version(@program)
+		- <span class="purpose">@purpose(@program)</span>.</p>
+	</li>
+@end
 @define subweb(owner, program)
 	<li>
-		<p>↳ <a href="docs/webs.html"><spon class="sectiontitle">@program</span></a> -
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@program/index.html"><spon class="sectiontitle">@program</span></a> -
 		<span class="purpose">@purpose(@owner/@program)</span></p>
 	</li>
 @end
 @define mod(owner, module)
 	<li>
-		<p>↳ <a href="docs/@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;↳ &#9733; <a href="@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
 		<span class="purpose">@purpose(@owner/@module-module)</span></p>
 	</li>
 @end
-@define extweb(program)
+@define extweb(program, explanation)
 	<li>
-		<p><a href="../@program/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
-		@version(@program)
-		- <span class="purpose">@purpose(@program)</span>
-		This has its own repository, with its own &#9733; Webs page.</p>
-	</li>
-@end
-@define extsubweb(owner, program)
-	<li>
-		<p>↳ <a href="../@owner/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
-		<span class="purpose">@purpose(@owner/@program)</span></p>
-	</li>
-@end
-@define extmod(owner, module)
-	<li>
-		<p>↳ <a href="../@owner/docs/@module-module/index.html"><spon class="sectiontitle">@module</span></a> (module) -
-		<span class="purpose">@purpose(@owner/@module-module)</span></p>
+		<p>&#9733; <a href="../../@program/docs/webs.html"><spon class="sectiontitle">@program</span></a> -
+		@explanation</p>
 	</li>
 @end
 <html>
 	<head>
-		<title>Inform &#9733; Webs</title>
+		<title>Inweb &#9733; Webs for ganelson/intest</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="intest/inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
 	</head>
 
 	<body>
-		<ul class="crumbs"><li><b>&#9733;</b></li><li><b>Webs</b></li></ul>
+		<ul class="crumbs"><li><a href="https://github.com/ganelson/intest"><b>&#9733 Webs for ganelson/intest</b></a></li></ul>
 		<p class="purpose">Human-readable source code.</p>
 		<hr>
 		<p class="chapter">
