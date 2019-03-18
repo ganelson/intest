@@ -16,7 +16,7 @@ For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](docs/intest/P-iti
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
-enabled yet. As a result links marked &#9733; below lead only to raw HTML
+enabled yet. As a result links marked &#9733; lead only to raw HTML
 source, not to served web pages. They can in the mean time be browsed offline
 as static HTML files stored in "docs".
 
@@ -38,9 +38,11 @@ Make a directory in which to work: let's call this "work". Then:
 * Build Inweb as "work/inweb": see its repository [here](https://github.com/ganelson/inweb)
 * Clone Inweb: "git clone https://github.com/ganelson/intest.git"
 * Perform the initial compilation: "bash intest/scripts/first.sh"
-* Test that all is well: "intest/Tangled/intest -help".
+* Test that all is well: "intest/Tangled/intest -help"
 
-You should now have a working copy of Intest. To build it again, simply: "make -f intest/intest.mk"
+You should now have a working copy of Intest. To build it again, simply:
+"make -f intest/intest.mk". To test that it's working, try running the test
+cases for Inweb: see [Testing Inweb](https://github.com/ganelson/inweb).
 
 ### Colophon
 
