@@ -33,9 +33,9 @@ Foundation as free in both senses.
 
 Make a directory in which to work: let's call this "work". Then:
 
-* Change the current directory to "work": "cd work"
+* Change the current directory to this: "cd work"
 * Build Inweb as "work/inweb": see its repository [here](https://github.com/ganelson/inweb)
-* Clone Inweb: "git clone https://github.com/ganelson/intest.git"
+* Clone Intest: "git clone https://github.com/ganelson/intest.git"
 * Perform the initial compilation: "bash intest/scripts/first.sh"
 * Test that all is well: "intest/Tangled/intest -help"
 
