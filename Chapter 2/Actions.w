@@ -71,6 +71,7 @@ section, "actions":
 @e SCRIPT_ACTION
 @e SHOW_ACTION
 @e SHOW_I6_ACTION
+@e SHOW_TRANSCRIPT_ACTION
 @e SKEIN_ACTION
 @e TEST_ACTION
 
@@ -88,6 +89,7 @@ section, "actions":
 	else if (Str::eq(opt, I"-open")) { action = OPEN_ACTION; }
 	else if (Str::eq(opt, I"-show")) { action = SHOW_ACTION; }
 	else if (Str::eq(opt, I"-show-i6")) { action = SHOW_I6_ACTION; }
+	else if (Str::eq(opt, I"-show-t")) { action = SHOW_TRANSCRIPT_ACTION; }
 	else if (Str::eq(opt, I"-bbdiff")) { action = BBDIFF_ACTION; }
 	else if (Str::eq(opt, I"-diff")) { action = DIFF_ACTION; }
 	else if (Str::eq(opt, I"-test")) { action = TEST_ACTION; }
@@ -454,6 +456,7 @@ substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 		case CURSE_ACTION:
 		case SHOW_ACTION:
 		case SHOW_I6_ACTION:
+		case SHOW_TRANSCRIPT_ACTION:
 		case REBLESS_ACTION:
 			Tester::test(TO, itc, count, -1, ai->action_type); break;
 		case REPORT_ACTION:

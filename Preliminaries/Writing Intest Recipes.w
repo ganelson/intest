@@ -408,8 +408,10 @@ Inform testing only, there's a related:
 
 |show i6: F|. The same, but for the |-show-i6| command instead of |-show|.
 
-|show:| and |show i6:| both fail if the file |F| does not exist, and this
-possibility can be picked up by placing an |or:| after them.
+|show transcript: F|. The same, but for the |-show-t| command instead of |-show|.
+
+|show:|, |show i6:| and |show transcript:| all fail if the file |F| does not
+exist, but this possibility can be picked up by placing an |or:| after them.
 
 @ As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.

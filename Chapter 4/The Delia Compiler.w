@@ -27,6 +27,7 @@ set of commands, enumerated as follows.
 @e SET_RCOM
 @e SHOW_I6_RCOM
 @e SHOW_RCOM
+@e SHOW_TRANSCRIPT_RCOM
 @e STEP_RCOM
 
 @ And here's some metadata about them:
@@ -62,6 +63,7 @@ recipe_command instruction_set[] = {
 	{ SET_RCOM, L"set", -1, FALSE, 0 },
 	{ SHOW_I6_RCOM, L"show i6", 1, TRUE, 0 },
 	{ SHOW_RCOM, L"show", 1, TRUE, 0 },
+	{ SHOW_TRANSCRIPT_RCOM, L"show transcript", 1, TRUE, 0 },
 	{ STEP_RCOM, L"step", -1, TRUE, 0 },
 	{ -1, NULL, 0, FALSE, 0 }
 };

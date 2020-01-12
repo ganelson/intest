@@ -229,6 +229,7 @@ dictionary.
 
 		case SHOW_RCOM:               if (action_type == SHOW_ACTION) @<Show file@>; break;
 		case SHOW_I6_RCOM:            if (action_type == SHOW_I6_ACTION) @<Show file@>; break;
+		case SHOW_TRANSCRIPT_RCOM:    if (action_type == SHOW_TRANSCRIPT_ACTION) @<Show file@>; break;
 
 		default: internal_error("unknown recipe command");
 	}

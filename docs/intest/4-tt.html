@@ -340,6 +340,7 @@ dictionary.
 
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SHOW_RCOM</span><span class="plain">:               </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action_type</span><span class="plain"> == </span><span class="constant">SHOW_ACTION</span><span class="plain">) </span>&lt;<span class="cwebmacro">Show file</span> <span class="cwebmacronumber">1.1.1.2.3.2.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SHOW_I6_RCOM</span><span class="plain">:            </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action_type</span><span class="plain"> == </span><span class="constant">SHOW_I6_ACTION</span><span class="plain">) </span>&lt;<span class="cwebmacro">Show file</span> <span class="cwebmacronumber">1.1.1.2.3.2.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SHOW_TRANSCRIPT_RCOM</span><span class="plain">:    </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action_type</span><span class="plain"> == </span><span class="constant">SHOW_TRANSCRIPT_ACTION</span><span class="plain">) </span>&lt;<span class="cwebmacro">Show file</span> <span class="cwebmacronumber">1.1.1.2.3.2.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
 
             <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown recipe command"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -836,7 +837,7 @@ for these, three of which are highly specific to Inform 7.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_1_1_2_3_2">&#167;1.1.1.2.3.2</a> (twice).</p>
+<p class="endnote">This code is used in <a href="#SP1_1_1_2_3_2">&#167;1.1.1.2.3.2</a> (three times).</p>
 
 <p class="inwebparagraph"><a id="SP1_1_1_2_3_2_7"></a><b>&#167;1.1.1.2.3.2.7.  </b>The <code class="display"><span class="extract">hash</span></code> command hashes the first-named file, writing the resulting
 checksum to the second-named file, and also remembering its value.
