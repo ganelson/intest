@@ -244,6 +244,7 @@ can involve a wildcard such as |all|:
 typedef struct case_specifier {
 	struct test_case *specific_case; /* a specific test to apply to... */
 	int wild_card; /* ...or a wildcard */
+	struct text_stream *regexp_wild_card;
 } case_specifier;
 
 @ =
@@ -251,18 +252,22 @@ case_specifier Actions::parse_specifier(text_stream *token, intest_instructions 
 	case_specifier cs;
 	cs.wild_card = Actions::identify_wildcard(token);
 	cs.specific_case = NULL;
+	cs.regexp_wild_card = NULL;
 	if ((token) && (cs.wild_card == TAMECARD)) {
 		cs.specific_case = RecipeFiles::find_case(args, token);
 		if (cs.specific_case == NULL)
 			Errors::fatal_with_text("no such test case as %S", token);
 	}
+	if ((token) && (cs.wild_card == REGEXP_WILDCARD))
+		cs.regexp_wild_card = Str::duplicate(token);
 	return cs;
 }
 
 @h Wildcards.
 
 @d COUNT_WILDCARD_BASE 1001 /* 1001 is |^1|, 1002 is |^2|, ... */
-@d EXTENSION_WILDCARD_BASE 1 /* 1 is |A|, 2 is |B|, ... */
+@d EXTENSION_WILDCARD_BASE 101 /* 101 is |A|, 102 is |B|, ... */
+@d REGEXP_WILDCARD 1
 @d TAMECARD 0
 @d ALL_WILDCARD -1
 @d EXAMPLES_WILDCARD -2
@@ -274,6 +279,9 @@ case_specifier Actions::parse_specifier(text_stream *token, intest_instructions 
 =
 int Actions::identify_wildcard(text_stream *token) {
 	if (token == NULL) return TAMECARD;
+	LOOP_THROUGH_TEXT(pos, token)
+		if (Str::get(pos) == '%')
+			return REGEXP_WILDCARD;
 	if (Str::len(token) == 1) {
 		int c = Str::get_first_char(token);
 		if ((c >= 'A') && (c <= 'Z')) return c - 'A' + EXTENSION_WILDCARD_BASE;
@@ -340,6 +348,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	else if (ai->operand.wild_card >= EXTENSION_WILDCARD_BASE) @<Perform this lettered case@>
 	else if (ai->operand.wild_card == TAMECARD)
 		Actions::perform_inner(OUT, args, ai, ai->operand.specific_case, count++);
+	else if (ai->operand.wild_card == REGEXP_WILDCARD) @<Perform this regular expressed case@>
 	else @<Perform this matched case@>;
 
 @<Perform this counted case@> =
@@ -374,6 +383,14 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 			}
 	Errors::fatal("unable to find any such extension example");
 	ExitLetterSearch: ;
+
+@<Perform this regular expressed case@> =
+	linked_list *matches = NEW_LINKED_LIST(test_case);
+	RecipeFiles::find_cases_matching(matches, args->search_path, ai->operand.regexp_wild_card);
+	test_case *tc;
+	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
+		Actions::perform_inner(OUT, args, ai, tc, count++);
+	}
 
 @<Perform this matched case@> =
 	search_path_item *spi;

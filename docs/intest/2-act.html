@@ -410,6 +410,7 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">case_specifier</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">specific_case</span><span class="plain">; </span>    <span class="comment">a specific test to apply to...</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">wild_card</span><span class="plain">; </span>    <span class="comment">...or a wildcard</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">regexp_wild_card</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">case_specifier</span><span class="plain">;</span>
 </pre>
 
@@ -425,11 +426,14 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
         <span class="reserved">case_specifier</span><span class="plain"> </span><span class="identifier">cs</span><span class="plain">;</span>
         <span class="identifier">cs</span><span class="element">.wild_card</span><span class="plain"> = </span><span class="functiontext">Actions::identify_wildcard</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">);</span>
         <span class="identifier">cs</span><span class="element">.specific_case</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">cs</span><span class="element">.regexp_wild_card</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">token</span><span class="plain">) &amp;&amp; (</span><span class="identifier">cs</span><span class="element">.wild_card</span><span class="plain"> == </span><span class="constant">TAMECARD</span><span class="plain">)) {</span>
             <span class="identifier">cs</span><span class="element">.specific_case</span><span class="plain"> = </span><span class="functiontext">RecipeFiles::find_case</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">token</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="element">.specific_case</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
                 <span class="functiontext">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"no such test case as %S"</span><span class="plain">, </span><span class="identifier">token</span><span class="plain">);</span>
         <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">token</span><span class="plain">) &amp;&amp; (</span><span class="identifier">cs</span><span class="element">.wild_card</span><span class="plain"> == </span><span class="constant">REGEXP_WILDCARD</span><span class="plain">))</span>
+            <span class="identifier">cs</span><span class="element">.regexp_wild_card</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cs</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -443,7 +447,8 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">COUNT_WILDCARD_BASE</span><span class="plain"> 1001 </span>    <span class="comment">1001 is <code class="display"><span class="extract">^1</span></code>, 1002 is <code class="display"><span class="extract">^2</span></code>, ...</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EXTENSION_WILDCARD_BASE</span><span class="plain"> 1 </span>    <span class="comment">1 is <code class="display"><span class="extract">A</span></code>, 2 is <code class="display"><span class="extract">B</span></code>, ...</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EXTENSION_WILDCARD_BASE</span><span class="plain"> 101 </span>    <span class="comment">101 is <code class="display"><span class="extract">A</span></code>, 102 is <code class="display"><span class="extract">B</span></code>, ...</span>
+    <span class="definitionkeyword">define</span> <span class="constant">REGEXP_WILDCARD</span><span class="plain"> 1</span>
     <span class="definitionkeyword">define</span> <span class="constant">TAMECARD</span><span class="plain"> 0</span>
     <span class="definitionkeyword">define</span> <span class="constant">ALL_WILDCARD</span><span class="plain"> -1</span>
     <span class="definitionkeyword">define</span> <span class="constant">EXAMPLES_WILDCARD</span><span class="plain"> -2</span>
@@ -456,6 +461,9 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Actions::identify_wildcard</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">token</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">token</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TAMECARD</span><span class="plain">;</span>
+        <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">token</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'%'</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="constant">REGEXP_WILDCARD</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">) == 1) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'A'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'Z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> - </span><span class="character">'A'</span><span class="plain"> + </span><span class="constant">EXTENSION_WILDCARD_BASE</span><span class="plain">;</span>
@@ -504,7 +512,7 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
 
 <p class="endnote">The function Actions::identify_wildcard is used in <a href="#SP5">&#167;5</a>, 2/rf (<a href="2-rf.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Actions::matches_wildcard is used in <a href="#SP7_1_3">&#167;7.1.3</a>.</p>
+<p class="endnote">The function Actions::matches_wildcard is used in <a href="#SP7_1_4">&#167;7.1.4</a>.</p>
 
 <p class="endnote">The function Actions::which_wildcard is used in 3/ts (<a href="3-ts.html#SP9_3_2">&#167;9.3.2</a>).</p>
 
@@ -544,7 +552,8 @@ to-do list:
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.wild_card</span><span class="plain"> &gt;= </span><span class="constant">EXTENSION_WILDCARD_BASE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Perform this lettered case</span> <span class="cwebmacronumber">7.1.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.wild_card</span><span class="plain"> == </span><span class="constant">TAMECARD</span><span class="plain">)</span>
             <span class="functiontext">Actions::perform_inner</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.specific_case</span><span class="plain">, </span><span class="identifier">count</span><span class="plain">++);</span>
-        <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Perform this matched case</span> <span class="cwebmacronumber">7.1.3</span>&gt;<span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.wild_card</span><span class="plain"> == </span><span class="constant">REGEXP_WILDCARD</span><span class="plain">) </span>&lt;<span class="cwebmacro">Perform this regular expressed case</span> <span class="cwebmacronumber">7.1.3</span>&gt;
+        <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Perform this matched case</span> <span class="cwebmacronumber">7.1.4</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -605,7 +614,25 @@ to-do list:
 <p class="endnote">This code is used in <a href="#SP7_1">&#167;7.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7_1_3"></a><b>&#167;7.1.3.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Perform this matched case</span> <span class="cwebmacronumber">7.1.3</span>&gt; =
+&lt;<span class="cwebmacrodefn">Perform this regular expressed case</span> <span class="cwebmacronumber">7.1.3</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">matches</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain">);</span>
+        <span class="functiontext">RecipeFiles::find_cases_matching</span><span class="plain">(</span><span class="identifier">matches</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.regexp_wild_card</span><span class="plain">);</span>
+        <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">matches</span><span class="plain">) {</span>
+            <span class="functiontext">Actions::perform_inner</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">, </span><span class="identifier">count</span><span class="plain">++);</span>
+        <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP7_1">&#167;7.1</a>.</p>
+
+<p class="inwebparagraph"><a id="SP7_1_4"></a><b>&#167;7.1.4.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Perform this matched case</span> <span class="cwebmacronumber">7.1.4</span>&gt; =
 </code></p>
 
 
@@ -650,7 +677,7 @@ which test case to work on.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Actions::perform_inner is used in <a href="#SP7_1">&#167;7.1</a>, <a href="#SP7_1_1">&#167;7.1.1</a>, <a href="#SP7_1_2">&#167;7.1.2</a>, <a href="#SP7_1_3">&#167;7.1.3</a>.</p>
+<p class="endnote">The function Actions::perform_inner is used in <a href="#SP7_1">&#167;7.1</a>, <a href="#SP7_1_1">&#167;7.1.1</a>, <a href="#SP7_1_2">&#167;7.1.2</a>, <a href="#SP7_1_3">&#167;7.1.3</a>, <a href="#SP7_1_4">&#167;7.1.4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>If the leafname of the redirection file is <code class="display"><span class="extract">something_[NUMBER]</span></code> then we
 substitute in the case number for <code class="display"><span class="extract">[NUMBER]</span></code>, and similarly for <code class="display"><span class="extract">[NAME]</span></code>.

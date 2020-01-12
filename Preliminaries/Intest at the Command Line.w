@@ -189,7 +189,10 @@ extension case";
 -- this is not to be confused with the |1|, |2|, |3|, ... notation used
 to call back previously failed cases: typically |^1| will be the first
 test case alphabetically;
-(iv) and, of course, an explicit test case name refers to that test case.
+(v) a name containing a |%| character will be treated as a regular expression,
+in the same notation as for |-find| (see below) - for example, |BIP-%c+|
+will mean "any test case whose name or title begins with |BIP-|";
+(vi) and finally, of course, an explicit test case name refers to that test case.
 
 (Test types will be gone into in the next section.)
 

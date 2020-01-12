@@ -315,7 +315,10 @@ extension case";
 &mdash; this is not to be confused with the <code class="display"><span class="extract">1</span></code>, <code class="display"><span class="extract">2</span></code>, <code class="display"><span class="extract">3</span></code>, ... notation used
 to call back previously failed cases: typically <code class="display"><span class="extract">^1</span></code> will be the first
 test case alphabetically;
-</li><li>(iv) and, of course, an explicit test case name refers to that test case.
+</li><li>(v) a name containing a <code class="display"><span class="extract">%</span></code> character will be treated as a regular expression,
+in the same notation as for <code class="display"><span class="extract">-find</span></code> (see below) - for example, <code class="display"><span class="extract">BIP-%c+</span></code>
+will mean "any test case whose name or title begins with <code class="display"><span class="extract">BIP-</span></code>";
+</li><li>(vi) and finally, of course, an explicit test case name refers to that test case.
 </li></ul>
 <p class="inwebparagraph">(Test types will be gone into in the next section.)
 </p>

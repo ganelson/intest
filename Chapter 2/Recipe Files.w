@@ -406,8 +406,25 @@ test cases whose names or titles match a given regular expression. If the
 @d MAX_NAME_MATCH_LENGTH 1024
 
 =
-void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *list, text_stream *match) {
+void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *sources, text_stream *match) {
 	if (Str::len(match) > 0) WRITE("Test cases matching '%S':\n", match);
+	linked_list *matches = NEW_LINKED_LIST(test_case);
+	RecipeFiles::find_cases_matching(matches, sources, match);
+	int n = 0;
+	test_case *tc;
+	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
+		WRITE("%S%s", tc->test_case_name, (tc->test_type == PROBLEM_SPT)?" (problem)":"");
+		if (Str::len(tc->test_case_title) > 0) WRITE(" = %S", tc->test_case_title);
+		WRITE("\n");
+		n++;
+	}
+	if (n == 0) WRITE("(none)\n");
+}
+
+@ Which employs:
+
+=
+void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources, text_stream *match) {
 	TEMPORARY_TEXT(re);
 	WRITE_TO(re, "%%c*%S%%c*", match);
 	wchar_t wregexp[MAX_NAME_MATCH_LENGTH];
@@ -415,7 +432,7 @@ void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *list, text_strea
 	DISCARD_TEXT(re);
 	search_path_item *spi;
 	test_case *tc;
-	LOOP_OVER_LINKED_LIST(spi, search_path_item, list)
+	LOOP_OVER_LINKED_LIST(spi, search_path_item, sources)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents) {
 			if ((tc->format_reference != EXAMPLE_FORMAT) &&
 				(tc->format_reference != EXTENSION_FORMAT))
@@ -425,10 +442,10 @@ void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *list, text_strea
 			if ((match == NULL) ||
 				(Regexp::match(&mr, tc->test_case_name, wregexp)) ||
 				(Regexp::match(&mr, tc->test_case_title, wregexp))) {
-				WRITE("%S%s", tc->test_case_name, (tc->test_type == PROBLEM_SPT)?" (problem)":"");
-				if (Str::len(tc->test_case_title) > 0) WRITE(" = %S", tc->test_case_title);
-				WRITE("\n");
+				ADD_TO_LINKED_LIST(tc, test_case, matches);
 			}
 			Regexp::dispose_of(&mr);
 		}
 }
+
+
