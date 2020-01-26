@@ -62,6 +62,7 @@ section, "actions":
 @e COMBINE_REPORTS_ACTION
 @e CONCORDANCE_ACTION
 @e CURSE_ACTION
+@e DEBUGGER_ACTION
 @e DIFF_ACTION
 @e SOURCE_ACTION
 @e FIND_ACTION
@@ -93,6 +94,7 @@ section, "actions":
 	else if (Str::eq(opt, I"-bbdiff")) { action = BBDIFF_ACTION; }
 	else if (Str::eq(opt, I"-diff")) { action = DIFF_ACTION; }
 	else if (Str::eq(opt, I"-test")) { action = TEST_ACTION; }
+	else if (Str::eq(opt, I"-debug")) { action = DEBUGGER_ACTION; }
 	else if (Str::eq(opt, I"-bless")) { action = BLESS_ACTION; }
 	else if (Str::eq(opt, I"-curse")) { action = CURSE_ACTION; }
 	else if (Str::eq(opt, I"-rebless")) { action = REBLESS_ACTION; }
@@ -469,6 +471,7 @@ substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 		case BBDIFF_ACTION:
 		case DIFF_ACTION:
 		case TEST_ACTION:
+		case DEBUGGER_ACTION:
 		case BLESS_ACTION:
 		case CURSE_ACTION:
 		case SHOW_ACTION:

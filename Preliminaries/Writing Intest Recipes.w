@@ -381,6 +381,10 @@ For example,
 (When testing a program which doesn't return exit codes, sometimes the best
 way to see whether it worked or not is to see whether it produced any output.)
 
+@ The |debugger: ...| command is set out exactly like |step: ...|, but runs
+only when the test is being run by the |-debug| action. This is then used to
+trigger the |lldb| debugger; see the Inform 7 test recipe for more.
+
 @ These are the three main "stopping commands", which do cause the test to halt:
 
 |pass: 'NOTE'|. Stops the test and marks it a success. The text |'NOTE'|
@@ -397,7 +401,7 @@ wrong. For example:
 	|step: dc -e $EXPRESSION|
 	|or: 'dc produced an error'|
 
-@ But there are actually two others:
+@ But there are actually a few others:
 
 |show F|. Stops the test and prints out the file |F|, but only if the test
 is being run by the |-show| command: otherwise, does nothing and carries on.

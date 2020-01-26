@@ -7,6 +7,7 @@ Intest recipes are written in a mini-language called Delia, which has a fixed
 set of commands, enumerated as follows.
 
 @e COPY_RCOM from 1
+@e DEBUGGER_RCOM
 @e ELSE_RCOM
 @e ENDIF_RCOM
 @e EXISTS_RCOM
@@ -43,6 +44,7 @@ typedef struct recipe_command {
 
 recipe_command instruction_set[] = {
 	{ COPY_RCOM, L"copy", 2, FALSE, 0 },
+	{ DEBUGGER_RCOM, L"debugger", -1, TRUE, 0 },
 	{ ELSE_RCOM, L"else", 0, FALSE, 0 },
 	{ ENDIF_RCOM, L"endif", 0, FALSE, -1 },
 	{ EXISTS_RCOM, L"exists", 1, TRUE, 0 },

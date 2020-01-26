@@ -210,6 +210,7 @@ dictionary.
 @<Interpret an unconditional line@> =
 	switch (L->command_used->rc_code) {
 		case STEP_RCOM:               @<Carry out a step@>; break;
+		case DEBUGGER_RCOM:	          if (action_type == DEBUGGER_ACTION) @<Carry out a step@>; break;		
 		case FAIL_STEP_RCOM:          @<Carry out a step@>; break;
 
 		case SET_RCOM:                @<Set a local variable@>; break;
@@ -326,6 +327,7 @@ while the second is a record of what it ought to come out as.
 		case CURSE_ACTION: @<Perform a curse@>; break;
 		case SHOW_ACTION:
 		case TEST_ACTION:
+		case DEBUGGER_ACTION:
 		case DIFF_ACTION:
 		case BBDIFF_ACTION:
 			if (!exists) {
