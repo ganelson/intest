@@ -129,6 +129,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 		
 		@<Act on if or endif@>;
 		@<Act on set@>;
+		@<Act on groups@>;
 		@<Act on a case type choice@>;
 		@<Act on a recipe choice@>;
 
@@ -168,6 +169,12 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 		i += 2; continue;
 	}
 
+@<Act on groups@> =
+	if ((Str::eq_wide_string(opt, L"-groups")) && (i+1<to_arg_n)) {
+		args->groups_folder = Pathnames::from_text(argv[i+1]);
+		i++; continue;
+	}
+
 @<Act on a case type choice@> =
 	if (Str::eq(opt, I"-extension")) { t = EXTENSION_SPT; continue; }
 	else if (Str::eq(opt, I"-case")) { t = CASE_SPT; continue; }
@@ -179,7 +186,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 	else if (Str::eq(opt, I"-problems")) { t = PROBLEM_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-maps")) { t = MAP_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-examples")) { t = EXAMPLE_SPT; multiple = TRUE; continue; }
-	else if (Str::get_first_char(opt) == '-') Errors::fatal("unrecognised -using case type");
+	else if (Str::get_first_char(opt) == '-') Errors::fatal_with_text("unrecognised -using case type: '%S'", opt);
 
 @<Act on a recipe choice@> =
 	if ((Str::get_first_char(opt) == '[') && (Str::get_last_char(opt) == ']')) {
@@ -409,7 +416,7 @@ test cases whose names or titles match a given regular expression. If the
 void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *sources, text_stream *match) {
 	if (Str::len(match) > 0) WRITE("Test cases matching '%S':\n", match);
 	linked_list *matches = NEW_LINKED_LIST(test_case);
-	RecipeFiles::find_cases_matching(matches, sources, match);
+	RecipeFiles::find_cases_matching(matches, sources, match, FALSE);
 	int n = 0;
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
@@ -424,9 +431,10 @@ void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *sources, text_st
 @ Which employs:
 
 =
-void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources, text_stream *match) {
+void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources, text_stream *match, int exactly) {
 	TEMPORARY_TEXT(re);
-	WRITE_TO(re, "%%c*%S%%c*", match);
+	if (exactly) WRITE_TO(re, "%S", match);
+	else WRITE_TO(re, "%%c*%S%%c*", match);
 	wchar_t wregexp[MAX_NAME_MATCH_LENGTH];
 	Str::copy_to_wide_string(wregexp, re, MAX_NAME_MATCH_LENGTH);
 	DISCARD_TEXT(re);

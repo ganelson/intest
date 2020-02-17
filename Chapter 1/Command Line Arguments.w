@@ -70,6 +70,7 @@ typedef struct intest_instructions {
 	struct linked_list *to_do_list; /* of |action_item| */
 	struct filename *implied_recipe_file;
 	struct pathname *home;
+	struct pathname *groups_folder;
 } intest_instructions;
 
 @<Initialise the arguments state@> =
@@ -84,6 +85,7 @@ typedef struct intest_instructions {
 	args.to_do_list = NEW_LINKED_LIST(action_item);
 	args.threads_available = 16;
 	args.home = home;
+	args.groups_folder = NULL;
 	args.implied_recipe_file = intest_script;
 
 @h Actually reading the command line.
@@ -160,7 +162,10 @@ int ITCommandLine::read_switches(intest_instructions *args,
 		text_stream *opt = argv[i];
 		text_stream *arg = NULL; if (i+1 < to_arg_n) arg = argv[i+1];
 		if (Regexp::match(&mr, opt, L"-+(%c*)")) {
-			int N = CommandLine::read_pair(mr.exp[0], arg, args, &ITCommandLine::respond, NULL);
+			clf_reader_state crs;
+			crs.state = (void *) args; crs.f = &ITCommandLine::respond; crs.g = NULL;
+			crs.subs = FALSE; crs.nrt = 0;
+			int N = CommandLine::read_pair(&crs, mr.exp[0], arg);
 			if (N > 0) { i += N - 1; }
 			else { Regexp::dispose_of(&mr); return i; }
 		} else { Regexp::dispose_of(&mr); return i; }

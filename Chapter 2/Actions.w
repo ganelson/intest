@@ -262,6 +262,8 @@ case_specifier Actions::parse_specifier(text_stream *token, intest_instructions 
 	}
 	if ((token) && (cs.wild_card == REGEXP_WILDCARD))
 		cs.regexp_wild_card = Str::duplicate(token);
+	if ((token) && (cs.wild_card == GROUP_WILDCARD))
+		cs.regexp_wild_card = Str::duplicate(token);
 	return cs;
 }
 
@@ -269,6 +271,7 @@ case_specifier Actions::parse_specifier(text_stream *token, intest_instructions 
 
 @d COUNT_WILDCARD_BASE 1001 /* 1001 is |^1|, 1002 is |^2|, ... */
 @d EXTENSION_WILDCARD_BASE 101 /* 101 is |A|, 102 is |B|, ... */
+@d GROUP_WILDCARD 2
 @d REGEXP_WILDCARD 1
 @d TAMECARD 0
 @d ALL_WILDCARD -1
@@ -284,8 +287,9 @@ int Actions::identify_wildcard(text_stream *token) {
 	LOOP_THROUGH_TEXT(pos, token)
 		if (Str::get(pos) == '%')
 			return REGEXP_WILDCARD;
+	int c = Str::get_first_char(token);
+	if (c == ':') return GROUP_WILDCARD;
 	if (Str::len(token) == 1) {
-		int c = Str::get_first_char(token);
 		if ((c >= 'A') && (c <= 'Z')) return c - 'A' + EXTENSION_WILDCARD_BASE;
 		if ((c >= 'a') && (c <= 'z')) return c - 'a' + EXTENSION_WILDCARD_BASE;
 	}
@@ -351,6 +355,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	else if (ai->operand.wild_card == TAMECARD)
 		Actions::perform_inner(OUT, args, ai, ai->operand.specific_case, count++);
 	else if (ai->operand.wild_card == REGEXP_WILDCARD) @<Perform this regular expressed case@>
+	else if (ai->operand.wild_card == GROUP_WILDCARD) @<Perform this grouped case@>
 	else @<Perform this matched case@>;
 
 @<Perform this counted case@> =
@@ -388,10 +393,38 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 
 @<Perform this regular expressed case@> =
 	linked_list *matches = NEW_LINKED_LIST(test_case);
-	RecipeFiles::find_cases_matching(matches, args->search_path, ai->operand.regexp_wild_card);
+	RecipeFiles::find_cases_matching(matches, args->search_path, ai->operand.regexp_wild_card, FALSE);
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
 		Actions::perform_inner(OUT, args, ai, tc, count++);
+	}
+
+@<Perform this grouped case@> =
+	int scheduled = TRUE;
+	TEMPORARY_TEXT(leafname);
+	WRITE_TO(leafname, "%S.testgroup", ai->operand.regexp_wild_card);
+	Str::delete_first_character(leafname);
+	if (Str::get_first_char(leafname) == ':') {
+		Str::delete_first_character(leafname);
+		scheduled = FALSE;
+	}
+	filename *F = Filenames::in_folder(args->groups_folder, leafname);
+	linked_list *names_in_group = NEW_LINKED_LIST(text_stream);
+	TextFiles::read(F, FALSE, "can't open test group file", TRUE,
+		&Actions::read_group, NULL, names_in_group);
+	DISCARD_TEXT(leafname);
+
+	linked_list *matches = NEW_LINKED_LIST(test_case);
+	text_stream *name;
+	LOOP_OVER_LINKED_LIST(name, text_stream, names_in_group) {
+		RecipeFiles::find_cases_matching(matches, args->search_path, name, TRUE);
+	}
+	test_case *tc;
+	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
+		ai->test_form = ai->action_type;
+		if (scheduled) ai->action_type += SCHEDULED_TEST_ACTION;
+		Actions::perform_inner(OUT, args, ai, tc, count++);
+		if (scheduled) ai->action_type -= SCHEDULED_TEST_ACTION;
 	}
 
 @<Perform this matched case@> =
@@ -405,6 +438,17 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 				Actions::perform_inner(OUT, args, ai, tc, count++);
 				ai->action_type -= SCHEDULED_TEST_ACTION;
 			}
+
+@
+
+=
+void Actions::read_group(text_stream *text, text_file_position *tfp, void *vm) {
+	linked_list *matches = (linked_list *) vm;
+	Str::trim_white_space(text);
+	wchar_t c = Str::get_first_char(text);
+	if ((c == 0) || (c == '#')) return;
+	ADD_TO_LINKED_LIST(Str::duplicate(text), text_stream, matches);
+}
 
 @ And now we can forget everything about wild cards: we know for definite
 which test case to work on.

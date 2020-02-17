@@ -55,7 +55,7 @@ performance is greatly reduced if so.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tester::test is used in 2/act (<a href="2-act.html#SP8_2">&#167;8.2</a>), 3/ts (<a href="3-ts.html#SP10">&#167;10</a>).</p>
+<p class="endnote">The function Tester::test is used in 2/act (<a href="2-act.html#SP9_2">&#167;9.2</a>), 3/ts (<a href="3-ts.html#SP10">&#167;10</a>).</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Actually test</span> <span class="cwebmacronumber">1.1</span>&gt; =
@@ -321,6 +321,7 @@ dictionary.
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;command_used</span><span class="plain">-</span><span class="element">&gt;rc_code</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">STEP_RCOM</span><span class="plain">:               </span>&lt;<span class="cwebmacro">Carry out a step</span> <span class="cwebmacronumber">1.1.1.2.3.2.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEBUGGER_RCOM</span><span class="plain">:	          </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action_type</span><span class="plain"> == </span><span class="constant">DEBUGGER_ACTION</span><span class="plain">) </span>&lt;<span class="cwebmacro">Carry out a step</span> <span class="cwebmacronumber">1.1.1.2.3.2.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAIL_STEP_RCOM</span><span class="plain">:          </span>&lt;<span class="cwebmacro">Carry out a step</span> <span class="cwebmacronumber">1.1.1.2.3.2.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
 
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SET_RCOM</span><span class="plain">:                </span>&lt;<span class="cwebmacro">Set a local variable</span> <span class="cwebmacronumber">1.1.1.2.3.2.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
@@ -390,7 +391,7 @@ to be zero (for <code class="display"><span class="extract">step</span></code>) 
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_1_1_2_3_2">&#167;1.1.1.2.3.2</a> (twice).</p>
+<p class="endnote">This code is used in <a href="#SP1_1_1_2_3_2">&#167;1.1.1.2.3.2</a> (three times).</p>
 
 <p class="inwebparagraph"><a id="SP1_1_1_2_3_2_1_1"></a><b>&#167;1.1.1.2.3.2.1.1.  </b>If the next command is an <code class="display"><span class="extract">or</span></code>, then use its text rather than our bland
 one in the event of failure.
@@ -482,6 +483,7 @@ while the second is a record of what it ought to come out as.
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">CURSE_ACTION</span><span class="plain">: </span>&lt;<span class="cwebmacro">Perform a curse</span> <span class="cwebmacronumber">1.1.1.2.3.2.3.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SHOW_ACTION</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ACTION</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEBUGGER_ACTION</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">DIFF_ACTION</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">BBDIFF_ACTION</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">exists</span><span class="plain">) {</span>

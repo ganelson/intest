@@ -117,6 +117,7 @@ section, "actions":
     <span class="definitionkeyword">enum</span> <span class="constant">COMBINE_REPORTS_ACTION</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CONCORDANCE_ACTION</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CURSE_ACTION</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">DEBUGGER_ACTION</span>
     <span class="definitionkeyword">enum</span> <span class="constant">DIFF_ACTION</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SOURCE_ACTION</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FIND_ACTION</span>
@@ -153,6 +154,7 @@ section, "actions":
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"-bbdiff"</span><span class="plain">)) { </span><span class="identifier">action</span><span class="plain"> = </span><span class="constant">BBDIFF_ACTION</span><span class="plain">; }</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"-diff"</span><span class="plain">)) { </span><span class="identifier">action</span><span class="plain"> = </span><span class="constant">DIFF_ACTION</span><span class="plain">; }</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"-test"</span><span class="plain">)) { </span><span class="identifier">action</span><span class="plain"> = </span><span class="constant">TEST_ACTION</span><span class="plain">; }</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"-debug"</span><span class="plain">)) { </span><span class="identifier">action</span><span class="plain"> = </span><span class="constant">DEBUGGER_ACTION</span><span class="plain">; }</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"-bless"</span><span class="plain">)) { </span><span class="identifier">action</span><span class="plain"> = </span><span class="constant">BLESS_ACTION</span><span class="plain">; }</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"-curse"</span><span class="plain">)) { </span><span class="identifier">action</span><span class="plain"> = </span><span class="constant">CURSE_ACTION</span><span class="plain">; }</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"-rebless"</span><span class="plain">)) { </span><span class="identifier">action</span><span class="plain"> = </span><span class="constant">REBLESS_ACTION</span><span class="plain">; }</span>
@@ -434,6 +436,8 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">token</span><span class="plain">) &amp;&amp; (</span><span class="identifier">cs</span><span class="element">.wild_card</span><span class="plain"> == </span><span class="constant">REGEXP_WILDCARD</span><span class="plain">))</span>
             <span class="identifier">cs</span><span class="element">.regexp_wild_card</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">token</span><span class="plain">) &amp;&amp; (</span><span class="identifier">cs</span><span class="element">.wild_card</span><span class="plain"> == </span><span class="constant">GROUP_WILDCARD</span><span class="plain">))</span>
+            <span class="identifier">cs</span><span class="element">.regexp_wild_card</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cs</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -448,6 +452,7 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">COUNT_WILDCARD_BASE</span><span class="plain"> 1001 </span>    <span class="comment">1001 is <code class="display"><span class="extract">^1</span></code>, 1002 is <code class="display"><span class="extract">^2</span></code>, ...</span>
     <span class="definitionkeyword">define</span> <span class="constant">EXTENSION_WILDCARD_BASE</span><span class="plain"> 101 </span>    <span class="comment">101 is <code class="display"><span class="extract">A</span></code>, 102 is <code class="display"><span class="extract">B</span></code>, ...</span>
+    <span class="definitionkeyword">define</span> <span class="constant">GROUP_WILDCARD</span><span class="plain"> 2</span>
     <span class="definitionkeyword">define</span> <span class="constant">REGEXP_WILDCARD</span><span class="plain"> 1</span>
     <span class="definitionkeyword">define</span> <span class="constant">TAMECARD</span><span class="plain"> 0</span>
     <span class="definitionkeyword">define</span> <span class="constant">ALL_WILDCARD</span><span class="plain"> -1</span>
@@ -464,8 +469,9 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
         <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">token</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'%'</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="constant">REGEXP_WILDCARD</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">':'</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">GROUP_WILDCARD</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">) == 1) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'A'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'Z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> - </span><span class="character">'A'</span><span class="plain"> + </span><span class="constant">EXTENSION_WILDCARD_BASE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> - </span><span class="character">'a'</span><span class="plain"> + </span><span class="constant">EXTENSION_WILDCARD_BASE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -512,7 +518,7 @@ can involve a wildcard such as <code class="display"><span class="extract">all</
 
 <p class="endnote">The function Actions::identify_wildcard is used in <a href="#SP5">&#167;5</a>, 2/rf (<a href="2-rf.html#SP5">&#167;5</a>).</p>
 
-<p class="endnote">The function Actions::matches_wildcard is used in <a href="#SP7_1_4">&#167;7.1.4</a>.</p>
+<p class="endnote">The function Actions::matches_wildcard is used in <a href="#SP7_1_5">&#167;7.1.5</a>.</p>
 
 <p class="endnote">The function Actions::which_wildcard is used in 3/ts (<a href="3-ts.html#SP9_3_2">&#167;9.3.2</a>).</p>
 
@@ -553,7 +559,8 @@ to-do list:
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.wild_card</span><span class="plain"> == </span><span class="constant">TAMECARD</span><span class="plain">)</span>
             <span class="functiontext">Actions::perform_inner</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.specific_case</span><span class="plain">, </span><span class="identifier">count</span><span class="plain">++);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.wild_card</span><span class="plain"> == </span><span class="constant">REGEXP_WILDCARD</span><span class="plain">) </span>&lt;<span class="cwebmacro">Perform this regular expressed case</span> <span class="cwebmacronumber">7.1.3</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Perform this matched case</span> <span class="cwebmacronumber">7.1.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.wild_card</span><span class="plain"> == </span><span class="constant">GROUP_WILDCARD</span><span class="plain">) </span>&lt;<span class="cwebmacro">Perform this grouped case</span> <span class="cwebmacronumber">7.1.4</span>&gt;
+        <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Perform this matched case</span> <span class="cwebmacronumber">7.1.5</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -620,7 +627,7 @@ to-do list:
 
 <pre class="displaydefn">
         <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">matches</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain">);</span>
-        <span class="functiontext">RecipeFiles::find_cases_matching</span><span class="plain">(</span><span class="identifier">matches</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.regexp_wild_card</span><span class="plain">);</span>
+        <span class="functiontext">RecipeFiles::find_cases_matching</span><span class="plain">(</span><span class="identifier">matches</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.regexp_wild_card</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
         <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">matches</span><span class="plain">) {</span>
             <span class="functiontext">Actions::perform_inner</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">, </span><span class="identifier">count</span><span class="plain">++);</span>
@@ -632,7 +639,45 @@ to-do list:
 <p class="endnote">This code is used in <a href="#SP7_1">&#167;7.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7_1_4"></a><b>&#167;7.1.4.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Perform this matched case</span> <span class="cwebmacronumber">7.1.4</span>&gt; =
+&lt;<span class="cwebmacrodefn">Perform this grouped case</span> <span class="cwebmacronumber">7.1.4</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scheduled</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"%S.testgroup"</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;operand.regexp_wild_card</span><span class="plain">);</span>
+        <span class="functiontext">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">) == </span><span class="character">':'</span><span class="plain">) {</span>
+            <span class="functiontext">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="identifier">scheduled</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;groups_folder</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+        <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">names_in_group</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain">);</span>
+        <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open test group file"</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">,</span>
+            <span class="plain">&amp;</span><span class="functiontext">Actions::read_group</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">names_in_group</span><span class="plain">);</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
+
+        <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">matches</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain">);</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">names_in_group</span><span class="plain">) {</span>
+            <span class="functiontext">RecipeFiles::find_cases_matching</span><span class="plain">(</span><span class="identifier">matches</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">matches</span><span class="plain">) {</span>
+            <span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;test_form</span><span class="plain"> = </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;action_type</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scheduled</span><span class="plain">) </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;action_type</span><span class="plain"> += </span><span class="constant">SCHEDULED_TEST_ACTION</span><span class="plain">;</span>
+            <span class="functiontext">Actions::perform_inner</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">ai</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">, </span><span class="identifier">count</span><span class="plain">++);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scheduled</span><span class="plain">) </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;action_type</span><span class="plain"> -= </span><span class="constant">SCHEDULED_TEST_ACTION</span><span class="plain">;</span>
+        <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP7_1">&#167;7.1</a>.</p>
+
+<p class="inwebparagraph"><a id="SP7_1_5"></a><b>&#167;7.1.5.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Perform this matched case</span> <span class="cwebmacronumber">7.1.5</span>&gt; =
 </code></p>
 
 
@@ -653,7 +698,24 @@ to-do list:
 
 <p class="endnote">This code is used in <a href="#SP7_1">&#167;7.1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And now we can forget everything about wild cards: we know for definite
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Actions::read_group</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vm</span><span class="plain">) {</span>
+        <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">matches</span><span class="plain"> = (</span><span class="reserved">linked_list</span><span class="plain"> *) </span><span class="identifier">vm</span><span class="plain">;</span>
+        <span class="functiontext">Str::trim_white_space</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
+        <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == 0) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'#'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">), </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">matches</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Actions::read_group is used in <a href="#SP7_1_4">&#167;7.1.4</a>.</p>
+
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>And now we can forget everything about wild cards: we know for definite
 which test case to work on.
 </p>
 
@@ -665,27 +727,27 @@ which test case to work on.
         <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">TO_struct</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;action_type</span><span class="plain"> &lt; </span><span class="constant">SCHEDULED_TEST_ACTION</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;redirection_filename</span><span class="plain">)) {</span>
             <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;redirection_filename</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">itc</span><span class="plain">) </span>&lt;<span class="cwebmacro">Expand NAME and NUMBER in the redirection filename</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">itc</span><span class="plain">) </span>&lt;<span class="cwebmacro">Expand NAME and NUMBER in the redirection filename</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">TO</span><span class="plain"> = &amp;</span><span class="identifier">TO_struct</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">UTF8_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
                 <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to write file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="plain">}</span>
-        &lt;<span class="cwebmacro">Finally do something, or at leask ask somebody else to</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Finally do something, or at leask ask somebody else to</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;action_type</span><span class="plain"> &lt; </span><span class="constant">SCHEDULED_TEST_ACTION</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ai</span><span class="plain">-</span><span class="element">&gt;redirection_filename</span><span class="plain">)) </span><span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Actions::perform_inner is used in <a href="#SP7_1">&#167;7.1</a>, <a href="#SP7_1_1">&#167;7.1.1</a>, <a href="#SP7_1_2">&#167;7.1.2</a>, <a href="#SP7_1_3">&#167;7.1.3</a>, <a href="#SP7_1_4">&#167;7.1.4</a>.</p>
+<p class="endnote">The function Actions::perform_inner is used in <a href="#SP7_1">&#167;7.1</a>, <a href="#SP7_1_1">&#167;7.1.1</a>, <a href="#SP7_1_2">&#167;7.1.2</a>, <a href="#SP7_1_3">&#167;7.1.3</a>, <a href="#SP7_1_4">&#167;7.1.4</a>, <a href="#SP7_1_5">&#167;7.1.5</a>.</p>
 
-<p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>If the leafname of the redirection file is <code class="display"><span class="extract">something_[NUMBER]</span></code> then we
+<p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>If the leafname of the redirection file is <code class="display"><span class="extract">something_[NUMBER]</span></code> then we
 substitute in the case number for <code class="display"><span class="extract">[NUMBER]</span></code>, and similarly for <code class="display"><span class="extract">[NAME]</span></code>.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Expand NAME and NUMBER in the redirection filename</span> <span class="cwebmacronumber">8.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Expand NAME and NUMBER in the redirection filename</span> <span class="cwebmacronumber">9.1</span>&gt; =
 </code></p>
 
 
@@ -708,10 +770,10 @@ substitute in the case number for <code class="display"><span class="extract">[N
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP8">&#167;8</a>.</p>
+<p class="endnote">This code is used in <a href="#SP9">&#167;9</a>.</p>
 
-<p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Finally do something, or at leask ask somebody else to</span> <span class="cwebmacronumber">8.2</span>&gt; =
+<p class="inwebparagraph"><a id="SP9_2"></a><b>&#167;9.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Finally do something, or at leask ask somebody else to</span> <span class="cwebmacronumber">9.2</span>&gt; =
 </code></p>
 
 
@@ -742,6 +804,7 @@ substitute in the case number for <code class="display"><span class="extract">[N
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">BBDIFF_ACTION</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">DIFF_ACTION</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ACTION</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEBUGGER_ACTION</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">BLESS_ACTION</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">CURSE_ACTION</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">SHOW_ACTION</span><span class="plain">:</span>
@@ -768,7 +831,7 @@ substitute in the case number for <code class="display"><span class="extract">[N
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP8">&#167;8</a>.</p>
+<p class="endnote">This code is used in <a href="#SP9">&#167;9</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-gv.html">Back to 'Global Variables'</a></li><li><a href="2-th.html">Continue with 'The Historian'</a></li></ul><hr class="tocbar">

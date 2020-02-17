@@ -20,6 +20,7 @@ set of commands, enumerated as follows.
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">COPY_RCOM</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">DEBUGGER_RCOM</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ELSE_RCOM</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ENDIF_RCOM</span>
     <span class="definitionkeyword">enum</span> <span class="constant">EXISTS_RCOM</span>
@@ -64,6 +65,7 @@ set of commands, enumerated as follows.
 
     <span class="reserved">recipe_command</span><span class="plain"> </span><span class="identifier">instruction_set</span><span class="plain">[] = {</span>
         <span class="plain">{ </span><span class="constant">COPY_RCOM</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"copy"</span><span class="plain">, 2, </span><span class="constant">FALSE</span><span class="plain">, 0 },</span>
+        <span class="plain">{ </span><span class="constant">DEBUGGER_RCOM</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"debugger"</span><span class="plain">, -1, </span><span class="constant">TRUE</span><span class="plain">, 0 },</span>
         <span class="plain">{ </span><span class="constant">ELSE_RCOM</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"else"</span><span class="plain">, 0, </span><span class="constant">FALSE</span><span class="plain">, 0 },</span>
         <span class="plain">{ </span><span class="constant">ENDIF_RCOM</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"endif"</span><span class="plain">, 0, </span><span class="constant">FALSE</span><span class="plain">, -1 },</span>
         <span class="plain">{ </span><span class="constant">EXISTS_RCOM</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"exists"</span><span class="plain">, 1, </span><span class="constant">TRUE</span><span class="plain">, 0 },</span>

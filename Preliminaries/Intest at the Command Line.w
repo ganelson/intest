@@ -147,19 +147,23 @@ succeeding use commands only if the platform is |P|.
 
 (c) |-set VAR VALUE|. Set the given variable to the given value. 
 
-(d) |[NAME]|. Sets the test recipe to be used for the cases about to be
+(d) |-groups PATH|. Sets the groups directory to the given pathname;
+failing which, any |.testgrpup| files (see below) are looked for in the
+currently seleced directory.
+
+(e) |[NAME]|. Sets the test recipe to be used for the cases about to be
 discovered. All recipe names are in square brackets; the default is just
 |[Recipe]|.
 
-(e) A choice of test case type: |-extension|, |-case|, |-problem|, |-map|
+(f) A choice of test case type: |-extension|, |-case|, |-problem|, |-map|
 or |-example|. This indicates that the next run of tokens will be
 filenames of individual test cases of that type.
 
-(f) A pluralised choice of these: |-extensions|, |-cases|, |-problems|,
+(g) A pluralised choice of these: |-extensions|, |-cases|, |-problems|,
 |-maps| or |-examples|. This indicates that the next run of tokens will be
 pathnames of directories holding multiple test cases of that type.
 
-(g) A filename or directory name. Look here for test cases of the current
+(h) A filename or directory name. Look here for test cases of the current
 type, and assign them the current recipe.
 
 (Test types, and what it means to scan a directory for test cases, will be
@@ -192,7 +196,11 @@ test case alphabetically;
 (v) a name containing a |%| character will be treated as a regular expression,
 in the same notation as for |-find| (see below) - for example, |BIP-%c+|
 will mean "any test case whose name or title begins with |BIP-|";
-(vi) and finally, of course, an explicit test case name refers to that test case.
+(vi) a name beginning with a |:| will be treated as a "grpup", and will
+run all tests in that group -- which is to say, the ones listed in the
+group's file: |:wrangly| will run all tests listed in |wrangly.testgroup|,
+multithreaded, whereas a double colon |::wrangly| runs them one at a time;
+(vii) and finally, of course, an explicit test case name refers to that test case.
 
 (Test types will be gone into in the next section.)
 

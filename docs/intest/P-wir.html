@@ -578,7 +578,12 @@ For example,
 way to see whether it worked or not is to see whether it produced any output.)
 </p>
 
-<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>These are the three main "stopping commands", which do cause the test to halt:
+<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>The <code class="display"><span class="extract">debugger: ...</span></code> command is set out exactly like <code class="display"><span class="extract">step: ...</span></code>, but runs
+only when the test is being run by the <code class="display"><span class="extract">-debug</span></code> action. This is then used to
+trigger the <code class="display"><span class="extract">lldb</span></code> debugger; see the Inform 7 test recipe for more.
+</p>
+
+<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>These are the three main "stopping commands", which do cause the test to halt:
 </p>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">pass: 'NOTE'</span></code>. Stops the test and marks it a success. The text <code class="display"><span class="extract">'NOTE'</span></code>
@@ -605,7 +610,7 @@ wrong. For example:
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>But there are actually two others:
+<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>But there are actually a few others:
 </p>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">show F</span></code>. Stops the test and prints out the file <code class="display"><span class="extract">F</span></code>, but only if the test
@@ -627,7 +632,7 @@ Inform testing only, there's a related:
 exist, but this possibility can be picked up by placing an <code class="display"><span class="extract">or:</span></code> after them.
 </p>
 
-<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>As noted above, Delia has no loops. But it does have one control construct:
+<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.
 </p>
 
@@ -672,7 +677,7 @@ expression. That can be just a simple textual match:
 syntax for "one or more digits here".
 </p>
 
-<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>That's all of the important commands covered, but Delia has a small
+<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>That's all of the important commands covered, but Delia has a small
 miscellany of other features. It has a very limited ability to write to
 the file system itself:
 </p>
@@ -692,7 +697,7 @@ be used only to make subdirectories of <code class="display"><span class="extrac
 try to clean up the work area yourself: Intest will handle that automatically.
 </p>
 
-<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>Suppose the program to be tested produces output which takes a long time
+<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>Suppose the program to be tested produces output which takes a long time
 to verify the correctness of. (This is the case for Inform 7, because its
 output needs to be fed through Inform 6 and then executed in a virtual
 machine before any results can be seen. Both steps take a second or so,
@@ -744,7 +749,7 @@ Besides being written to the file, the hash value is also stored in the
 local variable <code class="display"><span class="extract">$HASHCODE</span></code>.
 </p>
 
-<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>And finally, a great convenience for testing Inform 7, but useless for
+<p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b>And finally, a great convenience for testing Inform 7, but useless for
 anything else:
 </p>
 
