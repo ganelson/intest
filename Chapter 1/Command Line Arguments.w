@@ -45,11 +45,11 @@ and heading text in the normal Foundation way:
 	CommandLine::declare_switch(PURGE_CLSW, L"purge", 1,
 		L"delete any extraneous files from the intest workspace on disc");
 	CommandLine::declare_boolean_switch(HISTORY_CLSW, L"history", 1,
-		L"use command history");
+		L"use command history", TRUE);
 	CommandLine::declare_boolean_switch(COLOURS_CLSW, L"colours", 1,
-		L"show discrepancies in red and green using terminal emulation");
+		L"show discrepancies in red and green using terminal emulation", TRUE);
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"print out all shell commands issued");
+		L"print out all shell commands issued", FALSE);
 	CommandLine::declare_numerical_switch(THREADS_CLSW, L"threads", 1,
 		L"use X independent threads to test");
 
