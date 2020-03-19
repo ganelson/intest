@@ -196,7 +196,7 @@ test case alphabetically;
 (v) a name containing a |%| character will be treated as a regular expression,
 in the same notation as for |-find| (see below) - for example, |BIP-%c+|
 will mean "any test case whose name or title begins with |BIP-|";
-(vi) a name beginning with a |:| will be treated as a "grpup", and will
+(vi) a name beginning with a |:| will be treated as a "group", and will
 run all tests in that group -- which is to say, the ones listed in the
 group's file: |:wrangly| will run all tests listed in |wrangly.testgroup|,
 multithreaded, whereas a double colon |::wrangly| runs them one at a time;

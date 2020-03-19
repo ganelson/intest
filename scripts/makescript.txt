@@ -31,7 +31,8 @@ test:
 pages:
 	mkdir -p $(ME)/docs/$(MYNAME)
 	inform/inpolicy/Tangled/inpolicy -write-me intest/scripts/READMEscript.txt
-	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/$(MYNAME)
+	$(INWEB) $(ME)/docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into $(ME)/docs -navigation $(ME)/docs/docs-src/nav-o.html
+	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/$(MYNAME) -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
 
 # Cleaning up:
 
