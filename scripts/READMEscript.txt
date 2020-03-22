@@ -12,7 +12,7 @@ Intest is a literate program: it is written in ANSI C, but in the form of
 a "web". This means it can either be "tangled" to an executable, or "woven"
 to human-readable forms. The woven form is: [&#9733;&nbsp;intest](docs/intest/index.html).
 
-For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](docs/intest/P-iti).
+For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](docs/intest/M-iti).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be

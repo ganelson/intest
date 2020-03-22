@@ -8,8 +8,7 @@ Version Number: 2.0
 
 Import: foundation
 
-Preliminaries
-"The Intest user guide."
+Manual
 	Introduction to Intest
 	Intest at the Command Line
 	Writing Intest Recipes

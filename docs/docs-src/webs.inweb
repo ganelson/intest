@@ -12,10 +12,9 @@ hood, to see how it works.
 @ The Inform software uses literate programming, a doctrine invented by Donald
 Knuth. Under LP, a single program is called a "web", and can either be
 "woven" for humans to read or "tangled" for computers to compile. You are
-reading the woven form. There are three webs accessible from this page:
-(a) The |inweb| tool.
-(b) The |foundation| module, which is not a stand-alone program, but is
-instead a library of utility functions needed by |inweb| and also by some
-of the programs tangled by it (such as the Inform compiler).
-(c) A modest unit test tool, which simply exercises some of the functions
-of |foundation|.
+reading the woven form. There is just one web presented on this page: for
+a program to test command-line programs, called |intest|.
+
+Like all tools in the Inform family, it uses a "module" called |foundation|,
+which is shipped with Inweb. A link is provided, but it lives in the |inweb|
+repository, not in this one.
