@@ -25,9 +25,9 @@ Workspace/T*/Example.inform/Build/*.ulx
 Workspace/T*/Example.inform/Build/*.html
 Workspace/T*/Example.inform/Build/*.zblorb
 Workspace/T*/Example.inform/Build/*.gblorb
-Workspace/T*/Example.inform/Index/*.html
-Workspace/T*/Example.inform/Index/*.xml
-Workspace/T*/Example.inform/Index/Details/*.html
+Workspace/T*/Example.inform/Build/Index/*.html
+Workspace/T*/Example.inform/Build/Index/*.xml
+Workspace/T*/Example.inform/Build/Index/Details/*.html
 Workspace/T*/Example.inform/manifest.plist
 Workspace/T*/Example.inform/Metadata.iFiction
 Workspace/T*/Example.inform/Release.blurb
