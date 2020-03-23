@@ -1,4 +1,6 @@
-# Intest version 2 'The Remembering'
+# Intest 2.0
+
+v2.0-alpha.1+1A01 'The Remembering' (23 March 2020)
 
 ## About Intest
 
@@ -45,7 +47,6 @@ cases for Inweb: see [Testing Inweb](https://github.com/ganelson/inweb).
 
 ### Colophon
 
-This README.mk file was generated automatically by Inpolicy (see the
-[Inform repository](https://github.com/ganelson/inform)), and should not
+This README.mk file was generated automatically by Inweb, and should not
 be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 

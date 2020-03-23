@@ -1,5 +1,6 @@
-@-> ../README.md
-# Intest @version(intest)
+# Intest @var(intest,Version Number)
+
+v@var(intest,Semantic Version Number) '@var(intest,Version Name)' (@var(intest,Build Date))
 
 ## About Intest
 
@@ -46,6 +47,5 @@ cases for Inweb: see [Testing Inweb](https://github.com/ganelson/inweb).
 
 ### Colophon
 
-This README.mk file was generated automatically by Inpolicy (see the
-[Inform repository](https://github.com/ganelson/inform)), and should not
+This README.mk file was generated automatically by Inweb, and should not
 be edited. To make changes, edit scripts/READMEscript.txt and re-generate.

@@ -25,12 +25,21 @@ endef
 test:
 	$(INTEST) -from $(ME) all
 
+# "make commit" should be used only by the Benevolent Overlord of Intest.
+# It updates the build code and commits to the repository.
+
+.PHONY: commit
+commit:
+	$(INWEB) -advance-build-file $(ME)/build.txt
+	$(INWEB) -prototype intest/scripts/READMEscript.txt -write-me intest/README.md
+	cd $(ME); git commit -a
+
 # Weaving the web for GitHub Pages:
 
 .PHONY: pages
 pages:
 	mkdir -p $(ME)/docs/$(MYNAME)
-	inform/inpolicy/Tangled/inpolicy -write-me intest/scripts/READMEscript.txt
+	$(INWEB) -prototype intest/scripts/READMEscript.txt -write-me intest/README.md
 	rm $(ME)/docs/*.html
 	$(INWEB) $(ME)/docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into $(ME)/docs -navigation $(ME)/docs/docs-src/nav-o.html
 	rm $(ME)/docs/$(MYNAME)/*.html
