@@ -1,0 +1,31 @@
+This is intest, a command-line tool for testing command-line tools
+
+intest PROJECT OPTIONS -using RECIPEFILE -do INSTRUCTIONS
+
+PROJECT is the home folder of the project to be tested
+
+-using RECIPEFILE tells intest where to find test recipes: default
+is PROJECT/Tests/PROJECT.intest
+
+-do INSTRUCTIONS tells intest what to do with its tests:
+    ACTION CASE1 CASE2 ... performs the given action, which may be:
+    -test (default), -show, -curse, -bless, -rebless, -open, -show-i6
+    CASEs can be identified by name, or by 'all', 'cases', 'problems', etc.
+    a bare number as a CASE means this case number in the command history
+
+'intest ?' shows the command history; 'intest ?N' repeats command N from it
+
+OPTIONS are as follows:
+
+-no-colours      don't show discrepancies in red and green using terminal emulation (default is -colours)
+-no-history      don't use command history (default is -history)
+-purge           delete any extraneous files from the intest workspace on disc
+-threads=N       use X independent threads to test
+-verbose         print out all shell commands issued (default is -no-verbose)
+
+-at X            specify that this tool is installed at X
+-crash           intentionally crash on internal errors, for debugger backtracing (default is -no-crash)
+-fixtime         pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
+-help            print this help information
+-log X           write the debugging log to include diagnostics on X
+-version         print out version number

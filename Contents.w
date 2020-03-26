@@ -12,6 +12,7 @@ Manual
 	Introduction to Intest
 	Intest at the Command Line
 	Writing Intest Recipes
+	Reference Card
 
 Chapter 1: Top Level
 "Starting up, and parsing the user's requirements."
