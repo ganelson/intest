@@ -34,7 +34,6 @@ such as:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">64b479d74cd38b887590f139b64ee920</span>
 </pre>
@@ -42,11 +41,10 @@ such as:
 <p class="inwebparagraph">The empty text is considered to mean "no cache value known".
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Hasher::assign_to_case</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">hash</span><span class="plain">) {</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;known_hash</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">hash</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HASHER</span><span class="plain">, </span><span class="string">"determine: %S = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;known_hash</span><span class="plain">);</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">known_hash</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">hash</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HASHER</span><span class="plain">, </span><span class="string">"determine: %S = %S\n"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">known_hash</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -59,11 +57,10 @@ Two blanks don't make a match, but otherwise they must exactly match, with
 case sensitivity and all.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Hasher::compare_hashes</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">hash</span><span class="plain">) {</span>
-        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">known</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;known_hash</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">known</span><span class="plain">) == 0) || (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">hash</span><span class="plain">) == 0)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">known</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">known_hash</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">known</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) || (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">hash</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">known</span><span class="plain">, </span><span class="identifier">hash</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -75,7 +72,6 @@ case sensitivity and all.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Here we extract a single hash value from a one-line file.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Hasher::read_hash</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
@@ -85,7 +81,7 @@ case sensitivity and all.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Hasher::detect_hash</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line_text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vto</span><span class="plain">) {</span>
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line_text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*? = (%C+)%c*"</span><span class="plain">)) {</span>
-            <span class="functiontext">Str::copy</span><span class="plain">((</span><span class="reserved">text_stream</span><span class="plain"> *) </span><span class="identifier">vto</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+            <span class="functiontext">Str::copy</span><span class="plain">((</span><span class="reserved">text_stream</span><span class="plain"> *) </span><span class="identifier">vto</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
             <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -101,7 +97,6 @@ case sensitivity and all.
 hash values between runs.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Hasher::read_hashes</span><span class="plain">(</span><span class="reserved">intest_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">) {</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">H</span><span class="plain"> = </span><span class="functiontext">Globals::to_filename</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"hash_cache"</span><span class="plain">);</span>
@@ -113,8 +108,8 @@ hash values between runs.
         <span class="reserved">intest_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain"> = (</span><span class="reserved">intest_instructions</span><span class="plain"> *) </span><span class="identifier">vargs</span><span class="plain">;</span>
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line_text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) = (%C+)%c*"</span><span class="plain">)) {</span>
-            <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">RecipeFiles::find_case</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain">) </span><span class="functiontext">Hasher::assign_to_case</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+            <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">RecipeFiles::find_case</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain">) </span><span class="functiontext">Hasher::assign_to_case</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
             <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -130,7 +125,6 @@ hash values between runs.
 hash cache in the light of that.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Hasher::write_hashes</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">H</span><span class="plain"> = </span><span class="functiontext">Globals::to_filename</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"hash_cache"</span><span class="plain">);</span>
@@ -141,12 +135,12 @@ hash cache in the light of that.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="identifier">H</span><span class="plain">, </span><span class="constant">UTF8_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
             <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to write file"</span><span class="plain">, </span><span class="identifier">H</span><span class="plain">);</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HASHER</span><span class="plain">, </span><span class="string">"Writing hash cache to %f:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">H</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HASHER</span><span class="plain">, </span><span class="string">"Writing hash cache to %f:\n"</span><span class="plain">, </span><span class="identifier">H</span><span class="plain">);</span>
         <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;known_hash</span><span class="plain">) &gt; 0) {</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"%S = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;known_hash</span><span class="plain">);</span>
-                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HASHER</span><span class="plain">, </span><span class="string">"write: %S = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;known_hash</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">known_hash</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"%S = %S\n"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">known_hash</span><span class="plain">);</span>
+                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HASHER</span><span class="plain">, </span><span class="string">"write: %S = %S\n"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">known_hash</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">);</span>
     <span class="plain">}</span>

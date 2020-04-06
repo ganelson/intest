@@ -45,7 +45,6 @@ retest those which fail, fixing them one by one, and so on. For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ intest/Tangled/intest -from myproject all</span>
         <span class="plain">myproject -&gt; cases: [1] [2] [3] [4] </span>
@@ -62,7 +61,6 @@ retest those which fail, fixing them one by one, and so on. For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ intest/Tangled/intest -from myproject 1</span>
         <span class="plain">Expanded to: ?322. planets</span>
@@ -76,7 +74,6 @@ tests run, too: this one was test run <code class="display"><span class="extract
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ intest/Tangled/intest -from myproject ?</span>
 </pre>
@@ -85,7 +82,6 @@ tests run, too: this one was test run <code class="display"><span class="extract
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ intest/Tangled/intest -from myproject ?315</span>
@@ -111,7 +107,6 @@ be a valid input to a tool called
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">set: $A = $PATH/_actual/$CASE.txt</span>
         <span class="plain">set: $I = $PATH/_ideal/$CASE.txt</span>
@@ -131,7 +126,6 @@ folder, which might be, for example, "myproject/tests". What happens is:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">set: $A = $PATH/_actual/$CASE.txt</span>
         <span class="plain">set: $I = $PATH/_ideal/$CASE.txt</span>
@@ -144,7 +138,6 @@ printed. Next:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">step: myproject/zap $PATH/$CASE.txt &gt;$A 2&gt;&amp;1</span>
@@ -163,7 +156,6 @@ might be:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">myproject/zap myproject/tests/planets.txt &gt;myproject/tests/_actual/planets.txt 2&gt;&amp;1</span>
 </pre>
@@ -176,7 +168,6 @@ messages, to the <code class="display"><span class="extract">$A</span></code> fi
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">or: 'failed zap' $A</span>
@@ -195,7 +186,6 @@ messages. The next line is not quite what it seems:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">show: $A</span>
 </pre>
@@ -207,7 +197,6 @@ in the recipe are more consequential:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">match text: $A $I</span>
@@ -222,7 +211,6 @@ mark it in the summary:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ intest/Tangled/intest -from myproject planets</span>
         <span class="plain">-1- planets passed</span>
@@ -235,7 +223,6 @@ happy with the actual output, we "bless" it:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ intest/Tangled/intest -from myproject -bless planets</span>
         <span class="plain">[1] planets passed</span>
@@ -245,7 +232,6 @@ happy with the actual output, we "bless" it:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">match text: $A $I</span>
@@ -264,7 +250,6 @@ to be incorrect. So we conclude with a triumphant:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">pass: 'passed'</span>
@@ -291,7 +276,6 @@ should reach:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ ls</span>
         <span class="plain">intest   inweb</span>
@@ -302,7 +286,6 @@ its own documentation for that. Then:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inweb/Tangled/inweb intest -makefile intest/intest.mk</span>
@@ -315,7 +298,6 @@ will make us a MacOS version of this makefile, and so on. Now we can make:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ make -f intest/intest.mk</span>
 </pre>
@@ -326,7 +308,6 @@ will make us a MacOS version of this makefile, and so on. Now we can make:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ intest/Tangled/intest -help</span>
 </pre>
@@ -335,7 +316,6 @@ will make us a MacOS version of this makefile, and so on. Now we can make:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ intest/Tangled/intest -from inweb all</span>
@@ -348,7 +328,6 @@ will make us a MacOS version of this makefile, and so on. Now we can make:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ alias intest='intest/Tangled/intest'</span>

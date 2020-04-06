@@ -29,39 +29,40 @@
 </p>
 
 <pre>
-    This is intest, a command-line tool for testing command-line tools
+    <span class="plain">This is intest, a command-line tool for testing command-line tools</span>
 
-    intest PROJECT OPTIONS -using RECIPEFILE -do INSTRUCTIONS
+    <span class="plain">intest PROJECT OPTIONS -using RECIPEFILE -do INSTRUCTIONS</span>
 
-    PROJECT is the home folder of the project to be tested
+    <span class="plain">PROJECT is the home folder of the project to be tested</span>
 
-    -using RECIPEFILE tells intest where to find test recipes: default
-    is PROJECT/Tests/PROJECT.intest
+    <span class="plain">-using RECIPEFILE tells intest where to find test recipes: default</span>
+    <span class="plain">is PROJECT/Tests/PROJECT.intest</span>
 
-    -do INSTRUCTIONS tells intest what to do with its tests:
-        ACTION CASE1 CASE2 ... performs the given action, which may be:
-        -test (default), -show, -curse, -bless, -rebless, -open, -show-i6
-        CASEs can be identified by name, or by 'all', 'cases', 'problems', etc.
-        a bare number as a CASE means this case number in the command history
+    <span class="plain">-do INSTRUCTIONS tells intest what to do with its tests:</span>
+        <span class="plain">ACTION CASE1 CASE2 ... performs the given action, which may be:</span>
+        <span class="plain">-test (default), -show, -curse, -bless, -rebless, -open, -show-i6</span>
+        <span class="plain">CASEs can be identified by name, or by 'all', 'cases', 'problems', etc.</span>
+        <span class="plain">a bare number as a CASE means this case number in the command history</span>
 
-    'intest ?' shows the command history; 'intest ?N' repeats command N from it
+    <span class="plain">'intest ?' shows the command history; 'intest ?N' repeats command N from it</span>
 
-    OPTIONS are as follows:
+    <span class="plain">OPTIONS are as follows:</span>
 
-    -no-colours      don't show discrepancies in red and green using terminal emulation (default is -colours)
-    -no-history      don't use command history (default is -history)
-    -purge           delete any extraneous files from the intest workspace on disc
-    -threads=N       use X independent threads to test
-    -verbose         print out all shell commands issued (default is -no-verbose)
+    <span class="plain">-no-colours      don't show discrepancies in red and green using terminal emulation (default is -colours)</span>
+    <span class="plain">-no-history      don't use command history (default is -history)</span>
+    <span class="plain">-purge           delete any extraneous files from the intest workspace on disc</span>
+    <span class="plain">-threads=N       use X independent threads to test</span>
+    <span class="plain">-verbose         print out all shell commands issued (default is -no-verbose)</span>
 
-    -at X            specify that this tool is installed at X
-    -crash           intentionally crash on internal errors, for backtracing (default is -no-crash)
-    -fixtime         pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
-    -help            print this help information
-    -log X           write the debugging log to include diagnostics on X
-    -version         print out version number
-
+    <span class="plain">-at X            specify that this tool is installed at X</span>
+    <span class="plain">-crash           intentionally crash on internal errors, for backtracing (default is -no-crash)</span>
+    <span class="plain">-fixtime         pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)</span>
+    <span class="plain">-help            print this help information</span>
+    <span class="plain">-log X           write the debugging log to include diagnostics on X</span>
+    <span class="plain">-version         print out version number</span>
 </pre>
+
+<p class="inwebparagraph"></p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="M-wir.html">Back to 'Writing Intest Recipes'</a></li><li><i>(This section ends Manual.)</i></li></ul><hr class="tocbar">

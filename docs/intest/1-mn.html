@@ -39,7 +39,6 @@ This work of rewriting the command line is mostly done by a part of Intest
 called the "historian", which manages the command history.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">home_project</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">installation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -47,7 +46,7 @@ called the "historian", which manages the command history.
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
         <span class="functiontext">Basics::start</span><span class="plain">();</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ts_argc</span><span class="plain"> = 0; </span><span class="reserved">text_stream</span><span class="plain"> **</span><span class="identifier">ts_argv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ts_argc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">text_stream</span><span class="plain"> **</span><span class="identifier">ts_argv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Soak up the command line contents</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Work out what the home project is</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
@@ -66,13 +65,13 @@ called the "historian", which manages the command history.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">write_up</span><span class="plain">) </span><span class="functiontext">Historian::write_up</span><span class="plain">(</span><span class="identifier">history</span><span class="plain">);</span>
 
         <span class="functiontext">Basics::end</span><span class="plain">();</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)?0:1;</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)?0:1;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function main appears nowhere else.</p>
+<p class="endnote">The function main is used in 8/wm (<a href="8-wm.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b>We will need to modify the command-line tokens, so we have to get them out
 of their locale-encoded null-terminated C strings, in <code class="display"><span class="extract">argv[]</span></code>, and into
@@ -91,14 +90,14 @@ invent <code class="display"><span class="extract">-help</span></code>. It follo
 
 <pre class="displaydefn">
         <span class="identifier">ts_argc</span><span class="plain"> = </span><span class="identifier">argc</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">argc</span><span class="plain"> == 1) </span><span class="identifier">ts_argc</span><span class="plain"> = 2;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">argc</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">ts_argc</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
         <span class="identifier">ts_argv</span><span class="plain"> = </span><span class="functiontext">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *), </span><span class="constant">COMMAND_HISTORY_MREASON</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">argc</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'-'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[1] == </span><span class="character">'-'</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain">++; </span>    <span class="comment">allow a doubled-dash as equivalent to a single</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'-'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[1] == </span><span class="character">'-'</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain">++; </span><span class="comment">allow a doubled-dash as equivalent to a single</span>
             <span class="identifier">ts_argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Str::new_from_locale_string</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">argc</span><span class="plain"> == 1) </span><span class="identifier">ts_argv</span><span class="plain">[1] = </span><span class="identifier">I</span><span class="string">"-help"</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">argc</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">ts_argv</span><span class="plain">[1] = </span><span class="identifier">I</span><span class="string">"-help"</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -122,9 +121,9 @@ shell command used to invoke Intest. We simply ignore token 0.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">ts_argv</span><span class="plain">[1], </span><span class="identifier">I</span><span class="string">"-from"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">ts_argc</span><span class="plain"> &gt;= 3)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">ts_argv</span><span class="plain">[1], </span><span class="identifier">I</span><span class="string">"-from"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">ts_argc</span><span class="plain"> &gt;= </span><span class="constant">3</span><span class="plain">)) {</span>
             <span class="identifier">home_project</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">ts_argv</span><span class="plain">[2]);</span>
-            <span class="identifier">ts_argc</span><span class="plain"> -= 2; </span><span class="identifier">ts_argv</span><span class="plain"> += 2;</span>
+            <span class="identifier">ts_argc</span><span class="plain"> -= </span><span class="constant">2</span><span class="plain">; </span><span class="identifier">ts_argv</span><span class="plain"> += </span><span class="constant">2</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">ts_argv</span><span class="plain">[1]) != </span><span class="character">'-'</span><span class="plain">) {</span>
             <span class="identifier">home_project</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">ts_argv</span><span class="plain">[1]);</span>
             <span class="identifier">ts_argc</span><span class="plain">--; </span><span class="identifier">ts_argv</span><span class="plain">++;</span>
@@ -166,14 +165,14 @@ the default is <code class="display"><span class="extract">magiczap.intest</span
 <pre class="displaydefn">
         <span class="reserved">intest_instructions</span><span class="plain"> </span><span class="identifier">args</span><span class="plain"> = </span><span class="functiontext">ITCommandLine::read_instructions</span><span class="plain">(</span><span class="identifier">ts_argc</span><span class="plain">, </span><span class="identifier">ts_argv</span><span class="plain">, </span><span class="identifier">home</span><span class="plain">, </span><span class="identifier">script</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="element">.version_switch</span><span class="plain">) </span><span class="identifier">printf</span><span class="plain">(</span><span class="string">"%s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="constant">INTEST_BUILD</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="element">.purge_switch</span><span class="plain">) </span><span class="functiontext">Tester::purge_all_work_areas</span><span class="plain">(</span><span class="identifier">args</span><span class="element">.threads_available</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="element">.verbose_switch</span><span class="plain">) </span><span class="functiontext">Shell::verbose</span><span class="plain">();</span>
-        <span class="functiontext">Differ::set_colour_usage</span><span class="plain">(</span><span class="identifier">args</span><span class="element">.colours_switch</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="element">.crash_switch</span><span class="plain">) </span><span class="functiontext">Errors::enter_debugger_mode</span><span class="plain">();</span>
-        <span class="identifier">write_up</span><span class="plain"> = </span><span class="identifier">args</span><span class="element">.history_switch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">.</span><span class="element">version_switch</span><span class="plain">) </span><span class="identifier">printf</span><span class="plain">(</span><span class="string">"%s\n"</span><span class="plain">, </span><span class="constant">INTEST_BUILD</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">.</span><span class="element">purge_switch</span><span class="plain">) </span><span class="functiontext">Tester::purge_all_work_areas</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">.</span><span class="element">threads_available</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">.</span><span class="element">verbose_switch</span><span class="plain">) </span><span class="functiontext">Shell::verbose</span><span class="plain">();</span>
+        <span class="functiontext">Differ::set_colour_usage</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">.</span><span class="element">colours_switch</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">.</span><span class="element">crash_switch</span><span class="plain">) </span><span class="functiontext">Errors::enter_debugger_mode</span><span class="plain">();</span>
+        <span class="identifier">write_up</span><span class="plain"> = </span><span class="identifier">args</span><span class="plain">.</span><span class="element">history_switch</span><span class="plain">;</span>
         <span class="identifier">installation</span><span class="plain"> = </span><span class="functiontext">Pathnames::installation_path</span><span class="plain">(</span><span class="string">"INTEST_PATH"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"intest"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="element">.verbose_switch</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Installation path is %p\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">installation</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">.</span><span class="element">verbose_switch</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Installation path is %p\n"</span><span class="plain">, </span><span class="identifier">installation</span><span class="plain">);</span>
         <span class="functiontext">Globals::start</span><span class="plain">();</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">home_project</span><span class="plain">) </span><span class="functiontext">Actions::perform</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, &amp;</span><span class="identifier">args</span><span class="plain">);</span>

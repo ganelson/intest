@@ -103,7 +103,6 @@ useful fashion; by default, Intest expects to find this file at
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">PROJECT/Tests/PROJECT.intest</span>
 </pre>
@@ -123,7 +122,6 @@ the location of a directory of test cases which will have type <code class="disp
 then gives a single recipe, which Intest will use on whatever cases it
 discovered in that directory.
 </p>
-
 
 <pre class="display">
     <span class="plain">-cases 'inform7/kinds-test/Tests/Test Cases'</span>
@@ -186,7 +184,6 @@ more convenient to write &mdash;
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">-recipe [NAME]</span>
         <span class="plain">    ...</span>
@@ -227,7 +224,6 @@ marks <code class="display"><span class="extract">!</span></code> are ignored. A
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">command: token1 ... tokenN</span>
 </pre>
@@ -239,7 +235,6 @@ tokens at all, in which case no colon is required:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">command</span>
 </pre>
@@ -250,7 +245,6 @@ a single token; thus:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">exists: 'My Tests/output.txt'</span>
@@ -309,7 +303,6 @@ like <code class="display"><span class="extract">zap/Tests/planets.txt</span></c
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">set: $NAME = VALUE</span>
 </pre>
@@ -321,7 +314,6 @@ like <code class="display"><span class="extract">zap/Tests/planets.txt</span></c
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">set: $NAME = VALUE1 VALUE2 ...</span>
@@ -335,7 +327,6 @@ For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">set: $OPTIONS = -no-warnings -p=10 -to $FILE.txt</span>
 </pre>
@@ -344,7 +335,6 @@ For example:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt'</span>
@@ -361,7 +351,6 @@ defined:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">set: $MOREOPTIONS = $OPTIONS -lang=en-uk</span>
 </pre>
@@ -370,7 +359,6 @@ defined:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">'\'-no-warnings\' \'-p=10\' \'-verbose\' \'-to\' \'My File.txt\'' '-lang=en-uk'</span>
@@ -382,7 +370,6 @@ expansion of the first token:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">set: $MOREOPTIONS = `$OPTIONS -lang=en-uk</span>
 </pre>
@@ -391,7 +378,6 @@ expansion of the first token:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt' '-lang=en-uk'</span>
@@ -409,7 +395,6 @@ back on a frog", then
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$[Frog.txt$]</span>
 </pre>
@@ -418,7 +403,6 @@ back on a frog", then
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">'never' 'turn' 'your' 'back' 'on' 'a' 'frog'</span>
@@ -438,7 +422,6 @@ running dc:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">-e '1 1 + p'</span>
 </pre>
@@ -448,7 +431,6 @@ running dc:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">step: dc $[$PATH/$CASE.txt$]</span>
 </pre>
@@ -457,7 +439,6 @@ running dc:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ dc -e '1 1 + p'</span>
@@ -541,7 +522,6 @@ is that number. For example, these two lines match:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Opened intest/Workspace/T4/intermediate.txt</span>
         <span class="plain">Opened intest/Workspace/T11/intermediate.txt</span>
@@ -557,7 +537,6 @@ happens internally is that both lines are converted to
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Opened intest/Workspace/Txx/intermediate.txt</span>
@@ -581,7 +560,6 @@ For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">exists: $TRANSCRIPT</span>
@@ -615,7 +593,6 @@ wrong. For example:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">step: dc -e $EXPRESSION</span>
@@ -652,7 +629,6 @@ an if/then/else command, working in the obvious way.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">if matches: TOKEN EXPRESSION</span>
         <span class="plain">    ...</span>
@@ -672,7 +648,6 @@ expression. That can be just a simple textual match:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">if matches: $CASE Balloons</span>
 </pre>
@@ -681,7 +656,6 @@ expression. That can be just a simple textual match:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">if matches: $CASE Party-%d+</span>
@@ -751,7 +725,6 @@ test case in question. That enables something like this:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">hash: $I6SOURCE $WORK/checksum.txt</span>

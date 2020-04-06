@@ -36,7 +36,6 @@ bulk of the file, give recipes for how to conduct these test cases.
 commands and the syntac which divides them off from recipes, no more.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RecipeFiles::read</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">intest_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">err</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain">) </span><span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">err</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">, &amp;</span><span class="functiontext">RecipeFiles::scan</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">);</span>
@@ -48,7 +47,7 @@ commands and the syntac which divides them off from recipes, no more.
         <span class="reserved">intest_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain"> = </span><span class="identifier">vargs</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Continue compiling any inline recipe</span> <span class="cwebmacronumber">1.4</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_line_tokens</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_line_tokens</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> **</span><span class="identifier">line_tokens</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Tokenise this line</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
@@ -70,7 +69,7 @@ with the routine parsing the command line. In any case, nobody will hit:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_LINE_TOKENS</span><span class="plain"> 128</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_LINE_TOKENS</span><span class="plain"> </span><span class="constant">128</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -86,23 +85,23 @@ with the routine parsing the command line. In any case, nobody will hit:
         <span class="reserved">while</span><span class="plain"> (</span><span class="constant">TRUE</span><span class="plain">) {</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Regexp::white_space</span><span class="plain">(</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">))) </span><span class="identifier">pos</span><span class="plain"> = </span><span class="functiontext">Str::forward</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
             <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == 0) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'!'</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'!'</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_line_tokens</span><span class="plain"> == </span><span class="constant">MAX_LINE_TOKENS</span><span class="plain">) {</span>
                 <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"line has too many tokens"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
 
             <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">tok</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">'</span><span class="character">'</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'\''</span><span class="plain">) {</span>
                 <span class="identifier">pos</span><span class="plain"> = </span><span class="functiontext">Str::forward</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">escaped</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-                <span class="reserved">while</span><span class="plain"> ((</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)) &amp;&amp; ((</span><span class="identifier">escaped</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != </span><span class="character">'\</span><span class="plain">'</span><span class="character">'</span><span class="plain">))) {</span>
+                <span class="reserved">while</span><span class="plain"> ((</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)) &amp;&amp; ((</span><span class="identifier">escaped</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != </span><span class="character">'\''</span><span class="plain">))) {</span>
                     <span class="identifier">escaped</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">\</span><span class="character">'</span><span class="plain">) </span><span class="identifier">escaped</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'\\'</span><span class="plain">) </span><span class="identifier">escaped</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
                     <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">tok</span><span class="plain">, </span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
                     <span class="identifier">pos</span><span class="plain"> = </span><span class="functiontext">Str::forward</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">'</span><span class="character">'</span><span class="plain">) </span><span class="identifier">pos</span><span class="plain"> = </span><span class="functiontext">Str::forward</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'\''</span><span class="plain">) </span><span class="identifier">pos</span><span class="plain"> = </span><span class="functiontext">Str::forward</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">while</span><span class="plain"> ((</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)) &amp;&amp; (!</span><span class="functiontext">Regexp::white_space</span><span class="plain">(</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)))) {</span>
                     <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">tok</span><span class="plain">, </span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
@@ -123,9 +122,9 @@ with the routine parsing the command line. In any case, nobody will hit:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_line_tokens</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">line_tokens</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"-recipe"</span><span class="plain">))) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_line_tokens</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">line_tokens</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"-recipe"</span><span class="plain">))) {</span>
             <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"[Recipe]"</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = 1, </span><span class="identifier">ext</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">ext</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_line_tokens</span><span class="plain"> &gt; </span><span class="identifier">pos</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">line_tokens</span><span class="plain">[</span><span class="identifier">pos</span><span class="plain">]) == </span><span class="character">'['</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Str::get_last_char</span><span class="plain">(</span><span class="identifier">line_tokens</span><span class="plain">[</span><span class="identifier">pos</span><span class="plain">]) == </span><span class="character">']'</span><span class="plain">))</span>
@@ -151,7 +150,7 @@ with the routine parsing the command line. In any case, nobody will hit:
 
 
 <pre class="displaydefn">
-        <span class="functiontext">RecipeFiles::read_using_instructions</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, 0, </span><span class="identifier">no_line_tokens</span><span class="plain">, </span><span class="identifier">line_tokens</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;home</span><span class="plain">);</span>
+        <span class="functiontext">RecipeFiles::read_using_instructions</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">no_line_tokens</span><span class="plain">, </span><span class="identifier">line_tokens</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">home</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -164,7 +163,7 @@ with the routine parsing the command line. In any case, nobody will hit:
 
 
 <pre class="displaydefn">
-        <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;compiling_recipe</span><span class="plain"> = </span><span class="functiontext">Delia::begin_compilation</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">compiling_recipe</span><span class="plain"> = </span><span class="functiontext">Delia::begin_compilation</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -177,8 +176,8 @@ with the routine parsing the command line. In any case, nobody will hit:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;compiling_recipe</span><span class="plain">) {</span>
-            <span class="functiontext">Delia::compile_line</span><span class="plain">(</span><span class="identifier">line_text</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;compiling_recipe</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="identifier">compiling_recipe</span><span class="plain">) {</span>
+            <span class="functiontext">Delia::compile_line</span><span class="plain">(</span><span class="identifier">line_text</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">compiling_recipe</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Finish compiling any inline recipe which has ended</span> <span class="cwebmacronumber">1.5</span>&gt;<span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -194,10 +193,10 @@ with the routine parsing the command line. In any case, nobody will hit:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;compiling_recipe</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;compiling_recipe</span><span class="plain">-</span><span class="element">&gt;end_found</span><span class="plain">) {</span>
-                <span class="functiontext">Delia::end_compilation</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;compiling_recipe</span><span class="plain">);</span>
-                <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;compiling_recipe</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="identifier">compiling_recipe</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="identifier">compiling_recipe</span><span class="plain">-&gt;</span><span class="element">end_found</span><span class="plain">) {</span>
+                <span class="functiontext">Delia::end_compilation</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">compiling_recipe</span><span class="plain">);</span>
+                <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">compiling_recipe</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="plain">}</span>
 </pre>
 
@@ -215,7 +214,6 @@ recipe files (see above).
 the array <code class="display"><span class="extract">argv</span></code>. <code class="display"><span class="extract">from_arg_n</span></code> is the index of <code class="display"><span class="extract">USE1</span></code>, and <code class="display"><span class="extract">to_arg_n</span></code> is
 the index after <code class="display"><span class="extract">USEn</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RecipeFiles::read_using_instructions</span><span class="plain">(</span><span class="reserved">intest_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">,</span>
@@ -258,7 +256,7 @@ the index after <code class="display"><span class="extract">USEn</span></code>.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Log::aspect_switched_on</span><span class="plain">(</span><span class="constant">INSTRUCTIONS_DA</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"using:"</span><span class="plain">);</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">from_arg_n</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">to_arg_n</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">" %S"</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -275,7 +273,7 @@ the index after <code class="display"><span class="extract">USEn</span></code>.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"-if"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">+1&lt;</span><span class="identifier">to_arg_n</span><span class="plain">)) {</span>
             <span class="identifier">allowed_to_execute</span><span class="plain"> = </span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1], </span><span class="functiontext">Globals::get_platform</span><span class="plain">());</span>
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">INSTRUCTIONS</span><span class="plain">,</span>
-                <span class="string">"using: -if %S (platform %S): %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1], </span><span class="functiontext">Globals::get_platform</span><span class="plain">(),</span>
+                <span class="string">"using: -if %S (platform %S): %s\n"</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1], </span><span class="functiontext">Globals::get_platform</span><span class="plain">(),</span>
                     <span class="identifier">allowed_to_execute</span><span class="plain">?</span><span class="string">"yes"</span><span class="plain">:</span><span class="string">"no"</span><span class="plain">);</span>
             <span class="identifier">i</span><span class="plain">++; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -296,7 +294,7 @@ the index after <code class="display"><span class="extract">USEn</span></code>.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"-set"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">+2&lt;</span><span class="identifier">to_arg_n</span><span class="plain">)) {</span>
             <span class="functiontext">Globals::create</span><span class="plain">(</span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1]);</span>
             <span class="functiontext">Globals::set</span><span class="plain">(</span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1], </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+2]);</span>
-            <span class="identifier">i</span><span class="plain"> += 2; </span><span class="reserved">continue</span><span class="plain">;</span>
+            <span class="identifier">i</span><span class="plain"> += </span><span class="constant">2</span><span class="plain">; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -311,7 +309,7 @@ the index after <code class="display"><span class="extract">USEn</span></code>.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"-groups"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">+1&lt;</span><span class="identifier">to_arg_n</span><span class="plain">)) {</span>
-            <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;groups_folder</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1]);</span>
+            <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">groups_folder</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1]);</span>
             <span class="identifier">i</span><span class="plain">++; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -382,7 +380,7 @@ the index after <code class="display"><span class="extract">USEn</span></code>.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiple</span><span class="plain">) </span><span class="functiontext">RecipeFiles::scan_directory_for_cases</span><span class="plain">(</span><span class="identifier">cases_within</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">project</span><span class="plain">, </span><span class="identifier">recipe_name</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">RecipeFiles::scan_file_for_cases</span><span class="plain">(</span><span class="identifier">cases_within</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">recipe_name</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">LinkedLists::len</span><span class="plain">(</span><span class="identifier">cases_within</span><span class="plain">) &gt; 0) </span>&lt;<span class="cwebmacro">Create a search path item</span> <span class="cwebmacronumber">2.8.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">LinkedLists::len</span><span class="plain">(</span><span class="identifier">cases_within</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Create a search path item</span> <span class="cwebmacronumber">2.8.2</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -407,11 +405,11 @@ There are five basic search path types:
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">search_path_item</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">search_path_type</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">_SPT</span></code> cases above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">multiple</span><span class="plain">; </span>    <span class="comment">is this a pathname to a folder?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">search_path_type</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">_SPT</span></code> cases above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">multiple</span><span class="plain">; </span><span class="comment">is this a pathname to a folder?</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">exactly_this</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">within_this</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">contents</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">test_case</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">contents</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">test_case</span></code></span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">search_path_item</span><span class="plain">;</span>
 </pre>
@@ -427,12 +425,12 @@ There are five basic search path types:
 
 <pre class="displaydefn">
         <span class="reserved">search_path_item</span><span class="plain"> *</span><span class="identifier">spi</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">search_path_item</span><span class="plain">);</span>
-        <span class="identifier">spi</span><span class="plain">-</span><span class="element">&gt;search_path_type</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
-        <span class="identifier">spi</span><span class="plain">-</span><span class="element">&gt;multiple</span><span class="plain"> = </span><span class="identifier">multiple</span><span class="plain">;</span>
-        <span class="identifier">spi</span><span class="plain">-</span><span class="element">&gt;within_this</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">spi</span><span class="plain">-</span><span class="element">&gt;exactly_this</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
-        <span class="identifier">spi</span><span class="plain">-</span><span class="element">&gt;contents</span><span class="plain"> = </span><span class="identifier">cases_within</span><span class="plain">;</span>
-        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">spi</span><span class="plain">, </span><span class="reserved">search_path_item</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">);</span>
+        <span class="identifier">spi</span><span class="plain">-&gt;</span><span class="element">search_path_type</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
+        <span class="identifier">spi</span><span class="plain">-&gt;</span><span class="element">multiple</span><span class="plain"> = </span><span class="identifier">multiple</span><span class="plain">;</span>
+        <span class="identifier">spi</span><span class="plain">-&gt;</span><span class="element">within_this</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">spi</span><span class="plain">-&gt;</span><span class="element">exactly_this</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="identifier">spi</span><span class="plain">-&gt;</span><span class="element">contents</span><span class="plain"> = </span><span class="identifier">cases_within</span><span class="plain">;</span>
+        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">spi</span><span class="plain">, </span><span class="reserved">search_path_item</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">search_path</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -441,14 +439,13 @@ There are five basic search path types:
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">test_case</span><span class="plain"> *</span><span class="functiontext">RecipeFiles::find_case</span><span class="plain">(</span><span class="reserved">intest_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">search_path_item</span><span class="plain"> *</span><span class="identifier">spi</span><span class="plain">;</span>
         <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">spi</span><span class="plain">, </span><span class="reserved">search_path_item</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">)</span>
-            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">spi</span><span class="plain">-</span><span class="element">&gt;contents</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">spi</span><span class="plain">, </span><span class="reserved">search_path_item</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">search_path</span><span class="plain">)</span>
+            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">spi</span><span class="plain">-&gt;</span><span class="element">contents</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -460,15 +457,14 @@ There are five basic search path types:
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">RecipeFiles::case_type_as_text</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">spt</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">spt</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTENSION_SPT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"extension"</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CASE_SPT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"case"</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROBLEM_SPT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"problem"</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXAMPLE_SPT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"example"</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MAP_SPT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"map"</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTENSION_SPT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"extension"</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CASE_SPT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"case"</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROBLEM_SPT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"problem"</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXAMPLE_SPT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"example"</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MAP_SPT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"map"</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"unknown"</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -480,7 +476,6 @@ There are five basic search path types:
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Scanning and extracting. </b>The following looks for all the test cases it can find in a directory <code class="display"><span class="extract">P</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RecipeFiles::scan_directory_for_cases</span><span class="plain">(</span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">,</span>
@@ -515,16 +510,15 @@ contain multiple examples, each generating a test case, so it really can be
 more than one.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">extraction_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RecipeFiles::scan_file_for_cases</span><span class="plain">(</span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">rn</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTENSION_SPT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Adopt Example cases from an extension file</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CASE_SPT</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">PROBLEM_SPT</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">MAP_SPT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTENSION_SPT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Adopt Example cases from an extension file</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CASE_SPT:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROBLEM_SPT:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">MAP_SPT:</span>
                 &lt;<span class="cwebmacro">Adopt a single test case not needing extraction</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXAMPLE_SPT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Adopt Example cases from an example file</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad search path type"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXAMPLE_SPT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Adopt Example cases from an example file</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad search path type"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -539,7 +533,7 @@ more than one.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">RecipeFiles::new_case</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">PLAIN_FORMAT</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
+        <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">RecipeFiles::new_case</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">PLAIN_FORMAT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
         <span class="reserved">break</span><span class="plain">;</span>
 </pre>
@@ -555,7 +549,7 @@ more than one.)
 
 <pre class="displaydefn">
         <span class="identifier">extraction_file</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
-        <span class="functiontext">Extractor::run</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">EXTENSION_FORMAT</span><span class="plain">, 0, </span><span class="constant">CENSUS_ACTION</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
+        <span class="functiontext">Extractor::run</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">EXTENSION_FORMAT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">CENSUS_ACTION</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
         <span class="reserved">break</span><span class="plain">;</span>
 </pre>
 
@@ -570,7 +564,7 @@ more than one.)
 
 <pre class="displaydefn">
         <span class="identifier">extraction_file</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
-        <span class="functiontext">Extractor::run</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">EXAMPLE_FORMAT</span><span class="plain">, 0, </span><span class="constant">CENSUS_ACTION</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
+        <span class="functiontext">Extractor::run</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">EXAMPLE_FORMAT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">CENSUS_ACTION</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
         <span class="reserved">break</span><span class="plain">;</span>
 </pre>
 
@@ -583,7 +577,6 @@ the relevant example or extension file. (Those are both Inform 7-only
 features.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">test_case</span><span class="plain"> *</span><span class="functiontext">RecipeFiles::observe_in_extension</span><span class="plain">(</span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">force_vm</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">rn</span><span class="plain">) {</span>
         <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">RecipeFiles::new_case</span><span class="plain">(</span><span class="constant">EXTENSION_SPT</span><span class="plain">, </span><span class="identifier">extraction_file</span><span class="plain">, </span><span class="constant">EXTENSION_FORMAT</span><span class="plain">, </span><span class="identifier">count</span><span class="plain">, </span><span class="identifier">force_vm</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
@@ -592,7 +585,7 @@ features.)
     <span class="plain">}</span>
 
     <span class="reserved">test_case</span><span class="plain"> *</span><span class="functiontext">RecipeFiles::observe_in_example</span><span class="plain">(</span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">force_vm</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">rn</span><span class="plain">) {</span>
-        <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">RecipeFiles::new_case</span><span class="plain">(</span><span class="constant">EXAMPLE_SPT</span><span class="plain">, </span><span class="identifier">extraction_file</span><span class="plain">, </span><span class="constant">EXAMPLE_FORMAT</span><span class="plain">, 0, </span><span class="identifier">force_vm</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
+        <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">RecipeFiles::new_case</span><span class="plain">(</span><span class="constant">EXAMPLE_SPT</span><span class="plain">, </span><span class="identifier">extraction_file</span><span class="plain">, </span><span class="constant">EXAMPLE_FORMAT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">force_vm</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">) </span><span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -611,23 +604,23 @@ arise only for Inform 7.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PLAIN_FORMAT</span><span class="plain"> 1 </span>    <span class="comment">the file as a whole is one case</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EXAMPLE_FORMAT</span><span class="plain"> 2 </span>    <span class="comment">Inform example file discussing code which forms one case</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EXTENSION_FORMAT</span><span class="plain"> 3 </span>    <span class="comment">Inform extension file containing examples A, B, C, ...</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PLAIN_FORMAT</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">the file as a whole is one case</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EXAMPLE_FORMAT</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">Inform example file discussing code which forms one case</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EXTENSION_FORMAT</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">Inform extension file containing examples A, B, C, ...</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">test_case</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">test_location</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">format_reference</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">_FORMAT</span></code> constants above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">letter_reference</span><span class="plain">; </span>    <span class="comment">1 for A, 2 for B, ..., or 0 for none</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">format_reference</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">_FORMAT</span></code> constants above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">letter_reference</span><span class="plain">; </span><span class="comment">1 for A, 2 for B, ..., or 0 for none</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">test_case_name</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">test_case_title</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">test_recipe_name</span><span class="plain">; </span>    <span class="comment">such as <code class="display"><span class="extract">[Recipe]</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">test_type</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">_SPT</span></code> constants above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cursed</span><span class="plain">; </span>    <span class="comment">currently has no ideal output to test against</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">known_hash</span><span class="plain">; </span>    <span class="comment">md5 hash of known-correct code</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">test_recipe_name</span><span class="plain">; </span><span class="comment">such as <code class="display"><span class="extract">[Recipe]</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">test_type</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">_SPT</span></code> constants above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cursed</span><span class="plain">; </span><span class="comment">currently has no ideal output to test against</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">known_hash</span><span class="plain">; </span><span class="comment">md5 hash of known-correct code</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">work_area</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">commands_location</span><span class="plain">;</span>
@@ -644,48 +637,47 @@ arise only for Inform 7.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">test_case</span><span class="plain"> *</span><span class="functiontext">RecipeFiles::new_case</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ref</span><span class="plain">,</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">force_vm</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">recipe_name</span><span class="plain">) {</span>
         <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain">);</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-        <span class="functiontext">Filenames::write_unextended_leafname</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ref</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">, </span><span class="string">" Example %c"</span><span class="plain">, </span><span class="character">'A'</span><span class="plain">+</span><span class="identifier">ref</span><span class="plain">-1);</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_title</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_recipe_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">recipe_name</span><span class="plain">);</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_type</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_location</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="functiontext">Filenames::write_unextended_leafname</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ref</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">, </span><span class="string">" Example %c"</span><span class="plain">, </span><span class="character">'A'</span><span class="plain">+</span><span class="identifier">ref</span><span class="plain">-1);</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_title</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_recipe_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">recipe_name</span><span class="plain">);</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_type</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_location</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;work_area</span><span class="plain"> = </span><span class="functiontext">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">work_area</span><span class="plain"> = </span><span class="functiontext">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="constant">EXTENSION_SPT</span><span class="plain">) {</span>
             <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Globals::to_pathname</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"extensions_testing_area"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="string">"%S.txt"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="string">"%S.txt"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">);</span>
                 <span class="identifier">G</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
-                <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;work_area</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
+                <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">work_area</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">DG</span><span class="plain"> = </span><span class="functiontext">Filenames::set_extension</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">, </span><span class="string">"txt"</span><span class="plain">);</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;commands_location</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">commands_location</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span>
             <span class="functiontext">Pathnames::from_text_relative</span><span class="plain">(</span><span class="functiontext">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">DG</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"_Command_Scripts"</span><span class="plain">),</span>
             <span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">DG</span><span class="plain">));</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;format_reference</span><span class="plain"> = </span><span class="identifier">fref</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;letter_reference</span><span class="plain"> = </span><span class="identifier">ref</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_me_detected</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;command_line_echoing_detected</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;cursed</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;known_hash</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;left_bracket</span><span class="plain"> = </span><span class="character">'{'</span><span class="plain">; </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="identifier">right_bracket</span><span class="plain"> = </span><span class="character">'}'</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">format_reference</span><span class="plain"> = </span><span class="identifier">fref</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">letter_reference</span><span class="plain"> = </span><span class="identifier">ref</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_me_detected</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">command_line_echoing_detected</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">cursed</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">known_hash</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">left_bracket</span><span class="plain"> = </span><span class="character">'{'</span><span class="plain">; </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="identifier">right_bracket</span><span class="plain"> = </span><span class="character">'}'</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RecipeFiles::NameTestCase</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"naming null test case"</span><span class="plain">);</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_title</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">);</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_title</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -702,23 +694,23 @@ test cases whose names or titles match a given regular expression. If the
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_NAME_MATCH_LENGTH</span><span class="plain"> 1024</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_NAME_MATCH_LENGTH</span><span class="plain"> </span><span class="constant">1024</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RecipeFiles::perform_catalogue</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sources</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">match</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">match</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Test cases matching '%S':\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">match</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">match</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Test cases matching '%S':\n"</span><span class="plain">, </span><span class="identifier">match</span><span class="plain">);</span>
         <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">matches</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain">);</span>
         <span class="functiontext">RecipeFiles::find_cases_matching</span><span class="plain">(</span><span class="identifier">matches</span><span class="plain">, </span><span class="identifier">sources</span><span class="plain">, </span><span class="identifier">match</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">matches</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S%s"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">, (</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_type</span><span class="plain"> == </span><span class="constant">PROBLEM_SPT</span><span class="plain">)?</span><span class="string">" (problem)"</span><span class="plain">:</span><span class="string">""</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_title</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" = %S"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_title</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S%s"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">, (</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_type</span><span class="plain"> == </span><span class="constant">PROBLEM_SPT</span><span class="plain">)?</span><span class="string">" (problem)"</span><span class="plain">:</span><span class="string">""</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_title</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" = %S"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_title</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="identifier">n</span><span class="plain">++;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(none)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(none)\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -728,7 +720,6 @@ test cases whose names or titles match a given regular expression. If the
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Which employs:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RecipeFiles::find_cases_matching</span><span class="plain">(</span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">matches</span><span class="plain">, </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sources</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">match</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">exactly</span><span class="plain">) {</span>
@@ -741,15 +732,15 @@ test cases whose names or titles match a given regular expression. If the
         <span class="reserved">search_path_item</span><span class="plain"> *</span><span class="identifier">spi</span><span class="plain">;</span>
         <span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">spi</span><span class="plain">, </span><span class="reserved">search_path_item</span><span class="plain">, </span><span class="identifier">sources</span><span class="plain">)</span>
-            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">spi</span><span class="plain">-</span><span class="element">&gt;contents</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;format_reference</span><span class="plain"> != </span><span class="constant">EXAMPLE_FORMAT</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;format_reference</span><span class="plain"> != </span><span class="constant">EXTENSION_FORMAT</span><span class="plain">))</span>
+            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">spi</span><span class="plain">-&gt;</span><span class="element">contents</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">format_reference</span><span class="plain"> != </span><span class="constant">EXAMPLE_FORMAT</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">format_reference</span><span class="plain"> != </span><span class="constant">EXTENSION_FORMAT</span><span class="plain">))</span>
                     <span class="functiontext">Extractor::run</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
-                        <span class="identifier">tc</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_location</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;format_reference</span><span class="plain">, 0, </span><span class="constant">CENSUS_ACTION</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                        <span class="identifier">tc</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_location</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">format_reference</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">CENSUS_ACTION</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">match</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
-                    <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">, </span><span class="identifier">wregexp</span><span class="plain">)) ||</span>
-                    <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;test_case_title</span><span class="plain">, </span><span class="identifier">wregexp</span><span class="plain">))) {</span>
+                    <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">, </span><span class="identifier">wregexp</span><span class="plain">)) ||</span>
+                    <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">test_case_title</span><span class="plain">, </span><span class="identifier">wregexp</span><span class="plain">))) {</span>
                     <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">test_case</span><span class="plain">, </span><span class="identifier">matches</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>

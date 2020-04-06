@@ -29,14 +29,13 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Setting up. </b></p>
 
-
 <pre class="display">
     <span class="reserved">intest_instructions</span><span class="plain"> </span><span class="functiontext">ITCommandLine::read_instructions</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">,</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">home</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">intest_script</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Register some configuration switches with Foundation</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">intest_instructions</span><span class="plain"> </span><span class="identifier">args</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Initialise the arguments state</span> <span class="cwebmacronumber">1.4</span>&gt;<span class="plain">;</span>
-        <span class="functiontext">ITCommandLine::read_instructions_into</span><span class="plain">(&amp;</span><span class="identifier">args</span><span class="plain">, 1, </span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">home</span><span class="plain">);</span>
+        <span class="functiontext">ITCommandLine::read_instructions_into</span><span class="plain">(&amp;</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">home</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">args</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -66,29 +65,29 @@ and heading text in the normal Foundation way:
 
 <pre class="displaydefn">
         <span class="functiontext">CommandLine::declare_heading</span><span class="plain">(</span>
-            <span class="identifier">L</span><span class="string">"This is intest, a command-line tool for testing command-line tools\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"intest PROJECT OPTIONS -using RECIPEFILE -do INSTRUCTIONS\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"PROJECT is the home folder of the project to be tested\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"-using RECIPEFILE tells intest where to find test recipes: default\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"is PROJECT/Tests/PROJECT.intest\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"-do INSTRUCTIONS tells intest what to do with its tests:\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"    ACTION CASE1 CASE2 ... performs the given action, which may be:\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"    -test (default), -show, -curse, -bless, -rebless, -open, -show-i6\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"    CASEs can be identified by name, or by 'all', 'cases', 'problems', etc.\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"    a bare number as a CASE means this case number in the command history\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"'intest ?' shows the command history; 'intest ?N' repeats command N from it\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"OPTIONS are as follows:\</span><span class="plain">n</span><span class="string">"</span>
+            <span class="identifier">L</span><span class="string">"This is intest, a command-line tool for testing command-line tools\n\n"</span>
+            <span class="identifier">L</span><span class="string">"intest PROJECT OPTIONS -using RECIPEFILE -do INSTRUCTIONS\n\n"</span>
+            <span class="identifier">L</span><span class="string">"PROJECT is the home folder of the project to be tested\n\n"</span>
+            <span class="identifier">L</span><span class="string">"-using RECIPEFILE tells intest where to find test recipes: default\n"</span>
+            <span class="identifier">L</span><span class="string">"is PROJECT/Tests/PROJECT.intest\n\n"</span>
+            <span class="identifier">L</span><span class="string">"-do INSTRUCTIONS tells intest what to do with its tests:\n"</span>
+            <span class="identifier">L</span><span class="string">"    ACTION CASE1 CASE2 ... performs the given action, which may be:\n"</span>
+            <span class="identifier">L</span><span class="string">"    -test (default), -show, -curse, -bless, -rebless, -open, -show-i6\n"</span>
+            <span class="identifier">L</span><span class="string">"    CASEs can be identified by name, or by 'all', 'cases', 'problems', etc.\n"</span>
+            <span class="identifier">L</span><span class="string">"    a bare number as a CASE means this case number in the command history\n\n"</span>
+            <span class="identifier">L</span><span class="string">"'intest ?' shows the command history; 'intest ?N' repeats command N from it\n\n"</span>
+            <span class="identifier">L</span><span class="string">"OPTIONS are as follows:\n"</span>
         <span class="plain">);</span>
 
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PURGE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"purge"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PURGE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"purge"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"delete any extraneous files from the intest workspace on disc"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">HISTORY_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"history"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">HISTORY_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"history"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"use command history"</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">COLOURS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"colours"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">COLOURS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"colours"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"show discrepancies in red and green using terminal emulation"</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">VERBOSE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"verbose"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">VERBOSE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"verbose"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print out all shell commands issued"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_numerical_switch</span><span class="plain">(</span><span class="constant">THREADS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"threads"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_numerical_switch</span><span class="plain">(</span><span class="constant">THREADS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"threads"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"use X independent threads to test"</span><span class="plain">);</span>
 </pre>
 
@@ -100,7 +99,6 @@ and heading text in the normal Foundation way:
 from the command line) about what Intest should do on this run:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">intest_instructions</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">colours_switch</span><span class="plain">;</span>
@@ -110,9 +108,9 @@ from the command line) about what Intest should do on this run:
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">history_switch</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">crash_switch</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">threads_available</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">recipe</span><span class="plain"> *</span><span class="identifier">compiling_recipe</span><span class="plain">; </span>    <span class="comment">not a user setting, but convenient for parsing</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">search_path</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">search_path_item</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">to_do_list</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">action_item</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">recipe</span><span class="plain"> *</span><span class="identifier">compiling_recipe</span><span class="plain">; </span><span class="comment">not a user setting, but convenient for parsing</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">search_path</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">search_path_item</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">to_do_list</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">action_item</span></code></span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">implied_recipe_file</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">home</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">groups_folder</span><span class="plain">;</span>
@@ -129,19 +127,19 @@ from the command line) about what Intest should do on this run:
 
 
 <pre class="displaydefn">
-        <span class="identifier">args</span><span class="element">.colours_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.verbose_switch</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.version_switch</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.purge_switch</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.history_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.crash_switch</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.compiling_recipe</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.search_path</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">search_path_item</span><span class="plain">);</span>
-        <span class="identifier">args</span><span class="element">.to_do_list</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">action_item</span><span class="plain">);</span>
-        <span class="identifier">args</span><span class="element">.threads_available</span><span class="plain"> = 16;</span>
-        <span class="identifier">args</span><span class="element">.home</span><span class="plain"> = </span><span class="identifier">home</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.groups_folder</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="element">.implied_recipe_file</span><span class="plain"> = </span><span class="identifier">intest_script</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">colours_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">verbose_switch</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">version_switch</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">purge_switch</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">history_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">crash_switch</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">compiling_recipe</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">search_path</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">search_path_item</span><span class="plain">);</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">to_do_list</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">action_item</span><span class="plain">);</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">threads_available</span><span class="plain"> = </span><span class="constant">16</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">home</span><span class="plain"> = </span><span class="identifier">home</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">groups_folder</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">implied_recipe_file</span><span class="plain"> = </span><span class="identifier">intest_script</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -156,7 +154,6 @@ using block. For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">alpha beta -using gamma -do delta epsilon</span>
@@ -209,16 +206,16 @@ Foundation-defined switches, so we clear thpse out of the way first.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">block_mode</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">USING_BLOCK_MODE</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">USING_BLOCK_MODE:</span>
                 <span class="functiontext">RecipeFiles::read_using_instructions</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">block_from</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">home</span><span class="plain">);</span>
-                <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;implied_recipe_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">implied_recipe_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DO_BLOCK_MODE</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DO_BLOCK_MODE:</span><span class="plain"> {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">midway</span><span class="plain"> = </span><span class="functiontext">ITCommandLine::read_switches</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">block_from</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">midway</span><span class="plain"> &lt; </span><span class="identifier">i</span><span class="plain">)</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;implied_recipe_file</span><span class="plain">) {</span>
-                        <span class="functiontext">RecipeFiles::read</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;implied_recipe_file</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-                        <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;implied_recipe_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="identifier">implied_recipe_file</span><span class="plain">) {</span>
+                        <span class="functiontext">RecipeFiles::read</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">implied_recipe_file</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                        <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">implied_recipe_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                     <span class="plain">}</span>
                     <span class="functiontext">Actions::read_do_instructions</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="identifier">midway</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -236,7 +233,6 @@ routine picks up any that are. If a do block contains:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">-threads=4 -no-colours -help alpha beta</span>
 </pre>
@@ -245,7 +241,6 @@ routine picks up any that are. If a do block contains:
 an advanced start position for the do block, i.e., cutting it down to
 just <code class="display"><span class="extract">alpha beta</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ITCommandLine::read_switches</span><span class="plain">(</span><span class="reserved">intest_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">,</span>
@@ -256,10 +251,10 @@ just <code class="display"><span class="extract">alpha beta</span></code>.
             <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">+1 &lt; </span><span class="identifier">to_arg_n</span><span class="plain">) </span><span class="identifier">arg</span><span class="plain"> = </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"-+(%c*)"</span><span class="plain">)) {</span>
                 <span class="reserved">clf_reader_state</span><span class="plain"> </span><span class="identifier">crs</span><span class="plain">;</span>
-                <span class="identifier">crs</span><span class="element">.state</span><span class="plain"> = (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">args</span><span class="plain">; </span><span class="identifier">crs</span><span class="element">.f</span><span class="plain"> = &amp;</span><span class="functiontext">ITCommandLine::respond</span><span class="plain">; </span><span class="identifier">crs</span><span class="element">.g</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">crs</span><span class="element">.subs</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="identifier">crs</span><span class="element">.nrt</span><span class="plain"> = 0;</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">CommandLine::read_pair</span><span class="plain">(&amp;</span><span class="identifier">crs</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">arg</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; 0) { </span><span class="identifier">i</span><span class="plain"> += </span><span class="identifier">N</span><span class="plain"> - 1; }</span>
+                <span class="identifier">crs</span><span class="plain">.</span><span class="element">state</span><span class="plain"> = (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">args</span><span class="plain">; </span><span class="identifier">crs</span><span class="plain">.</span><span class="element">f</span><span class="plain"> = &amp;</span><span class="functiontext">ITCommandLine::respond</span><span class="plain">; </span><span class="identifier">crs</span><span class="plain">.</span><span class="element">g</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">crs</span><span class="plain">.</span><span class="element">subs</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="identifier">crs</span><span class="plain">.</span><span class="element">nrt</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">CommandLine::read_pair</span><span class="plain">(&amp;</span><span class="identifier">crs</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">arg</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">i</span><span class="plain"> += </span><span class="identifier">N</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">; }</span>
                 <span class="reserved">else</span><span class="plain"> { </span><span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">; }</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span><span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">; }</span>
         <span class="plain">}</span>
@@ -277,19 +272,18 @@ back at the start of the section. (The built-in set, such as <code class="displa
 automatically handled by Foundation's <code class="display"><span class="extract">CommandLine::read_pair</span></code> routine.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ITCommandLine::respond</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">intest_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain"> = (</span><span class="reserved">intest_instructions</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PURGE_CLSW</span><span class="plain">: </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;purge_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">HISTORY_CLSW</span><span class="plain">: </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;history_switch</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">COLOURS_CLSW</span><span class="plain">: </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;colours_switch</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VERBOSE_CLSW</span><span class="plain">: </span><span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;verbose_switch</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">THREADS_CLSW</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">val</span><span class="plain"> &lt; 1) || (</span><span class="identifier">val</span><span class="plain"> &gt; </span><span class="constant">MAX_THREADS</span><span class="plain">))</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PURGE_CLSW:</span><span class="plain"> </span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">purge_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HISTORY_CLSW:</span><span class="plain"> </span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">history_switch</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COLOURS_CLSW:</span><span class="plain"> </span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">colours_switch</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VERBOSE_CLSW:</span><span class="plain"> </span><span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">verbose_switch</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">THREADS_CLSW:</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">val</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">val</span><span class="plain"> &gt; </span><span class="constant">MAX_THREADS</span><span class="plain">))</span>
                     <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"that number of threads is unsupported"</span><span class="plain">);</span>
-                <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;threads_available</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">;</span>
+                <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">threads_available</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

@@ -33,12 +33,12 @@ simultaneously.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_THREADS</span><span class="plain"> 256</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRACE_THREADING</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain"> </span>    <span class="comment">change this for debugging, if you really must</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_THREADS</span><span class="plain"> </span><span class="constant">256</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRACE_THREADING</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain"> </span><span class="comment">change this for debugging, if you really must</span>
 </pre>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_threads</span><span class="plain"> = 1;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_threads</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Scheduler::start</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">threads_available</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_threads</span><span class="plain"> &gt; </span><span class="constant">MAX_THREADS</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"too high a thread count"</span><span class="plain">);</span>
         <span class="identifier">use_threads</span><span class="plain"> = </span><span class="identifier">threads_available</span><span class="plain">;</span>
@@ -96,25 +96,25 @@ finishes, and 8 threads run on each core over the test time.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">QUANTUM</span><span class="plain"> 16</span>
+    <span class="definitionkeyword">define</span> <span class="constant">QUANTUM</span><span class="plain"> </span><span class="constant">16</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NO_THREAD</span><span class="plain"> 1       </span>    <span class="comment">this slot has no thread running</span>
-    <span class="definitionkeyword">define</span> <span class="constant">WORKING_THREAD</span><span class="plain"> 2  </span>    <span class="comment">this slot has a thread which hasn't finished work</span>
-    <span class="definitionkeyword">define</span> <span class="constant">IDLE_THREAD</span><span class="plain"> 3     </span>    <span class="comment">this slot has a thread which has finished and is idle</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_THREAD</span><span class="plain"> </span><span class="constant">1</span><span class="plain">       </span><span class="comment">this slot has no thread running</span>
+    <span class="definitionkeyword">define</span> <span class="constant">WORKING_THREAD</span><span class="plain"> </span><span class="constant">2</span><span class="plain">  </span><span class="comment">this slot has a thread which hasn't finished work</span>
+    <span class="definitionkeyword">define</span> <span class="constant">IDLE_THREAD</span><span class="plain"> </span><span class="constant">3</span><span class="plain">     </span><span class="comment">this slot has a thread which has finished and is idle</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">thread_slot</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">availability</span><span class="plain">; </span>    <span class="comment">one of the three <code class="display"><span class="extract">*_THREAD</span></code> values above</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">slot_log_name</span><span class="plain">; </span>    <span class="comment">local-to-this-slot debugging log name</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">split_log</span><span class="plain">; </span>    <span class="comment">local-to-this-slot debugging log</span>
-        <span class="identifier">foundation_thread</span><span class="plain"> </span><span class="identifier">work_thread</span><span class="plain">; </span>    <span class="comment">has no valid contents if <code class="display"><span class="extract">NO_THREAD</span></code></span>
-        <span class="identifier">foundation_thread_attributes</span><span class="plain"> </span><span class="identifier">attributes</span><span class="plain">; </span>    <span class="comment">similarly</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">sandbox</span><span class="plain">; </span>    <span class="comment">a safe area for threads in this slot to create files</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">availability</span><span class="plain">; </span><span class="comment">one of the three <code class="display"><span class="extract">*_THREAD</span></code> values above</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">slot_log_name</span><span class="plain">; </span><span class="comment">local-to-this-slot debugging log name</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">split_log</span><span class="plain">; </span><span class="comment">local-to-this-slot debugging log</span>
+        <span class="identifier">foundation_thread</span><span class="plain"> </span><span class="identifier">work_thread</span><span class="plain">; </span><span class="comment">has no valid contents if <code class="display"><span class="extract">NO_THREAD</span></code></span>
+        <span class="identifier">foundation_thread_attributes</span><span class="plain"> </span><span class="identifier">attributes</span><span class="plain">; </span><span class="comment">similarly</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">sandbox</span><span class="plain">; </span><span class="comment">a safe area for threads in this slot to create files</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">counter</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">thread_slot</span><span class="plain">;</span>
 
@@ -132,19 +132,18 @@ called <code class="display"><span class="extract">T0</span></code>, <code class
 to the Skein-reading code.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Scheduler::initialise_slots</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = 0; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++) {</span>
-            <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.counter</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
-            <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> = </span><span class="constant">NO_THREAD</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++) {</span>
+            <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">counter</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
+            <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">availability</span><span class="plain"> = </span><span class="constant">NO_THREAD</span><span class="plain">;</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">FNAME</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">FNAME</span><span class="plain">, </span><span class="string">"debug-log-thread-%d.txt"</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
             <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">Thread_Work_Area</span><span class="plain"> = </span><span class="functiontext">Scheduler::work_area</span><span class="plain">(</span><span class="identifier">s</span><span class="plain">);</span>
-            <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.slot_log_name</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">Thread_Work_Area</span><span class="plain">, </span><span class="identifier">FNAME</span><span class="plain">);</span>
+            <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">slot_log_name</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">Thread_Work_Area</span><span class="plain">, </span><span class="identifier">FNAME</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">FNAME</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_threads</span><span class="plain"> &gt; 0) </span><span class="functiontext">Scheduler::work_area</span><span class="plain">(0);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_threads</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Scheduler::work_area</span><span class="plain">(0);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sandboxes_made</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
@@ -152,15 +151,15 @@ to the Skein-reading code.)
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">s</span><span class="plain">&lt;0) || (</span><span class="identifier">s</span><span class="plain">&gt;=</span><span class="identifier">use_threads</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread slot out of range"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sandboxes_made</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) {</span>
             <span class="identifier">sandboxes_made</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> = 0; </span><span class="identifier">t</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">t</span><span class="plain">++) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">t</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">t</span><span class="plain">++) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TN</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TN</span><span class="plain">, </span><span class="string">"T%d"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
                 <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">workspace</span><span class="plain"> = </span><span class="functiontext">Globals::to_pathname</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"workspace"</span><span class="plain">);</span>
-                <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">t</span><span class="plain">]</span><span class="element">.sandbox</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">workspace</span><span class="plain">, </span><span class="identifier">TN</span><span class="plain">);</span>
+                <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">t</span><span class="plain">].</span><span class="element">sandbox</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">workspace</span><span class="plain">, </span><span class="identifier">TN</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TN</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.sandbox</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">sandbox</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -194,42 +193,42 @@ We will simply choose a Very Big Number and hope for the best.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">STACK_SIZE_PER_WORK_THREAD</span><span class="plain"> 0</span><span class="identifier">x8000000</span>
+    <span class="definitionkeyword">define</span> <span class="constant">STACK_SIZE_PER_WORK_THREAD</span><span class="plain"> </span><span class="constant">0x8000000</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Scheduler::start_work_on_slot</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> != </span><span class="constant">NO_THREAD</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">availability</span><span class="plain"> != </span><span class="constant">NO_THREAD</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to start second thread in same slot"</span><span class="plain">);</span>
-        <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> = </span><span class="constant">WORKING_THREAD</span><span class="plain">;</span>
-        <span class="functiontext">Platform::init_thread</span><span class="plain">(&amp;</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.attributes</span><span class="plain">, </span><span class="constant">STACK_SIZE_PER_WORK_THREAD</span><span class="plain">);</span>
+        <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">availability</span><span class="plain"> = </span><span class="constant">WORKING_THREAD</span><span class="plain">;</span>
+        <span class="functiontext">Platform::init_thread</span><span class="plain">(&amp;</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">attributes</span><span class="plain">, </span><span class="constant">STACK_SIZE_PER_WORK_THREAD</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="constant">TRACE_THREADING</span><span class="plain">) {</span>
             <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Work on slot %d: "</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
             <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">;</span>
-            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span><span class="reserved"> test</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocated_to</span><span class="plain"> == </span><span class="identifier">s</span><span class="plain">) {</span>
-                    <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"T%d:%S "</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">);</span>
+            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">test</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">allocated_to</span><span class="plain"> == </span><span class="identifier">s</span><span class="plain">) {</span>
+                    <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"T%d:%S "</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">to_be_tested</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">);</span>
                 <span class="plain">}</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext">Platform::create_thread</span><span class="plain">(&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.work_thread</span><span class="plain">),</span>
-            <span class="plain">&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.attributes</span><span class="plain">),</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext">Platform::create_thread</span><span class="plain">(&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">work_thread</span><span class="plain">),</span>
+            <span class="plain">&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">attributes</span><span class="plain">),</span>
             <span class="functiontext">Scheduler::perform_work</span><span class="plain">,</span>
-            <span class="plain">(</span><span class="reserved">void</span><span class="plain"> *) &amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.counter</span><span class="plain">));</span>
+            <span class="plain">(</span><span class="reserved">void</span><span class="plain"> *) &amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">counter</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain"> == </span><span class="identifier">EAGAIN</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread failed EAGAIN"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain"> == </span><span class="identifier">EINVAL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread failed EINVAL"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain"> == </span><span class="identifier">EPERM</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread failed EPERM"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain"> != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread failed"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread failed"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Scheduler::stop_work_on_slot</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext">Platform::join_thread</span><span class="plain">(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.work_thread</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain"> != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread failed to join"</span><span class="plain">);</span>
-        <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> = </span><span class="constant">NO_THREAD</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext">Platform::join_thread</span><span class="plain">(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">work_thread</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread failed to join"</span><span class="plain">);</span>
+        <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">availability</span><span class="plain"> = </span><span class="constant">NO_THREAD</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext">Scheduler::stack_size</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Platform::get_thread_stack_size</span><span class="plain">(&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.attributes</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Platform::get_thread_stack_size</span><span class="plain">(&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">attributes</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -243,17 +242,16 @@ We will simply choose a Very Big Number and hope for the best.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Scheduler::stop_work_on_idle_slots</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = 0; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> == </span><span class="constant">IDLE_THREAD</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">availability</span><span class="plain"> == </span><span class="constant">IDLE_THREAD</span><span class="plain">)</span>
                 <span class="functiontext">Scheduler::stop_work_on_slot</span><span class="plain">(</span><span class="identifier">s</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Scheduler::stop_work_on_all_slots</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = 0; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> != </span><span class="constant">NO_THREAD</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">availability</span><span class="plain"> != </span><span class="constant">NO_THREAD</span><span class="plain">)</span>
                 <span class="functiontext">Scheduler::stop_work_on_slot</span><span class="plain">(</span><span class="identifier">s</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -277,30 +275,29 @@ blank.
 </pre>
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
-
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct test</span><span class="plain"> {</span>
+    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">test</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">to_be_tested</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">action_type</span><span class="plain">; </span>    <span class="comment">for example, <code class="display"><span class="extract">TEST_ACTION</span></code> or <code class="display"><span class="extract">BLESS_ACTION</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">redirect</span><span class="plain">; </span>    <span class="comment">where to redirect console output</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocated_to</span><span class="plain">; </span>    <span class="comment">an index into <code class="display"><span class="extract">thread_slots</span></code>, or else one of the values above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">passed</span><span class="plain">; </span>    <span class="comment">or <code class="display"><span class="extract">NOT_APPLICABLE</span></code> if not yet run</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">action_type</span><span class="plain">; </span><span class="comment">for example, <code class="display"><span class="extract">TEST_ACTION</span></code> or <code class="display"><span class="extract">BLESS_ACTION</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">redirect</span><span class="plain">; </span><span class="comment">where to redirect console output</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocated_to</span><span class="plain">; </span><span class="comment">an index into <code class="display"><span class="extract">thread_slots</span></code>, or else one of the values above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">passed</span><span class="plain">; </span><span class="comment">or <code class="display"><span class="extract">NOT_APPLICABLE</span></code> if not yet run</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">full_results</span><span class="plain">;</span>
-        <span class="reserved">struct test</span><span class="plain"> *</span><span class="identifier">previous_completed_test</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">test</span><span class="plain"> *</span><span class="identifier">previous_completed_test</span><span class="plain">;</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
-    <span class="plain">}</span><span class="reserved"> test</span><span class="plain">;</span>
+    <span class="plain">} </span><span class="reserved">test</span><span class="plain">;</span>
 
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Scheduler::schedule</span><span class="plain">(</span><span class="reserved">test_case</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">redirect</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">test_action</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no test case"</span><span class="plain">);</span>
-        <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="reserved">(test</span><span class="plain">);</span>
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;redirect</span><span class="plain"> = </span><span class="identifier">redirect</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocated_to</span><span class="plain"> = </span><span class="constant">NO_SLOT_AS_YET</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;passed</span><span class="plain"> = </span><span class="constant">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;action_type</span><span class="plain"> = </span><span class="identifier">test_action</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;full_results</span><span class="plain"> = </span><span class="functiontext">Str::new_with_capacity</span><span class="plain">(20480);</span>
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;previous_completed_test</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">test</span><span class="plain">);</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">to_be_tested</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">redirect</span><span class="plain"> = </span><span class="identifier">redirect</span><span class="plain">;</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">allocated_to</span><span class="plain"> = </span><span class="constant">NO_SLOT_AS_YET</span><span class="plain">;</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">passed</span><span class="plain"> = </span><span class="constant">NOT_APPLICABLE</span><span class="plain">;</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">action_type</span><span class="plain"> = </span><span class="identifier">test_action</span><span class="plain">;</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">full_results</span><span class="plain"> = </span><span class="functiontext">Str::new_with_capacity</span><span class="plain">(20480);</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">previous_completed_test</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -316,13 +313,12 @@ order, and sometimes drastically so. <code class="display"><span class="extract"
 most recent.
 </p>
 
-
 <pre class="display">
     <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">last_completed_test</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">splitting_logs</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Scheduler::test</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="reserved">(test</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="functiontext">Scheduler::initialise_slots</span><span class="plain">();</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">main_DL</span><span class="plain"> = </span><span class="identifier">DL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Log::aspect_switched_on</span><span class="plain">(</span><span class="constant">TESTER_DA</span><span class="plain">)) </span><span class="identifier">splitting_logs</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -346,12 +342,12 @@ most recent.
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TESTER</span><span class="plain">, </span><span class="string">"Splitting into independent debugging logs per thread here\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TESTER</span><span class="plain">, </span><span class="string">"Splitting into independent debugging logs per thread here\n"</span><span class="plain">);</span>
         <span class="functiontext">Log::close</span><span class="plain">();</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = 0; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++) {</span>
             <span class="functiontext">Log::open_alternative</span><span class="plain">(</span>
-                <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.slot_log_name</span><span class="plain">, &amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.split_log</span><span class="plain">));</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"This log belongs to thread %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
+                <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">slot_log_name</span><span class="plain">, &amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">split_log</span><span class="plain">));</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"This log belongs to thread %d\n"</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
             <span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -366,10 +362,10 @@ most recent.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = 0; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++)</span>
-            <span class="functiontext">Streams::close</span><span class="plain">(&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.split_log</span><span class="plain">));</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++)</span>
+            <span class="functiontext">Streams::close</span><span class="plain">(&amp;(</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="identifier">split_log</span><span class="plain">));</span>
         <span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">main_DL</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TESTER</span><span class="plain">, </span><span class="string">"Back to a single debugging log here\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TESTER</span><span class="plain">, </span><span class="string">"Back to a single debugging log here\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -389,9 +385,9 @@ with each iteration.
 <pre class="displaydefn">
         <span class="identifier">last_completed_test</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">current_wildcard</span><span class="plain"> = </span><span class="constant">ALL_WILDCARD</span><span class="plain">;</span>
-        <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">next_to_report</span><span class="plain"> = </span><span class="identifier">FIRST_OBJECT</span><span class="reserved">(test</span><span class="plain">);</span>
+        <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">next_to_report</span><span class="plain"> = </span><span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="reserved">test</span><span class="plain">);</span>
         <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">next_test_to_allocate</span><span class="plain"> = </span><span class="identifier">next_to_report</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">number_still_to_allocate</span><span class="plain"> = </span><span class="identifier">NUMBER_CREATED</span><span class="reserved">(test</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">number_still_to_allocate</span><span class="plain"> = </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test</span><span class="plain">);</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">next_to_report</span><span class="plain">) {</span>
             <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="functiontext">Scheduler::stop_work_on_idle_slots</span><span class="plain">();</span>
@@ -399,7 +395,7 @@ with each iteration.
             &lt;<span class="cwebmacro">Gather up recent reports</span> <span class="cwebmacronumber">9.3.2</span>&gt;<span class="plain">;</span>
             <span class="functiontext">Platform::sleep</span><span class="plain">(1);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">line_complete</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) { </span><span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">line_complete</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) { </span><span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">); }</span>
         <span class="functiontext">Scheduler::stop_work_on_all_slots</span><span class="plain">();</span>
 </pre>
 
@@ -421,17 +417,17 @@ cases to look at.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">free_slot_list</span><span class="plain">[</span><span class="constant">MAX_THREADS</span><span class="plain">], </span><span class="identifier">given_over</span><span class="plain">[</span><span class="constant">MAX_THREADS</span><span class="plain">];</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">threads_free</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = 0; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> == </span><span class="constant">NO_THREAD</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">threads_free</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="identifier">use_threads</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">availability</span><span class="plain"> == </span><span class="constant">NO_THREAD</span><span class="plain">) {</span>
                 <span class="identifier">free_slot_list</span><span class="plain">[</span><span class="identifier">threads_free</span><span class="plain">] = </span><span class="identifier">s</span><span class="plain">;</span>
-                <span class="identifier">given_over</span><span class="plain">[</span><span class="identifier">threads_free</span><span class="plain">++] = 0;</span>
+                <span class="identifier">given_over</span><span class="plain">[</span><span class="identifier">threads_free</span><span class="plain">++] = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">threads_free</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">number_still_to_allocate</span><span class="plain"> &gt; 0)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">threads_free</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">number_still_to_allocate</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)) {</span>
             &lt;<span class="cwebmacro">Give each free slot up to QUANTUM-many test cases to work on</span> <span class="cwebmacronumber">9.3.1.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">For each slot which which was given any, start a work thread</span> <span class="cwebmacronumber">9.3.1.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="constant">TRACE_THREADING</span><span class="plain">) </span><span class="identifier">printf</span><span class="plain">(</span><span class="string">"Still to allocate: %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">number_still_to_allocate</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="constant">TRACE_THREADING</span><span class="plain">) </span><span class="identifier">printf</span><span class="plain">(</span><span class="string">"Still to allocate: %d\n"</span><span class="plain">, </span><span class="identifier">number_still_to_allocate</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -445,14 +441,14 @@ cases to look at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">next_test_to_allocate</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="identifier">free_slot_list</span><span class="plain">[</span><span class="identifier">c</span><span class="plain"> % </span><span class="identifier">threads_free</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">given_over</span><span class="plain">[</span><span class="identifier">c</span><span class="plain"> % </span><span class="identifier">threads_free</span><span class="plain">] &gt;= </span><span class="constant">QUANTUM</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="identifier">next_test_to_allocate</span><span class="plain">-</span><span class="element">&gt;allocated_to</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
+            <span class="identifier">next_test_to_allocate</span><span class="plain">-&gt;</span><span class="element">allocated_to</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
             <span class="identifier">given_over</span><span class="plain">[</span><span class="identifier">c</span><span class="plain"> % </span><span class="identifier">threads_free</span><span class="plain">]++;</span>
             <span class="identifier">number_still_to_allocate</span><span class="plain">--; </span><span class="identifier">c</span><span class="plain">++;</span>
-            <span class="identifier">next_test_to_allocate</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">next_test_to_allocate</span><span class="plain">,</span><span class="reserved"> test</span><span class="plain">);</span>
+            <span class="identifier">next_test_to_allocate</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">next_test_to_allocate</span><span class="plain">, </span><span class="reserved">test</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -466,10 +462,10 @@ cases to look at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0; </span><span class="identifier">c</span><span class="plain"> &lt; </span><span class="identifier">threads_free</span><span class="plain">; </span><span class="identifier">c</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">given_over</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] &gt; 0) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">c</span><span class="plain"> &lt; </span><span class="identifier">threads_free</span><span class="plain">; </span><span class="identifier">c</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">given_over</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="constant">TRACE_THREADING</span><span class="plain">)</span>
-                    <span class="identifier">printf</span><span class="plain">(</span><span class="string">"starting work thread on slot %d to perform %d tests\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+                    <span class="identifier">printf</span><span class="plain">(</span><span class="string">"starting work thread on slot %d to perform %d tests\n"</span><span class="plain">,</span>
                         <span class="identifier">free_slot_list</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">], </span><span class="identifier">given_over</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">]);</span>
                 <span class="functiontext">Scheduler::start_work_on_slot</span><span class="plain">(</span><span class="identifier">free_slot_list</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">]);</span>
             <span class="plain">}</span>
@@ -485,7 +481,6 @@ where Intest's familiar chains of bracketed case numbers are printed:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">inter -&gt; cases: [1] [2] [3] [4] [5] [6] [7] (8) [9] [10] -11- [12] [13]</span>
@@ -504,24 +499,24 @@ The symbols placed either side of the case number, loosely called its
 
 <pre class="displaydefn">
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">next_to_report</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">next_to_report</span><span class="plain">-</span><span class="element">&gt;allocated_to</span><span class="plain"> == </span><span class="constant">DONE_AND_NO_LONGER_NEEDS_SLOT</span><span class="plain">)) {</span>
+            <span class="plain">(</span><span class="identifier">next_to_report</span><span class="plain">-&gt;</span><span class="element">allocated_to</span><span class="plain"> == </span><span class="constant">DONE_AND_NO_LONGER_NEEDS_SLOT</span><span class="plain">)) {</span>
             <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">next_to_report</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">w</span><span class="plain"> = </span><span class="functiontext">Actions::which_wildcard</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain">);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">w</span><span class="plain"> = </span><span class="functiontext">Actions::which_wildcard</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">to_be_tested</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">w</span><span class="plain"> != </span><span class="identifier">current_wildcard</span><span class="plain">) {</span>
                 <span class="identifier">current_wildcard</span><span class="plain"> = </span><span class="identifier">w</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">line_complete</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) { </span><span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); }</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">line_complete</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) { </span><span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">); }</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%p -&gt; %s: "</span><span class="plain">, </span><span class="identifier">home_project</span><span class="plain">, </span><span class="functiontext">Actions::name_of_wildcard</span><span class="plain">(</span><span class="identifier">w</span><span class="plain">));</span>
                 <span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;passed</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">passed</span><span class="plain">) {</span>
                 <span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%c%d%c "</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain">-</span><span class="element">&gt;left_bracket</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> + 1,</span>
-                    <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain">-&gt;</span><span class="identifier">right_bracket</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%c%d%c "</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">to_be_tested</span><span class="plain">-&gt;</span><span class="element">left_bracket</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">,</span>
+                    <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">to_be_tested</span><span class="plain">-&gt;</span><span class="identifier">right_bracket</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">line_complete</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) { </span><span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); }</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;full_results</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">line_complete</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) { </span><span class="identifier">line_complete</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">); }</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">full_results</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">next_to_report</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">next_to_report</span><span class="plain">,</span><span class="reserved"> test</span><span class="plain">);</span>
+            <span class="identifier">next_to_report</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">next_to_report</span><span class="plain">, </span><span class="reserved">test</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
 </pre>
@@ -535,7 +530,6 @@ print out the summary of what happened, e.g.:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">All 27 tests succeeded (time taken 0:02, 16 simultaneous threads)</span>
@@ -551,20 +545,20 @@ print out the summary of what happened, e.g.:
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">successes</span><span class="plain"> = 0, </span><span class="identifier">failures</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">successes</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">failures</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span><span class="reserved"> test</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;passed</span><span class="plain"> == </span><span class="constant">TRUE</span><span class="plain">) </span><span class="identifier">successes</span><span class="plain">++;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;passed</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">failures</span><span class="plain">++;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">test</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">passed</span><span class="plain"> == </span><span class="constant">TRUE</span><span class="plain">) </span><span class="identifier">successes</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">passed</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">failures</span><span class="plain">++;</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">use_threads</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="identifier">successes</span><span class="plain"> + </span><span class="identifier">failures</span><span class="plain">) </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">successes</span><span class="plain"> + </span><span class="identifier">failures</span><span class="plain">;</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">And the bottom line is...</span> <span class="cwebmacronumber">9.4.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">failures</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Recite our failures</span> <span class="cwebmacronumber">9.4.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> + </span><span class="identifier">failures</span><span class="plain"> &gt;= 10)</span>
-            <span class="functiontext">Platform::notification</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, (</span><span class="identifier">failures</span><span class="plain"> == 0)?</span><span class="constant">TRUE</span><span class="plain">:</span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">failures</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Recite our failures</span> <span class="cwebmacronumber">9.4.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> + </span><span class="identifier">failures</span><span class="plain"> &gt;= </span><span class="constant">10</span><span class="plain">)</span>
+            <span class="functiontext">Platform::notification</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, (</span><span class="identifier">failures</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">);</span>
 </pre>
 
@@ -579,28 +573,28 @@ print out the summary of what happened, e.g.:
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> + </span><span class="identifier">failures</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> == 0) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"Failed"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"Failed"</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"Succeeded"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> == 0) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"Both tests failed"</span><span class="plain">);</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">failures</span><span class="plain"> == 0) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"Both tests succeeded"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"Both tests failed"</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">failures</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"Both tests succeeded"</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"%d test succeeded but %d failed"</span><span class="plain">, </span><span class="identifier">successes</span><span class="plain">, </span><span class="identifier">failures</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> == 0) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"All %d tests failed"</span><span class="plain">, </span><span class="identifier">failures</span><span class="plain">);</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">failures</span><span class="plain"> == 0) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"All %d tests succeeded"</span><span class="plain">, </span><span class="identifier">successes</span><span class="plain">);</span>
+            <span class="identifier">default:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">successes</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"All %d tests failed"</span><span class="plain">, </span><span class="identifier">failures</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">failures</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"All %d tests succeeded"</span><span class="plain">, </span><span class="identifier">successes</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">bottom_line</span><span class="plain">, </span><span class="string">"%d test%s succeeded but %d failed"</span><span class="plain">,</span>
                     <span class="identifier">successes</span><span class="plain">, (</span><span class="identifier">successes</span><span class="plain">==1)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">, </span><span class="identifier">failures</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  %S (time taken %d:%02d"</span><span class="plain">,</span>
             <span class="identifier">bottom_line</span><span class="plain">, ((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">duration</span><span class="plain">)/60, ((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">duration</span><span class="plain">)%60);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", %d simultaneous thread%s"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, (</span><span class="identifier">N</span><span class="plain">==1)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -620,13 +614,13 @@ also tells the Historian to give them numbered shortcut names in future.
 <pre class="displaydefn">
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Failed:"</span><span class="plain">);</span>
         <span class="functiontext">Historian::notify_failure_count</span><span class="plain">(</span><span class="identifier">failures</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">f</span><span class="plain"> = 0;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span><span class="reserved"> test</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;passed</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" %d=%S"</span><span class="plain">, </span><span class="identifier">f</span><span class="plain">+1, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">);</span>
-                <span class="functiontext">Historian::notify_failure</span><span class="plain">(</span><span class="identifier">f</span><span class="plain">++, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain">-</span><span class="element">&gt;test_case_name</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">f</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">test</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">passed</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) {</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" %d=%S"</span><span class="plain">, </span><span class="identifier">f</span><span class="plain">+1, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">to_be_tested</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">);</span>
+                <span class="functiontext">Historian::notify_failure</span><span class="plain">(</span><span class="identifier">f</span><span class="plain">++, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">to_be_tested</span><span class="plain">-&gt;</span><span class="element">test_case_name</span><span class="plain">);</span>
             <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -637,22 +631,21 @@ also tells the Historian to give them numbered shortcut names in future.
 pointer to an integer, which tells us which slot number we are running in.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Scheduler::perform_work</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">argument</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = *((</span><span class="reserved">int</span><span class="plain"> *) </span><span class="identifier">argument</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Log::aspect_switched_on</span><span class="plain">(</span><span class="constant">TESTER_DA</span><span class="plain">))</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Thread in slot %d has stack size %08x\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Thread in slot %d has stack size %08x\n"</span><span class="plain">,</span>
                 <span class="identifier">s</span><span class="plain">, </span><span class="functiontext">Scheduler::stack_size</span><span class="plain">(</span><span class="identifier">s</span><span class="plain">));</span>
         <span class="reserved">test</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span><span class="reserved"> test</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocated_to</span><span class="plain"> == </span><span class="identifier">s</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">result</span><span class="plain"> = </span><span class="functiontext">Tester::test</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;full_results</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;to_be_tested</span><span class="plain">,</span>
-                    <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> + 1, </span><span class="identifier">s</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;action_type</span><span class="plain">);</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">test</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">allocated_to</span><span class="plain"> == </span><span class="identifier">s</span><span class="plain">) {</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">result</span><span class="plain"> = </span><span class="functiontext">Tester::test</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">full_results</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">to_be_tested</span><span class="plain">,</span>
+                    <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">action_type</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Mark test T as completed</span> <span class="cwebmacronumber">10.1</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="constant">TRACE_THREADING</span><span class="plain">) </span><span class="identifier">printf</span><span class="plain">(</span><span class="string">"(Thread in slot %d has finished.)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
-        <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">]</span><span class="element">.availability</span><span class="plain"> = </span><span class="constant">IDLE_THREAD</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="constant">TRACE_THREADING</span><span class="plain">) </span><span class="identifier">printf</span><span class="plain">(</span><span class="string">"(Thread in slot %d has finished.)\n"</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
+        <span class="identifier">thread_slots</span><span class="plain">[</span><span class="identifier">s</span><span class="plain">].</span><span class="element">availability</span><span class="plain"> = </span><span class="constant">IDLE_THREAD</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -675,12 +668,12 @@ against asteroid impacts, but still, one likes to be safe.
 
 
 <pre class="displaydefn">
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;passed</span><span class="plain"> = </span><span class="identifier">result</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;allocated_to</span><span class="plain"> = </span><span class="constant">DONE_AND_NO_LONGER_NEEDS_SLOT</span><span class="plain">;</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">passed</span><span class="plain"> = </span><span class="identifier">result</span><span class="plain">;</span>
+        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">allocated_to</span><span class="plain"> = </span><span class="constant">DONE_AND_NO_LONGER_NEEDS_SLOT</span><span class="plain">;</span>
 
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
-            <span class="identifier">T</span><span class="plain">-</span><span class="element">&gt;previous_completed_test</span><span class="plain"> = </span><span class="identifier">last_completed_test</span><span class="plain">;</span>
+            <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">previous_completed_test</span><span class="plain"> = </span><span class="identifier">last_completed_test</span><span class="plain">;</span>
             <span class="identifier">last_completed_test</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">;</span>
         <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
 </pre>

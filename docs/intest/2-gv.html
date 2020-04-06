@@ -32,7 +32,6 @@
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">-set hash_utility 'md5'</span>
 </pre>
@@ -43,9 +42,8 @@ variables, which have single-dollar names conventionally written in
 capitals <code class="display"><span class="extract">$THUS</span></code>.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">globals_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">until first variable is created</span>
+    <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">globals_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">until first variable is created</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -54,10 +52,9 @@ capitals <code class="display"><span class="extract">$THUS</span></code>.
 get and set. Variables are identified by name:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Globals::create</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VARIABLES</span><span class="plain">, </span><span class="string">"global: created %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VARIABLES</span><span class="plain">, </span><span class="string">"global: created %S\n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">globals_dictionary</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">globals_dictionary</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(32, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">globals_dictionary</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
@@ -70,7 +67,6 @@ get and set. Variables are identified by name:
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Get is easy:
 </p>
-
 
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Globals::get</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
@@ -87,13 +83,12 @@ get and set. Variables are identified by name:
 notation <code class="display"><span class="extract">$$varname</span></code> into the current value of <code class="display"><span class="extract">varname</span></code> en route.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Globals::set</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">original</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">);</span>
         <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="identifier">original</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Make substitutions</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VARIABLES</span><span class="plain">, </span><span class="string">"var: %S &lt;-- &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">value</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VARIABLES</span><span class="plain">, </span><span class="string">"var: %S &lt;-- &lt;%S&gt;\n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">value</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="identifier">globals_dictionary</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't find dictionary entry to write to"</span><span class="plain">);</span>
         <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="functiontext">Dictionaries::get_text</span><span class="plain">(</span><span class="identifier">globals_dictionary</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">), </span><span class="identifier">value</span><span class="plain">);</span>
@@ -113,14 +108,14 @@ notation <code class="display"><span class="extract">$$varname</span></code> int
 <pre class="displaydefn">
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">value</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*)$$(%i+)(%c*)"</span><span class="plain">)) {</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="identifier">globals_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1])) {</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="functiontext">Globals::get</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]));</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="identifier">globals_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1])) {</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="functiontext">Globals::get</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]));</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"no such setting as $$%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+                <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"no such setting as $$%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="string">"(novalue)"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[2]);</span>
         <span class="plain">}</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
 </pre>
@@ -133,7 +128,6 @@ notation <code class="display"><span class="extract">$$varname</span></code> int
 we interpret <code class="display"><span class="extract">/</span></code> as a file separator even on Windows, so that common settings
 files can be used across all platforms.
 </p>
-
 
 <pre class="display">
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="functiontext">Globals::to_pathname</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
@@ -156,7 +150,6 @@ files can be used across all platforms.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">filename</span><span class="plain"> *</span><span class="functiontext">Globals::to_filename</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain"> = </span><span class="functiontext">Globals::get</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
@@ -178,7 +171,6 @@ files can be used across all platforms.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Initialisation. </b>When Intest starts up, it creates two variables to kick off with:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Globals::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
