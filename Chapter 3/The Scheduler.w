@@ -319,9 +319,9 @@ cases to look at.
 @ The only purpose of the following is to print something to the terminal so
 that the user has some comforting evidence that work is going on. This is
 where Intest's familiar chains of bracketed case numbers are printed:
-
-	|inter -> cases: [1] [2] [3] [4] [5] [6] [7] (8) [9] [10] -11- [12] [13]|
-
+= (text)
+	inter -> cases: [1] [2] [3] [4] [5] [6] [7] (8) [9] [10] -11- [12] [13]
+=
 Note that they are grouped by "wildcard", in effect, by their case type.
 The symbols placed either side of the case number, loosely called its
 "brackets", are chosen by the Tester on the basis of the test's outcome.
@@ -351,9 +351,9 @@ The symbols placed either side of the case number, loosely called its
 
 @ And, now the hurly-burly's done: now the battle's lost and won. We need to
 print out the summary of what happened, e.g.:
-
-	|All 27 tests succeeded (time taken 0:02, 16 simultaneous threads)|
-
+= (text)
+	All 27 tests succeeded (time taken 0:02, 16 simultaneous threads)
+=
 The "bottom line" text here is "All 27 tests succeeded".
 
 @<Write results banner@> =

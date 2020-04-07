@@ -31,20 +31,16 @@
 specify which. The general form is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest PROJECT COMMAND</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> PROJECT COMMAND</span>
 </pre>
 
 <p class="inwebparagraph">or, in case the <code class="display"><span class="extract">PROJECT</span></code> directory happens to begin with a hyphen and could
 be confused with the name of a command-line switch,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -from PROJECT COMMAND</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -from</span><span class="plain"> PROJECT COMMAND</span>
 </pre>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">PROJECT</span></code> is optional if the <code class="display"><span class="extract">COMMAND</span></code> is simply <code class="display"><span class="extract">-help</span></code> or <code class="display"><span class="extract">-version</span></code>,
@@ -64,8 +60,6 @@ Inweb, or to be one of the Inform tools.
 commands in a file stored at:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">PROJECT/Tests/intest-history.txt</span>
 </pre>
@@ -80,10 +74,8 @@ Inform user interface app &mdash; this setting avoids clutter.)
 A <code class="display"><span class="extract">COMMAND</span></code> consisting of just "?" lists the project's current history, like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest inform7 ?</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> inform7 ?</span>
         <span class="plain">?1. cases</span>
         <span class="plain">?2. Abolition</span>
         <span class="plain">?3. Beatles Sackcloth Gelato</span>
@@ -101,10 +93,8 @@ is maintained for the previous 20 commands.
 example, abbreviates <code class="display"><span class="extract">Beatles Sackcloth Gelato</span></code>. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest inform7 ?3</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> inform7 ?3</span>
         <span class="plain">Repeating: ?3. Beatles Sackcloth Gelato</span>
         <span class="plain">...</span>
 </pre>
@@ -112,10 +102,8 @@ example, abbreviates <code class="display"><span class="extract">Beatles Sackclo
 <p class="inwebparagraph">is equivalent to typing:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest inform7 Beatles Sackcloth Gelato</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> inform7 Beatles Sackcloth Gelato</span>
 </pre>
 
 <p class="inwebparagraph">except that it doesn't add a new line to the history file, since this is a repeat of an old command, not a new one.
@@ -124,10 +112,8 @@ example, abbreviates <code class="display"><span class="extract">Beatles Sackclo
 <p class="inwebparagraph">Calling intest with an empty command repeats its most recent new command:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest inform7</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> inform7</span>
         <span class="plain">Repeating: ?4. problems</span>
         <span class="plain">...</span>
 </pre>
@@ -136,10 +122,8 @@ example, abbreviates <code class="display"><span class="extract">Beatles Sackclo
 only of positive decimal numbers into the names recorded in the history. Thus
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest inform7 1 2</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> inform7 1 2</span>
         <span class="plain">Expanded to: ?5. PM_ActivityOf PM_AdjectiveIsValue</span>
         <span class="plain">...</span>
 </pre>
@@ -151,10 +135,8 @@ in it, because those have all been taken care of. What remains is a "raw
 command". This takes the form:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">OPTIONS -usimg USING -do DO</span>
+        <span class="plain">OPTIONS -using USING -do DO</span>
 </pre>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">OPTIONS</span></code>, which can be nothing at all, sets overall switches such as
@@ -163,16 +145,12 @@ that too is optional. <code class="display"><span class="extract">-do</span></co
 isn't a <code class="display"><span class="extract">-using</span></code> block, there's no need to say <code class="display"><span class="extract">-do</span></code>, so simply
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">OPTIONS DO</span>
 </pre>
 
 <p class="inwebparagraph">will work. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-no-history bigarrays badvariables</span>
@@ -214,16 +192,12 @@ named test cases available, and work out which recipe to use with each.
 <p class="inwebparagraph">It normally does that by reading a recipe file stored at:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">PROJECT/Tests/PROJECT.intest</span>
 </pre>
 
 <p class="inwebparagraph">This is because the default <code class="display"><span class="extract">-using</span></code> setting is
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-using PROJECT/Tests/PROJECT.intest</span>
@@ -237,8 +211,6 @@ be in the project folder.
 at the command line and not in a recipe file at all. Newcomers to Intest
 should simply skip the following discussion, but:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-using USE1 USE2 ... USEn</span>
@@ -284,16 +256,12 @@ gone into in the next section.)
 be tried. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">alpha beta gamma</span>
 </pre>
 
 <p class="inwebparagraph">is implicitly read as
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-test alpha beta gamma</span>
@@ -337,10 +305,8 @@ produce an enormous list, but <code class="display"><span class="extract">-using
 from Inform,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest inform7 -using -extension 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x' -do -catalogue</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> inform7</span><span class="identifier"> -using -extension</span><span class="plain"> 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'</span><span class="identifier"> -do -catalogue</span>
         <span class="plain">Locksmith Example A = John Malkovich's Toilet</span>
         <span class="plain">Locksmith Example B = Tobacco</span>
         <span class="plain">Locksmith Example C = Rekeying</span>
@@ -358,10 +324,8 @@ titles match <code class="display"><span class="extract">&lt;text&gt;</span></co
 for a digit, and so on. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest inform7 -find %d%d%d%d</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> inform7</span><span class="identifier"> -find</span><span class="plain"> %d%d%d%d</span>
         <span class="plain">Test cases matching '%d%d%d%d':</span>
         <span class="plain">Jamaica1688 = Jamaica 1688</span>
         <span class="plain">Mapped = 1691</span>
@@ -391,28 +355,17 @@ script of player inputs to be used when running the story file produced
 by compiling this test case; the script being drawn from the
 </p>
 
-<p class="inwebparagraph"></p>
+<blockquote>
+    <p>Test me with "...".</p>
 
-<pre class="display">
-        <span class="plain">Test me with "..."</span>
-</pre>
+</blockquote>
 
 <p class="inwebparagraph">line inside the source, if one is present. If no script is there, this
 produces empty output, but does not throw an error. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest -using -extension 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x' -do -script C</span>
-</pre>
-
-<p class="inwebparagraph">prints out the command script for Example C of Locksmith:
-</p>
-
-<p class="inwebparagraph"></p>
-
-<pre class="display">
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest</span><span class="identifier"> -using -extension</span><span class="plain"> 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'</span><span class="identifier"> -do -script</span><span class="plain"> C</span>
         <span class="plain">i</span>
         <span class="plain">x key</span>
         <span class="plain">unlock box</span>
@@ -420,12 +373,13 @@ produces empty output, but does not throw an error. For example:
         <span class="plain">x key</span>
 </pre>
 
+<p class="inwebparagraph">which is the command script for Example C of Locksmith:
+</p>
+
 <p class="inwebparagraph"><code class="display"><span class="extract">-concordance &lt;cases&gt;</span></code>: Output a concordance table for comparing line numbers
 between the source text extracted by Intest vs. the original file they came
 from. This is a sequence of lines of the form:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">1 +404</span>
@@ -436,8 +390,6 @@ from. This is a sequence of lines of the form:
 be any number of such lines, including none at all (which means: the line
 numbers match); e.g.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">1 +404</span>
@@ -502,16 +454,12 @@ usage of <code class="display"><span class="extract">[NUMBER]</span></code> expa
 each test case being applied to by this action. Thus, for example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">-source A B C D -to source_[NAME].txt</span>
 </pre>
 
 <p class="inwebparagraph">might write four files, called, say,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">source_Locksmith Example A.txt</span>
@@ -530,8 +478,6 @@ after the Inform app has conducted a test, it asks intest to produce an HTML
 page to describe the results of the test, passing over the information needed
 to do this:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-report &lt;case&gt; &lt;code&gt; &lt;problems-file&gt; &lt;skein-file&gt;</span>
@@ -556,19 +502,15 @@ to do this:
 <p class="inwebparagraph">For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest inform7</span>
-        <span class="plain">    -using -extension Locksmith.i7xp/Source/extension.i7x</span>
-        <span class="plain">    -do -report C i7 Locksmith.i7xp/Build/Problems.html Locksmith.i7xp/Skein.skein</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="plain"> inform7</span>
+            <span class="plain">-using -extension Locksmith.i7xp/Source/extension.i7x</span>
+            <span class="plain">-do -report C i7 Locksmith.i7xp/Build/Problems.html Locksmith.i7xp/Skein.skein</span>
 </pre>
 
 <p class="inwebparagraph">reports on the failure of example C from the <code class="display"><span class="extract">Locksmith.i7xp</span></code> project. The
 output is HTML, but sent to stdout by default; use something like
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-to Locksmith.i7xp/Build/Problems-3.html</span>
@@ -585,8 +527,6 @@ into a consolidated report, which, once again, it writes as HTML. The format
 here is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">-combine &lt;base-filename&gt; -&lt;N&gt;</span>
 </pre>
@@ -595,18 +535,14 @@ here is:
 but with "-1", "-2", ..., tacked on before the file extension. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest -using -extension Locksmith.i7xp/Source/extension.i7x</span>
-        <span class="plain">    -do -combine Locksmith.i7xp/Build/Problems.html -4</span>
-        <span class="plain">    -to Locksmith.i7xp/Build/Consolidated.html</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest</span><span class="identifier"> -using -extension</span><span class="plain"> Locksmith.i7xp/Source/extension.i7x</span>
+            <span class="plain">-do -combine Locksmith.i7xp/Build/Problems.html -4</span>
+            <span class="plain">-to Locksmith.i7xp/Build/Consolidated.html</span>
 </pre>
 
 <p class="inwebparagraph">reads in
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Locksmith.i7xp/Build/Problems-1.html</span>
@@ -618,8 +554,6 @@ but with "-1", "-2", ..., tacked on before the file extension. Thus:
 <p class="inwebparagraph">and writes out a consolidated report into
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Locksmith.i7xp/Build/Consolidated.html</span>
 </pre>
@@ -628,8 +562,6 @@ but with "-1", "-2", ..., tacked on before the file extension. Thus:
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Skein file testing. </b>In order to be used by the Testing panel in the Inform app, intest also supports the following:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-test-skein &lt;file&gt; &lt;node-id&gt;</span>

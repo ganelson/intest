@@ -95,15 +95,15 @@ double-quoted text, then that's the title for the test case.
 
 @ See the Inform 7 documentation examples to explain this more fully, but
 this is a typical start of an EXAMPLE file:
-
-	|* Printing the banner text|
-	|(Banner printing at appropriate times; Bikini Atoll)|
-	|Delaying the banner for later.|
-	||
-	|    {*}"Bikini Atoll" by Edward Teller|
-	||
-	|    The Hut and the Tropical Beach are rooms.|
-
+= (text)
+	* Printing the banner text
+	(Banner printing at appropriate times; Bikini Atoll)
+	Delaying the banner for later.
+	
+	    {*}"Bikini Atoll" by Edward Teller
+	
+	    The Hut and the Tropical Beach are rooms.
+=
 The test case can only begin after the header, which always occupies three
 lines, and we look out for the |{*}| marker.
 
@@ -253,11 +253,11 @@ sentence. Again, useful only for Inform 7.
 
 @ This unpacks a script like |yes / no / maybe| into a column with one
 command per line:
-
-	|yes|
-	|no|
-	|maybe|
-
+= (text)
+	yes
+	no
+	maybe
+=
 which it pours into the given text stream. All white space around the slashes
 is soaked up.
 

@@ -43,26 +43,22 @@ which makes a sort of conversation possible: start by testing a batch, then
 retest those which fail, fixing them one by one, and so on. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -from myproject all</span>
-        <span class="plain">myproject -&gt; cases: [1] [2] [3] [4] </span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -from</span><span class="plain"> myproject all</span>
+        <span class="plain">myproject -&gt; cases: [1] [2] [3] [4]</span>
         <span class="plain">Discrepancy at line 7:</span>
-        <span class="plain">    Planet is: Joopiter</span>
+            <span class="plain">Planet is: Joopiter</span>
         <span class="plain">[5] planets produced incorrect output</span>
         <span class="plain">[6] [7] [8] [9]</span>
-        <span class="plain">  8 tests succeeded but 1 failed (time taken 0:02, 9 simultaneous threads)</span>
+        <span class="plain">8 tests succeeded but 1 failed (time taken 0:02, 9 simultaneous threads)</span>
         <span class="plain">Failed: 1=planets</span>
 </pre>
 
 <p class="inwebparagraph">Suppose we go fix that bug, and then retest:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -from myproject 1</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -from</span><span class="plain"> myproject 1</span>
         <span class="plain">Expanded to: ?322. planets</span>
         <span class="plain">[1] planets passed</span>
 </pre>
@@ -72,19 +68,15 @@ retest those which fail, fixing them one by one, and so on. For example,
 tests run, too: this one was test run <code class="display"><span class="extract">?322</span></code>. We could have listed those by
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -from myproject ?</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -from</span><span class="plain"> myproject ?</span>
 </pre>
 
 <p class="inwebparagraph">and recalled any of them by number:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -from myproject ?315</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -from</span><span class="plain"> myproject ?315</span>
         <span class="plain">Repeating: ?315. rockets moons</span>
         <span class="plain">[1] rockets passed</span>
         <span class="plain">[2] moons passed</span>
@@ -101,21 +93,18 @@ to see that some expected error message is produced.
 <p class="inwebparagraph">Each individual test is performed by following a "recipe". Recipes are simple
 mini-language called Delia, which sits on top of the host operating system's
 command-line shell. For example, here is Delia code for testing what ought to
-be a valid input to a tool called
-<code class="display"><span class="extract">zap</span></code> inside the <code class="display"><span class="extract">myproject</span></code> folder:
+be a valid input to a tool called <code class="display"><span class="extract">zap</span></code> inside the <code class="display"><span class="extract">myproject</span></code> folder:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">set: $A = $PATH/_actual/$CASE.txt</span>
-        <span class="plain">set: $I = $PATH/_ideal/$CASE.txt</span>
-        <span class="plain">step: myproject/zap $PATH/$CASE.txt &gt;$A 2&gt;&amp;1</span>
-        <span class="plain">or: 'failed zap' $A</span>
-        <span class="plain">show: $A</span>
-        <span class="plain">match text: $A $I</span>
-        <span class="plain">or: 'produced the wrong output'</span>
-        <span class="plain">pass: 'passed'</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$A</span><span class="plain"> = </span><span class="functiontext">$PATH</span><span class="plain">/_actual/</span><span class="functiontext">$CASE</span><span class="plain">.txt</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$I</span><span class="plain"> = </span><span class="functiontext">$PATH</span><span class="plain">/_ideal/</span><span class="functiontext">$CASE</span><span class="plain">.txt</span>
+        <span class="reserved">step</span><span class="plain">: myproject/zap </span><span class="functiontext">$PATH</span><span class="plain">/</span><span class="functiontext">$CASE</span><span class="plain">.txt &gt;</span><span class="functiontext">$A</span><span class="plain"> 2&gt;&amp;1</span>
+        <span class="reserved">or</span><span class="plain">: 'failed zap' </span><span class="functiontext">$A</span>
+        <span class="reserved">show</span><span class="plain">: </span><span class="functiontext">$A</span>
+        <span class="reserved">match text</span><span class="plain">: </span><span class="functiontext">$A</span><span class="plain"> </span><span class="functiontext">$I</span>
+        <span class="reserved">or</span><span class="plain">: 'produced the wrong output'</span>
+        <span class="reserved">pass</span><span class="plain">: 'passed'</span>
 </pre>
 
 <p class="inwebparagraph">This looks more forbidding than it is. Variables start with a dollar, as in
@@ -124,11 +113,9 @@ of the current test case: perhaps "planets". <code class="display"><span class="
 folder, which might be, for example, "myproject/tests". What happens is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">set: $A = $PATH/_actual/$CASE.txt</span>
-        <span class="plain">set: $I = $PATH/_ideal/$CASE.txt</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$A</span><span class="plain"> = </span><span class="functiontext">$PATH</span><span class="plain">/_actual/</span><span class="functiontext">$CASE</span><span class="plain">.txt</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$I</span><span class="plain"> = </span><span class="functiontext">$PATH</span><span class="plain">/_ideal/</span><span class="functiontext">$CASE</span><span class="plain">.txt</span>
 </pre>
 
 <p class="inwebparagraph">This sets two filenames &mdash; it doesn't create these files, simply creates
@@ -137,10 +124,8 @@ being tested, while <code class="display"><span class="extract">$I</span></code>
 printed. Next:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">step: myproject/zap $PATH/$CASE.txt &gt;$A 2&gt;&amp;1</span>
+        <span class="reserved">step</span><span class="plain">: myproject/zap </span><span class="functiontext">$PATH</span><span class="plain">/</span><span class="functiontext">$CASE</span><span class="plain">.txt &gt;</span><span class="functiontext">$A</span><span class="plain"> 2&gt;&amp;1</span>
 </pre>
 
 <p class="inwebparagraph">A "step" is a stage in a test which involves issuing a shell command, and
@@ -154,10 +139,8 @@ does something with that file, and prints out something interesting about it.
 might be:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">myproject/zap myproject/tests/planets.txt &gt;myproject/tests/_actual/planets.txt 2&gt;&amp;1</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">myproject/zap</span><span class="plain"> myproject/tests/planets.txt &gt;myproject/tests/_actual/planets.txt 2&gt;&amp;1</span>
 </pre>
 
 <p class="inwebparagraph">which uses bash shell notation to redirect both printed output, and error
@@ -167,10 +150,8 @@ messages, to the <code class="display"><span class="extract">$A</span></code> fi
 <p class="inwebparagraph">The next line in the recipe is then:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">or: 'failed zap' $A</span>
+        <span class="reserved">or</span><span class="plain">: 'failed zap' </span><span class="functiontext">$A</span>
 </pre>
 
 <p class="inwebparagraph">This tells Intest to halt the test if the shell command failed (i.e., if
@@ -184,10 +165,8 @@ want to see.
 messages. The next line is not quite what it seems:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">show: $A</span>
+        <span class="reserved">show</span><span class="plain">: </span><span class="functiontext">$A</span>
 </pre>
 
 <p class="inwebparagraph">This tells Intest that if the tester ran the test specifying <code class="display"><span class="extract">-show</span></code> on
@@ -196,11 +175,9 @@ didn't say <code class="display"><span class="extract">-show</span></code>, we p
 in the recipe are more consequential:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">match text: $A $I</span>
-        <span class="plain">or: 'produced the wrong output'</span>
+        <span class="reserved">match text</span><span class="plain">: </span><span class="functiontext">$A</span><span class="plain"> </span><span class="functiontext">$I</span>
+        <span class="reserved">or</span><span class="plain">: 'produced the wrong output'</span>
 </pre>
 
 <p class="inwebparagraph">This does what it looks as if it should, but it has hidden powers. If the
@@ -209,10 +186,8 @@ compare against. In that case Intest doesn't fail the stage, but it does
 mark it in the summary:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -from myproject planets</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -from</span><span class="plain"> myproject planets</span>
         <span class="plain">-1- planets passed</span>
 </pre>
 
@@ -221,20 +196,16 @@ test was incompletely passed in this way. This is easy to fix. If we're
 happy with the actual output, we "bless" it:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -from myproject -bless planets</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -from</span><span class="plain"> myproject</span><span class="identifier"> -bless</span><span class="plain"> planets</span>
         <span class="plain">[1] planets passed</span>
 </pre>
 
 <p class="inwebparagraph">With <code class="display"><span class="extract">-bless</span></code> specified, when the recipe hits:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">match text: $A $I</span>
+        <span class="reserved">match text</span><span class="plain">: </span><span class="functiontext">$A</span><span class="plain"> </span><span class="functiontext">$I</span>
 </pre>
 
 <p class="inwebparagraph">Intest sets the ideal output to the actual output: the two then necessarily
@@ -249,10 +220,8 @@ immediately followed by a blessing.)
 to be incorrect. So we conclude with a triumphant:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">pass: 'passed'</span>
+        <span class="reserved">pass</span><span class="plain">: 'passed'</span>
 </pre>
 
 <p class="inwebparagraph">Recipes can be substantially longer and more elaborate, running through
@@ -274,10 +243,8 @@ same parent directory, and then change working directory to that. Thus, you
 should reach:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ ls</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">ls</span>
         <span class="plain">intest   inweb</span>
 </pre>
 
@@ -285,10 +252,8 @@ should reach:
 its own documentation for that. Then:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inweb/Tangled/inweb intest -makefile intest/intest.mk</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="plain"> intest</span><span class="identifier"> -makefile</span><span class="plain"> intest/intest.mk</span>
 </pre>
 
 <p class="inwebparagraph">This makes the makefile we will use. It will automatically be configured
@@ -296,29 +261,23 @@ suitably for the operating system we're using: the MacOS version of Inweb
 will make us a MacOS version of this makefile, and so on. Now we can make:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ make -f intest/intest.mk</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> intest/intest.mk</span>
 </pre>
 
 <p class="inwebparagraph">All being well, you now have a working Intest. The executable is in
 <code class="display"><span class="extract">intest/Tangled/intest</span></code>, so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -help</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -help</span>
 </pre>
 
 <p class="inwebparagraph">should verify that it's in working order. A more interesting test is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ intest/Tangled/intest -from inweb all</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> -from</span><span class="plain"> inweb all</span>
 </pre>
 
 <p class="inwebparagraph">which runs the Inweb test suite (a very modest one, as it happens).
@@ -327,10 +286,8 @@ will make us a MacOS version of this makefile, and so on. Now we can make:
 <p class="inwebparagraph">Users of, for example, the <code class="display"><span class="extract">bash</span></code> shell may want to
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ alias intest='intest/Tangled/intest'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">alias</span><span class="plain"> intest='intest/Tangled/intest'</span>
 </pre>
 
 <p class="inwebparagraph">to save a little typing, but in this documentation we always spell it out.

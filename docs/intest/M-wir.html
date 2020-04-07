@@ -101,8 +101,6 @@ source text, in a way not worth going into here.
 useful fashion; by default, Intest expects to find this file at
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">PROJECT/Tests/PROJECT.intest</span>
 </pre>
@@ -124,25 +122,25 @@ discovered in that directory.
 </p>
 
 <pre class="display">
-    <span class="plain">-cases 'inform7/kinds-test/Tests/Test Cases'</span>
+    <span class="identifier">-cases</span><span class="plain"> 'inform7/kinds-test/Tests/Test Cases'</span>
 
-    <span class="plain">-recipe</span>
+    <span class="identifier">-recipe</span>
 
-        <span class="plain">set: $A = $PATH/_Results_Actual/$CASE.txt</span>
-        <span class="plain">set: $I = $PATH/_Results_Ideal/$CASE.txt</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$A</span><span class="plain"> = </span><span class="functiontext">$PATH</span><span class="plain">/_Results_Actual/</span><span class="functiontext">$CASE</span><span class="plain">.txt</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$I</span><span class="plain"> = </span><span class="functiontext">$PATH</span><span class="plain">/_Results_Ideal/</span><span class="functiontext">$CASE</span><span class="plain">.txt</span>
 
-        <span class="plain">step: inform7/kinds-test/Tangled/kinds-test -test-$CASE $PATH/$CASE.txt &gt;$A 2&gt;&amp;1</span>
-        <span class="plain">or: 'produced errors in kinds-test' $A</span>
+        <span class="reserved">step</span><span class="plain">: inform7/kinds-test/Tangled/kinds-test -test-</span><span class="functiontext">$CASE</span><span class="plain"> </span><span class="functiontext">$PATH</span><span class="plain">/</span><span class="functiontext">$CASE</span><span class="plain">.txt &gt;</span><span class="functiontext">$A</span><span class="plain"> 2&gt;&amp;1</span>
+        <span class="reserved">or</span><span class="plain">: 'produced errors in kinds-test' </span><span class="functiontext">$A</span>
 
-        <span class="plain">show: $A</span>
+        <span class="reserved">show</span><span class="plain">: </span><span class="functiontext">$A</span>
 
-        <span class="plain">exists: $I</span>
-        <span class="plain">or: 'passed without errors but no blessed output existed'</span>
+        <span class="reserved">exists</span><span class="plain">: </span><span class="functiontext">$I</span>
+        <span class="reserved">or</span><span class="plain">: 'passed without errors but no blessed output existed'</span>
 
-        <span class="plain">match text: $A $I</span>
-        <span class="plain">or: 'produced incorrect output'</span>
+        <span class="reserved">match text</span><span class="plain">: </span><span class="functiontext">$A</span><span class="plain"> </span><span class="functiontext">$I</span>
+        <span class="reserved">or</span><span class="plain">: 'produced incorrect output'</span>
 
-    <span class="plain">-end</span>
+    <span class="identifier">-end</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -182,13 +180,11 @@ more convenient to write &mdash;
 <p class="inwebparagraph"><code class="display"><span class="extract">-recipe [NAME]</span></code> followed by a definition written in the main file itself:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">-recipe [NAME]</span>
-        <span class="plain">    ...</span>
-        <span class="plain">    ...</span>
-        <span class="plain">-end</span>
+        <span class="identifier">-recipe</span><span class="plain"> [NAME]</span>
+            <span class="plain">...</span>
+            <span class="plain">...</span>
+        <span class="identifier">-end</span>
 </pre>
 
 <p class="inwebparagraph">where the definition occupies the lines in between the <code class="display"><span class="extract">-recipe</span></code> line and the
@@ -222,18 +218,14 @@ written by an American, it would have been called Julia.
 marks <code class="display"><span class="extract">!</span></code> are ignored. All other lines must have the form
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">command: token1 ... tokenN</span>
+        <span class="reserved">command</span><span class="plain">: token1 ... tokenN</span>
 </pre>
 
 <p class="inwebparagraph">where different commands need different numbers of tokens. Most commands
 are a single word, but a few are more than one. There are sometimes no
 tokens at all, in which case no colon is required:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">command</span>
@@ -244,10 +236,8 @@ allowed at the end of it. Quotation marks can be used to make multiple words
 a single token; thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">exists: 'My Tests/output.txt'</span>
+        <span class="reserved">exists</span><span class="plain">: 'My Tests/output.txt'</span>
 </pre>
 
 <p class="inwebparagraph">is a command plus a single token, not two. A backslash can be used to escape
@@ -301,10 +291,8 @@ like <code class="display"><span class="extract">zap/Tests/planets.txt</span></c
 <p class="inwebparagraph">For example, when a new variable is created with:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">set: $NAME = VALUE</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$NAME</span><span class="plain"> = VALUE</span>
 </pre>
 
 <p class="inwebparagraph">the <code class="display"><span class="extract">VALUE</span></code> is expanded before being written into the new variable <code class="display"><span class="extract">$NAME</span></code>.
@@ -313,10 +301,8 @@ like <code class="display"><span class="extract">zap/Tests/planets.txt</span></c
 <p class="inwebparagraph">A wrinkle here is that if the setting value has multiple tokens:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">set: $NAME = VALUE1 VALUE2 ...</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$NAME</span><span class="plain"> = VALUE1 VALUE2 ...</span>
 </pre>
 
 <p class="inwebparagraph">then they are each "quote-expanded", rather than being simply "expanded".
@@ -325,16 +311,12 @@ of tokens, rather than as a fragment or the whole of a single token.
 For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">set: $OPTIONS = -no-warnings -p=10 -to $FILE.txt</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$OPTIONS</span><span class="plain"> = -no-warnings -p=10 -to </span><span class="functiontext">$FILE</span><span class="plain">.txt</span>
 </pre>
 
 <p class="inwebparagraph">sets the value to be
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt'</span>
@@ -349,16 +331,12 @@ the tokens, <code class="display"><span class="extract">$FILE.txt</span></code>,
 defined:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">set: $MOREOPTIONS = $OPTIONS -lang=en-uk</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$MOREOPTIONS</span><span class="plain"> = </span><span class="functiontext">$OPTIONS</span><span class="plain"> -lang=en-uk</span>
 </pre>
 
 <p class="inwebparagraph">We would then get the value:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">'\'-no-warnings\' \'-p=10\' \'-verbose\' \'-to\' \'My File.txt\'' '-lang=en-uk'</span>
@@ -368,16 +346,12 @@ defined:
 expansion of the first token:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">set: $MOREOPTIONS = `$OPTIONS -lang=en-uk</span>
+        <span class="reserved">set</span><span class="plain">: </span><span class="functiontext">$MOREOPTIONS</span><span class="plain"> = `</span><span class="functiontext">$OPTIONS</span><span class="plain"> -lang=en-uk</span>
 </pre>
 
 <p class="inwebparagraph">which gets it right:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt' '-lang=en-uk'</span>
@@ -393,16 +367,12 @@ Thus for example if the file <code class="display"><span class="extract">Frog.tx
 back on a frog", then
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">$[Frog.txt$]</span>
 </pre>
 
 <p class="inwebparagraph">will quote-expand to:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">'never' 'turn' 'your' 'back' 'on' 'a' 'frog'</span>
@@ -420,8 +390,6 @@ most Unix systems (including MacOS). In that example, a test case such as
 running dc:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">-e '1 1 + p'</span>
 </pre>
@@ -429,19 +397,15 @@ running dc:
 <p class="inwebparagraph">The important step in the recipe for using this then reads:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">step: dc $[$PATH/$CASE.txt$]</span>
+        <span class="reserved">step</span><span class="plain">: dc $[</span><span class="functiontext">$PATH</span><span class="plain">/</span><span class="functiontext">$CASE</span><span class="plain">.txt$]</span>
 </pre>
 
 <p class="inwebparagraph">and this causes Intest to run the command:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ dc -e '1 1 + p'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">dc</span><span class="identifier"> -e</span><span class="plain"> '1 1 + p'</span>
 </pre>
 
 <p class="inwebparagraph">which produces the concise output "2".
@@ -520,8 +484,6 @@ disagree about the decimal number appearing in a use of <code class="display"><s
 is that number. For example, these two lines match:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Opened intest/Workspace/T4/intermediate.txt</span>
         <span class="plain">Opened intest/Workspace/T11/intermediate.txt</span>
@@ -535,8 +497,6 @@ output which will contain the thread number it is running on. But since
 we want to verify that output, we need to allow such output to match. What
 happens internally is that both lines are converted to
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Opened intest/Workspace/Txx/intermediate.txt</span>
@@ -559,11 +519,9 @@ out into I7 console output or into story file transcripts.
 For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">exists: $TRANSCRIPT</span>
-        <span class="plain">or: 'no transcript was written'</span>
+        <span class="reserved">exists</span><span class="plain">: </span><span class="functiontext">$TRANSCRIPT</span>
+        <span class="reserved">or</span><span class="plain">: 'no transcript was written'</span>
 </pre>
 
 <p class="inwebparagraph">(When testing a program which doesn't return exit codes, sometimes the best
@@ -592,11 +550,9 @@ which is optional, is then printed out when Intest describes what went
 wrong. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">step: dc -e $EXPRESSION</span>
-        <span class="plain">or: 'dc produced an error'</span>
+        <span class="reserved">step</span><span class="plain">: dc -e </span><span class="functiontext">$EXPRESSION</span>
+        <span class="reserved">or</span><span class="plain">: 'dc produced an error'</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -627,14 +583,12 @@ exist, but this possibility can be picked up by placing an <code class="display"
 an if/then/else command, working in the obvious way.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if matches: TOKEN EXPRESSION</span>
-        <span class="plain">    ...</span>
-        <span class="plain">else</span>
-        <span class="plain">    ...</span>
-        <span class="plain">endif</span>
+        <span class="reserved">if matches</span><span class="plain">: TOKEN EXPRESSION</span>
+            <span class="plain">...</span>
+        <span class="reserved">else</span>
+            <span class="plain">...</span>
+        <span class="reserved">endif</span>
 </pre>
 
 <p class="inwebparagraph">The <code class="display"><span class="extract">else</span></code> clause is optional, and these conditionals can be nested in the
@@ -646,19 +600,15 @@ if the expanded token matches the regular expression defined by the expanded
 expression. That can be just a simple textual match:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if matches: $CASE Balloons</span>
+        <span class="reserved">if matches</span><span class="plain">: </span><span class="functiontext">$CASE</span><span class="plain"> Balloons</span>
 </pre>
 
 <p class="inwebparagraph">tests if the current test case name is "Balloons". On the other hand,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if matches: $CASE Party-%d+</span>
+        <span class="reserved">if matches</span><span class="plain">: </span><span class="functiontext">$CASE</span><span class="plain"> Party-%d+</span>
 </pre>
 
 <p class="inwebparagraph">would match cases such as <code class="display"><span class="extract">Party-12</span></code>, because <code class="display"><span class="extract">%d+</span></code> is regular expression
@@ -670,14 +620,16 @@ miscellany of other features. It has a very limited ability to write to
 the file system itself:
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">copy: FROM TO</span></code>
-</p>
+<pre class="display">
+        <span class="reserved">copy</span><span class="plain">: FROM TO</span>
+</pre>
 
 <p class="inwebparagraph">copies a file. This should only be used to copy into the work area <code class="display"><span class="extract">$WORK</span></code>.
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">mkdir: PATH</span></code>
-</p>
+<pre class="display">
+        <span class="reserved">mkdir</span><span class="plain">: PATH</span>
+</pre>
 
 <p class="inwebparagraph">ensures the existence of directory at the given <code class="display"><span class="extract">PATH</span></code>. (Again, this should
 be used only to make subdirectories of <code class="display"><span class="extract">$WORK</span></code>.) There is intentionally no
@@ -724,11 +676,9 @@ checksum is the same as the last time this checksum was performed for the
 test case in question. That enables something like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">hash: $I6SOURCE $WORK/checksum.txt</span>
-        <span class="plain">or: 'passed (matching cached I6 known to work)'</span>
+        <span class="reserved">hash</span><span class="plain">: </span><span class="functiontext">$I6SOURCE</span><span class="plain"> </span><span class="functiontext">$WORK</span><span class="plain">/checksum.txt</span>
+        <span class="reserved">or</span><span class="plain">: 'passed (matching cached I6 known to work)'</span>
 </pre>
 
 <p class="inwebparagraph">(Uniquely, the <code class="display"><span class="extract">or:</span></code> in this case causes the overall test to pass, not fail.)

@@ -3,9 +3,9 @@
 To manage a set of text variables held in common among all test cases.
 
 @ A global variable is (mostly) created in a recipe file by a command like:
-
-	|-set hash_utility 'md5'|
-
+= (text)
+	-set hash_utility 'md5'
+=
 In Delia code it would then be referred to as |$$hash_utility|. This section
 manages the global variables, but has nothing to do with Delia's local
 variables, which have single-dollar names conventionally written in

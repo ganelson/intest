@@ -6,9 +6,9 @@ To optimise by storing MD5 hashes of known-to-be-correct output.
 In order to support Delia's |hash:| command, we need to be able to assign
 each test case a hash value. This will typically be a short hexadecimal string
 such as:
-
-	|64b479d74cd38b887590f139b64ee920|
-
+= (text)
+	64b479d74cd38b887590f139b64ee920
+=
 The empty text is considered to mean "no cache value known".
 
 =

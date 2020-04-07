@@ -4,13 +4,13 @@ To parse and carry out requests to do something.
 
 @h Reading the command line.
 Suppose the tester invoked Intest as
-
-	|$ intest/Tangled/intest inweb -bless plain twinprimes|
-
+= (text as ConsoleText)
+	$ intest/Tangled/intest inweb -bless plain twinprimes
+=
 The following routine will be called to take care of the actual command:
-
-	|-bless plain twinprimes|
-
+= (text)
+	-bless plain twinprimes
+=
 The tokens |-bless|, |plain| and |twinprimes| will be in the array |argv|,
 at indexes |from_arg_n| onwards. |to_arg_n| is the index after the last one.
 The token list can contain multiple actions, one after the other.

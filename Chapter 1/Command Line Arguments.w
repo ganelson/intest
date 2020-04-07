@@ -94,9 +94,9 @@ What will do is to divide the sequence of tokens on the command line into
 parameters form a do block, unless |-using| is found, in which case
 everything after that until a |-do| is found (if it is) counts as a
 using block. For example,
-
-	|alpha beta -using gamma -do delta epsilon|
-
+= (text)
+	alpha beta -using gamma -do delta epsilon
+=
 would be divided into the do block |alpha beta|, then the using block |gamma|,
 then the do block |delta epsilon|.
 
@@ -147,9 +147,9 @@ Foundation-defined switches, so we clear thpse out of the way first.
 @h Parsing Foundation-defined switches.
 As noted above, not all commands are done via Foundation. The following
 routine picks up any that are. If a do block contains:
-
-	|-threads=4 -no-colours -help alpha beta|
-
+= (text)
+	-threads=4 -no-colours -help alpha beta
+=
 then this code will read and act on |-threads=4 -no-colours -help|, returning
 an advanced start position for the do block, i.e., cutting it down to
 just |alpha beta|.

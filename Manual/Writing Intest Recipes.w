@@ -65,9 +65,9 @@ source text, in a way not worth going into here.
 @h Recipe files.
 As previously noted, Intest needs a recipe file in order to run in any
 useful fashion; by default, Intest expects to find this file at
-
-	|PROJECT/Tests/PROJECT.intest|
-
+= (text)
+	PROJECT/Tests/PROJECT.intest
+=
 where |PROJECT| is the name of the tested project's home directory. But
 with the |-using| switch at the command line, an alternative file cam be
 used somewhere else.
@@ -81,7 +81,7 @@ the location of a directory of test cases which will have type |case|, and
 then gives a single recipe, which Intest will use on whatever cases it
 discovered in that directory.
 
-= (not code)
+= (text as Delia)
 -cases 'inform7/kinds-test/Tests/Test Cases'
 
 -recipe
@@ -128,12 +128,12 @@ text file. This is the old-fashioned way; experienced showed that it was
 more convenient to write --
 
 |-recipe [NAME]| followed by a definition written in the main file itself:
-
-	|-recipe [NAME]|
-	|    ...|
-	|    ...|
-	|-end|
-
+= (text as Delia)
+	-recipe [NAME]
+	    ...
+	    ...
+	-end
+=
 where the definition occupies the lines in between the |-recipe| line and the
 |-end| line. (Those lines in between are not commands and don't start with
 dashes.)
@@ -158,21 +158,21 @@ written by an American, it would have been called Julia.
 
 In Delia, once again, blanks lines and lines beginning with exclamation
 marks |!| are ignored. All other lines must have the form
-
-	|command: token1 ... tokenN|
-
+= (text as Delia)
+	command: token1 ... tokenN
+=
 where different commands need different numbers of tokens. Most commands
 are a single word, but a few are more than one. There are sometimes no
 tokens at all, in which case no colon is required:
-
-	|command|
-
+= (text as Delia)
+	command
+=
 The command and its tokens must occupy a single line and no comment is
 allowed at the end of it. Quotation marks can be used to make multiple words
 a single token; thus:
-
-	|exists: 'My Tests/output.txt'|
-
+= (text as Delia)
+	exists: 'My Tests/output.txt'
+=
 is a command plus a single token, not two. A backslash can be used to escape
 the quotation mark when inside quotes. A token which begins with a backtick,
 |`thus|, is marked as not to be quoted: see below.
@@ -213,48 +213,48 @@ it substitutes in the values of |$PATH| and |$CASE| to produce something
 like |zap/Tests/planets.txt|. This process is called "expansion".
 
 For example, when a new variable is created with:
-
-	|set: $NAME = VALUE|
-
+= (text as Delia)
+	set: $NAME = VALUE
+=
 the |VALUE| is expanded before being written into the new variable |$NAME|.
 
 A wrinkle here is that if the setting value has multiple tokens:
-
-	|set: $NAME = VALUE1 VALUE2 ...|
-
+= (text as Delia)
+	set: $NAME = VALUE1 VALUE2 ...
+=
 then they are each "quote-expanded", rather than being simply "expanded".
 This basically means that the value is meant to be used in place of a string
 of tokens, rather than as a fragment or the whole of a single token.
 For example:
-
-	|set: $OPTIONS = -no-warnings -p=10 -to $FILE.txt|
-
+= (text as Delia)
+	set: $OPTIONS = -no-warnings -p=10 -to $FILE.txt
+=
 sets the value to be
-
-	|'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt'|
-
+= (text as Delia)
+	'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt'
+=
 This precaution is in case, as happened in this example, expansion of one of
 the tokens, |$FILE.txt|, brought in new white space -- here, the space between
 "My" and "File".
 
 Quote-expansion is not always what we want. For example, suppose we further
 defined:
-
-	|set: $MOREOPTIONS = $OPTIONS -lang=en-uk|
-
+= (text as Delia)
+	set: $MOREOPTIONS = $OPTIONS -lang=en-uk
+=
 We would then get the value:
-
-	|'\'-no-warnings\' \'-p=10\' \'-verbose\' \'-to\' \'My File.txt\'' '-lang=en-uk'|
-
+= (text)
+	'\'-no-warnings\' \'-p=10\' \'-verbose\' \'-to\' \'My File.txt\'' '-lang=en-uk'
+=
 which of course is wrong. We avoid this using a backtick to suppress quote
 expansion of the first token:
-
-	|set: $MOREOPTIONS = `$OPTIONS -lang=en-uk|
-
+= (text as Delia)
+	set: $MOREOPTIONS = `$OPTIONS -lang=en-uk
+=
 which gets it right:
-
-	|'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt' '-lang=en-uk'|
-
+= (text)
+	'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt' '-lang=en-uk'
+=
 Note that quote expansion respects the Unix shell redirection markers like
 |>file| or |2>&1|, quoting just the file parts.
 
@@ -262,13 +262,13 @@ Quote-expansion also supports one more feature: the token |$[filename$]|
 expands to the (tokenised and further expanded) contents of the file named.
 Thus for example if the file |Frog.txt| contains the words "never turn your
 back on a frog", then
-
-	|$[Frog.txt$]|
-
+= (text as Delia)
+	$[Frog.txt$]
+=
 will quote-expand to:
-
-	|'never' 'turn' 'your' 'back' 'on' 'a' 'frog'|
-
+= (text)
+	'never' 'turn' 'your' 'back' 'on' 'a' 'frog'
+=
 @ Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,
@@ -277,17 +277,17 @@ rather than from a file. See the example supplied with Intest for testing
 most Unix systems (including MacOS). In that example, a test case such as
 |dc/Tests/Cases/plus.txt| contains what to put on the command line when
 running dc:
-
-	|-e '1 1 + p'|
-
+= (text)
+	-e '1 1 + p'
+=
 The important step in the recipe for using this then reads:
-
-	|step: dc $[$PATH/$CASE.txt$]|
-
+= (text as Delia)
+	step: dc $[$PATH/$CASE.txt$]
+=
 and this causes Intest to run the command:
-
-	|$ dc -e '1 1 + p'|
-
+= (text as ConsoleText)
+	$ dc -e '1 1 + p'
+=
 which produces the concise output "2".
 
 @ A Delia recipe runs from the first line onwards. There are no loops,
@@ -348,10 +348,10 @@ equal texts to "match" each other. In particular:
 On a |match text: A B|, a line of A and a line of B will match even if they
 disagree about the decimal number appearing in a use of |/Tn/|, where |n|
 is that number. For example, these two lines match:
-
-	|Opened intest/Workspace/T4/intermediate.txt|
-	|Opened intest/Workspace/T11/intermediate.txt|
-
+= (text)
+	Opened intest/Workspace/T4/intermediate.txt
+	Opened intest/Workspace/T11/intermediate.txt
+=
 This example should suggest why -- when Intest is spreading tests across
 multiple processors, we cannot predict which thread number a test will run
 on; and as a result, we cannot say which sandbox area of the file system
@@ -359,9 +359,9 @@ it is allowed to use. That may cause the program under test to print
 output which will contain the thread number it is running on. But since
 we want to verify that output, we need to allow such output to match. What
 happens internally is that both lines are converted to
-
-	|Opened intest/Workspace/Txx/intermediate.txt|
-
+= (text)
+	Opened intest/Workspace/Txx/intermediate.txt
+=
 and then, of course, they match exactly. This makes runs of the same test
 comparable even when the runs occur on different threads.
 
@@ -374,10 +374,10 @@ out into I7 console output or into story file transcripts.
 
 |exists: F|. This passes if the file at |F| exists on disc, and fails otherwise.
 For example,
-
-	|exists: $TRANSCRIPT|
-	|or: 'no transcript was written'|
-
+= (text as Delia)
+	exists: $TRANSCRIPT
+	or: 'no transcript was written'
+=
 (When testing a program which doesn't return exit codes, sometimes the best
 way to see whether it worked or not is to see whether it produced any output.)
 
@@ -397,10 +397,10 @@ is optional, and is a summary used when Intest prints its results.
 failed, this stops the whole test and marks it as a failure. The |FILE|,
 which is optional, is then printed out when Intest describes what went
 wrong. For example:
-
-	|step: dc -e $EXPRESSION|
-	|or: 'dc produced an error'|
-
+= (text as Delia)
+	step: dc -e $EXPRESSION
+	or: 'dc produced an error'
+=
 @ But there are actually a few others:
 
 |show F|. Stops the test and prints out the file |F|, but only if the test
@@ -419,39 +419,39 @@ exist, but this possibility can be picked up by placing an |or:| after them.
 
 @ As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.
-
-	|if matches: TOKEN EXPRESSION|
-	|    ...|
-	|else|
-	|    ...|
-	|endif|
-
+= (text as Delia)
+	if matches: TOKEN EXPRESSION
+	    ...
+	else
+	    ...
+	endif
+=
 The |else| clause is optional, and these conditionals can be nested in the
 usual way.
 
 What the test does is to expand both |TOKEN| and |EXPRESSION|, and then see
 if the expanded token matches the regular expression defined by the expanded
 expression. That can be just a simple textual match:
-
-	|if matches: $CASE Balloons|
-
+= (text as Delia)
+	if matches: $CASE Balloons
+=
 tests if the current test case name is "Balloons". On the other hand,
-
-	|if matches: $CASE Party-%d+|
-
+= (text as Delia)
+	if matches: $CASE Party-%d+
+=
 would match cases such as |Party-12|, because |%d+| is regular expression
 syntax for "one or more digits here".
 
 @ That's all of the important commands covered, but Delia has a small
 miscellany of other features. It has a very limited ability to write to
 the file system itself:
-
-|copy: FROM TO|
-
+= (text as Delia)
+	copy: FROM TO
+=
 copies a file. This should only be used to copy into the work area |$WORK|.
-
-|mkdir: PATH|
-
+= (text as Delia)
+	mkdir: PATH
+=
 ensures the existence of directory at the given |PATH|. (Again, this should
 be used only to make subdirectories of |$WORK|.) There is intentionally no
 |rm| command. You could fake this easily with |step: rm ...|, but don't
@@ -489,10 +489,10 @@ a (very short) file |TO|. This is a pass/fail command, which means that it
 can be followed by an |or:|, but perhaps unexpectedly, it fails if the
 checksum is the same as the last time this checksum was performed for the
 test case in question. That enables something like this:
-
-	|hash: $I6SOURCE $WORK/checksum.txt|
-	|or: 'passed (matching cached I6 known to work)'|
-
+= (text as Delia)
+	hash: $I6SOURCE $WORK/checksum.txt
+	or: 'passed (matching cached I6 known to work)'
+=
 (Uniquely, the |or:| in this case causes the overall test to pass, not fail.)
 Besides being written to the file, the hash value is also stored in the
 local variable |$HASHCODE|.

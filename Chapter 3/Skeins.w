@@ -279,9 +279,9 @@ we are at a node whose contents we care about:
 compiler. We ignore |Offending filename| lines for much the reason above --
 they exist only in fatal file-system problem messages in any case. A line
 in the form
-
-	|Problem__ PM_ActivityVariableNameless|
-
+= (text)
+	Problem__ PM_ActivityVariableNameless
+=
 is printed by I7 only on test runs, and lets us check that the right
 problem message is being produced. We don't ignore such a line: we capture
 the problem name and label the Skein node with it.
