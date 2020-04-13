@@ -4,6 +4,11 @@
 
 {identity-settings}
 
+# The colony file for this collection of webs contains information about their
+# paths, where they are woven to, and so on
+
+COLONY = $(ME)/docs/docs-src/colony.txt
+
 # Making the program:
 
 $(ME)/Tangled/$(MYNAME): {dependent-files}
@@ -43,9 +48,9 @@ pages:
 	$(ME)/Tangled/$(MYNAME) -help > $(ME)/Figures/help.txt
 	$(INWEB) -prototype intest/scripts/READMEscript.txt -write-me intest/README.md
 	rm -f $(ME)/docs/*.html
-	$(INWEB) $(ME)/docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into $(ME)/docs -navigation $(ME)/docs/docs-src/nav-o.html
-	rm -f $(ME)/docs/$(MYNAME)/*.html
-	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/$(MYNAME) -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
+	rm -f $(ME)/docs/intest/*.html
+	$(INWEB) -colony $(COLONY) -member overview -weave
+	$(INWEB) -colony $(COLONY) -member intest -weave
 
 # Cleaning up:
 
