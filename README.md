@@ -1,6 +1,6 @@
 # Intest 2.0
 
-v2.0-alpha.1+1A07 'The Remembering' (13 April 2020)
+v2.0-alpha.1+1A08 'The Remembering' (14 April 2020)
 
 ## About Intest
 

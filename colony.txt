@@ -1,3 +1,5 @@
+home: intest/docs
+
 navigation: intest/docs/docs-src/nav.html
 pattern: GitHubPages
 

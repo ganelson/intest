@@ -1,4 +1,6 @@
 # This is the script from which inweb -makefile will construct a makefile.
+# To generate intest.mk from its source, use e.g.:
+# inweb/Tangled/inweb intest -prototype intest/scripts/makescript.txt -makefile intest/intest.mk 
 
 {platform-settings}
 
@@ -7,7 +9,7 @@
 # The colony file for this collection of webs contains information about their
 # paths, where they are woven to, and so on
 
-COLONY = $(ME)/docs/docs-src/colony.txt
+COLONY = $(ME)/colony.txt
 
 # Making the program:
 

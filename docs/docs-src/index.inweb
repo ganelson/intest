@@ -1,18 +1,15 @@
-Title: Overview
+Title: The Intest Manual and Source Code
 Author: Graham Nelson
 
-@ This website holds human-readable, or "woven", forms of the source code for
-the literate programming tool Inweb. To download and build Inweb, go to the
-repository's front page and follow the instructions there. These pages are
-purely to help maintainers of Inweb, or anyone interested in looking under the
-hood, to see how it works.
+@ This is the home page for the source code for Intest, a command-line tool
+for testing command-line tools. See //intest: Manual// and //intest: Reference Card//.
 
-@ The Inform software uses literate programming, a doctrine invented by Donald
-Knuth. Under LP, a single program is called a "web", and can either be
-"woven" for humans to read or "tangled" for computers to compile. You are
-reading the woven form. There is just one web presented on this page: for
-a program to test command-line programs, called |intest|.
+Intest is presented as a "web", or "literate program", powered by //inweb//.
+Those new to literate programming may want first to try the modest examples
+there.
 
-Like all tools in the Inform family, it uses a "module" called |foundation|,
-which is shipped with Inweb. A link is provided, but it lives in the |inweb|
-repository, not in this one.
+These pages host "woven", human-readable, forms of the source and are intended
+for browsing. To obtain and build the software, see: https://github.com/ganelson/intest
+
+@ Intest makes use of a "module", that is, a library of C code, called
+//foundation//, which is shipped in the //inweb// repository rather than here.
