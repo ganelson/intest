@@ -26,12 +26,12 @@ int main(int argc, char **argv) {
 	@<Soak up the command line contents@>;
 	@<Work out what the home project is@>;
 
-	pathname *home = Pathnames::subfolder(home_project, I"Tests");
-	Log::set_debug_log_filename(Filenames::in_folder(home, I"intest-debug-log.txt"));
+	pathname *home = Pathnames::down(home_project, I"Tests");
+	Log::set_debug_log_filename(Filenames::in(home, I"intest-debug-log.txt"));
 	filename *script = NULL;
 	@<Work out the default name for the test script@>;
 
-	filename *history = Filenames::in_folder(home, I"intest-history.txt");
+	filename *history = Filenames::in(home, I"intest-history.txt");
 	Historian::research(history, &ts_argc, &ts_argv);
 	int write_up = FALSE;
 
@@ -53,7 +53,7 @@ invent |-help|. It follows that |ts_argc| will always be at least 2.
 @<Soak up the command line contents@> =
 	ts_argc = argc;
 	if (argc == 1) ts_argc = 2;
-	ts_argv = Memory::I7_calloc(argc, sizeof(text_stream *), COMMAND_HISTORY_MREASON);
+	ts_argv = Memory::calloc(argc, sizeof(text_stream *), COMMAND_HISTORY_MREASON);
 	for (int i=0; i<argc; i++) {
 		char *p = argv[i];
 		if ((p[0] == '-') && (p[1] == '-')) p++; /* allow a doubled-dash as equivalent to a single */
@@ -86,7 +86,7 @@ the default is |magiczap.intest|.
 @<Work out the default name for the test script@> =
 	TEMPORARY_TEXT(sfn);
 	WRITE_TO(sfn, "%S.intest", Pathnames::directory_name(Pathnames::up(home)));
-	script = Filenames::in_folder(home, sfn);
+	script = Filenames::in(home, sfn);
 	DISCARD_TEXT(sfn);
 
 @<Read the now-final command line and act upon it@> =

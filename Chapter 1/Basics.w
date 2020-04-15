@@ -6,7 +6,7 @@ Some fundamental definitions.
 This notation tangles out to the current build number as specified in the
 contents section of this web.
 
-@d INTOOL_NAME "intest"
+@d PROGRAM_NAME "intest"
 @d INTEST_BUILD "intest [[Version Number]]"
 
 @h Starting and stopping Foundation.

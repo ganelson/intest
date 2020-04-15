@@ -43,7 +43,7 @@ int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count, int 
 	if (n < 0) n = 0; /* if we're not multi-tasking, use thread 0's work area */
 	pathname *Thread_Work_Area = Scheduler::work_area(n);
 	pathname *Example_materials =
-		Pathnames::subfolder(Thread_Work_Area, I"Example.materials");
+		Pathnames::down(Thread_Work_Area, I"Example.materials");
 	Pathnames::create_in_file_system(Example_materials);
 	
 	Tester::purge_work_area(n);
@@ -366,7 +366,7 @@ for these, three of which are highly specific to Inform 7.
 @<Perform a test match@> =
 	TEMPORARY_TEXT(DOT);
 	WRITE_TO(DOT, "diff_output_%d.txt", no_match_commands);
-	filename *DO = Filenames::in_folder(Thread_Work_Area, DOT);
+	filename *DO = Filenames::in(Thread_Work_Area, DOT);
 	DISCARD_TEXT(DOT);
 	int rv = 0;
 	switch (L->command_used->rc_code) {
@@ -492,9 +492,9 @@ The |extract| command only makes sense for Inform 7 test cases.
 		TEMPORARY_TEXT(T);
 		Tester::expand(T, second, D);
 		if (Str::eq(T, I"Z"))
-			script_file = Filenames::in_folder(Work_Area, I"ZT.sol");
+			script_file = Filenames::in(Work_Area, I"ZT.sol");
 		else if (Str::eq(T, I"G"))
-			script_file = Filenames::in_folder(Work_Area, I"GT.sol");
+			script_file = Filenames::in(Work_Area, I"GT.sol");
 		else
 			Errors::fatal_with_text("extract can only be to Z or G, not %S", T);
 		DISCARD_TEXT(T);
@@ -502,9 +502,9 @@ The |extract| command only makes sense for Inform 7 test cases.
 		TEMPORARY_TEXT(T);
 		Tester::expand(T, second, D);
 		if (Str::eq(T, I"Z"))
-			script_file = Filenames::in_folder(Work_Area, I"ZQ.sol");
+			script_file = Filenames::in(Work_Area, I"ZQ.sol");
 		else if (Str::eq(T, I"G"))
-			script_file = Filenames::in_folder(Work_Area, I"GQ.sol");
+			script_file = Filenames::in(Work_Area, I"GQ.sol");
 		else
 			Errors::fatal_with_text("extract can only be to Z or G, not %S", T);
 		DISCARD_TEXT(T);
@@ -622,9 +622,9 @@ void Tester::purge_all_work_areas(int n) {
 void Tester::purge_work_area(int n) {
 	pathname *Thread_Work_Area = Scheduler::work_area(n);
 	pathname *Example_materials =
-		Pathnames::subfolder(Thread_Work_Area, I"Example.materials");
+		Pathnames::down(Thread_Work_Area, I"Example.materials");
 	pathname *Example_inform =
-		Pathnames::subfolder(Thread_Work_Area, I"Example.inform");
+		Pathnames::down(Thread_Work_Area, I"Example.inform");
 	@<Remove text files from the work area@>;
 	@<Remove miscellaneous files from the materials@>;
 	@<Clean out the project, too@>;

@@ -105,7 +105,7 @@ void Historian::research(filename *H, int *argc, text_stream ***argv) {
 		int c = 0;
 		text_stream *tok;
 		LOOP_OVER_LINKED_LIST(tok, text_stream, to_repeat->token_list) c++;
-		*argv = Memory::I7_calloc(c+1, sizeof(text_stream *), COMMAND_HISTORY_MREASON);
+		*argv = Memory::calloc(c+1, sizeof(text_stream *), COMMAND_HISTORY_MREASON);
 		*argc = c+1;
 		c = 0; (*argv)[c++] = Str::new_from_ISO_string("intest");
 		LOOP_OVER_LINKED_LIST(tok, text_stream, to_repeat->token_list)
@@ -120,7 +120,7 @@ void Historian::research(filename *H, int *argc, text_stream ***argv) {
 			expands = TRUE;
 	if (expands) {
 		text_stream **new_argv =
-			Memory::I7_calloc(*argc, sizeof(text_stream *), COMMAND_HISTORY_MREASON);
+			Memory::calloc(*argc, sizeof(text_stream *), COMMAND_HISTORY_MREASON);
 		for (int i=0; i<*argc; i++) {
 			text_stream *p = (*argv)[i];
 			if ((i>0) && (Regexp::match(&mr, p, L"%d+"))) {

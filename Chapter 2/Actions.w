@@ -408,7 +408,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 		Str::delete_first_character(leafname);
 		scheduled = FALSE;
 	}
-	filename *F = Filenames::in_folder(args->groups_folder, leafname);
+	filename *F = Filenames::in(args->groups_folder, leafname);
 	linked_list *names_in_group = NEW_LINKED_LIST(text_stream);
 	TextFiles::read(F, FALSE, "can't open test group file", TRUE,
 		&Actions::read_group, NULL, names_in_group);
@@ -484,7 +484,7 @@ substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 		Str::clear(leaf);
 		WRITE_TO(leaf, "%S%d%S", mr.exp[0], count, mr.exp[1]);
 	}
-	F = Filenames::in_folder(Filenames::get_path_to(F), leaf);
+	F = Filenames::in(Filenames::up(F), leaf);
 	DISCARD_TEXT(leaf);
 	Regexp::dispose_of(&mr);
 

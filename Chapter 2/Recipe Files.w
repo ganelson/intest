@@ -36,7 +36,7 @@ with the routine parsing the command line. In any case, nobody will hit:
 @d MAX_LINE_TOKENS 128
 
 @<Tokenise this line@> =	
-	line_tokens = Memory::I7_calloc(MAX_LINE_TOKENS, sizeof(text_stream *),
+	line_tokens = Memory::calloc(MAX_LINE_TOKENS, sizeof(text_stream *),
 		COMMAND_HISTORY_MREASON);
 
 	string_position pos = Str::start(line_text);
@@ -277,7 +277,7 @@ void RecipeFiles::scan_directory_for_cases(linked_list *L,
 			(first == '[') ||
 			(Actions::identify_wildcard(leafname) != TAMECARD))
 			Errors::fatal_with_text("no test can legally be called '%S'", leafname);
-		filename *F = Filenames::in_folder(P, leafname);
+		filename *F = Filenames::in(P, leafname);
 		RecipeFiles::scan_file_for_cases(L, t, F, rn);
 	}
 	DISCARD_TEXT(leafname);
@@ -375,21 +375,21 @@ test_case *RecipeFiles::new_case(int t, filename *F, int fref, int ref,
 	tc->test_type = t;
 	tc->test_location = F;
 	filename *G = F;
-	tc->work_area = Filenames::get_path_to(F);
+	tc->work_area = Filenames::up(F);
 	if (t == EXTENSION_SPT) {
 		pathname *P = Globals::to_pathname(I"extensions_testing_area");
 		if (P) {
 			TEMPORARY_TEXT(leaf);
 			WRITE_TO(leaf, "%S.txt", tc->test_case_name);
-			G = Filenames::in_folder(P, leaf);
+			G = Filenames::in(P, leaf);
 			DISCARD_TEXT(leaf);
 			tc->work_area = P;
 		}
 	}
 
 	filename *DG = Filenames::set_extension(G, "txt");
-	tc->commands_location = Filenames::in_folder(
-		Pathnames::from_text_relative(Filenames::get_path_to(DG), I"_Command_Scripts"),
+	tc->commands_location = Filenames::in(
+		Pathnames::from_text_relative(Filenames::up(DG), I"_Command_Scripts"),
 		Filenames::get_leafname(DG));
 	tc->format_reference = fref;
 	tc->letter_reference = ref;

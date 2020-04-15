@@ -205,12 +205,12 @@ void Reporter::combine(OUTPUT_STREAM, int count, filename *base_filename) {
 @<Initialise the report state for combination@> =
 	rs.test = NULL;
 	rs.success_code = -1;
-	pathname *P = Filenames::get_path_to(base_filename);
+	pathname *P = Filenames::up(base_filename);
 	TEMPORARY_TEXT(NEWLEAF);
 	Filenames::write_unextended_leafname(NEWLEAF, base_filename);
 	Str::truncate(NEWLEAF, 16);
 	WRITE_TO(NEWLEAF, "-%d.html", i);
-	rs.prototype_HTML_file = Filenames::in_folder(P, NEWLEAF);
+	rs.prototype_HTML_file = Filenames::in(P, NEWLEAF);
 	DISCARD_TEXT(NEWLEAF);
 	rs.relevant_node_ID = NULL;
 	rs.first_flag = FALSE;

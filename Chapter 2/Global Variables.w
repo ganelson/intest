@@ -104,7 +104,7 @@ void Globals::start(void) {
 	Globals::create(I"platform");
 	Globals::set(I"platform", Str::new_from_ISO_string(PLATFORM_STRING));
 	Globals::create(I"workspace");
-	pathname *P = Pathnames::subfolder(installation, I"Workspace");
+	pathname *P = Pathnames::down(installation, I"Workspace");
 	TEMPORARY_TEXT(PT);
 	WRITE_TO(PT, "%p", P);
 	Globals::set(I"workspace", PT);

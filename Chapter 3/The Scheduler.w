@@ -92,7 +92,7 @@ void Scheduler::initialise_slots(void) {
 		TEMPORARY_TEXT(FNAME);
 		WRITE_TO(FNAME, "debug-log-thread-%d.txt", s);
 		pathname *Thread_Work_Area = Scheduler::work_area(s);
-		thread_slots[s].slot_log_name = Filenames::in_folder(Thread_Work_Area, FNAME);
+		thread_slots[s].slot_log_name = Filenames::in(Thread_Work_Area, FNAME);
 		DISCARD_TEXT(FNAME);
 	}
 	if (use_threads > 0) Scheduler::work_area(0);
@@ -107,7 +107,7 @@ pathname *Scheduler::work_area(int s) {
 			TEMPORARY_TEXT(TN);
 			WRITE_TO(TN, "T%d", t);
 			pathname *workspace = Globals::to_pathname(I"workspace");
-			thread_slots[t].sandbox = Pathnames::subfolder(workspace, TN);
+			thread_slots[t].sandbox = Pathnames::down(workspace, TN);
 			DISCARD_TEXT(TN);
 		}
 	}
