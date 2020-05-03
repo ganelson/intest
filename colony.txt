@@ -1,13 +1,14 @@
 home: intest/docs
+assets: intest/docs/docs-assets
 
-navigation: intest/docs/docs-src/nav.html
+navigation: intest/docs-src/nav.html
 pattern: GitHubPages
 
 breadcrumbs: none
-web: "overview" at "intest/docs/docs-src/index.inweb" in "intest/docs"
+web: "overview" at "intest/docs-src/index.inweb" in "intest/docs"
 
 breadcrumbs: "Home: //overview//"
 web: "intest" at "intest" in "intest/docs/intest"
 module: "foundation" at "inweb/foundation-module" in "inweb/docs/foundation-module"
-web: "inweb" at "inweb/docs/docs-src/index.inweb" in "inweb/docs"
-web: "inform" at "inform/docs/docs-src/index.inweb" in "inform/docs"
+web: "inweb" at "inweb/docs-src/index.inweb" in "inweb/docs"
+web: "inform" at "inform/docs-src/index.inweb" in "inform/docs"

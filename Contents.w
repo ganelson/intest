@@ -14,6 +14,9 @@ Manual
 	Writing Intest Recipes
 	Reference Card
 
+Preliminaries
+	How This Program Works
+
 Chapter 1: Top Level
 "Starting up, and parsing the user's requirements."
 	Basics
