@@ -65,7 +65,7 @@ We need to itemise the structures we'll want to allocate:
 
 @e action_item_MT
 @e test_case_MT
-@e search_path_item_MT
+@e test_source_MT
 @e skein_MT
 @e edit_MT
 @e diff_results_MT
@@ -78,7 +78,7 @@ We need to itemise the structures we'll want to allocate:
 @ =
 ALLOCATE_INDIVIDUALLY(action_item)
 ALLOCATE_INDIVIDUALLY(test_case)
-ALLOCATE_INDIVIDUALLY(search_path_item)
+ALLOCATE_INDIVIDUALLY(test_source)
 ALLOCATE_INDIVIDUALLY(skein)
 ALLOCATE_INDIVIDUALLY(edit)
 ALLOCATE_INDIVIDUALLY(diff_results)

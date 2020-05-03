@@ -153,7 +153,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 
 @<Act on if or endif@> =
 	if ((Str::eq(opt, I"-if")) && (i+1<to_arg_n)) {
-		allowed_to_execute = Str::eq(argv[i+1], Globals::get_platform());
+		allowed_to_execute = Str::eq_insensitive(argv[i+1], Globals::get_platform());
 		LOGIF(INSTRUCTIONS,
 			"using: -if %S (platform %S): %s\n", argv[i+1], Globals::get_platform(),
 				allowed_to_execute?"yes":"no");
@@ -218,29 +218,29 @@ There are five basic search path types:
 @e MAP_SPT
 
 =
-typedef struct search_path_item {
+typedef struct test_source {
 	int search_path_type; /* one of the |_SPT| cases above */
 	int multiple; /* is this a pathname to a folder? */
 	struct filename *exactly_this;
 	struct pathname *within_this;
 	struct linked_list *contents; /* of |test_case| */
 	MEMORY_MANAGEMENT
-} search_path_item;
+} test_source;
 
 @<Create a search path item@> =
-	search_path_item *spi = CREATE(search_path_item);
+	test_source *spi = CREATE(test_source);
 	spi->search_path_type = t;
 	spi->multiple = multiple;
 	spi->within_this = P;
 	spi->exactly_this = F;
 	spi->contents = cases_within;
-	ADD_TO_LINKED_LIST(spi, search_path_item, args->search_path);
+	ADD_TO_LINKED_LIST(spi, test_source, args->search_path);
 
 @ =
 test_case *RecipeFiles::find_case(intest_instructions *args, text_stream *name) {
-	search_path_item *spi;
+	test_source *spi;
 	test_case *tc;
-	LOOP_OVER_LINKED_LIST(spi, search_path_item, args->search_path)
+	LOOP_OVER_LINKED_LIST(spi, test_source, args->search_path)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents)
 			if (Str::eq(tc->test_case_name, name))
 				return tc;
@@ -387,7 +387,7 @@ test_case *RecipeFiles::new_case(int t, filename *F, int fref, int ref,
 		}
 	}
 
-	filename *DG = Filenames::set_extension(G, "txt");
+	filename *DG = Filenames::set_extension(G, I"txt");
 	tc->commands_location = Filenames::in(
 		Pathnames::from_text_relative(Filenames::up(DG), I"_Command_Scripts"),
 		Filenames::get_leafname(DG));
@@ -438,9 +438,9 @@ void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources
 	wchar_t wregexp[MAX_NAME_MATCH_LENGTH];
 	Str::copy_to_wide_string(wregexp, re, MAX_NAME_MATCH_LENGTH);
 	DISCARD_TEXT(re);
-	search_path_item *spi;
+	test_source *spi;
 	test_case *tc;
-	LOOP_OVER_LINKED_LIST(spi, search_path_item, sources)
+	LOOP_OVER_LINKED_LIST(spi, test_source, sources)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents) {
 			if ((tc->format_reference != EXAMPLE_FORMAT) &&
 				(tc->format_reference != EXTENSION_FORMAT))

@@ -360,9 +360,9 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 
 @<Perform this counted case@> =
 	int find_count = 0;
-	search_path_item *spi;
+	test_source *spi;
 	test_case *tc;
-	LOOP_OVER_LINKED_LIST(spi, search_path_item, args->search_path)
+	LOOP_OVER_LINKED_LIST(spi, test_source, args->search_path)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents)
 			if (find_count++ == ai->operand.wild_card - COUNT_WILDCARD_BASE) {
 				Actions::perform_inner(OUT, args, ai, tc, count++);
@@ -378,9 +378,9 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	ExitCountSearch: ;
 
 @<Perform this lettered case@> =
-	search_path_item *spi;
+	test_source *spi;
 	test_case *tc;
-	LOOP_OVER_LINKED_LIST(spi, search_path_item, args->search_path)
+	LOOP_OVER_LINKED_LIST(spi, test_source, args->search_path)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents)
 			if ((tc->format_reference == EXTENSION_FORMAT) &&
 				(tc->letter_reference ==
@@ -428,9 +428,9 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	}
 
 @<Perform this matched case@> =
-	search_path_item *spi;
+	test_source *spi;
 	test_case *tc;
-	LOOP_OVER_LINKED_LIST(spi, search_path_item, args->search_path)
+	LOOP_OVER_LINKED_LIST(spi, test_source, args->search_path)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents)
 			if (Actions::matches_wildcard(tc, ai->operand.wild_card)) {
 				ai->test_form = ai->action_type;

@@ -90,7 +90,7 @@ the default is |magiczap.intest|.
 	DISCARD_TEXT(sfn);
 
 @<Read the now-final command line and act upon it@> =
-	intest_instructions args = ITCommandLine::read_instructions(ts_argc, ts_argv, home, script);
+	intest_instructions args = Instructions::read(ts_argc, ts_argv, home, script);
 
 	if (args.version_switch) printf("%s\n", INTEST_BUILD);
 	if (args.purge_switch) Tester::purge_all_work_areas(args.threads_available);

@@ -51,6 +51,7 @@ pages:
 	$(INWEB) -prototype intest/scripts/READMEscript.txt -write-me intest/README.md
 	rm -f $(ME)/docs/*.html
 	rm -f $(ME)/docs/intest/*.html
+	cp -f $(ME)/docs-src/Intest.png $(ME)/docs/docs-assets/Intest.png
 	$(INWEB) -colony $(COLONY) -member overview -weave
 	$(INWEB) -colony $(COLONY) -member intest -weave
 

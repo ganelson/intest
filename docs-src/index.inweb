@@ -1,15 +1,17 @@
 Title: The Intest Manual and Source Code
 Author: Graham Nelson
 
-@ This is the home page for the source code for Intest, a command-line tool
-for testing command-line tools. See //intest: Manual// and //intest: Reference Card//.
+@ This is the home page for documentation and human-readable source code of
+Intest, a command-line tool for testing other command-line tools.
 
-Intest is presented as a "web", or "literate program", powered by //inweb//.
-Those new to literate programming may want first to try the modest examples
-there.
+This page is hosted on the Github Docs area of the Intest repository, at
+https://github.com/ganelson/intest. Download and build instructions are there,
+not here.
 
-These pages host "woven", human-readable, forms of the source and are intended
-for browsing. To obtain and build the software, see: https://github.com/ganelson/intest
+To get a sense of Intest and what it does, see //intest: Manual//.
 
-@ Intest makes use of a "module", that is, a library of C code, called
-//foundation//, which is shipped in the //inweb// repository rather than here.
+But if you're here to look under the hood, or you want to fix a bug or
+add a feature, a good place to begin is //intest: How This Program Works//.
+
+@ Intest is presented as a "web", or "literate program", powered by //inweb//.
+Those new to literate programming can find much more information about it there.

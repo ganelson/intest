@@ -1,4 +1,4 @@
-[ITCommandLine::] Command Line Arguments.
+[Instructions::] Command Line Arguments.
 
 To parse the command line arguments with which intest was called,
 and to handle any errors it needs to issue.
@@ -6,12 +6,12 @@ and to handle any errors it needs to issue.
 @h Setting up.
 
 =
-intest_instructions ITCommandLine::read_instructions(int argc, text_stream **argv,
+intest_instructions Instructions::read(int argc, text_stream **argv,
 	pathname *home, filename *intest_script) {
 	@<Register some configuration switches with Foundation@>;
 	intest_instructions args;
 	@<Initialise the arguments state@>;
-	ITCommandLine::read_instructions_into(&args, 1, argc, argv, home);
+	Instructions::read_instructions_into(&args, 1, argc, argv, home);
 	return args;
 }
 
@@ -66,7 +66,7 @@ typedef struct intest_instructions {
 	int crash_switch;
 	int threads_available;
 	struct recipe *compiling_recipe; /* not a user setting, but convenient for parsing */
-	struct linked_list *search_path; /* of |search_path_item| */
+	struct linked_list *search_path; /* of |test_source| */
 	struct linked_list *to_do_list; /* of |action_item| */
 	struct filename *implied_recipe_file;
 	struct pathname *home;
@@ -81,7 +81,7 @@ typedef struct intest_instructions {
 	args.history_switch = TRUE;
 	args.crash_switch = FALSE;
 	args.compiling_recipe = NULL;
-	args.search_path = NEW_LINKED_LIST(search_path_item);
+	args.search_path = NEW_LINKED_LIST(test_source);
 	args.to_do_list = NEW_LINKED_LIST(action_item);
 	args.threads_available = 16;
 	args.home = home;
@@ -105,7 +105,7 @@ then the do block |delta epsilon|.
 @e DO_BLOCK_MODE
 
 =
-void ITCommandLine::read_instructions_into(intest_instructions *args,
+void Instructions::read_instructions_into(intest_instructions *args,
 	int from_arg_n, int to_arg_n, text_stream **argv, pathname *home) {
 	int i, block_mode = NO_BLOCK_MODE, block_from = -1;
 	for (i=from_arg_n; i<to_arg_n; i++) {
@@ -133,7 +133,7 @@ Foundation-defined switches, so we clear thpse out of the way first.
 			args->implied_recipe_file = NULL;
 			break;
 		case DO_BLOCK_MODE: {
-			int midway = ITCommandLine::read_switches(args, block_from, i, argv);
+			int midway = Instructions::read_switches(args, block_from, i, argv);
 			if (midway < i)
 				if (args->implied_recipe_file) {
 					RecipeFiles::read(args->implied_recipe_file, args, NULL);
@@ -155,7 +155,7 @@ an advanced start position for the do block, i.e., cutting it down to
 just |alpha beta|.
 
 =
-int ITCommandLine::read_switches(intest_instructions *args,
+int Instructions::read_switches(intest_instructions *args,
 	int from_arg_n, int to_arg_n, text_stream **argv) {
 	match_results mr = Regexp::create_mr();
 	for (int i=from_arg_n; i<to_arg_n; i++) {
@@ -163,7 +163,7 @@ int ITCommandLine::read_switches(intest_instructions *args,
 		text_stream *arg = NULL; if (i+1 < to_arg_n) arg = argv[i+1];
 		if (Regexp::match(&mr, opt, L"-+(%c*)")) {
 			clf_reader_state crs;
-			crs.state = (void *) args; crs.f = &ITCommandLine::respond; crs.g = NULL;
+			crs.state = (void *) args; crs.f = &Instructions::respond; crs.g = NULL;
 			crs.subs = FALSE; crs.nrt = 0;
 			int N = CommandLine::read_pair(&crs, mr.exp[0], arg);
 			if (N > 0) { i += N - 1; }
@@ -179,7 +179,7 @@ back at the start of the section. (The built-in set, such as |-help|, is
 automatically handled by Foundation's |CommandLine::read_pair| routine.)
 
 =
-void ITCommandLine::respond(int id, int val, text_stream *arg, void *state) {
+void Instructions::respond(int id, int val, text_stream *arg, void *state) {
 	intest_instructions *args = (intest_instructions *) state;
 	switch (id) {
 		case PURGE_CLSW: args->purge_switch = TRUE; return;
