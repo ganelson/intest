@@ -84,7 +84,7 @@ with the routine parsing the command line. In any case, nobody will hit:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">line_tokens</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/2-mmr.html#SP25" class="function-link"><span class="function-syntax">Memory::calloc</span></a><span class="plain-syntax">(</span><span class="constant-syntax">MAX_LINE_TOKENS</span><span class="plain-syntax">, </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">line_tokens</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/2-mmr.html#SP24" class="function-link"><span class="function-syntax">Memory::calloc</span></a><span class="plain-syntax">(</span><span class="constant-syntax">MAX_LINE_TOKENS</span><span class="plain-syntax">, </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *),</span>
 <span class="plain-syntax">        </span><span class="constant-syntax">COMMAND_HISTORY_MREASON</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::start</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line_text</span><span class="plain-syntax">);</span>
@@ -326,7 +326,7 @@ There are five basic search path types:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">exactly_this</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">within_this</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">contents</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">test_case</span></span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">test_source</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure test_source is accessed in 2/act and here.</li></ul>
@@ -485,7 +485,7 @@ arise only for Inform 7.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">test_me_detected</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">command_line_echoing_detected</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">left_bracket</span><span class="plain-syntax">, </span><span class="identifier-syntax">right_bracket</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">test_case</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure test_case is accessed in 2/act, 2/te, 3/ts, 3/th, 3/tr, 4/tt and here.</li></ul>

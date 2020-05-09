@@ -36,7 +36,7 @@ typedef struct skein {
 	int line_count_label;
 	int disposed_of;
 	struct skein *down; /* thus making this a linked list of |skein| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } skein;
 
 @ =

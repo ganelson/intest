@@ -128,21 +128,21 @@ linked list of lines, and a line being essentially a linked list of tokens.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">conditional_nesting</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">end_found</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">recipe_command</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_command</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">recipe</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">recipe_line</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">recipe_command</span><span class="plain-syntax"> *</span><span class="identifier-syntax">command_used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">recipe_tokens</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">recipe_token</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_text</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">recipe_line</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">recipe_token</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">token_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_quoted</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">token_indirects_to_file</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">recipe_token</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure recipe is accessed in 2/rf, 4/tt and here.</li><li>The structure recipe_line is accessed in 4/tt and here.</li><li>The structure recipe_token is accessed in 4/tt and here.</li></ul>

@@ -201,7 +201,7 @@ typedef struct test {
 	int passed; /* or |NOT_APPLICABLE| if not yet run */
 	struct text_stream *full_results;
 	struct test *previous_completed_test;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } test;
 
 

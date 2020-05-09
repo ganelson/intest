@@ -217,7 +217,7 @@ typedef struct action_item {
 	struct filename *assoc_file1;
 	struct filename *assoc_file2;
 	struct text_stream *assoc_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } action_item;
 
 @ As each action item is created, it is added to the "to-do list" for this

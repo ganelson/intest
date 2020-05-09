@@ -80,8 +80,8 @@ we need to use the equivalent of traditional <span class="extract"><span class="
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-mmr.html#SP23" class="function-link"><span class="function-syntax">Memory::reason_name</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TURN_STORAGE_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"skein turn storage"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-mmr.html#SP23" class="function-link"><span class="function-syntax">Memory::reason_name</span></a><span class="plain-syntax">(</span><span class="constant-syntax">COMMAND_HISTORY_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"command history storage"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-mmr.html#SP22" class="function-link"><span class="function-syntax">Memory::reason_name</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TURN_STORAGE_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"skein turn storage"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-mmr.html#SP22" class="function-link"><span class="function-syntax">Memory::reason_name</span></a><span class="plain-syntax">(</span><span class="constant-syntax">COMMAND_HISTORY_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"command history storage"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bsc.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3. Debugging log. </b></p>
@@ -118,32 +118,32 @@ respectively.
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Setting up the memory manager. </b>We need to itemise the structures we'll want to allocate:
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">action_item_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">test_case_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">test_source_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">skein_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">edit_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">diff_results_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">test_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">historic_moment_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">recipe_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">recipe_line_MT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">recipe_token_MT</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">action_item_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">test_case_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">test_source_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">skein_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">edit_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">diff_results_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">test_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">historic_moment_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">recipe_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">recipe_line_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">recipe_token_CLASS</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">action_item</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">test_case</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">test_source</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">skein</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">edit</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">diff_results</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">test</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">historic_moment</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">recipe</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">recipe_line</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">recipe_token</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">action_item</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">test_case</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">test_source</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">skein</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">edit</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">diff_results</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">test</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">historic_moment</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">recipe</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">recipe_line</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">recipe_token</span><span class="plain-syntax">)</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-htpw.html">&#10094;</a></li><li class="progresschapter"><a href="M-iti.html">M</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">bsc</li><li class="progresssection"><a href="1-mn.html">mn</a></li><li class="progresssection"><a href="1-cla.html">cla</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="1-mn.html">&#10095;</a></li></ul></div>

@@ -224,7 +224,7 @@ typedef struct test_source {
 	struct filename *exactly_this;
 	struct pathname *within_this;
 	struct linked_list *contents; /* of |test_case| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } test_source;
 
 @<Create a search path item@> =
@@ -360,7 +360,7 @@ typedef struct test_case {
 	int test_me_detected;
 	int command_line_echoing_detected;
 	int left_bracket, right_bracket;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } test_case;
 
 @ =

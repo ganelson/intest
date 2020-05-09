@@ -63,27 +63,27 @@ respectively.
 @h Setting up the memory manager.
 We need to itemise the structures we'll want to allocate:
 
-@e action_item_MT
-@e test_case_MT
-@e test_source_MT
-@e skein_MT
-@e edit_MT
-@e diff_results_MT
-@e test_MT
-@e historic_moment_MT
-@e recipe_MT
-@e recipe_line_MT
-@e recipe_token_MT
+@e action_item_CLASS
+@e test_case_CLASS
+@e test_source_CLASS
+@e skein_CLASS
+@e edit_CLASS
+@e diff_results_CLASS
+@e test_CLASS
+@e historic_moment_CLASS
+@e recipe_CLASS
+@e recipe_line_CLASS
+@e recipe_token_CLASS
 
 @ =
-ALLOCATE_INDIVIDUALLY(action_item)
-ALLOCATE_INDIVIDUALLY(test_case)
-ALLOCATE_INDIVIDUALLY(test_source)
-ALLOCATE_INDIVIDUALLY(skein)
-ALLOCATE_INDIVIDUALLY(edit)
-ALLOCATE_INDIVIDUALLY(diff_results)
-ALLOCATE_INDIVIDUALLY(test)
-ALLOCATE_INDIVIDUALLY(historic_moment)
-ALLOCATE_INDIVIDUALLY(recipe)
-ALLOCATE_INDIVIDUALLY(recipe_line)
-ALLOCATE_INDIVIDUALLY(recipe_token)
+DECLARE_CLASS(action_item)
+DECLARE_CLASS(test_case)
+DECLARE_CLASS(test_source)
+DECLARE_CLASS(skein)
+DECLARE_CLASS(edit)
+DECLARE_CLASS(diff_results)
+DECLARE_CLASS(test)
+DECLARE_CLASS(historic_moment)
+DECLARE_CLASS(recipe)
+DECLARE_CLASS(recipe_line)
+DECLARE_CLASS(recipe_token)

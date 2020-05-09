@@ -83,21 +83,21 @@ typedef struct recipe {
 	int conditional_nesting;
 	int end_found;
 	struct recipe_command *last_command;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } recipe;
 
 typedef struct recipe_line {
 	struct recipe_command *command_used;
 	struct linked_list *recipe_tokens; /* of |recipe_token| */
 	struct text_stream *from_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } recipe_line;
 
 typedef struct recipe_token {
 	struct text_stream *token_text;
 	int token_quoted;
 	int token_indirects_to_file;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } recipe_token;
 
 @ =

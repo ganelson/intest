@@ -11,7 +11,7 @@ for |?2|, it would be 2.
 typedef struct historic_moment {
 	int epoch;
 	struct linked_list *token_list; /* of |text_stream| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } historic_moment;
 
 @ =

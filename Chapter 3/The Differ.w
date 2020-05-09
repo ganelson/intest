@@ -25,7 +25,7 @@ typedef struct diff_results {
 	struct text_stream *ideal; /* record a copy of the question as well as the answer */
 	struct text_stream *actual;
 	struct linked_list *edits; /* of |edit| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } diff_results;
 
 @ Each edit consists of a nonempty chunk of text to be deleted, preserved
@@ -39,7 +39,7 @@ or inserted:
 typedef struct edit {
 	struct text_stream *fragment;
 	int form_of_edit; /* one of the |*_EDIT| values */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } edit;
 
 @h Edit lists.
