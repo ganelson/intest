@@ -84,10 +84,10 @@ leafname and add |.intest|. For example, if we're testing |magiczap|, then
 the default is |magiczap.intest|.
 
 @<Work out the default name for the test script@> =
-	TEMPORARY_TEXT(sfn);
+	TEMPORARY_TEXT(sfn)
 	WRITE_TO(sfn, "%S.intest", Pathnames::directory_name(Pathnames::up(home)));
 	script = Filenames::in(home, sfn);
-	DISCARD_TEXT(sfn);
+	DISCARD_TEXT(sfn)
 
 @<Read the now-final command line and act upon it@> =
 	intest_instructions args = Instructions::read(ts_argc, ts_argv, home, script);

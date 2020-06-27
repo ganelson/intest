@@ -121,7 +121,7 @@ the index after |USEn|.
 void RecipeFiles::read_using_instructions(intest_instructions *args,
 	int from_arg_n, int to_arg_n, text_stream **argv, pathname *project) {
 	int t = NO_SPT, multiple = FALSE, allowed_to_execute = TRUE;
-	TEMPORARY_TEXT(recipe_name);
+	TEMPORARY_TEXT(recipe_name)
 	WRITE_TO(recipe_name, "[Recipe]");
 	@<Log the using instructions@>;
 	for (int i=from_arg_n; i<to_arg_n; i++) {
@@ -141,7 +141,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 		if (t == NO_SPT) @<Load in a file of further using instructions@>
 		else @<Execute this as a using instruction@>;
 	}
-	DISCARD_TEXT(recipe_name);
+	DISCARD_TEXT(recipe_name)
 }
 
 @<Log the using instructions@> =
@@ -267,7 +267,7 @@ void RecipeFiles::scan_directory_for_cases(linked_list *L,
 	int t, pathname *P, pathname *project, text_stream *rn) {
 	scan_directory *FOLD = Directories::open(P);
 	if (FOLD == NULL) Errors::fatal_with_path("unable to open test cases folder", P);
-	TEMPORARY_TEXT(leafname);
+	TEMPORARY_TEXT(leafname)
 	while (Directories::next(FOLD, leafname)) {
 		wchar_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
 		if (last == FOLDER_SEPARATOR) continue;
@@ -280,7 +280,7 @@ void RecipeFiles::scan_directory_for_cases(linked_list *L,
 		filename *F = Filenames::in(P, leafname);
 		RecipeFiles::scan_file_for_cases(L, t, F, rn);
 	}
-	DISCARD_TEXT(leafname);
+	DISCARD_TEXT(leafname)
 	Directories::close(FOLD);
 }
 
@@ -379,10 +379,10 @@ test_case *RecipeFiles::new_case(int t, filename *F, int fref, int ref,
 	if (t == EXTENSION_SPT) {
 		pathname *P = Globals::to_pathname(I"extensions_testing_area");
 		if (P) {
-			TEMPORARY_TEXT(leaf);
+			TEMPORARY_TEXT(leaf)
 			WRITE_TO(leaf, "%S.txt", tc->test_case_name);
 			G = Filenames::in(P, leaf);
-			DISCARD_TEXT(leaf);
+			DISCARD_TEXT(leaf)
 			tc->work_area = P;
 		}
 	}
@@ -432,12 +432,12 @@ void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *sources, text_st
 
 =
 void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources, text_stream *match, int exactly) {
-	TEMPORARY_TEXT(re);
+	TEMPORARY_TEXT(re)
 	if (exactly) WRITE_TO(re, "%S", match);
 	else WRITE_TO(re, "%%c*%S%%c*", match);
 	wchar_t wregexp[MAX_NAME_MATCH_LENGTH];
 	Str::copy_to_wide_string(wregexp, re, MAX_NAME_MATCH_LENGTH);
-	DISCARD_TEXT(re);
+	DISCARD_TEXT(re)
 	test_source *spi;
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(spi, test_source, sources)

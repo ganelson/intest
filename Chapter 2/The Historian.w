@@ -145,8 +145,8 @@ void Historian::read(text_stream *line_text, text_file_position *tfp, void *dmp)
 	int display_mode = *((int *) dmp);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, line_text, L"%?(%d+). (%c*)")) {
-		TEMPORARY_TEXT(epoch_text);
-		TEMPORARY_TEXT(command_text);
+		TEMPORARY_TEXT(epoch_text)
+		TEMPORARY_TEXT(command_text)
 		Str::copy(epoch_text, mr.exp[0]);
 		Str::copy(command_text, mr.exp[1]);
 
@@ -161,8 +161,8 @@ void Historian::read(text_stream *line_text, text_file_position *tfp, void *dmp)
 		}
 		present_moment = hm;
 		if (display_mode) Historian::write_command(STDOUT, hm);
-		DISCARD_TEXT(epoch_text);
-		DISCARD_TEXT(command_text);
+		DISCARD_TEXT(epoch_text)
+		DISCARD_TEXT(command_text)
 	}
 	if (Regexp::match(&mr, line_text, L"(%d+) = *(%c*)"))
 		if (no_preset_cases < MAX_PRESET_CASES)

@@ -39,14 +39,14 @@ notation |$$varname| into the current value of |varname| en route.
 
 =
 void Globals::set(text_stream *name, text_stream *original) {
-	TEMPORARY_TEXT(value);
+	TEMPORARY_TEXT(value)
 	Str::copy(value, original);
 	@<Make substitutions@>;
 	LOGIF(VARIABLES, "var: %S <-- <%S>\n", name, value);
 	if (Dictionaries::find(globals_dictionary, name) == NULL)
 		internal_error("can't find dictionary entry to write to");
 	Str::copy(Dictionaries::get_text(globals_dictionary, name), value);
-	DISCARD_TEXT(value);
+	DISCARD_TEXT(value)
 }
 
 @<Make substitutions@> =
@@ -72,13 +72,13 @@ files can be used across all platforms.
 pathname *Globals::to_pathname(text_stream *name) {
 	text_stream *text = Globals::get(name);
 	if (text == NULL) return NULL;
-	TEMPORARY_TEXT(val);
+	TEMPORARY_TEXT(val)
 	Str::copy(val, text);
 	LOOP_THROUGH_TEXT(pos, val)
 		if (Str::get(pos) == '/')
 			Str::put(pos, FOLDER_SEPARATOR);
 	pathname *P = Pathnames::from_text(val);
-	DISCARD_TEXT(val);
+	DISCARD_TEXT(val)
 	return P;
 }
 
@@ -86,13 +86,13 @@ pathname *Globals::to_pathname(text_stream *name) {
 filename *Globals::to_filename(text_stream *name) {
 	text_stream *text = Globals::get(name);
 	if (text == NULL) return NULL;
-	TEMPORARY_TEXT(val);
+	TEMPORARY_TEXT(val)
 	Str::copy(val, text);
 	LOOP_THROUGH_TEXT(pos, val)
 		if (Str::get(pos) == '/')
 			Str::put(pos, FOLDER_SEPARATOR);
 	filename *F = Filenames::from_text(val);
-	DISCARD_TEXT(val);
+	DISCARD_TEXT(val)
 	return F;
 }
 
@@ -105,10 +105,10 @@ void Globals::start(void) {
 	Globals::set(I"platform", Str::new_from_ISO_string(PLATFORM_STRING));
 	Globals::create(I"workspace");
 	pathname *P = Pathnames::down(installation, I"Workspace");
-	TEMPORARY_TEXT(PT);
+	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);
 	Globals::set(I"workspace", PT);
-	DISCARD_TEXT(PT);
+	DISCARD_TEXT(PT)
 }
 
 text_stream *Globals::get_platform(void) {

@@ -53,7 +53,7 @@ int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count, int 
 all possible.
 
 @<Perform and report on the test@> =
-	TEMPORARY_TEXT(verdict); /* brief text summarising the outcome, e.g., "passed" */
+	TEMPORARY_TEXT(verdict) /* brief text summarising the outcome, e.g., "passed" */
 	WRITE_TO(verdict, "passed");
 	filename *damning_evidence = NULL;
 	filename *match_fail1 = NULL, *match_fail2 = NULL;
@@ -64,7 +64,7 @@ all possible.
 	if (damning_evidence) Extractor::cat(OUT, damning_evidence);
 	tc->left_bracket = left_bracket;
 	tc->right_bracket = right_bracket;
-	DISCARD_TEXT(verdict);
+	DISCARD_TEXT(verdict)
 
 @ Running with |-diff| or |-bbdiff| delegates the displaying of match errors
 to those superior tools:
@@ -79,7 +79,7 @@ to those superior tools:
 		Shell::quote_file(COMMAND, match_fail1);
 		Shell::quote_file(COMMAND, match_fail2);
 		Shell::run(COMMAND);
-		DISCARD_TEXT(COMMAND);
+		DISCARD_TEXT(COMMAND)
 		damning_evidence = NULL;
 	}
 
@@ -195,16 +195,16 @@ dictionary.
 @<Enter an execution block if a regular expression matches@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
 	recipe_token *second = ENTRY_IN_LINKED_LIST(1, recipe_token, L->recipe_tokens);
-	TEMPORARY_TEXT(A);
-	TEMPORARY_TEXT(P);
+	TEMPORARY_TEXT(A)
+	TEMPORARY_TEXT(P)
 	Tester::expand(A, first, D);
 	Tester::expand(P, second, D);
 	wchar_t P_C_string[1024];
 	Str::copy_to_wide_string(P_C_string, P, 1024);
 	match_results mr = Regexp::create_mr();
 	ENTER_EXECUTION_BLOCK(Regexp::match(&mr, A, P_C_string));
-	DISCARD_TEXT(A);
-	DISCARD_TEXT(P);
+	DISCARD_TEXT(A)
+	DISCARD_TEXT(P)
 	Regexp::dispose_of(&mr);
 
 @<Interpret an unconditional line@> =
@@ -243,7 +243,7 @@ to be zero (for |step|) or non-zero (for |fail step|).
 @<Carry out a step@> =
 	if (action_type != CURSE_ACTION) {
 		no_step_commands++;
-		TEMPORARY_TEXT(COMMAND);
+		TEMPORARY_TEXT(COMMAND)
 		recipe_token *T;
 		LOOP_OVER_LINKED_LIST(T, recipe_token, L->recipe_tokens) {
 			Tester::quote_expand(COMMAND, T, D);
@@ -263,7 +263,7 @@ to be zero (for |step|) or non-zero (for |fail step|).
 				@<Or...@>;
 			}
 		}
-		DISCARD_TEXT(COMMAND);
+		DISCARD_TEXT(COMMAND)
 	}
 
 @ If the next command is an |or|, then use its text rather than our bland
@@ -290,7 +290,7 @@ documentation.
 @<Set a local variable@> =
 	recipe_token *first = FIRST_IN_LINKED_LIST(recipe_token, L->recipe_tokens);
 	text_stream *name = first->token_text;
-	TEMPORARY_TEXT(V);
+	TEMPORARY_TEXT(V)
 	recipe_token *T;
 	LOOP_OVER_LINKED_LIST(T, recipe_token, L->recipe_tokens)
 		if (T != first) {
@@ -301,7 +301,7 @@ documentation.
 		}
 	Str::copy(Dictionaries::create_text(D, name), V);
 	LOGIF(TESTER, "Variable %S set to <%S>\n", name, V);
-	DISCARD_TEXT(V);
+	DISCARD_TEXT(V)
 
 @h Matches.
 In a match, two files are compared. We'll call the first file "actual" and the
@@ -347,7 +347,7 @@ while the second is a record of what it ought to come out as.
 	Shell::quote_file(COMMAND, matching_actual);
 	Shell::quote_file(COMMAND, matching_ideal);
 	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 	Str::clear(verdict); WRITE_TO(verdict, "passed (blessing this transcript in future)");
 
 @ To "curse" is to delete the ideal.
@@ -357,17 +357,17 @@ while the second is a record of what it ought to come out as.
 	WRITE_TO(COMMAND, "rm ");
 	Shell::quote_file(COMMAND, matching_ideal);
 	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 	if (action_type == CURSE_ACTION) { Str::clear(verdict); WRITE_TO(verdict, "cursed (no test conducted)"); }
 
 @ That just leaves the actual comparison. We support five different file formats
 for these, three of which are highly specific to Inform 7.
 
 @<Perform a test match@> =
-	TEMPORARY_TEXT(DOT);
+	TEMPORARY_TEXT(DOT)
 	WRITE_TO(DOT, "diff_output_%d.txt", no_match_commands);
 	filename *DO = Filenames::in(Thread_Work_Area, DOT);
-	DISCARD_TEXT(DOT);
+	DISCARD_TEXT(DOT)
 	int rv = 0;
 	switch (L->command_used->rc_code) {
 		case MATCH_TEXT_RCOM: @<Perform a plain text test match@>; break;
@@ -388,7 +388,7 @@ for these, three of which are highly specific to Inform 7.
 	}
 
 @<Perform a plain text test match@> =
-	TEMPORARY_TEXT(COMMAND);
+	TEMPORARY_TEXT(COMMAND)
 	text_stream TO_struct;
 	text_stream *TO = &TO_struct;
 	if (STREAM_OPEN_TO_FILE(TO, DO, UTF8_ENC) == FALSE)
@@ -400,37 +400,37 @@ for these, three of which are highly specific to Inform 7.
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @<Perform a plain text test match using diff@> =
-	TEMPORARY_TEXT(COMMAND);
+	TEMPORARY_TEXT(COMMAND)
 	WRITE_TO(COMMAND, "diff ");
 	Shell::quote_file(COMMAND, matching_actual);
 	Shell::quote_file(COMMAND, matching_ideal);
 	Shell::redirect(COMMAND, DO);
 	rv = Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @<Perform a binary test match@> =
-	TEMPORARY_TEXT(COMMAND);
+	TEMPORARY_TEXT(COMMAND)
 	WRITE_TO(COMMAND, "cmp -b ");
 	Shell::quote_file(COMMAND, matching_actual);
 	Shell::quote_file(COMMAND, matching_ideal);
 	Shell::redirect(COMMAND, DO);
 	rv = Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @<Perform a folder match@> =
-	TEMPORARY_TEXT(COMMAND);
+	TEMPORARY_TEXT(COMMAND)
 	WRITE_TO(COMMAND, "diff -arq -x '.DS_Store' ");
 	Shell::quote_file(COMMAND, matching_actual);
 	Shell::quote_file(COMMAND, matching_ideal);
 	Shell::redirect(COMMAND, DO);
 	rv = Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @<Perform a Frotz transcript test match@> =
-	TEMPORARY_TEXT(COMMAND);
+	TEMPORARY_TEXT(COMMAND)
 	text_stream TO_struct;
 	text_stream *TO = &TO_struct;
 	if (STREAM_OPEN_TO_FILE(TO, DO, UTF8_ENC) == FALSE)
@@ -443,10 +443,10 @@ for these, three of which are highly specific to Inform 7.
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @<Perform a Glulxe transcript test match@> =
-	TEMPORARY_TEXT(COMMAND);
+	TEMPORARY_TEXT(COMMAND)
 	text_stream TO_struct;
 	text_stream *TO = &TO_struct;
 	if (STREAM_OPEN_TO_FILE(TO, DO, UTF8_ENC) == FALSE)
@@ -459,10 +459,10 @@ for these, three of which are highly specific to Inform 7.
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @<Perform a problem test match@> =
-	TEMPORARY_TEXT(COMMAND);
+	TEMPORARY_TEXT(COMMAND)
 	text_stream TO_struct;
 	text_stream *TO = &TO_struct;
 	if (STREAM_OPEN_TO_FILE(TO, DO, UTF8_ENC) == FALSE)
@@ -475,7 +475,7 @@ for these, three of which are highly specific to Inform 7.
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @h Miscellaneous other commands.
 The |extract| command only makes sense for Inform 7 test cases.
@@ -489,7 +489,7 @@ The |extract| command only makes sense for Inform 7 test cases.
 	if (TextFiles::exists(tc->commands_location)) {
 		script_file = tc->commands_location;
 	} else if (test_me_exists) {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		Tester::expand(T, second, D);
 		if (Str::eq(T, I"Z"))
 			script_file = Filenames::in(Work_Area, I"ZT.sol");
@@ -497,9 +497,9 @@ The |extract| command only makes sense for Inform 7 test cases.
 			script_file = Filenames::in(Work_Area, I"GT.sol");
 		else
 			Errors::fatal_with_text("extract can only be to Z or G, not %S", T);
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	} else {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		Tester::expand(T, second, D);
 		if (Str::eq(T, I"Z"))
 			script_file = Filenames::in(Work_Area, I"ZQ.sol");
@@ -507,7 +507,7 @@ The |extract| command only makes sense for Inform 7 test cases.
 			script_file = Filenames::in(Work_Area, I"GQ.sol");
 		else
 			Errors::fatal_with_text("extract can only be to Z or G, not %S", T);
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	}
 	WRITE_TO(Dictionaries::get_text(D, I"SCRIPT"), "%f", script_file);
 
@@ -583,7 +583,7 @@ checksum to the second-named file, and also remembering its value.
 	Shell::quote_file(COMMAND, from);
 	Shell::quote_file(COMMAND, to);
 	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @ The |mkdir| command ensures that a named directory exists.
 
@@ -594,7 +594,7 @@ checksum to the second-named file, and also remembering its value.
 	WRITE_TO(COMMAND, "mkdir -p ");
 	Shell::quote_path(COMMAND, to_make);
 	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @ =
 int Tester::extract_source_to_file(filename *F, test_case *tc) {
@@ -636,7 +636,7 @@ void Tester::purge_work_area(int n) {
 	Shell::quote_path(COMMAND, Thread_Work_Area);
 	WRITE_TO(COMMAND, "; rm -f *.txt");
 	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @<Remove miscellaneous files from the materials@> =
 	TEMPORARY_TEXT(COMMAND)
@@ -644,7 +644,7 @@ void Tester::purge_work_area(int n) {
 	Shell::quote_path(COMMAND, Example_materials);
 	WRITE_TO(COMMAND, " -mindepth 1 -delete");
 	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @<Clean out the project, too@> =
 	TEMPORARY_TEXT(COMMAND)
@@ -652,45 +652,45 @@ void Tester::purge_work_area(int n) {
 	Shell::quote_path(COMMAND, Example_inform);
 	WRITE_TO(COMMAND, "; rm -f Build/*.*; rm -f Index/Details/*.*;  rm -f Index/*.*");
 	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND);
+	DISCARD_TEXT(COMMAND)
 
 @ When we want a filename, we don't want it quoted.
 
 =
 filename *Tester::extract_as_filename(recipe_token *T, dictionary *D) {
 	filename *F = NULL;
-	TEMPORARY_TEXT(A);
+	TEMPORARY_TEXT(A)
 	Tester::expand(A, T, D);
 	if ((Str::get_first_char(A) == SHELL_QUOTE_CHARACTER) &&
 		(Str::get_last_char(A) == SHELL_QUOTE_CHARACTER)) {
 		int L = Str::len(A);
-		TEMPORARY_TEXT(B);
+		TEMPORARY_TEXT(B)
 		for (int i=1; i<L-1; i++)
 			PUT_TO(B, Str::get_at(A, i));
 		F = Filenames::from_text(B);
-		DISCARD_TEXT(B);
+		DISCARD_TEXT(B)
 	} else {
 		F = Filenames::from_text(A);
 	}
-	DISCARD_TEXT(A);
+	DISCARD_TEXT(A)
 	return F;
 }
 pathname *Tester::extract_as_pathname(recipe_token *T, dictionary *D) {
 	pathname *P = NULL;
-	TEMPORARY_TEXT(A);
+	TEMPORARY_TEXT(A)
 	Tester::expand(A, T, D);
 	if ((Str::get_first_char(A) == SHELL_QUOTE_CHARACTER) &&
 		(Str::get_last_char(A) == SHELL_QUOTE_CHARACTER)) {
 		int L = Str::len(A);
-		TEMPORARY_TEXT(B);
+		TEMPORARY_TEXT(B)
 		for (int i=1; i<L-1; i++)
 			PUT_TO(B, Str::get_at(A, i));
 		P = Pathnames::from_text(B);
-		DISCARD_TEXT(B);
+		DISCARD_TEXT(B)
 	} else {
 		P = Pathnames::from_text(A);
 	}
-	DISCARD_TEXT(A);
+	DISCARD_TEXT(A)
 	return P;
 }
 
@@ -708,7 +708,7 @@ filenames in the settings file, not for local variables.
 void Tester::expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
 	text_stream *original = T->token_text;
 	LOGIF(VARIABLES, "From %S\n", original);
-	TEMPORARY_TEXT(unsubstituted);
+	TEMPORARY_TEXT(unsubstituted)
 	Str::copy(unsubstituted, original);
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, unsubstituted, L"(%c*)$$(%i+)(%c*)")) {
@@ -744,7 +744,7 @@ lexical token.
 =
 void Tester::quote_expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
 	if (T == NULL) return;
-	TEMPORARY_TEXT(unquoted);
+	TEMPORARY_TEXT(unquoted)
 
 	Tester::expand(unquoted, T, D);
 
@@ -752,7 +752,7 @@ void Tester::quote_expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
 	else if (T->token_quoted == NOT_APPLICABLE) @<Expand token from text@>
 	else @<Apply quotation marks as needed@>;
 
-	DISCARD_TEXT(unquoted);
+	DISCARD_TEXT(unquoted)
 }
 
 @ Note the manoeuvre to avoid trouble with shell redirection: |>'Fred'| is
@@ -760,7 +760,7 @@ a legal redirection, but |'>Fred'| is not; and |2>&1| joins standard errors
 to standard output, but |2>'&1'| sends errors to a file literally called |&1|.
 
 @<Apply quotation marks as needed@> =
-	TEMPORARY_TEXT(quoted);
+	TEMPORARY_TEXT(quoted)
 	wchar_t c = Str::get_first_char(unquoted);
 	int n = T->token_quoted;
 	if ((c == '>') || (c == '<')) { PUT(c); Str::delete_first_character(unquoted); }
@@ -773,7 +773,7 @@ to standard output, but |2>'&1'| sends errors to a file literally called |&1|.
 	if (n != FALSE) Shell::plain_text(quoted, unquoted);
 	else Shell::quote_text(quoted, unquoted);
 	WRITE("%S", quoted);
-	DISCARD_TEXT(quoted);
+	DISCARD_TEXT(quoted)
 
 @ This is what happens to backticked tokens: they're retokenised and each is
 individually quote-expanded.

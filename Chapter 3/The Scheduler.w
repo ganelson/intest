@@ -89,11 +89,11 @@ void Scheduler::initialise_slots(void) {
 	for (int s = 0; s < use_threads; s++) {
 		thread_slots[s].counter = s;
 		thread_slots[s].availability = NO_THREAD;
-		TEMPORARY_TEXT(FNAME);
+		TEMPORARY_TEXT(FNAME)
 		WRITE_TO(FNAME, "debug-log-thread-%d.txt", s);
 		pathname *Thread_Work_Area = Scheduler::work_area(s);
 		thread_slots[s].slot_log_name = Filenames::in(Thread_Work_Area, FNAME);
-		DISCARD_TEXT(FNAME);
+		DISCARD_TEXT(FNAME)
 	}
 	if (use_threads > 0) Scheduler::work_area(0);
 }
@@ -104,11 +104,11 @@ pathname *Scheduler::work_area(int s) {
 	if (sandboxes_made == FALSE) {
 		sandboxes_made = TRUE;
 		for (int t = 0; t < use_threads; t++) {
-			TEMPORARY_TEXT(TN);
+			TEMPORARY_TEXT(TN)
 			WRITE_TO(TN, "T%d", t);
 			pathname *workspace = Globals::to_pathname(I"workspace");
 			thread_slots[t].sandbox = Pathnames::down(workspace, TN);
-			DISCARD_TEXT(TN);
+			DISCARD_TEXT(TN)
 		}
 	}
 	return thread_slots[s].sandbox;
@@ -366,12 +366,12 @@ The "bottom line" text here is "All 27 tests succeeded".
 	int N = use_threads;
 	if (N > successes + failures) N = successes + failures;
 
-	TEMPORARY_TEXT(bottom_line);
+	TEMPORARY_TEXT(bottom_line)
 	@<And the bottom line is...@>;
 	if (failures > 0) @<Recite our failures@>;
 	if (successes + failures >= 10)
 		Platform::notification(bottom_line, (failures == 0)?TRUE:FALSE);
-	DISCARD_TEXT(bottom_line);
+	DISCARD_TEXT(bottom_line)
 
 @<And the bottom line is...@> =
 	switch (successes + failures) {

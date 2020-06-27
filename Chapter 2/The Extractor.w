@@ -108,7 +108,7 @@ The test case can only begin after the header, which always occupies three
 lines, and we look out for the |{*}| marker.
 
 @<Consider entering extraction mode for EXAMPLE@> =
-	TEMPORARY_TEXT(line_content);
+	TEMPORARY_TEXT(line_content)
 	if ((tfp->line_count > 3) && (Str::begins_with_wide_string(line, L"\t{*}"))) {
 		Str::copy_tail(line_content, line, 4);
 		if (es->examples_found++ == 0) {
@@ -136,7 +136,7 @@ lines, and we look out for the |{*}| marker.
 			es->now_extracting = TRUE;
 		}
 	}
-	DISCARD_TEXT(line_content);
+	DISCARD_TEXT(line_content)
 
 @ Examples are found after the |---- Documentation ----| divider in an
 extension file. There can be more than one.
@@ -164,7 +164,7 @@ extension file. There can be more than one.
 			es->about_to_extract = FALSE;
 			int i = 3;
 			while (Regexp::white_space(Str::get_at(line, i))) i++;
-			TEMPORARY_TEXT(ext_eg);
+			TEMPORARY_TEXT(ext_eg)
 			Str::copy_tail(ext_eg, line, i);
 			if ((es->extractor_command == CENSUS_ACTION) ||
 				(es->examples_found == es->seek_ref)) {
@@ -174,7 +174,7 @@ extension file. There can be more than one.
 				Extractor::line_out(ext_eg, tfp, es);
 				return;
 			}
-			DISCARD_TEXT(ext_eg);
+			DISCARD_TEXT(ext_eg)
 		}
 	}
 	Regexp::dispose_of(&mr);
@@ -195,11 +195,11 @@ we get rid of that before passing the line through.
 @<Extract the line@> =
 	if (es->file_format == PLAIN_FORMAT) Extractor::line_out(line, tfp, es);
 	else if (Str::get_first_char(line) == '\t') {
-		TEMPORARY_TEXT(rl);
+		TEMPORARY_TEXT(rl)
 		Str::copy(rl, line);
 		Str::delete_first_character(rl);
 		Extractor::line_out(rl, tfp, es);
-		DISCARD_TEXT(rl);
+		DISCARD_TEXT(rl)
 	} else if (Regexp::string_is_white_space(line)) Extractor::line_out(NULL, tfp, es);
 
 @ The effect of the above, then, is that the test case(s) are fed, one line
@@ -263,7 +263,7 @@ is soaked up.
 
 =
 void Extractor::script_out(OUTPUT_STREAM, text_stream *from) {
-	TEMPORARY_TEXT(script);
+	TEMPORARY_TEXT(script)
 	Str::copy(script, from);
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, script, L"(%c+?) */ *(%c*)")) {
@@ -272,7 +272,7 @@ void Extractor::script_out(OUTPUT_STREAM, text_stream *from) {
 	}
 	if (Str::len(script) > 0) WRITE("%S\n", script);
 	Regexp::dispose_of(&mr);
-	DISCARD_TEXT(script);
+	DISCARD_TEXT(script)
 }
 
 @ A CONCORDANCE implements the |-concordance| command-line feature of Inform.

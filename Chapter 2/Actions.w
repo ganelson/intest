@@ -123,10 +123,10 @@ At this point |pos| is the index of the first operand. We must find the range
 			if (arity == 0)
 				Errors::fatal_with_text("this action takes no case name(s): %S", opt);
 			else {
-				TEMPORARY_TEXT(M);
+				TEMPORARY_TEXT(M)
 				WRITE_TO(M, "the action '%S' takes %d parameters", opt, arity);
 				Errors::fatal_with_text("%S", M);
-				DISCARD_TEXT(M);
+				DISCARD_TEXT(M)
 			}
 		}
 	} else {
@@ -143,7 +143,7 @@ At this point |pos| is the index of the first operand. We must find the range
 	}
 
 @<Translate the command into action item structures@> =
-	TEMPORARY_TEXT(assoc_text);
+	TEMPORARY_TEXT(assoc_text)
 	int assoc_number = 0, assoc_number2 = 0;
 	filename *assoc_file1 = NULL, *assoc_file2 = NULL;
 	switch (action) {
@@ -153,7 +153,7 @@ At this point |pos| is the index of the first operand. We must find the range
 		case SKEIN_ACTION: @<Create action item for SKEIN@>; break;
 		default: @<Create more typical action items@>; break;
 	}
-	DISCARD_TEXT(assoc_text);
+	DISCARD_TEXT(assoc_text)
 
 @<Create action item for REPORT@> =
 	if (Str::eq(argv[ops_from+1], I"i7")) assoc_number = I7_FAILED_OUTCOME;
@@ -368,13 +368,13 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 				Actions::perform_inner(OUT, args, ai, tc, count++);
 				goto ExitCountSearch;
 			}
-	TEMPORARY_TEXT(M);
+	TEMPORARY_TEXT(M)
 	if (find_count == 0)
 		WRITE_TO(M, "there were no cases here at all");
 	else
 		WRITE_TO(M, "cases only run from ^1 to ^%d", find_count);
 	Errors::fatal_with_text("%S", M);
-	DISCARD_TEXT(M);
+	DISCARD_TEXT(M)
 	ExitCountSearch: ;
 
 @<Perform this lettered case@> =
@@ -401,7 +401,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 
 @<Perform this grouped case@> =
 	int scheduled = TRUE;
-	TEMPORARY_TEXT(leafname);
+	TEMPORARY_TEXT(leafname)
 	WRITE_TO(leafname, "%S.testgroup", ai->operand.regexp_wild_card);
 	Str::delete_first_character(leafname);
 	if (Str::get_first_char(leafname) == ':') {
@@ -412,7 +412,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	linked_list *names_in_group = NEW_LINKED_LIST(text_stream);
 	TextFiles::read(F, FALSE, "can't open test group file", TRUE,
 		&Actions::read_group, NULL, names_in_group);
-	DISCARD_TEXT(leafname);
+	DISCARD_TEXT(leafname)
 
 	linked_list *matches = NEW_LINKED_LIST(test_case);
 	text_stream *name;
@@ -473,7 +473,7 @@ void Actions::perform_inner(OUTPUT_STREAM, intest_instructions *args,
 substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 
 @<Expand NAME and NUMBER in the redirection filename@> =
-	TEMPORARY_TEXT(leaf);
+	TEMPORARY_TEXT(leaf)
 	leaf = Str::duplicate(Filenames::get_leafname(F));
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, leaf, L"(%c*?)%[NAME%](%c*)")) {
@@ -485,7 +485,7 @@ substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 		WRITE_TO(leaf, "%S%d%S", mr.exp[0], count, mr.exp[1]);
 	}
 	F = Filenames::in(Filenames::up(F), leaf);
-	DISCARD_TEXT(leaf);
+	DISCARD_TEXT(leaf)
 	Regexp::dispose_of(&mr);
 
 @<Finally do something, or at leask ask somebody else to@> =

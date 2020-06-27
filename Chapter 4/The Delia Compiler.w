@@ -145,10 +145,10 @@ recipe *Delia::begin_compilation(text_stream *name) {
 
 recipe *Delia::end_compilation(recipe *R) {
 	if (R->conditional_nesting > 0) {
-		TEMPORARY_TEXT(ERM);
+		TEMPORARY_TEXT(ERM)
 		WRITE_TO(ERM, "'endif' missing at end of recipe");
 		Errors::in_text_file_S(ERM, NULL);
-		DISCARD_TEXT(ERM);
+		DISCARD_TEXT(ERM)
 		R->compilation_errors = TRUE;
 	}
 	if (R->compilation_errors) return NULL;
@@ -189,10 +189,10 @@ void Delia::compile_command(recipe *R, text_stream *text,
 				rc = &instruction_set[i];
 		}
 	if (rc == NULL) {
-		TEMPORARY_TEXT(ERM);
+		TEMPORARY_TEXT(ERM)
 		WRITE_TO(ERM, "unknown recipe command '%S'", command);
 		Errors::in_text_file_S(ERM, tfp);
-		DISCARD_TEXT(ERM);
+		DISCARD_TEXT(ERM)
 		R->compilation_errors = TRUE;
 	} else {
 		recipe_line *L = CREATE(recipe_line);
@@ -218,26 +218,26 @@ void Delia::compile_command(recipe *R, text_stream *text,
 	LOOP_OVER_LINKED_LIST(T, recipe_token, L->recipe_tokens) n++;
 
 	if ((rc->tokens_required >= 0) && (n != rc->tokens_required)) {
-		TEMPORARY_TEXT(ERM);
+		TEMPORARY_TEXT(ERM)
 		WRITE_TO(ERM, "recipe command '%S' takes %d token(s), but %d found",
 			command, rc->tokens_required, n);
 		Errors::in_text_file_S(ERM, tfp);
-		DISCARD_TEXT(ERM);
+		DISCARD_TEXT(ERM)
 		R->compilation_errors = TRUE;
 	}
 
 @<Make sure the or is allowed@> =
 	if (R->last_command == NULL) {
-		TEMPORARY_TEXT(ERM);
+		TEMPORARY_TEXT(ERM)
 		WRITE_TO(ERM, "'or' can't be the first command");
 		Errors::in_text_file_S(ERM, tfp);
-		DISCARD_TEXT(ERM);
+		DISCARD_TEXT(ERM)
 		R->compilation_errors = TRUE;
 	} else if (R->last_command->supports_or == FALSE) {
-		TEMPORARY_TEXT(ERM);
+		TEMPORARY_TEXT(ERM)
 		WRITE_TO(ERM, "'or' can't follow a '%w' command", R->last_command->keyword);
 		Errors::in_text_file_S(ERM, tfp);
-		DISCARD_TEXT(ERM);
+		DISCARD_TEXT(ERM)
 		R->compilation_errors = TRUE;
 	}
 
@@ -261,10 +261,10 @@ void Delia::compile_command(recipe *R, text_stream *text,
 				DELETE_FROM_LINKED_LIST(1, recipe_token, L->recipe_tokens);
 			}
 		} else {
-			TEMPORARY_TEXT(ERM);
+			TEMPORARY_TEXT(ERM)
 			WRITE_TO(ERM, "set target '%S' doesn't begin with '$'", K);
 			Errors::in_text_file_S(ERM, tfp);
-			DISCARD_TEXT(ERM);
+			DISCARD_TEXT(ERM)
 			R->compilation_errors = TRUE;
 		}
 	}
@@ -272,10 +272,10 @@ void Delia::compile_command(recipe *R, text_stream *text,
 @<Make sure the conditional nesting is allowed@> =
 	if ((R->conditional_nesting < 0) ||
 		((R->conditional_nesting == 0) && (rc->rc_code == ELSE_RCOM))) {
-		TEMPORARY_TEXT(ERM);
+		TEMPORARY_TEXT(ERM)
 		WRITE_TO(ERM, "'%w' misplaced", rc->keyword);
 		Errors::in_text_file_S(ERM, tfp);
-		DISCARD_TEXT(ERM);
+		DISCARD_TEXT(ERM)
 		R->compilation_errors = TRUE;
 		R->conditional_nesting -= rc->changes_nesting;
 	}
@@ -302,13 +302,13 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 
 	T->token_text = Str::new();
 	Str::substr(T->token_text, P, Q);
-	TEMPORARY_TEXT(tail);
+	TEMPORARY_TEXT(tail)
 	if (T->token_indirects_to_file) Q = Str::forward(Str::forward(Q));
 	Str::copy_tail(tail, txt, Str::index(Q));
 	
 	ADD_TO_LINKED_LIST(T, recipe_token, L);
 	Delia::tokenise(L, tail);
-	DISCARD_TEXT(tail);
+	DISCARD_TEXT(tail)
 }
 
 @ A token written |$[filename$]| is expanded into the contents of that file.

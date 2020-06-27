@@ -84,17 +84,17 @@ skein *Skeins::from_plain_text(filename *F) {
 
 =
 skein *Skeins::read(filename *F, int format, int cle, text_stream *seek, int actual_flag) {
-	TEMPORARY_TEXT(TB);
-	TEMPORARY_TEXT(CN);
-	TEMPORARY_TEXT(NL);
+	TEMPORARY_TEXT(TB)
+	TEMPORARY_TEXT(CN)
+	TEMPORARY_TEXT(NL)
 	skein_state sks;
 	@<Initialise the Skein reader state@>;
 	TextFiles::read(F, FALSE, "can't open problems transcript", TRUE,
 		&Skeins::read_assistant, NULL, &sks);
 	if (sks.writing_to) Skeins::flush(&sks);
-	DISCARD_TEXT(CN);
-	DISCARD_TEXT(NL);
-	DISCARD_TEXT(TB);
+	DISCARD_TEXT(CN)
+	DISCARD_TEXT(NL)
+	DISCARD_TEXT(TB)
 	return sks.root;
 }
 
@@ -204,15 +204,15 @@ what's nefarious.)
 @<Nefariously force a line break before any tag opener@> =
 	for (int i = 0; i < L; i++) {
 		if ((i > 0) && (Str::get_at(line_text, i) == '<')) {
-			TEMPORARY_TEXT(front);
-			TEMPORARY_TEXT(back);
+			TEMPORARY_TEXT(front)
+			TEMPORARY_TEXT(back)
 			Str::copy(front, line_text);
 			Str::truncate(front, i);
 			Skeins::read_assistant(front, tfp, vsks);
 			Str::copy_tail(back, line_text, i);
 			Skeins::read_assistant(back, tfp, vsks);
-			DISCARD_TEXT(front);
-			DISCARD_TEXT(back);
+			DISCARD_TEXT(front)
+			DISCARD_TEXT(back)
 			return;
 		}
 	}
@@ -225,15 +225,15 @@ would split into two lines |<it>| and |you|.
 	if (Str::get_first_char(line_text) == '<') {
 		for (int i = 0; i < L; i++) {
 			if ((i > 0) && (i < L-1) && (Str::get_at(line_text, i) == '>')) {
-				TEMPORARY_TEXT(front);
-				TEMPORARY_TEXT(back);
+				TEMPORARY_TEXT(front)
+				TEMPORARY_TEXT(back)
 				Str::copy(front, line_text);
 				Str::truncate(front, i+1);
 				Skeins::read_assistant(front, tfp, vsks);
 				Str::copy_tail(back, line_text, i+1);
 				Skeins::read_assistant(back, tfp, vsks);
-				DISCARD_TEXT(front);
-				DISCARD_TEXT(back);
+				DISCARD_TEXT(front)
+				DISCARD_TEXT(back)
 				return;
 			}
 		}
@@ -324,23 +324,23 @@ the problem name and label the Skein node with it.
 	if ((la[0] == ' ') && (la[1] == ' ') && (la[2] == '>') && (la[3] == '[')) {
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, line_text, L"%c%c%c%c%d+%] (%c+)")) {
-			TEMPORARY_TEXT(label);
+			TEMPORARY_TEXT(label)
 			WRITE_TO(label, "reply to \"%S\"", mr.exp[0]);
 			Skeins::new_node(sks, -1, label, sks->detected_format);
-			DISCARD_TEXT(label);
+			DISCARD_TEXT(label)
 			Regexp::dispose_of(&mr);
 			return;
 		}
 	}
 	if ((la[0] == ' ') && (la[1] == ' ') && (la[2] == '*') &&
 		(la[3] == '*') && (la[4] == ' ')) {
-		TEMPORARY_TEXT(label);
-		TEMPORARY_TEXT(tail);
+		TEMPORARY_TEXT(label)
+		TEMPORARY_TEXT(tail)
 		Str::copy_tail(tail, line_text, 5);
 		WRITE_TO(label, "reply to \"%S\"", tail);
 		Skeins::new_node(sks, -1, label, sks->detected_format);
-		DISCARD_TEXT(label);
-		DISCARD_TEXT(tail);
+		DISCARD_TEXT(label)
+		DISCARD_TEXT(tail)
 		return;
 	}
 
@@ -364,21 +364,21 @@ the problem name and label the Skein node with it.
 
 	if ((la[0] == '>') && (la[1] == '[') &&
 		(Regexp::match(&mr, line_text, L"%c%c%d+%] (%c+)"))) {
-		TEMPORARY_TEXT(label);
+		TEMPORARY_TEXT(label)
 		WRITE_TO(label, "reply to \"%S\"", mr.exp[0]);
 		Skeins::new_node(sks, -1, label, sks->detected_format);
-		DISCARD_TEXT(label);
+		DISCARD_TEXT(label)
 		return;
 	}
 	if ((sks->double_starred) &&
 		(la[0] == '*') && (la[1] == '*') && (la[2] == ' ')) {
-		TEMPORARY_TEXT(label);
-		TEMPORARY_TEXT(tail);
+		TEMPORARY_TEXT(label)
+		TEMPORARY_TEXT(tail)
 		Str::copy_tail(tail, line_text, 3);
 		WRITE_TO(label, "reply to \"%S\"", tail);
 		Skeins::new_node(sks, -1, label, sks->detected_format);
-		DISCARD_TEXT(label);
-		DISCARD_TEXT(tail);
+		DISCARD_TEXT(label)
+		DISCARD_TEXT(tail)
 		return;
 	}
 
