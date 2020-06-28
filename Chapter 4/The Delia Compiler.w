@@ -283,6 +283,8 @@ void Delia::compile_command(recipe *R, text_stream *text,
 @ The lowest level of the compiler is the tokeniser, which breaks up a
 string at white space boundaries, except within the shell quote character.
 
+@d DELIA_QUOTE_CHARACTER '\''
+
 =
 void Delia::tokenise(linked_list *L, text_stream *txt) {
 	string_position P = Str::start(txt);
@@ -297,7 +299,7 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 	string_position Q = P; /* the new token begins at position P, and ends just before Q */
 	if ((first == '$') && (Str::get(Str::forward(P)) == '[')) @<Tokenise from a file@>
 	else if (first == '`') @<Mark to retokenise at expansion time@>
-	else if (first == SHELL_QUOTE_CHARACTER) @<Take this quoted segment as the token@>
+	else if (first == DELIA_QUOTE_CHARACTER) @<Take this quoted segment as the token@>
 	else @<Take this unquoted word as the token@>;
 
 	T->token_text = Str::new();
@@ -337,11 +339,11 @@ and then each individual resulting token is expanded.
 	int esc = FALSE;
 	Q = Str::forward(Q);
 	while ((Str::in_range(Q)) &&
-		((esc) || (Str::get(Q) != SHELL_QUOTE_CHARACTER))) {
+		((esc) || (Str::get(Q) != DELIA_QUOTE_CHARACTER))) {
 		if (Str::get(Q) == '\\') esc = TRUE; else esc = FALSE;
 		Q = Str::forward(Q);
 	}
-	if (Str::get(Q) == SHELL_QUOTE_CHARACTER)
+	if (Str::get(Q) == DELIA_QUOTE_CHARACTER)
 		Q = Str::forward(Q);
 
 @ And otherwise any bare word is a token.

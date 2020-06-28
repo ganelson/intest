@@ -661,8 +661,8 @@ filename *Tester::extract_as_filename(recipe_token *T, dictionary *D) {
 	filename *F = NULL;
 	TEMPORARY_TEXT(A)
 	Tester::expand(A, T, D);
-	if ((Str::get_first_char(A) == SHELL_QUOTE_CHARACTER) &&
-		(Str::get_last_char(A) == SHELL_QUOTE_CHARACTER)) {
+	if ((Str::get_first_char(A) == DELIA_QUOTE_CHARACTER) &&
+		(Str::get_last_char(A) == DELIA_QUOTE_CHARACTER)) {
 		int L = Str::len(A);
 		TEMPORARY_TEXT(B)
 		for (int i=1; i<L-1; i++)
@@ -679,8 +679,8 @@ pathname *Tester::extract_as_pathname(recipe_token *T, dictionary *D) {
 	pathname *P = NULL;
 	TEMPORARY_TEXT(A)
 	Tester::expand(A, T, D);
-	if ((Str::get_first_char(A) == SHELL_QUOTE_CHARACTER) &&
-		(Str::get_last_char(A) == SHELL_QUOTE_CHARACTER)) {
+	if ((Str::get_first_char(A) == DELIA_QUOTE_CHARACTER) &&
+		(Str::get_last_char(A) == DELIA_QUOTE_CHARACTER)) {
 		int L = Str::len(A);
 		TEMPORARY_TEXT(B)
 		for (int i=1; i<L-1; i++)
