@@ -19,7 +19,7 @@ pathname *home_project = NULL;
 pathname *installation = NULL;
 
 int main(int argc, char **argv) {
-	Basics::start();
+	Basics::start(argc, argv);
 
 	int ts_argc = 0; text_stream **ts_argv = NULL;
 
@@ -99,7 +99,10 @@ the default is |magiczap.intest|.
 	if (args.crash_switch) Errors::enter_debugger_mode();
 	write_up = args.history_switch;
 	installation = Pathnames::installation_path("INTEST_PATH", I"intest");
-	if (args.verbose_switch) PRINT("Installation path is %p\n", installation);
+	if (args.verbose_switch) {
+		PRINT("Installation path is %p\n", installation);
+		Locales::write_locales(STDOUT);
+	}
 	Globals::start();
 
 	if (home_project) Actions::perform(STDOUT, &args);

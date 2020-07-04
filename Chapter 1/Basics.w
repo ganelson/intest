@@ -15,8 +15,9 @@ standard library routines called Foundation. When Intest starts and ends,
 the following are called:
 
 =
-void Basics::start(void) {
+void Basics::start(int argc, char **argv) {
 	Foundation::start();
+	CommandLine::set_locale(argc, argv);
 	@<Declare new memory allocation reasons@>;
 	@<Declare new debugging log aspects@>;
 	@<Declare new writers and loggers@>;
