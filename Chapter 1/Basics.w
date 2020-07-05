@@ -16,8 +16,7 @@ the following are called:
 
 =
 void Basics::start(int argc, char **argv) {
-	Foundation::start();
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv);
 	@<Declare new memory allocation reasons@>;
 	@<Declare new debugging log aspects@>;
 	@<Declare new writers and loggers@>;
