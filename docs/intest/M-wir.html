@@ -674,8 +674,13 @@ characters. That would affect any Delia step written like this:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    step</span><span class="plain-syntax">: insomething/Tangled/insomething -locale console=utf-8 &gt;result.txt</span>
+<span class="reserved-syntax">    step</span><span class="plain-syntax">: insomething/Tangled/insomething whatever &gt;result.txt</span>
 </pre>
+<p class="commentary">in that the program might be operating identically on these platforms but
+still produce a different <span class="extract"><span class="extract-syntax">result.txt</span></span> file on Mac vs Windows, one being
+UTF-8 encoded, the other ISO.
+</p>
+
 <p class="commentary">To get around this, all of the Inform tools have been given a command-line
 setting:
 </p>
@@ -702,7 +707,7 @@ to the given locale. So:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    step</span><span class="plain-syntax">: insomething/Tangled/insomething -locale console=utf-8 &gt;result.txt</span>
+<span class="reserved-syntax">    step</span><span class="plain-syntax">: insomething/Tangled/insomething -locale console=utf-8 whatever &gt;result.txt</span>
 </pre>
 <p class="commentary">would produce the same result on MacOS as on Windows.
 </p>

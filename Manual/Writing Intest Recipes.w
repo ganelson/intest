@@ -518,8 +518,12 @@ As a result, a test which recorded the console output on a Mac could not be
 compared with the same test on Windows if that output included non-ASCII
 characters. That would affect any Delia step written like this:
 = (text as Delia)
-	step: insomething/Tangled/insomething -locale console=utf-8 >result.txt
+	step: insomething/Tangled/insomething whatever >result.txt
 =
+in that the program might be operating identically on these platforms but
+still produce a different |result.txt| file on Mac vs Windows, one being
+UTF-8 encoded, the other ISO.
+
 To get around this, all of the Inform tools have been given a command-line
 setting:
 
@@ -541,6 +545,6 @@ and (c) command-line parameters, either in or out. Changing the |console|
 locale, though, effectively makes standard output from an Inform tool conform
 to the given locale. So:
 = (text as Delia)
-	step: insomething/Tangled/insomething -locale console=utf-8 >result.txt
+	step: insomething/Tangled/insomething -locale console=utf-8 whatever >result.txt
 =
 would produce the same result on MacOS as on Windows.
