@@ -36,7 +36,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">intest</a></li><li><a href="index.html#M">Manual</a></li><li><b>Writing Intest Recipes</b></li></ul></div>
 <p class="purpose">A guide to writing in Delia, Intest's recipe language.</p>
 
-<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. About test cases</a></li><li><a href="M-wir.html#SP3">&#167;3. Recipe files</a></li><li><a href="M-wir.html#SP7">&#167;7. Writing Delia</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. About test cases</a></li><li><a href="M-wir.html#SP3">&#167;3. Recipe files</a></li><li><a href="M-wir.html#SP7">&#167;7. Writing Delia</a></li><li><a href="M-wir.html#SP23">&#167;23. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. About test cases. </b>To use any of this, at least one test case is required, and there will
 probably be many. The typical arrangement is that each test case has a
@@ -659,6 +659,52 @@ or <span class="extract"><span class="extract-syntax">problem</span></span>, tha
 it's a non-trivial operation. <span class="extract"><span class="extract-syntax">VM</span></span> should be the Inform virtual machine
 in question, <span class="extract"><span class="extract-syntax">Z</span></span> or <span class="extract"><span class="extract-syntax">G</span></span>. If the <span class="extract"><span class="extract-syntax">FILE</span></span> contains a command script, this is
 automatically written into the local variable <span class="extract"><span class="extract-syntax">$SCRIPT</span></span>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
+locale differences meant that some tests weren't portable between MacOS and
+Windows. The issue was that the console environment (i.e., the standard
+output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1
+on Windows: this is the "locale", in operating system jargon.
+</p>
+
+<p class="commentary">As a result, a test which recorded the console output on a Mac could not be
+compared with the same test on Windows if that output included non-ASCII
+characters. That would affect any Delia step written like this:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    step</span><span class="plain-syntax">: insomething/Tangled/insomething -locale console=utf-8 &gt;result.txt</span>
+</pre>
+<p class="commentary">To get around this, all of the Inform tools have been given a command-line
+setting:
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">-locale LOCALE=ENCODING</span></span> where <span class="extract"><span class="extract-syntax">LOCALE</span></span> is one of <span class="extract"><span class="extract-syntax">shell</span></span> or <span class="extract"><span class="extract-syntax">console</span></span>, and
+<span class="extract"><span class="extract-syntax">ENCODING</span></span> is one of <span class="extract"><span class="extract-syntax">platform</span></span>, <span class="extract"><span class="extract-syntax">utf-8</span></span> or <span class="extract"><span class="extract-syntax">iso-latin1</span></span>. (The <span class="extract"><span class="extract-syntax">platform</span></span>
+encoding means "whatever is normal on the current platform".) Running with the
+<span class="extract"><span class="extract-syntax">-verbose</span></span> option in <a href="../../../inweb/docs/index.html" class="internal">inweb</a> or <a href="index.html" class="internal">intest</a> will show the locales being used:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -verbose</span>
+<span class="ConsoleText-plain-syntax">    Installation path is /Users/gnelson/dev/intest</span>
+<span class="ConsoleText-plain-syntax">    Locales are: shell = utf-8, console = utf-8</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -locale</span><span class="ConsoleText-plain-syntax"> console=iso-latin1</span><span class="ConsoleText-identifier-syntax"> -verbose</span>
+<span class="ConsoleText-plain-syntax">    Installation path is /Users/gnelson/dev/intest</span>
+<span class="ConsoleText-plain-syntax">    Locales are: shell = utf-8, console = iso-latin1</span>
+</pre>
+<p class="commentary">It's probably best not to change the <span class="extract"><span class="ConsoleText-extract-syntax">shell</span></span> locale, which affects the
+encoding on (a) environment variables, (b) filenames when scanning directories,
+and (c) command-line parameters, either in or out. Changing the <span class="extract"><span class="ConsoleText-extract-syntax">console</span></span>
+locale, though, effectively makes standard output from an Inform tool conform
+to the given locale. So:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    step</span><span class="plain-syntax">: insomething/Tangled/insomething -locale console=utf-8 &gt;result.txt</span>
+</pre>
+<p class="commentary">would produce the same result on MacOS as on Windows.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

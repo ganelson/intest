@@ -506,3 +506,41 @@ or |problem|, that's simply a file copy, but for an |extension|, for example,
 it's a non-trivial operation. |VM| should be the Inform virtual machine
 in question, |Z| or |G|. If the |FILE| contains a command script, this is
 automatically written into the local variable |$SCRIPT|.
+
+@h Cautionary tale about encodings.
+When we first ported //inweb// and //intest// to Windows, we realised that
+locale differences meant that some tests weren't portable between MacOS and
+Windows. The issue was that the console environment (i.e., the standard
+output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1
+on Windows: this is the "locale", in operating system jargon.
+
+As a result, a test which recorded the console output on a Mac could not be
+compared with the same test on Windows if that output included non-ASCII
+characters. That would affect any Delia step written like this:
+= (text as Delia)
+	step: insomething/Tangled/insomething -locale console=utf-8 >result.txt
+=
+To get around this, all of the Inform tools have been given a command-line
+setting:
+
+|-locale LOCALE=ENCODING| where |LOCALE| is one of |shell| or |console|, and
+|ENCODING| is one of |platform|, |utf-8| or |iso-latin1|. (The |platform|
+encoding means "whatever is normal on the current platform".) Running with the
+|-verbose| option in //inweb// or //intest// will show the locales being used:
+= (text as ConsoleText)
+	$ intest/Tangled/intest -verbose
+	Installation path is /Users/gnelson/dev/intest
+	Locales are: shell = utf-8, console = utf-8
+	$ intest/Tangled/intest -locale console=iso-latin1 -verbose
+	Installation path is /Users/gnelson/dev/intest
+	Locales are: shell = utf-8, console = iso-latin1
+=
+It's probably best not to change the |shell| locale, which affects the
+encoding on (a) environment variables, (b) filenames when scanning directories,
+and (c) command-line parameters, either in or out. Changing the |console|
+locale, though, effectively makes standard output from an Inform tool conform
+to the given locale. So:
+= (text as Delia)
+	step: insomething/Tangled/insomething -locale console=utf-8 >result.txt
+=
+would produce the same result on MacOS as on Windows.

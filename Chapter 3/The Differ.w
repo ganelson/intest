@@ -363,7 +363,7 @@ a version of |isalpha| which respects Unicode, or else the above algorithm
 will sometimes show edits mid-word at accented letters.
 
 =
-int Differ::boundary(int c, int d) {
+int Differ::boundary(wchar_t c, wchar_t d) {
 	if ((Characters::isalpha(c)) && (Characters::isalpha(d))) return FALSE;
 	return TRUE;
 }
