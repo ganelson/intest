@@ -75,7 +75,7 @@ pathname *Globals::to_pathname(text_stream *name) {
 	TEMPORARY_TEXT(val)
 	Str::copy(val, text);
 	LOOP_THROUGH_TEXT(pos, val)
-		if (Str::get(pos) == '/')
+		if (Platform::is_folder_separator(Str::get(pos)))
 			Str::put(pos, FOLDER_SEPARATOR);
 	pathname *P = Pathnames::from_text(val);
 	DISCARD_TEXT(val)
@@ -89,7 +89,7 @@ filename *Globals::to_filename(text_stream *name) {
 	TEMPORARY_TEXT(val)
 	Str::copy(val, text);
 	LOOP_THROUGH_TEXT(pos, val)
-		if (Str::get(pos) == '/')
+		if (Platform::is_folder_separator(Str::get(pos)))
 			Str::put(pos, FOLDER_SEPARATOR);
 	filename *F = Filenames::from_text(val);
 	DISCARD_TEXT(val)

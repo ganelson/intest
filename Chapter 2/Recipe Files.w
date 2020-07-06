@@ -270,7 +270,7 @@ void RecipeFiles::scan_directory_for_cases(linked_list *L,
 	TEMPORARY_TEXT(leafname)
 	while (Directories::next(FOLD, leafname)) {
 		wchar_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
-		if (last == FOLDER_SEPARATOR) continue;
+		if (Platform::is_folder_separator(last)) continue;
 		if (first == '.') continue;
 		if (first == '(') continue;
 		if ((first == '-') ||
