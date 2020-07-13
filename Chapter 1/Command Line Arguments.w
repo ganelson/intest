@@ -134,12 +134,13 @@ Foundation-defined switches, so we clear thpse out of the way first.
 			break;
 		case DO_BLOCK_MODE: {
 			int midway = Instructions::read_switches(args, block_from, i, argv);
-			if (midway < i)
+			if (midway < i) {
 				if (args->implied_recipe_file) {
 					RecipeFiles::read(args->implied_recipe_file, args, NULL);
 					args->implied_recipe_file = NULL;
 				}
 				Actions::read_do_instructions(args, midway, i, argv);
+			}
 			break;
 		}
 	}
