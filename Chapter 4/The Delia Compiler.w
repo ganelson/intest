@@ -21,6 +21,7 @@ set of commands, enumerated as follows.
 @e MATCH_G_TRANSCRIPT_RCOM
 @e MATCH_PROBLEM_RCOM
 @e MATCH_TEXT_RCOM
+@e MATCH_PLATFORM_TEXT_RCOM
 @e MATCH_Z_TRANSCRIPT_RCOM
 @e MKDIR_RCOM
 @e OR_RCOM
@@ -58,6 +59,7 @@ recipe_command instruction_set[] = {
 	{ MATCH_G_TRANSCRIPT_RCOM, L"match glulxe transcript", 2, TRUE, 0 },
 	{ MATCH_PROBLEM_RCOM, L"match problem", 2, TRUE, 0 },
 	{ MATCH_TEXT_RCOM, L"match text", 2, TRUE, 0 },
+	{ MATCH_PLATFORM_TEXT_RCOM, L"match platform text", 2, TRUE, 0 },
 	{ MATCH_Z_TRANSCRIPT_RCOM, L"match frotz transcript", 2, TRUE, 0 },
 	{ MKDIR_RCOM, L"mkdir", 1, FALSE, 0 },
 	{ OR_RCOM, L"or", -1, FALSE, 0 },

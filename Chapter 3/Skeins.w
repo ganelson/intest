@@ -478,7 +478,8 @@ same "label" and the same "text".
 @d MAX_COMPARE_ERRORS_REPORTED 10
 
 =
-int Skeins::compare(OUTPUT_STREAM, skein *A, skein *I, int problems) {
+int Skeins::compare(OUTPUT_STREAM, skein *A, skein *I, int problems,
+	int allow_platform_variance) {
 	int count = 1, error_count = 0;
 	char *thing = "problem";
 	if (problems == FALSE) { count = 0; thing = "turn"; }
@@ -511,7 +512,7 @@ int Skeins::compare(OUTPUT_STREAM, skein *A, skein *I, int problems) {
 
 @<Both skeins have the same label at this node@> =
 	if (Str::ne(A->text, I->text)) {
-		diff_results *DR = Differ::diff(I->text, A->text);
+		diff_results *DR = Differ::diff(I->text, A->text, allow_platform_variance);
 		if (LinkedLists::len(DR->edits) > 0) {
 			if (A->from_format == PLAIN_SKF)
 				WRITE("Discrepancy at %k:\n", A);
@@ -560,6 +561,6 @@ to compare the two.
 void Skeins::test_i7_skein(OUTPUT_STREAM, filename *F, text_stream *node_id) {
 	skein *A = Skeins::from_I7_skein(F, node_id, TRUE);
 	skein *I = Skeins::from_I7_skein(F, node_id, FALSE);
-	diff_results *DR = Differ::diff(I->text, A->text);
+	diff_results *DR = Differ::diff(I->text, A->text, FALSE);
 	Differ::print_results_as_HTML(OUT, DR, A->text);
 }

@@ -317,6 +317,10 @@ instruction.
 |match text: A B|. Here |A| and |B| are text files, and Intest will show
 diffs if they disagree.
 
+|match platform text: A B|. The same, but now forward and backslashes are
+counted as being equivalent to each other. This enables filesnames printed
+out on Windows to be compared with those printed out on other platforms.
+
 |match binary: A B|. Now they are binaries, so Intest will simply report
 that they disagree, if they do.
 

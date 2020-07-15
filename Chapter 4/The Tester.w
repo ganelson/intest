@@ -216,6 +216,7 @@ dictionary.
 		case SET_RCOM:                @<Set a local variable@>; break;
 
 		case MATCH_TEXT_RCOM:         @<Carry out a match@>; break;
+		case MATCH_PLATFORM_TEXT_RCOM:@<Carry out a match@>; break;
 		case MATCH_BINARY_RCOM:       @<Carry out a match@>; break;
 		case MATCH_FOLDER_RCOM:       @<Carry out a match@>; break;
 		case MATCH_G_TRANSCRIPT_RCOM: @<Carry out a match@>; break;
@@ -371,6 +372,7 @@ for these, three of which are highly specific to Inform 7.
 	int rv = 0;
 	switch (L->command_used->rc_code) {
 		case MATCH_TEXT_RCOM: @<Perform a plain text test match@>; break;
+		case MATCH_PLATFORM_TEXT_RCOM: @<Perform a platform text test match@>; break;
 		case MATCH_BINARY_RCOM: @<Perform a binary test match@>; break;
 		case MATCH_FOLDER_RCOM: @<Perform a folder match@>; break;
 		case MATCH_G_TRANSCRIPT_RCOM: @<Perform a Glulxe transcript test match@>; break;
@@ -396,7 +398,22 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_plain_text(matching_actual);
 	skein *I = Skeins::from_plain_text(matching_ideal);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, FALSE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, FALSE, FALSE) > 0) rv = 1;
+	Skeins::dispose_of(A);
+	Skeins::dispose_of(I);
+	STREAM_CLOSE(TO);
+	DISCARD_TEXT(COMMAND)
+
+@<Perform a platform text test match@> =
+	TEMPORARY_TEXT(COMMAND)
+	text_stream TO_struct;
+	text_stream *TO = &TO_struct;
+	if (STREAM_OPEN_TO_FILE(TO, DO, UTF8_ENC) == FALSE)
+		Errors::fatal_with_file("unable to write file", DO);
+	skein *A = Skeins::from_plain_text(matching_actual);
+	skein *I = Skeins::from_plain_text(matching_ideal);
+	rv = 0;
+	if (Skeins::compare(TO, A, I, FALSE, TRUE) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -439,7 +456,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_Z_transcript(matching_actual, cle);
 	skein *I = Skeins::from_Z_transcript(matching_ideal, cle);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, FALSE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, FALSE, FALSE) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -455,7 +472,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_G_transcript(matching_actual, cle);
 	skein *I = Skeins::from_G_transcript(matching_ideal, cle);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, FALSE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, FALSE, FALSE) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -471,7 +488,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_i7_problems(matching_actual, cle);
 	skein *I = Skeins::from_i7_problems(matching_ideal, cle);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, TRUE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, TRUE, FALSE) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);

@@ -142,13 +142,14 @@ Note that a sequence of edits with no insertions or deletions means the
 match was in fact perfect, and is converted to the null edit list.
 
 =
-diff_results *Differ::diff(text_stream *ideal, text_stream *actual) {
+diff_results *Differ::diff(text_stream *ideal, text_stream *actual,
+	int allow_platform_variance) {
 	diff_results *DR = CREATE(diff_results);
 	DR->ideal = ideal;
 	DR->actual = actual;
 
 	LOGIF(DIFFER, "Differ:\nA = %S\nB = %S\n", ideal, actual);
-	DR->edits = Differ::diff_outer(ideal, actual);
+	DR->edits = Differ::diff_outer(ideal, actual, allow_platform_variance);
 
 	edit *E;
 	LOOP_OVER_LINKED_LIST(E, edit, DR->edits)
@@ -162,7 +163,8 @@ diff_results *Differ::diff(text_stream *ideal, text_stream *actual) {
 version lines first.
 
 =
-linked_list *Differ::diff_outer(text_stream *A, text_stream *B) {
+linked_list *Differ::diff_outer(text_stream *A, text_stream *B,
+	int allow_platform_variance) {
 	linked_list *edits = NEW_LINKED_LIST(edit);
 	string_position A_from = Str::start(A);
 	string_position A_to = Str::end(A);
@@ -171,7 +173,7 @@ linked_list *Differ::diff_outer(text_stream *A, text_stream *B) {
 
 	@<If both texts contain the Inform banner version line, diff around that@>;
 
-	Differ::diff_inner(edits, A_from, A_to, B_from, B_to);
+	Differ::diff_inner(edits, A_from, A_to, B_from, B_to, allow_platform_variance);
 	return edits;
 }
 
@@ -196,10 +198,12 @@ banner, followed by a diff of the after-texts.
 			string_position B_ver = Str::plus(B_from, Str::len(mr.exp[0]));
 			string_position B_post = Str::plus(B_ver, Str::len(mr.exp[1]));
 
-			Differ::diff_inner(edits, A_from, A_ver, B_from, B_ver);
+			Differ::diff_inner(edits, A_from, A_ver, B_from, B_ver,
+				allow_platform_variance);
 			edit *E = Differ::new_edit(A_ver, A_post, PRESERVE_EDIT);
 			ADD_TO_LINKED_LIST(E, edit, edits);
-			Differ::diff_inner(edits, A_post, A_to, B_post, B_to);
+			Differ::diff_inner(edits, A_post, A_to, B_post, B_to,
+				allow_platform_variance);
 			Regexp::dispose_of(&mr);
 			return edits;
 		}
@@ -211,7 +215,8 @@ banner, followed by a diff of the after-texts.
 =
 void Differ::diff_inner(linked_list *edits,
 	string_position A_from, string_position A_to,
-	string_position B_from, string_position B_to) {
+	string_position B_from, string_position B_to,
+	int allow_platform_variance) {
 	int A_len = Str::width_between(A_from, A_to);
 	int B_len = Str::width_between(B_from, B_to);
 	if ((A_len == 0) && (B_len == 0)) return;
@@ -251,7 +256,8 @@ words, or at any rate, ending at a word boundary (in both texts).
 			(Str::index(B_after_prefix) < Str::index(B_to));
 		A_after_prefix = Str::forward(A_after_prefix),
 		B_after_prefix = Str::forward(B_after_prefix))
-		if (Str::get(A_after_prefix) != Str::get(B_after_prefix))
+		if (Differ::distinct(Str::get(A_after_prefix), Str::get(B_after_prefix),
+			allow_platform_variance))
 			break;
 	LOGIF(DIFFER, "Common prefix size %d\n", Str::width_between(A_from, A_after_prefix));
 
@@ -267,7 +273,8 @@ words, or at any rate, ending at a word boundary (in both texts).
 	if (Str::width_between(A_from, A_after_prefix) > 0) {
 		edit *E = Differ::new_edit(A_from, A_after_prefix, PRESERVE_EDIT);
 		ADD_TO_LINKED_LIST(E, edit, edits);
-		Differ::diff_inner(edits, A_after_prefix, A_to, B_after_prefix, B_to);
+		Differ::diff_inner(edits, A_after_prefix, A_to, B_after_prefix, B_to,
+			allow_platform_variance);
 		return;
 	}
 
@@ -281,7 +288,8 @@ of a whole word.
 		(Str::index(B_suffix) > Str::index(B_from));
 		A_suffix = Str::back(A_suffix),
 		B_suffix = Str::back(B_suffix))
-		if (Str::get(Str::back(A_suffix)) != Str::get(Str::back(B_suffix)))
+		if (Differ::distinct(Str::get(Str::back(A_suffix)), Str::get(Str::back(B_suffix)),
+			allow_platform_variance))
 			break;
 
 	/* roll forwards until we're at a word boundary between the front and the suffix */
@@ -293,7 +301,8 @@ of a whole word.
 
 	/* if there's anything left, mark it as common text and recurse to move back past it */
 	if (Str::width_between(A_suffix, A_to) > 0) {
-		Differ::diff_inner(edits, A_from, A_suffix, B_from, B_suffix);
+		Differ::diff_inner(edits, A_from, A_suffix, B_from, B_suffix,
+			allow_platform_variance);
 		edit *E = Differ::new_edit(A_suffix, A_to, PRESERVE_EDIT);
 		ADD_TO_LINKED_LIST(E, edit, edits);
 		return;
@@ -317,7 +326,8 @@ diff the text afterwards.
 			for (int j = 0; j < B_len; j++)
 				if ((j == 0) || (Differ::boundary(SPCHAR(B, j-1), SPCHAR(B, j)))) {
 					int k;
-					for (k = 0; (i+k < A_len) && (j+k < B_len) && (SPCHAR(A, i+k) == SPCHAR(B, j+k)); k++) ;
+					for (k = 0; (i+k < A_len) && (j+k < B_len) &&
+									(SPCHAR(A, i+k) == SPCHAR(B, j+k)); k++) ;
 					while ((k > MINIMUM_SPLICE_WORTH_BOTHERING_WITH) &&
 						(!(Differ::boundary(SPCHAR(A, i+k-1), SPCHAR(A, i+k))))) k--;
 					if (k > max_len) {
@@ -338,10 +348,11 @@ diff the text afterwards.
 		string_position A_post = Str::plus(A_splice, max_len);
 		string_position B_post = Str::plus(B_splice, max_len);
 
-		Differ::diff_inner(edits, A_from, A_splice, B_from, B_splice);
+		Differ::diff_inner(edits, A_from, A_splice, B_from, B_splice,
+			allow_platform_variance);
 		edit *E = Differ::new_edit(A_splice, A_post, PRESERVE_EDIT);
 		ADD_TO_LINKED_LIST(E, edit, edits);
-		Differ::diff_inner(edits, A_post, A_to, B_post, B_to);
+		Differ::diff_inner(edits, A_post, A_to, B_post, B_to, allow_platform_variance);
 		if (Log::aspect_switched_on(DIFFER_DA)) Differ::print_edit_list(DL, edits, NULL);
 		LOGIF(DIFFER, "\n---\n");
 		return;
@@ -356,6 +367,21 @@ the text has entirely changed, and we display this as cleanly as possible:
 	E = Differ::new_edit(B_from, B_to, INSERT_EDIT);
 	ADD_TO_LINKED_LIST(E, edit, edits);
 	return;
+
+@ Ordinarily, two characters are distinct if they are different Unicode values.
+But with |allow_platform_variance| set, forward and backslashes are counted
+as being the same. This allows files containing Windows filenames to be
+compared with those containing MacOS ones.
+
+=
+int Differ::distinct(wchar_t c, wchar_t d, int allow_platform_variance) {
+	if (c == d) return FALSE;
+	if (allow_platform_variance)
+		if ((c == '/') || (c == '\\'))
+			if ((d == '/') || (d == '\\'))
+				return FALSE;
+	return TRUE;
+}
 
 @ This was the definition of "word boundary" used, where these are expected
 to be adjacent characters (in either direction). For best results, we want

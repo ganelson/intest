@@ -420,6 +420,11 @@ instruction.
 diffs if they disagree.
 </p>
 
+<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">match platform text: A B</span></span>. The same, but now forward and backslashes are
+counted as being equivalent to each other. This enables filesnames printed
+out on Windows to be compared with those printed out on other platforms.
+</p>
+
 <p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">match binary: A B</span></span>. Now they are binaries, so Intest will simply report
 that they disagree, if they do.
 </p>
