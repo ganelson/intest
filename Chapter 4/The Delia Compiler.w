@@ -302,6 +302,7 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 	if ((first == '$') && (Str::get(Str::forward(P)) == '[')) @<Tokenise from a file@>
 	else if (first == '`') @<Mark to retokenise at expansion time@>
 	else if (first == DELIA_QUOTE_CHARACTER) @<Take this quoted segment as the token@>
+	else if (first == SHELL_QUOTE_CHARACTER) @<Take this shell quoted segment as the token@>
 	else @<Take this unquoted word as the token@>;
 
 	T->token_text = Str::new();
@@ -346,6 +347,18 @@ and then each individual resulting token is expanded.
 		Q = Str::forward(Q);
 	}
 	if (Str::get(Q) == DELIA_QUOTE_CHARACTER)
+		Q = Str::forward(Q);
+
+@<Take this shell quoted segment as the token@> =
+	T->token_quoted = TRUE;
+	int esc = FALSE;
+	Q = Str::forward(Q);
+	while ((Str::in_range(Q)) &&
+		((esc) || (Str::get(Q) != SHELL_QUOTE_CHARACTER))) {
+		if (Str::get(Q) == '\\') esc = TRUE; else esc = FALSE;
+		Q = Str::forward(Q);
+	}
+	if (Str::get(Q) == SHELL_QUOTE_CHARACTER)
 		Q = Str::forward(Q);
 
 @ And otherwise any bare word is a token.
