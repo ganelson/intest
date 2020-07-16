@@ -102,6 +102,7 @@ the default is |magiczap.intest|.
 	if (args.verbose_switch) {
 		PRINT("Installation path is %p\n", installation);
 		Locales::write_locales(STDOUT);
+		PRINT("Available core count: %d\n", Platform::get_core_count());
 	}
 	Globals::start();
 

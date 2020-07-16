@@ -83,7 +83,7 @@ typedef struct intest_instructions {
 	args.compiling_recipe = NULL;
 	args.search_path = NEW_LINKED_LIST(test_source);
 	args.to_do_list = NEW_LINKED_LIST(action_item);
-	args.threads_available = 16;
+	args.threads_available = Platform::get_core_count();
 	args.home = home;
 	args.groups_folder = NULL;
 	args.implied_recipe_file = intest_script;
