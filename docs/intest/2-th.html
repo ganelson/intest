@@ -45,7 +45,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-th.html#SP1">&#167;1. History storage</a></li><li><a href="2-th.html#SP4">&#167;4. Research</a></li><li><a href="2-th.html#SP5">&#167;5. Reading history</a></li><li><a href="2-th.html#SP6">&#167;6. Writing history</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. History storage. </b>Recall that the history file records two things: past commands, such as <span class="extract"><span class="extract-syntax">?2</span></span>,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. History storage. </b>Recall that the history file records two things: past commands, such as <span class="extract"><span class="extract-syntax">?2</span></span>,
 stored in memory thus. The "epoch" is a number representing when this was;
 for <span class="extract"><span class="extract-syntax">?2</span></span>, it would be 2.
 </p>
@@ -58,7 +58,7 @@ for <span class="extract"><span class="extract-syntax">?2</span></span>, it woul
 <span class="plain-syntax">} </span><span class="reserved-syntax">historic_moment</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure historic_moment is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">present_epoch</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -77,7 +77,7 @@ for <span class="extract"><span class="extract-syntax">?2</span></span>, it woul
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>...and preset cases, such as <span class="extract"><span class="extract-syntax">1</span></span>, stored as follows. The Historian is
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>...and preset cases, such as <span class="extract"><span class="extract-syntax">1</span></span>, stored as follows. The Historian is
 notified of any failed tests by the Tester.
 </p>
 
@@ -95,7 +95,7 @@ notified of any failed tests by the Tester.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">f</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">MAX_PRESET_CASES</span><span class="plain-syntax">) </span><span class="identifier-syntax">preset_cases</span><span class="plain-syntax">[</span><span class="identifier-syntax">f</span><span class="plain-syntax">] = </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Research. </b>The historian runs in two phases. "Research" involves reading the history
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Research. </b>The historian runs in two phases. "Research" involves reading the history
 file in, then performing substitution on the command. "Writing up" involves
 writing the updated history file back again. One happens at the start of
 Intest's run, the other at the end.
@@ -115,7 +115,7 @@ Intest's run, the other at the end.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">expands</span><span class="plain-syntax">) { </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Expanded to: "</span><span class="plain-syntax">); </span><a href="2-th.html#SP6" class="function-link"><span class="function-syntax">Historian::write_command</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">present_moment</span><span class="plain-syntax">); }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Detect a ? or ?N request</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Detect a ? or ?N request</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -128,7 +128,7 @@ Intest's run, the other at the end.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-th.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Complete a ? request</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Complete a ? request</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -144,7 +144,7 @@ Intest's run, the other at the end.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-th.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Complete a ?N request</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Complete a ?N request</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -172,7 +172,7 @@ Intest's run, the other at the end.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-th.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_4"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Substitute preset case numbers</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Substitute preset case numbers</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -198,7 +198,7 @@ Intest's run, the other at the end.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-th.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Reading history. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Reading history. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Historian::read_history_file</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Historian::read_history_file</span></span>:<br/><a href="2-th.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">H</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">display_mode</span><span class="plain-syntax">) {</span>
@@ -233,7 +233,7 @@ Intest's run, the other at the end.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Writing history. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Writing history. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_HISTORICAL_RECORD</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span>
 </pre>

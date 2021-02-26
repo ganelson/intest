@@ -45,7 +45,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-gv.html#SP2">&#167;2. Basic operations</a></li><li><a href="2-gv.html#SP5">&#167;5. As filenames</a></li><li><a href="2-gv.html#SP7">&#167;7. Initialisation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>A global variable is (mostly) created in a recipe file by a command like:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>A global variable is (mostly) created in a recipe file by a command like:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -60,7 +60,7 @@ capitals <span class="extract"><span class="extract-syntax">$THUS</span></span>.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">globals_dictionary</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> until first variable is created</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Basic operations. </b>Variables are never destroyed, so we have just three basic operations: create,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Basic operations. </b>Variables are never destroyed, so we have just three basic operations: create,
 get and set. Variables are identified by name:
 </p>
 
@@ -72,7 +72,7 @@ get and set. Variables are identified by name:
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-dct.html#SP9" class="function-link"><span class="function-syntax">Dictionaries::create_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">globals_dictionary</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Get is easy:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Get is easy:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -81,7 +81,7 @@ get and set. Variables are identified by name:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../../../inweb/docs/foundation-module/2-dct.html#SP10" class="function-link"><span class="function-syntax">Dictionaries::get_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">globals_dictionary</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Set is more interesting because we perform expansions of any uses of the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Set is more interesting because we perform expansions of any uses of the
 notation <span class="extract"><span class="extract-syntax">$$varname</span></span> into the current value of <span class="extract"><span class="extract-syntax">varname</span></span> en route.
 </p>
 
@@ -97,7 +97,7 @@ notation <span class="extract"><span class="extract-syntax">$$varname</span></sp
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make substitutions</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make substitutions</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -115,7 +115,7 @@ notation <span class="extract"><span class="extract-syntax">$$varname</span></sp
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-gv.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. As filenames. </b>It turns out to be convenient to be able to read them as filenames, where
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. As filenames. </b>It turns out to be convenient to be able to read them as filenames, where
 we interpret <span class="extract"><span class="extract-syntax">/</span></span> as a file separator even on Windows, so that common settings
 files can be used across all platforms.
 </p>
@@ -134,7 +134,7 @@ files can be used across all platforms.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Globals::to_filename</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Globals::to_filename</span></span>:<br/>The Hasher - <a href="3-th.html#SP4">&#167;4</a>, <a href="3-th.html#SP5">&#167;5</a><br/>The Tester - <a href="4-tt.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
@@ -150,7 +150,7 @@ files can be used across all platforms.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Initialisation. </b>When Intest starts up, it creates two variables to kick off with:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Initialisation. </b>When Intest starts up, it creates two variables to kick off with:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

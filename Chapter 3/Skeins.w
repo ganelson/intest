@@ -169,13 +169,9 @@ status line early in play. We don't want that.
 @<Read from plain text@> =
 	Skeins::new_node(sks, tfp->line_count+1, NULL, sks->detected_format);
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, line_text, L"(%c*?)/T%d+/(%c*)")) {
+	while (Regexp::match(&mr, line_text, L"(%c*?)[/\\]T%d+[/\\](%c*)")) {
 		Str::clear(line_text);
 		WRITE_TO(line_text, "Txx/%S", mr.exp[1]);
-	}
-	while (Regexp::match(&mr, line_text, L"(%c*?)\\T%d+\\(%c*)")) {
-		Str::clear(line_text);
-		WRITE_TO(line_text, "Txx\\%S", mr.exp[1]);
 	}
 
 @ Let us not pretend that this is a properly capable XML reader: it's

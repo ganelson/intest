@@ -45,7 +45,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-skn.html#SP1">&#167;1. About skeins</a></li><li><a href="3-skn.html#SP3">&#167;3. Stringing skeins together</a></li><li><a href="3-skn.html#SP9">&#167;9. Disposing of skeins</a></li><li><a href="3-skn.html#SP10">&#167;10. Matching skeins</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. About skeins. </b>"Skein" is a term coined by the Inform project for a tree of possible
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. About skeins. </b>"Skein" is a term coined by the Inform project for a tree of possible
 textual commands and responses. Branching in the tree represents a choice
 of which command to give. Such branches are useful when considering what
 lines of play are possible, but Intest is only interested in the past, not
@@ -85,7 +85,7 @@ use the code below, even if only minimally.
 <span class="plain-syntax">} </span><span class="reserved-syntax">skein</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure skein is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Skeins::write</span><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">skein</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sk</span><span class="plain-syntax">) {</span>
@@ -104,7 +104,7 @@ use the code below, even if only minimally.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">label</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Stringing skeins together. </b>The Tester, when trying to match two files <span class="extract"><span class="extract-syntax">A</span></span> and <span class="extract"><span class="extract-syntax">B</span></span>, calls one of the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Stringing skeins together. </b>The Tester, when trying to match two files <span class="extract"><span class="extract-syntax">A</span></span> and <span class="extract"><span class="extract-syntax">B</span></span>, calls one of the
 following on each to turn it into a skein.
 </p>
 
@@ -128,7 +128,7 @@ following on each to turn it into a skein.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-skn.html#SP4" class="function-link"><span class="function-syntax">Skeins::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">PLAIN_SKF</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>All of which use the following:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>All of which use the following:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -147,7 +147,7 @@ following on each to turn it into a skein.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sks</span><span class="plain-syntax">.</span><span class="element-syntax">root</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">skein_state</span><span class="plain-syntax"> {</span>
@@ -164,7 +164,7 @@ following on each to turn it into a skein.
 <span class="plain-syntax">} </span><span class="reserved-syntax">skein_state</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure skein_state is accessed in 2/trs and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the Skein reader state</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the Skein reader state</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -180,7 +180,7 @@ following on each to turn it into a skein.
 <span class="plain-syntax">    </span><span class="identifier-syntax">sks</span><span class="plain-syntax">.</span><span class="element-syntax">actual_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">actual_flag</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The following, then, is called line by line on the skein file being read,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The following, then, is called line by line on the skein file being read,
 with the above state being maintained.
 </p>
 
@@ -203,7 +203,7 @@ with the above state being maintained.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sks</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">writing_to</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-skn.html#SP5_8" class="named-paragraph-link"><span class="named-paragraph">Transcribe this line into the turn buffer</span><span class="named-paragraph-number">5.8</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b>Dumb-frotz indents everything by two spaces; dumb-glulxe does not. This
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>Dumb-frotz indents everything by two spaces; dumb-glulxe does not. This
 can be used to tell which one produced a given transcript file.
 </p>
 
@@ -219,7 +219,7 @@ can be used to tell which one produced a given transcript file.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b>The opening line of a dumb-frotz transcript is a plain text form of the
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b>The opening line of a dumb-frotz transcript is a plain text form of the
 status line early in play. We don't want that.
 </p>
 
@@ -231,7 +231,7 @@ status line early in play. We don't want that.
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b>See the documentation for why we forgive differences in thread number.
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b>See the documentation for why we forgive differences in thread number.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read from plain text</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
@@ -240,17 +240,13 @@ status line early in play. We don't want that.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="3-skn.html#SP7" class="function-link"><span class="function-syntax">Skeins::new_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sks</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line_count</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">sks</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">detected_format</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?)/T%d+/(%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?)[/\\]T%d+[/\\](%c*)"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line_text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">line_text</span><span class="plain-syntax">, </span><span class="string-syntax">"Txx/%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?)\\T%d+\\(%c*)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line_text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">line_text</span><span class="plain-syntax">, </span><span class="string-syntax">"Txx\\%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
-<span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4"></a><b>&#167;5.4.  </b>Let us not pretend that this is a properly capable XML reader: it's
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b>Let us not pretend that this is a properly capable XML reader: it's
 nothing of the kind, and simply does just enough to scrape the necessary
 text out of a Skein file in an I7 project. This is not the place to
 document that format.
@@ -274,7 +270,7 @@ document that format.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1"></a><b>&#167;5.4.1.  </b>Given the line <span class="extract"><span class="extract-syntax">hello, &lt;it&gt;you</span></span>, split into two lines <span class="extract"><span class="extract-syntax">hello, </span></span> and
+<p class="commentary firstcommentary"><a id="SP5_4_1" class="paragraph-anchor"></a><b>&#167;5.4.1.  </b>Given the line <span class="extract"><span class="extract-syntax">hello, &lt;it&gt;you</span></span>, split into two lines <span class="extract"><span class="extract-syntax">hello, </span></span> and
 <span class="extract"><span class="extract-syntax">&lt;it&gt;you</span></span>, by calling this line-reading routine again on each. (That's
 what's nefarious.)
 </p>
@@ -299,7 +295,7 @@ what's nefarious.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_2"></a><b>&#167;5.4.2.  </b>If we're here, the only place a <span class="extract"><span class="extract-syntax">&lt;</span></span> can be is at the start of a line.
+<p class="commentary firstcommentary"><a id="SP5_4_2" class="paragraph-anchor"></a><b>&#167;5.4.2.  </b>If we're here, the only place a <span class="extract"><span class="extract-syntax">&lt;</span></span> can be is at the start of a line.
 If we can also see a matching <span class="extract"><span class="extract-syntax">&gt;</span></span> then again split, so that <span class="extract"><span class="extract-syntax">&lt;it&gt;you</span></span>
 would split into two lines <span class="extract"><span class="extract-syntax">&lt;it&gt;</span></span> and <span class="extract"><span class="extract-syntax">you</span></span>.
 </p>
@@ -326,7 +322,7 @@ would split into two lines <span class="extract"><span class="extract-syntax">&l
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_3"></a><b>&#167;5.4.3.  </b>So now a line is either an entire tag, or entirely not a tag. In a Skein
+<p class="commentary firstcommentary"><a id="SP5_4_3" class="paragraph-anchor"></a><b>&#167;5.4.3.  </b>So now a line is either an entire tag, or entirely not a tag. In a Skein
 file, <span class="extract"><span class="extract-syntax">&lt;item nodeId="..."&gt;</span></span> is what declares a node ID, and it's now easy
 to match for that:
 </p>
@@ -339,7 +335,7 @@ to match for that:
 <span class="plain-syntax">        </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sks</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">current_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_4"></a><b>&#167;5.4.4.  </b>Sometimes the I7 app wants us to make a skein from the whole file, and
+<p class="commentary firstcommentary"><a id="SP5_4_4" class="paragraph-anchor"></a><b>&#167;5.4.4.  </b>Sometimes the I7 app wants us to make a skein from the whole file, and
 sometimes just from a single node in it. Either way, this is run when
 we are at a node whose contents we care about:
 </p>
@@ -372,7 +368,7 @@ we are at a node whose contents we care about:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_5"></a><b>&#167;5.5.  </b>This code is used only for matching problem message output from the I7
+<p class="commentary firstcommentary"><a id="SP5_5" class="paragraph-anchor"></a><b>&#167;5.5.  </b>This code is used only for matching problem message output from the I7
 compiler. We ignore <span class="extract"><span class="extract-syntax">Offending filename</span></span> lines for much the reason above &mdash;
 they exist only in fatal file-system problem messages in any case. A line
 in the form
@@ -406,7 +402,7 @@ the problem name and label the Skein node with it.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_6"></a><b>&#167;5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read from a Frotz transcript</span><span class="named-paragraph-number">5.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_6" class="paragraph-anchor"></a><b>&#167;5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read from a Frotz transcript</span><span class="named-paragraph-number">5.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -452,7 +448,7 @@ the problem name and label the Skein node with it.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_7"></a><b>&#167;5.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read from a Glulxe transcript</span><span class="named-paragraph-number">5.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_7" class="paragraph-anchor"></a><b>&#167;5.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read from a Glulxe transcript</span><span class="named-paragraph-number">5.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -494,7 +490,7 @@ the problem name and label the Skein node with it.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8"></a><b>&#167;5.8.  </b>We lose the redundant two-space indentation of a dumb-frotz transcript.
+<p class="commentary firstcommentary"><a id="SP5_8" class="paragraph-anchor"></a><b>&#167;5.8.  </b>We lose the redundant two-space indentation of a dumb-frotz transcript.
 Otherwise, we simply add the new line to the current turn buffer.
 </p>
 
@@ -514,7 +510,7 @@ Otherwise, we simply add the new line to the current turn buffer.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">sks</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">turn_buffer</span><span class="plain-syntax">, </span><span class="character-syntax">'\n'</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This "utility" simply removes the XML escapes for <span class="extract"><span class="extract-syntax">&lt;</span></span>, <span class="extract"><span class="extract-syntax">&gt;</span></span> and <span class="extract"><span class="extract-syntax">&amp;</span></span>.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>This "utility" simply removes the XML escapes for <span class="extract"><span class="extract-syntax">&lt;</span></span>, <span class="extract"><span class="extract-syntax">&gt;</span></span> and <span class="extract"><span class="extract-syntax">&amp;</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -537,7 +533,7 @@ Otherwise, we simply add the new line to the current turn buffer.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The following begins a new node in the Skein:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The following begins a new node in the Skein:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -557,7 +553,7 @@ Otherwise, we simply add the new line to the current turn buffer.
 <span class="plain-syntax">    </span><span class="identifier-syntax">new_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">disposed_of</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>While this routine brings the existing node &mdash; that is, the one currently
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>While this routine brings the existing node &mdash; that is, the one currently
 being written to &mdash; to an end:
 </p>
 
@@ -568,7 +564,7 @@ being written to &mdash; to an end:
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sks</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">turn_buffer</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Disposing of skeins. </b>On a long run of many tests, Intest creates an enormous number of <span class="extract"><span class="extract-syntax">skein</span></span>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Disposing of skeins. </b>On a long run of many tests, Intest creates an enormous number of <span class="extract"><span class="extract-syntax">skein</span></span>
 structures, so this is the one data structure it takes the trouble to
 deallocate when it's done with them. We need to do this depth-first, i.e.,
 from the bottom upwards, because if you start at the top then you destroy
@@ -586,7 +582,7 @@ the link to the rest before you can get to them.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Matching skeins. </b>So, this was what it was all about. Given two skeins, do they hold the same
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Matching skeins. </b>So, this was what it was all about. Given two skeins, do they hold the same
 sequence of pieces of text? And if not, find a clean way to express the
 differences between them.
 </p>
@@ -623,7 +619,7 @@ same "label" and the same "text".
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">error_count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Both skeins are still going</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Both skeins are still going</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -635,13 +631,13 @@ same "label" and the same "text".
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-skn.html#SP10_1_2" class="named-paragraph-link"><span class="named-paragraph">The two skeins have different labels at this node</span><span class="named-paragraph-number">10.1.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1"></a><b>&#167;10.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Both skeins have the same label at this node</span><span class="named-paragraph-number">10.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1_1" class="paragraph-anchor"></a><b>&#167;10.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Both skeins have the same label at this node</span><span class="named-paragraph-number">10.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::ne</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">diff_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DR</span><span class="plain-syntax"> = </span><a href="3-td.html#SP6" class="function-link"><span class="function-syntax">Differ::diff</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/2-llas.html#SP6" class="function-link"><span class="function-syntax">LinkedLists::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DR</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">edits</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/2-llas.html#SP7" class="function-link"><span class="function-syntax">LinkedLists::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DR</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">edits</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from_format</span><span class="plain-syntax"> == </span><span class="constant-syntax">PLAIN_SKF</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Discrepancy at %k:\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">else</span>
@@ -657,7 +653,7 @@ same "label" and the same "text".
 <span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP10_1">&#167;10.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2"></a><b>&#167;10.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The two skeins have different labels at this node</span><span class="named-paragraph-number">10.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1_2" class="paragraph-anchor"></a><b>&#167;10.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The two skeins have different labels at this node</span><span class="named-paragraph-number">10.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -667,7 +663,7 @@ same "label" and the same "text".
 <span class="plain-syntax">    </span><span class="identifier-syntax">error_count</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP10_1">&#167;10.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The actual skein is still going, but the ideal one has run out</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The actual skein is still going, but the ideal one has run out</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -680,7 +676,7 @@ same "label" and the same "text".
 <span class="plain-syntax">    </span><span class="identifier-syntax">error_count</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The ideal skein is still going, but the actual one has run out</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The ideal skein is still going, but the actual one has run out</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -693,7 +689,7 @@ same "label" and the same "text".
 <span class="plain-syntax">    </span><span class="identifier-syntax">error_count</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>This powers <span class="extract"><span class="extract-syntax">-test-skein</span></span>, which specifies an exact node ID and wants to
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>This powers <span class="extract"><span class="extract-syntax">-test-skein</span></span>, which specifies an exact node ID and wants to
 compare only the text at that one node. We therefore make mimimal <span class="extract"><span class="extract-syntax">skein</span></span>
 structures &mdash; each a singleton &mdash; and then just call the Differ directly
 to compare the two.

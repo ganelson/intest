@@ -45,7 +45,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-tr.html#SP1">&#167;1. About reports</a></li><li><a href="3-tr.html#SP2">&#167;2. Report feature</a></li><li><a href="3-tr.html#SP4">&#167;4. Combine feature</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. About reports. </b>This whole section applies only for the non-standard use case where Intest
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. About reports. </b>This whole section applies only for the non-standard use case where Intest
 is running inside the Inform user interface app. A "report" is then an
 HTML page summarising the results of testing, which that app can then display.
 Reports are heavily tied to the standard recipe for testing Inform source,
@@ -60,7 +60,7 @@ number of ways:
 <span class="definition-keyword">define</span> <span class="constant-syntax">WRONG_TRANSCRIPT_OUTCOME</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax"> the actual transcript didn't match the ideal</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PERFECT_OUTCOME</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Report feature. </b>The following implements the <span class="extract"><span class="extract-syntax">-report</span></span> command line feature.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Report feature. </b>The following implements the <span class="extract"><span class="extract-syntax">-report</span></span> command line feature.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -71,7 +71,7 @@ number of ways:
 <span class="plain-syntax">        &amp;</span><a href="3-tr.html#SP3" class="function-link"><span class="function-syntax">Reporter::filter</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">rs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">report_state</span><span class="plain-syntax"> {</span>
@@ -88,7 +88,7 @@ number of ways:
 <span class="plain-syntax">} </span><span class="reserved-syntax">report_state</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure report_state is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the report state</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the report state</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -107,7 +107,7 @@ number of ways:
 <span class="plain-syntax">        </span><span class="identifier-syntax">rs</span><span class="plain-syntax">.</span><span class="identifier-syntax">test_case_letter</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>So, then, the following filter is run line by line on a prototype HTML file
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>So, then, the following filter is run line by line on a prototype HTML file
 nominated by the UI app. We will splice in our report.
 </p>
 
@@ -146,7 +146,7 @@ nominated by the UI app. We will splice in our report.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert test report header</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert test report header</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -177,7 +177,7 @@ nominated by the UI app. We will splice in our report.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/div&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert additional material</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert additional material</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -236,7 +236,7 @@ nominated by the UI app. We will splice in our report.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2_1"></a><b>&#167;3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert link to transcript</span><span class="named-paragraph-number">3.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2_1" class="paragraph-anchor"></a><b>&#167;3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert link to transcript</span><span class="named-paragraph-number">3.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -245,21 +245,21 @@ nominated by the UI app. We will splice in our report.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"'&gt;&lt;img border=0 src=inform:/doc_images/Transcript.png&gt;&lt;/a&gt;&amp;nbsp;"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP3_2">&#167;3.2</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert test report footer</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert test report footer</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;p&gt;&lt;/p&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_4"></a><b>&#167;3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Filter existing report, adjusting links</span><span class="named-paragraph-number">3.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Filter existing report, adjusting links</span><span class="named-paragraph-number">3.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">line_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Combine feature. </b>The following implements the <span class="extract"><span class="extract-syntax">-combine</span></span> command line feature. Essentially it
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Combine feature. </b>The following implements the <span class="extract"><span class="extract-syntax">-combine</span></span> command line feature. Essentially it
 takes a batch of reports made by <span class="extract"><span class="extract-syntax">-report</span></span> and merges them together.
 </p>
 
@@ -273,7 +273,7 @@ takes a batch of reports made by <span class="extract"><span class="extract-synt
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the report state for combination</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the report state for combination</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -296,7 +296,7 @@ takes a batch of reports made by <span class="extract"><span class="extract-synt
 <span class="plain-syntax">    </span><span class="identifier-syntax">rs</span><span class="plain-syntax">.</span><span class="element-syntax">test_case_letter</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">char</span><span class="plain-syntax">) (((</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="character-syntax">'A'</span><span class="plain-syntax">) + </span><span class="identifier-syntax">i</span><span class="plain-syntax"> - </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tr.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reporter::combine_filter</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Reporter::combine_filter</span></span>:<br/><a href="3-tr.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vrs</span><span class="plain-syntax">) {</span>

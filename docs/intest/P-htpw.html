@@ -52,7 +52,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="P-htpw.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-htpw.html#SP2">&#167;2. Instructions and their blocks</a></li><li><a href="P-htpw.html#SP4">&#167;4. The Universe of Cases</a></li><li><a href="P-htpw.html#SP6">&#167;6. Instructions for action</a></li><li><a href="P-htpw.html#SP7">&#167;7. Performing actions</a></li><li><a href="P-htpw.html#SP8">&#167;8. Individual tests</a></li><li><a href="P-htpw.html#SP11">&#167;11. Intest used inside the Inform GUI app</a></li><li><a href="P-htpw.html#SP12">&#167;12. Adding to Intest</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>This page is to help readers to get their bearings in the source code for
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>This page is to help readers to get their bearings in the source code for
 Intest, which is a literate program or "web". Before diving in:
 </p>
 
@@ -67,7 +67,7 @@ This is a web in its own right. There's no need to read it in full, but if
 you haven't seen a Foundation-based program before, you may want to take a
 quick look at <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Instructions and their blocks. </b>Intest is a C program, so it begins at <a href="1-mn.html" class="internal">Main</a>. This works out where Intest
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Instructions and their blocks. </b>Intest is a C program, so it begins at <a href="1-mn.html" class="internal">Main</a>. This works out where Intest
 is installed, which project Intest is to test, and where the file specifying
 the universe of tests is, but otherwise soaks up the command line arguments
 into an array of "instructions". For example, if the user typed:
@@ -113,7 +113,7 @@ get a return code of 1 if, for example, you ask for a nonexistent test, but
 if you ask to test <span class="extract"><span class="ConsoleText-extract-syntax">Gelato</span></span> and it fails, the return code is 0.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Let's take a closer look at how <a href="1-cla.html#SP1" class="internal">Instructions::read</a> turns an array
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Let's take a closer look at how <a href="1-cla.html#SP1" class="internal">Instructions::read</a> turns an array
 like <span class="extract"><span class="ConsoleText-extract-syntax">-verbose</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">Sackcloth</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">Beatles</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">Gelato</span></span> into an <a href="1-cla.html#SP1_3" class="internal">intest_instructions</a>
 object. It divides the array into contiguous runs called "blocks", each of which
 is either:
@@ -140,7 +140,7 @@ the universe of available test cases is fully known before a DO block is parsed.
 For example, it will be known that <span class="extract"><span class="extract-syntax">Gelato</span></span> is the name of an available test case.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The Universe of Cases. </b><span class="extract"><span class="extract-syntax">-using</span></span> is seldom needed and could probably be dropped from Intest, but
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The Universe of Cases. </b><span class="extract"><span class="extract-syntax">-using</span></span> is seldom needed and could probably be dropped from Intest, but
 USING blocks are essential and are needed on every run. This paradox is explained
 by the fact that non-recipe commands in recipe files are in fact USING blocks.
 Thus, if you type
@@ -165,7 +165,7 @@ Thus, if you type
 as USING blocks.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>So what can USING blocks contain? A minimal amount of conditionality allows
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>So what can USING blocks contain? A minimal amount of conditionality allows
 for platform differences to be handled by <span class="extract"><span class="ConsoleText-extract-syntax">-if X</span></span>, ..., <span class="extract"><span class="ConsoleText-extract-syntax">-endif</span></span>: this works
 by checking <span class="extract"><span class="ConsoleText-extract-syntax">X</span></span> against the <span class="extract"><span class="ConsoleText-extract-syntax">$$platform</span></span> global. <span class="extract"><span class="ConsoleText-extract-syntax">-set</span></span> calls <a href="2-gv.html#SP2" class="internal">Globals::create</a>
 to make new globals, and <a href="2-gv.html#SP4" class="internal">Globals::set</a> to initialise them. But except for a
@@ -198,7 +198,7 @@ returns the <a href="2-rf.html#SP8" class="internal">test_case</a> for a test na
 if no test has that name.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Instructions for action. </b>As noted above, DO blocks are parsed by <a href="2-act.html#SP1" class="internal">Actions::read_do_instructions</a>.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Instructions for action. </b>As noted above, DO blocks are parsed by <a href="2-act.html#SP1" class="internal">Actions::read_do_instructions</a>.
 They typically tell Intest to perform an action on one or more test cases,
 perhaps named individually, perhaps collectively. There are around 20 actions,
 but the default is <span class="extract"><span class="ConsoleText-extract-syntax">-test</span></span>, so that our example DO block of <span class="extract"><span class="ConsoleText-extract-syntax">Sackcloth Beatles Gelato</span></span>
@@ -216,7 +216,7 @@ a named group, or everything whose name matches a regular expression.
 See <a href="2-act.html#SP5" class="internal">Actions::parse_specifier</a> for the syntax.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Performing actions. </b>At this point in the story, then, the instructions have been fully read, and
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Performing actions. </b>At this point in the story, then, the instructions have been fully read, and
 the recipe file has been read too. The universe of cases is known, and it's
 known what the user wants us to do with which subsets of those cases. <a href="1-mn.html" class="internal">Main</a>
 has just called <a href="2-act.html#SP7" class="internal">Actions::perform</a>, and it's time for something to happen.
@@ -247,7 +247,7 @@ Once all threads have finished, and Intest is back to being a single-threaded
 program, <a href="3-ts.html#SP10" class="internal">Scheduler::perform_work</a> summarises the results.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Individual tests. </b>What the workers do is to call <a href="4-tt.html#SP1" class="internal">Tester::test</a> on each <a href="3-ts.html#SP8" class="internal">test</a> it is given.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Individual tests. </b>What the workers do is to call <a href="4-tt.html#SP1" class="internal">Tester::test</a> on each <a href="3-ts.html#SP8" class="internal">test</a> it is given.
 A <a href="3-ts.html#SP8" class="internal">test</a> object is essentially an action code, plus a <a href="2-rf.html#SP8" class="internal">test_case</a>, plus
 a work area in the file system &mdash; each worker thread has its own work area,
 since otherwise interference between them would create havoc; but successive
@@ -261,7 +261,7 @@ which has been precompiled into a quick-to-interpret form by <a href="4-tdc.html
 something which was done back when the recipe file was read in.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>The most complex algorithm in Intest is probably the one performing token
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The most complex algorithm in Intest is probably the one performing token
 expansion, at <a href="4-tt.html#SP5" class="internal">Tester::expand</a>. This expands a token like <span class="extract"><span class="ConsoleText-extract-syntax">$WORK/Example.inform</span></span>
 by substituting in the current value of the variable <span class="extract"><span class="ConsoleText-extract-syntax">$WORK</span></span> &mdash; note that these
 are single-dollar, i.e. local to the current recipe, variables, as distinct from
@@ -271,7 +271,7 @@ something which still ends up as a single shell command token &mdash; see
 <a href="4-tt.html#SP6" class="internal">Tester::quote_expand</a> for how this is done.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>When tests fail, it is usually because some output text doesn't match the
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>When tests fail, it is usually because some output text doesn't match the
 "blessed" text which had been expected &mdash; only usually, because Delia recipes can
 fail tests for quite a number of reasons. Still, this is the commonest case,
 and then <a href="3-td.html" class="internal">The Differ</a> performs a Unix-style <span class="extract"><span class="ConsoleText-extract-syntax">diff</span></span> (i.e., summary of
@@ -282,14 +282,14 @@ running time on really enormous outputs; in those cases, the Unix <span class="e
 would do rather better. More work could probably be done here.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Intest used inside the Inform GUI app. </b>On MacOS, the Inform application includes a copy of the <span class="extract"><span class="ConsoleText-extract-syntax">intest</span></span> binary, and
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Intest used inside the Inform GUI app. </b>On MacOS, the Inform application includes a copy of the <span class="extract"><span class="ConsoleText-extract-syntax">intest</span></span> binary, and
 uses it to perform automated testing of the test cases in an extension, for
 extension projects. This requires us to generate output in a different format,
 since we're reporting back to the app rather than to the user at the command
 line. See <a href="3-tr.html" class="internal">The Reporter</a> for how this is done.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Adding to Intest. </b>Here's some miscellaneous advice for those who would like to add to Intest:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Adding to Intest. </b>Here's some miscellaneous advice for those who would like to add to Intest:
 </p>
 
 <p class="commentary">1. If what you want is to have a form of test which runs differently, see

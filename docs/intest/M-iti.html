@@ -38,7 +38,7 @@
 
 <ul class="toc"><li><a href="M-iti.html#SP1">&#167;1. Introduction</a></li><li><a href="M-iti.html#SP2">&#167;2. Recipes</a></li><li><a href="M-iti.html#SP3">&#167;3. Installation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Introduction. </b>Intest is a command line tool for testing command line tools. It was
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>Intest is a command line tool for testing command line tools. It was
 originally written for testing the Inform 7 compiler, and has been used
 heavily and continuously for that purpose since 2004. But it can in fact
 test any command-line tool with broadly textual output. While it's a natural
@@ -89,7 +89,7 @@ tests run, too: this one was test run <span class="extract"><span class="Console
 <span class="ConsoleText-plain-syntax">    [1] rockets passed</span>
 <span class="ConsoleText-plain-syntax">    [2] moons passed</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Recipes. </b>Intest assumes that each project will have its own universe of tests.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Recipes. </b>Intest assumes that each project will have its own universe of tests.
 These can take many forms, but the commonest are to give valid input and
 check to see some expected output, or else to give invalid input and check
 to see that some expected error message is produced.
@@ -227,7 +227,7 @@ over 2000 cases. Intest is a simple tool at heart, but it was written
 with an eye to speed and flexibility.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Installation. </b>Intest is a "literate program", and to compile it from source you should
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Installation. </b>Intest is a "literate program", and to compile it from source you should
 first obtain the literate programming tool Inweb. (Both are available from
 Github.)
 </p>
@@ -281,7 +281,7 @@ will make us a MacOS version of this makefile, and so on. Now we can make:
 <p class="commentary">to save a little typing, but in this documentation we always spell it out.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>When it runs, Intest needs to know where it is installed in the file
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>When it runs, Intest needs to know where it is installed in the file
 system. There is no completely foolproof, cross-platform way to know this
 (on some Unixes, a program cannot determine its own location), so Intest
 decides by the following set of rules:
@@ -302,7 +302,7 @@ running Intest with the <span class="extract"><span class="ConsoleText-extract-s
 about its location as it starts up.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Intest returns an exit code of 0 if successful, or else it throws errors
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Intest returns an exit code of 0 if successful, or else it throws errors
 to <span class="extract"><span class="ConsoleText-extract-syntax">stderr</span></span> and returns 1 if unsuccessful. Successful means that it did what it
 was asked to do: if it was asked to conduct a test and the test failed,
 Intest was still successful (the test was after all conducted), so it

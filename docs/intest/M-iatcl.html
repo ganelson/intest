@@ -38,7 +38,7 @@
 
 <ul class="toc"><li><a href="M-iatcl.html#SP1">&#167;1. Specifying what to test</a></li><li><a href="M-iatcl.html#SP3">&#167;3. History and substitution</a></li><li><a href="M-iatcl.html#SP4">&#167;4. Command line arguments</a></li><li><a href="M-iatcl.html#SP5">&#167;5. The options</a></li><li><a href="M-iatcl.html#SP6">&#167;6. Using</a></li><li><a href="M-iatcl.html#SP7">&#167;7. Doing</a></li><li><a href="M-iatcl.html#SP9">&#167;9. Output redirection</a></li><li><a href="M-iatcl.html#SP10">&#167;10. Reporting on test outcomes in the Inform app</a></li><li><a href="M-iatcl.html#SP11">&#167;11. Skein file testing</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Specifying what to test. </b>Intest tests just one project at a time, and the first thing to do is
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Specifying what to test. </b>Intest tests just one project at a time, and the first thing to do is
 specify which. The general form is:
 </p>
 
@@ -59,13 +59,13 @@ when of course no actual testing will happen.
 <p class="commentary">The rest of this section is entirely about how to write a <span class="extract"><span class="ConsoleText-extract-syntax">COMMAND</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Intest expects that <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> will be a directory, and that it will further
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Intest expects that <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> will be a directory, and that it will further
 contain a subdirectory called <span class="extract"><span class="ConsoleText-extract-syntax">Tests</span></span>. But that is really the only assumption
 it makes: there is no requirement for the project to be a web in the sense of
 Inweb, or to be one of the Inform tools.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. History and substitution. </b>For each different project <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span>, Intest maintains a history of recent
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. History and substitution. </b>For each different project <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span>, Intest maintains a history of recent
 commands in a file stored at:
 </p>
 
@@ -131,7 +131,7 @@ only of positive decimal numbers into the names recorded in the history. Thus
 <span class="ConsoleText-plain-syntax">    Expanded to: ?5. PM_ActivityOf PM_AdjectiveIsValue</span>
 <span class="ConsoleText-plain-syntax">    ...</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Command line arguments. </b>At this point, then, the command no longer has any <span class="extract"><span class="ConsoleText-extract-syntax">?</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">?n</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">n</span></span> tokens
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Command line arguments. </b>At this point, then, the command no longer has any <span class="extract"><span class="ConsoleText-extract-syntax">?</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">?n</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">n</span></span> tokens
 in it, because those have all been taken care of. What remains is a "raw
 command". This takes the form:
 </p>
@@ -158,7 +158,7 @@ isn't a <span class="extract"><span class="extract-syntax">-using</span></span> 
 cases named.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. The options. </b>Are as follows:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The options. </b>Are as follows:
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">-history</span></span> and <span class="extract"><span class="extract-syntax">-no-history</span></span> turn the writing of command history on or off.
@@ -183,7 +183,7 @@ thread, which may be necessary on some platforms.
 removing the many temporary files created in the course of testing.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Using. </b>Before it can do any testing, Intest has to discover the universe of possible
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Using. </b>Before it can do any testing, Intest has to discover the universe of possible
 named test cases available, and work out which recipe to use with each.
 </p>
 
@@ -238,7 +238,7 @@ type, and assign them the current recipe.
 gone into in the next section.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Doing. </b>The "doing" part of an Intest command is usually a list of test cases to
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Doing. </b>The "doing" part of an Intest command is usually a list of test cases to
 be tried. For example,
 </p>
 
@@ -279,7 +279,7 @@ multithreaded, whereas a double colon <span class="extract"><span class="extract
 <p class="commentary">(Test types will be gone into in the next section.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>But other do commands are also available:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>But other do commands are also available:
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">-catalogue</span></span>: List all the known test cases. For large projects this might
@@ -415,7 +415,7 @@ being matched.
 <p class="commentary"><span class="extract"><span class="extract-syntax">-bbdiff &lt;cases&gt;</span></span>: Like <span class="extract"><span class="extract-syntax">-diff</span></span>, but using the <span class="extract"><span class="extract-syntax">bbdiff</span></span> tool instead. You will only have this if you're running the BBEdit text editor on MacOS.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Output redirection. </b>Do commands producing textual output, such as <span class="extract"><span class="extract-syntax">-source</span></span>, normally send that to
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Output redirection. </b>Do commands producing textual output, such as <span class="extract"><span class="extract-syntax">-source</span></span>, normally send that to
 the standard output stdout. (If you're using Intest in a <span class="extract"><span class="extract-syntax">bash</span></span> or similar
 shell on a Unix-based operating system, this means it can be piped to an
 application or redirected to a file.) But you can also ask Intest itself to
@@ -446,7 +446,7 @@ each test case being applied to by this action. Thus, for example:
 <span class="extract"><span class="extract-syntax">-to</span></span> destinations.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Reporting on test outcomes in the Inform app. </b>Two special do commands are provided for use of the Inform app only (well,
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Reporting on test outcomes in the Inform app. </b>Two special do commands are provided for use of the Inform app only (well,
 it's hard to think of anyone else who would need them). The idea here is that
 after the Inform app has conducted a test, it asks intest to produce an HTML
 page to describe the results of the test, passing over the information needed
@@ -523,7 +523,7 @@ but with "-1", "-2", ..., tacked on before the file extension. Thus:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Locksmith.i7xp/Build/Consolidated.html</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Skein file testing. </b>In order to be used by the Testing panel in the Inform app, intest also supports the following:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Skein file testing. </b>In order to be used by the Testing panel in the Inform app, intest also supports the following:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

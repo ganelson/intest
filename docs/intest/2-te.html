@@ -43,7 +43,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">intest</a></li><li><a href="index.html#2">Chapter 2: Test Cases and Instructions</a></li><li><b>The Extractor</b></li></ul></div>
 <p class="purpose">To extract the text of a test case from its file on disc.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Recall that each test case lives somewhere in a file, whose format is one
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Recall that each test case lives somewhere in a file, whose format is one
 of <span class="extract"><span class="extract-syntax">PLAIN_FORMAT</span></span>, <span class="extract"><span class="extract-syntax">EXAMPLE_FORMAT</span></span> or <span class="extract"><span class="extract-syntax">EXTENSION_FORMAT</span></span>, though the latter two
 only ever arise when testing Inform 7.
 </p>
@@ -73,7 +73,7 @@ but non-trivial for the other two, and requires some exhausting parsing.
 <span class="plain-syntax">} </span><span class="reserved-syntax">extraction_state</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure extraction_state is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The Extractor can be called with four commands, all (not coincidentally)
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The Extractor can be called with four commands, all (not coincidentally)
 action commands: <span class="extract"><span class="extract-syntax">SOURCE_ACTION</span></span>, <span class="extract"><span class="extract-syntax">SCRIPT_ACTION</span></span>, <span class="extract"><span class="extract-syntax">CONCORDANCE_ACTION</span></span> and
 <span class="extract"><span class="extract-syntax">CENSUS_ACTION</span></span>. The first three indeed implement <span class="extract"><span class="extract-syntax">-source</span></span>, <span class="extract"><span class="extract-syntax">-script</span></span> and
 <span class="extract"><span class="extract-syntax">-concordance</span></span>, but the Extractor is used for other purposes too. In
@@ -114,7 +114,7 @@ general-purpose function than it looks.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Consider entering extraction mode</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Consider entering extraction mode</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -128,7 +128,7 @@ general-purpose function than it looks.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1_1"></a><b>&#167;2.1.1.  </b>If the file is plain text, always go into extraction mode from line 1
+<p class="commentary firstcommentary"><a id="SP2_1_1" class="paragraph-anchor"></a><b>&#167;2.1.1.  </b>If the file is plain text, always go into extraction mode from line 1
 onwards, so that we capture the entire file. If the opening line is a
 double-quoted text, then that's the title for the test case.
 </p>
@@ -147,7 +147,7 @@ double-quoted text, then that's the title for the test case.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP2_1">&#167;2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1_2"></a><b>&#167;2.1.2.  </b>See the Inform 7 documentation examples to explain this more fully, but
+<p class="commentary firstcommentary"><a id="SP2_1_2" class="paragraph-anchor"></a><b>&#167;2.1.2.  </b>See the Inform 7 documentation examples to explain this more fully, but
 this is a typical start of an EXAMPLE file:
 </p>
 
@@ -199,7 +199,7 @@ lines, and we look out for the <span class="extract"><span class="extract-syntax
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line_content</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP2_1">&#167;2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1_3"></a><b>&#167;2.1.3.  </b>Examples are found after the <span class="extract"><span class="extract-syntax">---- Documentation ----</span></span> divider in an
+<p class="commentary firstcommentary"><a id="SP2_1_3" class="paragraph-anchor"></a><b>&#167;2.1.3.  </b>Examples are found after the <span class="extract"><span class="extract-syntax">---- Documentation ----</span></span> divider in an
 extension file. There can be more than one.
 </p>
 
@@ -245,7 +245,7 @@ extension file. There can be more than one.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP2_1">&#167;2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>For a PLAIN file, we never leave extraction mode: we extract the whole thing.
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>For a PLAIN file, we never leave extraction mode: we extract the whole thing.
 For an EXAMPLE or EXTENSION, we stop as soon as we find a non-white-space
 character in column 1.
 </p>
@@ -260,7 +260,7 @@ character in column 1.
 <span class="plain-syntax">            </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">now_extracting</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b>In EXAMPLE and EXTENSION files, the material is all one tab stop in, so
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b>In EXAMPLE and EXTENSION files, the material is all one tab stop in, so
 we get rid of that before passing the line through.
 </p>
 
@@ -278,7 +278,7 @@ we get rid of that before passing the line through.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP5" class="function-link"><span class="function-syntax">Regexp::string_is_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">)) </span><a href="2-te.html#SP3" class="function-link"><span class="function-syntax">Extractor::line_out</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The effect of the above, then, is that the test case(s) are fed, one line
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The effect of the above, then, is that the test case(s) are fed, one line
 at a time, into the following function. What happens to these lines depends
 on what the Extractor has been asked to do.
 </p>
@@ -296,7 +296,7 @@ on what the Extractor has been asked to do.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>When we SOURCE, we write the line to the text stream <span class="extract"><span class="extract-syntax">es-&gt;DEST</span></span>, but
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>When we SOURCE, we write the line to the text stream <span class="extract"><span class="extract-syntax">es-&gt;DEST</span></span>, but
 we also note in passing whether it contains an Inform 7 "Test me with..."
 or "Use command line echoing" sentence.
 </p>
@@ -315,7 +315,7 @@ or "Use command line echoing" sentence.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">DEST</span><span class="plain-syntax">, </span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b>On a SCRIPT extraction, we look for the commands in a "Test me with..."
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b>On a SCRIPT extraction, we look for the commands in a "Test me with..."
 sentence. Again, useful only for Inform 7.
 </p>
 
@@ -338,7 +338,7 @@ sentence. Again, useful only for Inform 7.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b>This unpacks a script like <span class="extract"><span class="extract-syntax">yes / no / maybe</span></span> into a column with one
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b>This unpacks a script like <span class="extract"><span class="extract-syntax">yes / no / maybe</span></span> into a column with one
 command per line:
 </p>
 
@@ -365,7 +365,7 @@ is soaked up.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">script</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_4"></a><b>&#167;3.4.  </b>A CONCORDANCE implements the <span class="extract"><span class="extract-syntax">-concordance</span></span> command-line feature of Inform.
+<p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4.  </b>A CONCORDANCE implements the <span class="extract"><span class="extract-syntax">-concordance</span></span> command-line feature of Inform.
 It essentially shows how to reconcile line numbers in the original file with
 line numbers in the test case.
 </p>
@@ -381,7 +381,7 @@ line numbers in the test case.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-te.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Slightly cheekily, the Extractor with almost all features turned off can
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Slightly cheekily, the Extractor with almost all features turned off can
 be used as a way to copy a file into a text stream verbatim, like the Unix
 <span class="extract"><span class="extract-syntax">cat</span></span> utility:
 </p>

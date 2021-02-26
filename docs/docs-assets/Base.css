@@ -168,7 +168,7 @@ ul.toc {
 }
 
 ul.toc li {
-	float:left;
+	display:inline-block;
 	margin-left: 15px;
 	color:#000;
 }
@@ -236,4 +236,16 @@ span.extract {
 	background-color: #eef;
 	width: 100%;
 	padding: 3px;
+}
+
+/* This arranges for cross-links not to jump to positions below the floating
+header */
+
+a.paragraph-anchor::before {
+	display: block;
+	content: " ";
+	margin-top: -70px;
+	height: 70px;
+	visibility: hidden;
+	pointer-events: none;
 }
