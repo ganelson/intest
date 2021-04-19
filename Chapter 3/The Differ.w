@@ -188,8 +188,7 @@ banner, followed by a diff of the after-texts.
 
 @<If both texts contain the Inform banner version line, diff around that@> =
 	match_results mr = Regexp::create_mr();
-	wchar_t *template = L"(%c*?)(Release %d+ / Serial number %d+ / "
-		"Inform 7 build %c%c%c%c %cI6%c+?%c+?SD)%c*";
+	wchar_t *template = L"(%c*?)(Release %d+ / Serial number %d+ / Inform %c*)";
 	if (Regexp::match(&mr, A, template)) {
 		string_position A_ver = Str::plus(A_from, Str::len(mr.exp[0])); /* at the R in "Release" */
 		string_position A_post = Str::plus(A_ver, Str::len(mr.exp[1])); /* after version line ends */
@@ -197,7 +196,6 @@ banner, followed by a diff of the after-texts.
 		if (Regexp::match(&mr, B, template)) {
 			string_position B_ver = Str::plus(B_from, Str::len(mr.exp[0]));
 			string_position B_post = Str::plus(B_ver, Str::len(mr.exp[1]));
-
 			Differ::diff_inner(edits, A_from, A_ver, B_from, B_ver,
 				allow_platform_variance);
 			edit *E = Differ::new_edit(A_ver, A_post, PRESERVE_EDIT);
