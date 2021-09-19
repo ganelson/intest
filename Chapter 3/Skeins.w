@@ -453,13 +453,14 @@ the link to the rest before you can get to them.
 
 =
 void Skeins::dispose_of(skein *S) {
-	for (skein *N = S->down; S; S = N, N = (S)?(S->down):NULL) {
-		if (S->disposed_of) internal_error("skein node doubly disposed of");
-		S->disposed_of = TRUE;
-		if (S->text) Str::dispose_of(S->text);
-		if (S->label) Str::dispose_of(S->label);
-		DESTROY(S, skein);
-	}
+	if (S)
+		for (skein *N = S->down; S; S = N, N = (S)?(S->down):NULL) {
+			if (S->disposed_of) internal_error("skein node doubly disposed of");
+			S->disposed_of = TRUE;
+			if (S->text) Str::dispose_of(S->text);
+			if (S->label) Str::dispose_of(S->label);
+			DESTROY(S, skein);
+		}
 }
 
 @h Matching skeins.
