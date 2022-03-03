@@ -36,7 +36,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">intest</a></li><li><a href="index.html#M">Manual</a></li><li><b>Writing Intest Recipes</b></li></ul></div>
 <p class="purpose">A guide to writing in Delia, Intest's recipe language.</p>
 
-<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. About test cases</a></li><li><a href="M-wir.html#SP3">&#167;3. Recipe files</a></li><li><a href="M-wir.html#SP7">&#167;7. Writing Delia</a></li><li><a href="M-wir.html#SP23">&#167;23. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. About test cases</a></li><li><a href="M-wir.html#SP3">&#167;3. Recipe files</a></li><li><a href="M-wir.html#SP7">&#167;7. Writing Delia</a></li><li><a href="M-wir.html#SP24">&#167;24. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. About test cases. </b>To use any of this, at least one test case is required, and there will
 probably be many. The typical arrangement is that each test case has a
@@ -358,6 +358,14 @@ back on a frog", then
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    'never' 'turn' 'your' 'back' 'on' 'a' 'frog'</span>
 </pre>
+<p class="commentary">By default, the contents of the file will themselves be expanded, if they
+contain names with <span class="extract"><span class="extract-syntax">$</span></span> or <span class="extract"><span class="extract-syntax">$$</span></span> prefixes. To avoid that (and thus treat dollar
+signs in the file as being literal), use yet another backtick:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    $[`Toad.txt$]</span>
+</pre>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,
@@ -558,7 +566,7 @@ an if/then/else command, working in the obvious way.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    if matches</span><span class="plain-syntax">: TOKEN EXPRESSION</span>
+<span class="reserved-syntax">    if</span><span class="plain-syntax">: TOKEN EXPRESSION</span>
 <span class="plain-syntax">        ...</span>
 <span class="reserved-syntax">    else</span>
 <span class="plain-syntax">        ...</span>
@@ -574,19 +582,24 @@ expression. That can be just a simple textual match:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    if matches</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> Balloons</span>
+<span class="reserved-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> Balloons</span>
 </pre>
 <p class="commentary">tests if the current test case name is "Balloons". On the other hand,
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    if matches</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> Party-%d+</span>
+<span class="reserved-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> Party-%d+</span>
 </pre>
 <p class="commentary">would match cases such as <span class="extract"><span class="extract-syntax">Party-12</span></span>, because <span class="extract"><span class="extract-syntax">%d+</span></span> is regular expression
 syntax for "one or more digits here".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>That's all of the important commands covered, but Delia has a small
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>An alternative condition is <span class="extract"><span class="extract-syntax">if exists: FILE</span></span>, which is true if the named
+file exists. This can allow for certain checks to be performed only where
+there is something to check against, for example.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>That's all of the important commands covered, but Delia has a small
 miscellany of other features. It has a very limited ability to write to
 the file system itself:
 </p>
@@ -606,7 +619,7 @@ be used only to make subdirectories of <span class="extract"><span class="extrac
 try to clean up the work area yourself: Intest will handle that automatically.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Suppose the program to be tested produces output which takes a long time
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Suppose the program to be tested produces output which takes a long time
 to verify the correctness of. (This is the case for Inform 7, because its
 output needs to be fed through Inform 6 and then executed in a virtual
 machine before any results can be seen. Both steps take a second or so,
@@ -654,7 +667,7 @@ Besides being written to the file, the hash value is also stored in the
 local variable <span class="extract"><span class="extract-syntax">$HASHCODE</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>And finally, a great convenience for testing Inform 7, but useless for
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>And finally, a great convenience for testing Inform 7, but useless for
 anything else:
 </p>
 
@@ -666,7 +679,7 @@ in question, <span class="extract"><span class="extract-syntax">Z</span></span> 
 automatically written into the local variable <span class="extract"><span class="extract-syntax">$SCRIPT</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
 locale differences meant that some tests weren't portable between MacOS and
 Windows. The issue was that the console environment (i.e., the standard
 output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1

@@ -16,6 +16,7 @@ set of commands, enumerated as follows.
 @e FAIL_STEP_RCOM
 @e HASH_RCOM
 @e IF_RCOM
+@e IF_EXISTS_RCOM
 @e MATCH_BINARY_RCOM
 @e MATCH_FOLDER_RCOM
 @e MATCH_G_TRANSCRIPT_RCOM
@@ -54,6 +55,7 @@ recipe_command instruction_set[] = {
 	{ FAIL_STEP_RCOM, L"fail step", -1, TRUE, 0 },
 	{ HASH_RCOM, L"hash", 2, TRUE, 0 },
 	{ IF_RCOM, L"if", 2, FALSE, 1 },
+	{ IF_EXISTS_RCOM, L"if exists", 1, FALSE, 1 },
 	{ MATCH_BINARY_RCOM, L"match binary", 2, TRUE, 0 },
 	{ MATCH_FOLDER_RCOM, L"match folder", 2, TRUE, 0 },
 	{ MATCH_G_TRANSCRIPT_RCOM, L"match glulxe transcript", 2, TRUE, 0 },

@@ -168,6 +168,10 @@ dictionary.
 			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
 			else @<Enter an execution block if a regular expression matches@>;
 			break;
+		case IF_EXISTS_RCOM:
+			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
+			else @<Enter an execution block if a file exists@>;
+			break;
 		case ELSE_RCOM:
 			if (execution_state_sp <= 1) internal_error("else without if in recipe");
 			INVERT_EXECUTION_BLOCK;
@@ -206,6 +210,11 @@ dictionary.
 	DISCARD_TEXT(A)
 	DISCARD_TEXT(P)
 	Regexp::dispose_of(&mr);
+
+@<Enter an execution block if a file exists@> =
+	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	filename *putative = Tester::extract_as_filename(first, D);
+	ENTER_EXECUTION_BLOCK(TextFiles::exists(putative));
 
 @<Interpret an unconditional line@> =
 	switch (L->command_used->rc_code) {
@@ -247,7 +256,7 @@ to be zero (for |step|) or non-zero (for |fail step|).
 		TEMPORARY_TEXT(COMMAND)
 		recipe_token *T;
 		LOOP_OVER_LINKED_LIST(T, recipe_token, L->recipe_tokens) {
-			Tester::quote_expand(COMMAND, T, D);
+			Tester::quote_expand(COMMAND, T, D, FALSE);
 			WRITE_TO(COMMAND, " ");
 		}
 		int rv = Shell::run(COMMAND);
@@ -296,7 +305,7 @@ documentation.
 	LOOP_OVER_LINKED_LIST(T, recipe_token, L->recipe_tokens)
 		if (T != first) {
 			if (LinkedLists::len(L->recipe_tokens) > 2)
-				Tester::quote_expand(V, T, D);
+				Tester::quote_expand(V, T, D, FALSE);
 			else
 				Tester::expand(V, T, D);
 		}
@@ -751,6 +760,7 @@ void Tester::expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
 	}
 	WRITE("%S", unsubstituted);
 	LOGIF(VARIABLES, "To %S\n", unsubstituted);
+	DISCARD_TEXT(unsubstituted)
 	Regexp::dispose_of(&mr);
 }
 
@@ -759,11 +769,12 @@ to end up in quotation marks so that the shell will treat it as a single
 lexical token.
 
 =
-void Tester::quote_expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
+void Tester::quote_expand(OUTPUT_STREAM, recipe_token *T, dictionary *D, int raw) {
 	if (T == NULL) return;
+	
 	TEMPORARY_TEXT(unquoted)
-
-	Tester::expand(unquoted, T, D);
+	if (raw) WRITE_TO(unquoted, "%S", T->token_text);
+	else Tester::expand(unquoted, T, D);
 
 	if (T->token_indirects_to_file) @<Expand token from file@>
 	else if (T->token_quoted == NOT_APPLICABLE) @<Expand token from text@>
@@ -802,17 +813,29 @@ individually quote-expanded.
 	int N = 0;
 	LOOP_OVER_LINKED_LIST(ET, recipe_token, L) {
 		if (N++ > 0) WRITE(" ");
-		Tester::quote_expand(OUT, ET, D);
+		Tester::quote_expand(OUT, ET, D, FALSE);
 	}
 
 @ Expanding from a file is similar, but more work; we need to read the file
 in, one line at a time. (Each line is expanded.)
 
 @<Expand token from file@> =
-	filename *F = Filenames::from_text(unquoted);
+	int raw_flag = FALSE;
+	filename *F;
+	if (Str::get_first_char(unquoted) == '`') {
+		TEMPORARY_TEXT(unticked)
+		Str::copy(unticked, unquoted);
+		Str::delete_first_character(unticked);
+		F = Filenames::from_text(unticked);
+		DISCARD_TEXT(unticked)
+		raw_flag = TRUE;
+	} else {
+		F = Filenames::from_text(unquoted);
+	}
 	token_expand_state T;
 	T.expand_to = OUT;
 	T.expand_from = D;
+	T.raw = raw_flag;
 	TextFiles::read(F, FALSE, "can't open file of recipe line arguments",
 		TRUE, &Tester::read_tokens, NULL, &T);
 
@@ -822,6 +845,7 @@ in, one line at a time. (Each line is expanded.)
 typedef struct token_expand_state {
 	struct text_stream *expand_to;
 	struct dictionary *expand_from;
+	int raw;
 } token_expand_state;
 
 void Tester::read_tokens(text_stream *line_text, text_file_position *tfp, void *vTES) {
@@ -832,6 +856,6 @@ void Tester::read_tokens(text_stream *line_text, text_file_position *tfp, void *
 	int N = 0;
 	LOOP_OVER_LINKED_LIST(RT, recipe_token, L) {
 		if (N++ > 0) WRITE_TO(T->expand_to, " ");
-		Tester::quote_expand(T->expand_to, RT, T->expand_from);
+		Tester::quote_expand(T->expand_to, RT, T->expand_from, T->raw);
 	}
 }

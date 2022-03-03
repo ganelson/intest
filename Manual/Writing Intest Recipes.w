@@ -269,6 +269,13 @@ will quote-expand to:
 = (text)
 	'never' 'turn' 'your' 'back' 'on' 'a' 'frog'
 =
+By default, the contents of the file will themselves be expanded, if they
+contain names with |$| or |$$| prefixes. To avoid that (and thus treat dollar
+signs in the file as being literal), use yet another backtick:
+= (text as Delia)
+	$[`Toad.txt$]
+=
+
 @ Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,
@@ -424,7 +431,7 @@ exist, but this possibility can be picked up by placing an |or:| after them.
 @ As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.
 = (text as Delia)
-	if matches: TOKEN EXPRESSION
+	if: TOKEN EXPRESSION
 	    ...
 	else
 	    ...
@@ -437,14 +444,18 @@ What the test does is to expand both |TOKEN| and |EXPRESSION|, and then see
 if the expanded token matches the regular expression defined by the expanded
 expression. That can be just a simple textual match:
 = (text as Delia)
-	if matches: $CASE Balloons
+	if: $CASE Balloons
 =
 tests if the current test case name is "Balloons". On the other hand,
 = (text as Delia)
-	if matches: $CASE Party-%d+
+	if: $CASE Party-%d+
 =
 would match cases such as |Party-12|, because |%d+| is regular expression
 syntax for "one or more digits here".
+
+@ An alternative condition is |if exists: FILE|, which is true if the named
+file exists. This can allow for certain checks to be performed only where
+there is something to check against, for example.
 
 @ That's all of the important commands covered, but Delia has a small
 miscellany of other features. It has a very limited ability to write to
