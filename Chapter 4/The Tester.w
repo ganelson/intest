@@ -877,16 +877,21 @@ void Tester::read_tokens(text_stream *line_text, text_file_position *tfp, void *
 }
 
 @<Expand token from hash@> =
+	int z = NOT_APPLICABLE;
 	TEMPORARY_TEXT(name)
 	if (Str::begins_with_wide_string(unquoted, L"zmachine:")) {
-		Str::substr(name, Str::at(unquoted, 9), Str::end(unquoted));
+		Str::substr(name, Str::at(unquoted, 9), Str::end(unquoted)); z = TRUE;
 	} else if (Str::begins_with_wide_string(unquoted, L"glulx:")) {
-		Str::substr(name, Str::at(unquoted, 6), Str::end(unquoted));
+		Str::substr(name, Str::at(unquoted, 6), Str::end(unquoted)); z = FALSE;
 	} else {
 		WRITE_TO(name, "%S", unquoted);
 	}
 	filename *F = Filenames::from_text(name);
-	BinaryFiles::md5(OUT, F, Tester::mask_Z);
+	switch (z) {
+		case TRUE: BinaryFiles::md5(OUT, F, Tester::mask_Z); break;
+		case FALSE: BinaryFiles::md5(OUT, F, Tester::mask_G); break;
+		case NOT_APPLICABLE: BinaryFiles::md5(OUT, F, NULL); break;
+	}
 	DISCARD_TEXT(name)
 
 @ The following functions are convenient for masking off bytes which we
