@@ -262,13 +262,15 @@ to be zero (for |step|) or non-zero (for |fail step|).
 		int rv = Shell::run(COMMAND);
 		if (L->command_used->rc_code == FAIL_STEP_RCOM) {
 			if (rv == 0) {
-				Str::clear(verdict); WRITE_TO(verdict, "step %d should have failed but didn't", no_step_commands);
+				Str::clear(verdict);
+				WRITE_TO(verdict, "step %d should have failed but didn't", no_step_commands);
 				passed = FALSE; still_going = FALSE;
 				@<Or...@>;
 			}
 		} else {
 			if (rv != 0) {
-				Str::clear(verdict); WRITE_TO(verdict, "step %d failed to run", no_step_commands);
+				Str::clear(verdict);
+				WRITE_TO(verdict, "step %d failed to run", no_step_commands);
 				passed = FALSE; still_going = FALSE;
 				@<Or...@>;
 			}
@@ -329,7 +331,8 @@ while the second is a record of what it ought to come out as.
 	switch(action_type) {
 		case BLESS_ACTION:
 			if (exists) {
-				Str::clear(verdict); WRITE_TO(verdict, "was already blessed: use -rebless to change");
+				Str::clear(verdict); 
+				WRITE_TO(verdict, "was already blessed: use -rebless to change");
 				passed = FALSE; still_going = FALSE;
 			} else @<Perform a blessing@>;
 			break;
@@ -341,7 +344,8 @@ while the second is a record of what it ought to come out as.
 		case DIFF_ACTION:
 		case BBDIFF_ACTION:
 			if (!exists) {
-				Str::clear(verdict); WRITE_TO(verdict, "passed (but no blessed result exists to compare with)");
+				Str::clear(verdict);
+				WRITE_TO(verdict, "passed (but no blessed result exists to compare with)");
 				LOGIF(TESTER, "Unable to find blessed file at %f\n", matching_ideal);
 				left_bracket = '-'; right_bracket = '-';
 			} else @<Perform a test match@>;
@@ -368,7 +372,9 @@ while the second is a record of what it ought to come out as.
 	Shell::quote_file(COMMAND, matching_ideal);
 	Shell::run(COMMAND);
 	DISCARD_TEXT(COMMAND)
-	if (action_type == CURSE_ACTION) { Str::clear(verdict); WRITE_TO(verdict, "cursed (no test conducted)"); }
+	if (action_type == CURSE_ACTION) {
+		Str::clear(verdict); WRITE_TO(verdict, "cursed (no test conducted)");
+	}
 
 @ That just leaves the actual comparison. We support five different file formats
 for these, three of which are highly specific to Inform 7.
@@ -560,7 +566,8 @@ The |extract| command only makes sense for Inform 7 test cases.
 		still_going = FALSE;
 		passed = TRUE;
 	} else {
-		Str::clear(verdict); WRITE_TO(verdict, "can't show file, as it doesn't exist: %f", putative);
+		Str::clear(verdict);
+		WRITE_TO(verdict, "can't show file, as it doesn't exist: %f", putative);
 		still_going = FALSE;
 		@<Or...@>;
 	}
@@ -583,17 +590,25 @@ checksum to the second-named file, and also remembering its value.
 			Shell::redirect(COMMAND, checksum);
 			Shell::run(COMMAND);
 			DISCARD_TEXT(COMMAND)
-			text_stream *hash_value = Dictionaries::get_text(D, I"HASHCODE");
-			Hasher::read_hash(hash_value, checksum);
-			hash_value_written = TRUE;
-			if (Hasher::compare_hashes(tc, hash_value)) {
-				still_going = FALSE;
-				passed = TRUE;
-				Str::clear(verdict); WRITE_TO(verdict, "passed (ending test early on hash value grounds)");
-				@<Or...@>;
-				left_bracket = '(';
-				right_bracket = ')';
-			}
+		} else {
+			text_stream TO_struct;
+			text_stream *TO = &TO_struct;
+			if (STREAM_OPEN_TO_FILE(TO, checksum, UTF8_ENC) == FALSE)
+				Errors::fatal_with_file("unable to write to file", checksum);
+			BinaryFiles::md5(TO, to_hash, NULL);
+			STREAM_CLOSE(TO);
+		}
+		text_stream *hash_value = Dictionaries::get_text(D, I"HASHCODE");
+		Hasher::read_hash(hash_value, checksum);
+		hash_value_written = TRUE;
+		if (Hasher::compare_hashes(tc, hash_value)) {
+			still_going = FALSE;
+			passed = TRUE;
+			Str::clear(verdict);
+			WRITE_TO(verdict, "passed (ending test early on hash value grounds)");
+			@<Or...@>;
+			left_bracket = '(';
+			right_bracket = ')';
 		}
 	}
 
@@ -777,6 +792,7 @@ void Tester::quote_expand(OUTPUT_STREAM, recipe_token *T, dictionary *D, int raw
 	else Tester::expand(unquoted, T, D);
 
 	if (T->token_indirects_to_file) @<Expand token from file@>
+	else if (T->token_indirects_to_hash) @<Expand token from hash@>
 	else if (T->token_quoted == NOT_APPLICABLE) @<Expand token from text@>
 	else @<Apply quotation marks as needed@>;
 
@@ -858,4 +874,34 @@ void Tester::read_tokens(text_stream *line_text, text_file_position *tfp, void *
 		if (N++ > 0) WRITE_TO(T->expand_to, " ");
 		Tester::quote_expand(T->expand_to, RT, T->expand_from, T->raw);
 	}
+}
+
+@<Expand token from hash@> =
+	TEMPORARY_TEXT(name)
+	if (Str::begins_with_wide_string(unquoted, L"zmachine:")) {
+		Str::substr(name, Str::at(unquoted, 9), Str::end(unquoted));
+	} else if (Str::begins_with_wide_string(unquoted, L"glulx:")) {
+		Str::substr(name, Str::at(unquoted, 6), Str::end(unquoted));
+	} else {
+		WRITE_TO(name, "%S", unquoted);
+	}
+	filename *F = Filenames::from_text(name);
+	BinaryFiles::md5(OUT, F, Tester::mask_Z);
+	DISCARD_TEXT(name)
+
+@ The following functions are convenient for masking off bytes which we
+expect to alter in any story file for the Z-machine or Glulx virtual machines:
+
+=
+int Tester::mask_Z(uint64_t pos) {
+	if ((pos >= 18) && (pos < 24)) return TRUE; /* Serial number */
+	if ((pos >= 28) && (pos < 30)) return TRUE; /* Checksum */
+	if ((pos >= 60) && (pos < 64)) return TRUE; /* Inform 6 version */
+	return FALSE;
+}
+int Tester::mask_G(uint64_t pos) {
+	if ((pos >= 32) && (pos < 36)) return TRUE; /* Checksum */
+	if ((pos >= 44) && (pos < 48)) return TRUE; /* Inform 6 version */
+	if ((pos >= 54) && (pos < 60)) return TRUE; /* Serial number */
+	return FALSE;
 }

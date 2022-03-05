@@ -366,6 +366,26 @@ signs in the file as being literal), use yet another backtick:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    $[`Toad.txt$]</span>
 </pre>
+<p class="commentary">Finally, the syntax
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    ${Salamander.mp3$}</span>
+</pre>
+<p class="commentary">will quote-expand to an MD5 hash of the file named. This should exactly match
+what the <span class="extract"><span class="extract-syntax">md5</span></span> tool supplied on most Unixes would give; for example, an empty
+file would quote-expand to <span class="extract"><span class="extract-syntax">d41d8cd98f00b204e9800998ecf8427e</span></span>.
+</p>
+
+<p class="commentary">Two special modified versions of this are available for taking hashes of
+story files for the Z-machine or Glulx, which are useful for tests of Inform.
+Thus <span class="extract"><span class="extract-syntax">${zmachine:Salamander.z3$}</span></span> or <span class="extract"><span class="extract-syntax">${glulx:Salamander.ulx$}</span></span> take hashes
+in a way which masks certain bytes of their headers as zeros; here we match
+the conventions used by Andrew Plotkin's test program for Inform 6. The idea
+is that we want to ignore things like the time-stamp and compiler version,
+which will change daily.
+</p>
+
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,
@@ -642,8 +662,11 @@ they aren't dependent on any single test case. They are:
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">-set hash_utility HASHPROGRAM</span></span>, which tells Intest what program to use
-in order to determine the hash: a good choice is <span class="extract"><span class="extract-syntax">md5</span></span>, if it's available.
-If this is not set, the Delia <span class="extract"><span class="extract-syntax">hash</span></span> command (see below) does nothing.
+in order to determine the hash: this is expected to behave like the Unix
+tool <span class="extract"><span class="extract-syntax">md5</span></span>, in that the shell command <span class="extract"><span class="extract-syntax">utility FILENAME</span></span> would print a
+hash code for the named file and then halt. But if all you want is an <span class="extract"><span class="extract-syntax">md5</span></span>
+hash, there is no need to set this variable, because Intest has a built-in
+implementation of md5 and can use that instead.
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">-set hash_cache FILE</span></span>, which tells Intest where to store known-good hash

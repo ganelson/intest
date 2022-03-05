@@ -101,6 +101,7 @@ typedef struct recipe_token {
 	struct text_stream *token_text;
 	int token_quoted;
 	int token_indirects_to_file;
+	int token_indirects_to_hash;
 	CLASS_DEFINITION
 } recipe_token;
 
@@ -299,9 +300,11 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 	recipe_token *T = CREATE(recipe_token);
 	T->token_quoted = FALSE;
 	T->token_indirects_to_file = FALSE;
+	T->token_indirects_to_hash = FALSE;
 
 	string_position Q = P; /* the new token begins at position P, and ends just before Q */
 	if ((first == '$') && (Str::get(Str::forward(P)) == '[')) @<Tokenise from a file@>
+	else if ((first == '$') && (Str::get(Str::forward(P)) == '{')) @<Tokenise from a hash@>
 	else if (first == '`') @<Mark to retokenise at expansion time@>
 	else if (first == DELIA_QUOTE_CHARACTER) @<Take this quoted segment as the token@>
 	else if (first == SHELL_QUOTE_CHARACTER) @<Take this shell quoted segment as the token@>
@@ -311,6 +314,7 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 	Str::substr(T->token_text, P, Q);
 	TEMPORARY_TEXT(tail)
 	if (T->token_indirects_to_file) Q = Str::forward(Str::forward(Q));
+	if (T->token_indirects_to_hash) Q = Str::forward(Str::forward(Q));
 	Str::copy_tail(tail, txt, Str::index(Q));
 	
 	ADD_TO_LINKED_LIST(T, recipe_token, L);
@@ -327,6 +331,16 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 		!((Str::get(Q) == '$') && (Str::get(Str::forward(Q)) == ']')))
 			Q = Str::forward(Q);
 	T->token_indirects_to_file = TRUE;
+
+@ More concisely, |${filename$}| expands to the MD5 hash of that file.
+
+@<Tokenise from a hash@> =
+	P = Str::forward(Str::forward(P));
+	Q = P;
+	while ((Str::in_range(Q)) &&
+		!((Str::get(Q) == '$') && (Str::get(Str::forward(Q)) == '}')))
+			Q = Str::forward(Q);
+	T->token_indirects_to_hash = TRUE;
 
 @ A token backticked, like |`this|, is retokenised before being expanded,
 and then each individual resulting token is expanded.

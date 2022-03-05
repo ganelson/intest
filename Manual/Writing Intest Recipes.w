@@ -276,6 +276,22 @@ signs in the file as being literal), use yet another backtick:
 	$[`Toad.txt$]
 =
 
+Finally, the syntax
+= (text as Delia)
+	${Salamander.mp3$}
+=
+will quote-expand to an MD5 hash of the file named. This should exactly match
+what the |md5| tool supplied on most Unixes would give; for example, an empty
+file would quote-expand to |d41d8cd98f00b204e9800998ecf8427e|.
+
+Two special modified versions of this are available for taking hashes of
+story files for the Z-machine or Glulx, which are useful for tests of Inform.
+Thus |${zmachine:Salamander.z3$}| or |${glulx:Salamander.ulx$}| take hashes
+in a way which masks certain bytes of their headers as zeros; here we match
+the conventions used by Andrew Plotkin's test program for Inform 6. The idea
+is that we want to ignore things like the time-stamp and compiler version,
+which will change daily.
+
 @ Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,
@@ -492,8 +508,11 @@ single command. Note that the two globals have to be set outside of Delia;
 they aren't dependent on any single test case. They are:
 
 |-set hash_utility HASHPROGRAM|, which tells Intest what program to use
-in order to determine the hash: a good choice is |md5|, if it's available.
-If this is not set, the Delia |hash| command (see below) does nothing.
+in order to determine the hash: this is expected to behave like the Unix
+tool |md5|, in that the shell command |utility FILENAME| would print a
+hash code for the named file and then halt. But if all you want is an |md5|
+hash, there is no need to set this variable, because Intest has a built-in
+implementation of md5 and can use that instead.
 
 |-set hash_cache FILE|, which tells Intest where to store known-good hash
 values in between runs. If this is not set, hash values may be generated
