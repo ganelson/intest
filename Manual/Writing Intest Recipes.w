@@ -358,10 +358,10 @@ of a failed |match|, then the command line options |-diff| or |-bbdiff|
 cause these tools to be invoked on |A| and |B|, the two matched files which
 failed.
 
-There are also three Inform-specific forms of matching: |match problem|,
-|match frotz transcript| and |match glulxe transcript|, which are roughly
-the same as |match text|, but display differences in a more contextual way.
-Details here would be tiresome: see the Intest source code.
+There are also four Inform-specific forms of matching: |match problem|,
+|match i6 transcript|, |match frotz transcript| and |match glulxe transcript|,
+which are roughly the same as |match text|, but display differences in a more
+contextual way. Details here would be tiresome: see the Intest source code.
 
 @ However, the |match| commands have a very useful side-effect if the test
 is being run by |-curse|, |-bless| or |-rebless| at the command line. If we

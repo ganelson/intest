@@ -229,6 +229,7 @@ dictionary.
 		case MATCH_BINARY_RCOM:       @<Carry out a match@>; break;
 		case MATCH_FOLDER_RCOM:       @<Carry out a match@>; break;
 		case MATCH_G_TRANSCRIPT_RCOM: @<Carry out a match@>; break;
+		case MATCH_I6_TRANSCRIPT_RCOM:@<Carry out a match@>; break;
 		case MATCH_Z_TRANSCRIPT_RCOM: @<Carry out a match@>; break;
 		case MATCH_PROBLEM_RCOM:      @<Carry out a match@>; break;
 
@@ -391,6 +392,7 @@ for these, three of which are highly specific to Inform 7.
 		case MATCH_BINARY_RCOM: @<Perform a binary test match@>; break;
 		case MATCH_FOLDER_RCOM: @<Perform a folder match@>; break;
 		case MATCH_G_TRANSCRIPT_RCOM: @<Perform a Glulxe transcript test match@>; break;
+		case MATCH_I6_TRANSCRIPT_RCOM: @<Perform an I6 transcript test match@>; break;
 		case MATCH_Z_TRANSCRIPT_RCOM: @<Perform a Frotz transcript test match@>; break;
 		case MATCH_PROBLEM_RCOM: @<Perform a problem test match@>; break;
 		default: internal_error("unknown recipe command");
@@ -488,6 +490,21 @@ for these, three of which are highly specific to Inform 7.
 	skein *I = Skeins::from_G_transcript(matching_ideal, cle);
 	rv = 0;
 	if (Skeins::compare(TO, A, I, FALSE, FALSE) > 0) rv = 1;
+	Skeins::dispose_of(A);
+	Skeins::dispose_of(I);
+	STREAM_CLOSE(TO);
+	DISCARD_TEXT(COMMAND)
+
+@<Perform an I6 transcript test match@> =
+	TEMPORARY_TEXT(COMMAND)
+	text_stream TO_struct;
+	text_stream *TO = &TO_struct;
+	if (STREAM_OPEN_TO_FILE(TO, DO, UTF8_ENC) == FALSE)
+		Errors::fatal_with_file("unable to write file", DO);
+	skein *A = Skeins::from_i6_console_output(matching_actual);
+	skein *I = Skeins::from_i6_console_output(matching_ideal);
+	rv = 0;
+	if (Skeins::compare(TO, A, I, FALSE, TRUE) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);

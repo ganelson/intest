@@ -22,6 +22,7 @@ use the code below, even if only minimally.
 Skein text can be supplied in a variety of formats:
 
 @e I7_OUTPUT_SKF from 1 /* I7 only: console output of I7 compiler problem messages */
+@e I6_OUTPUT_SKF /* I6 only: console output of I6 compiler problem messages */
 @e GENERIC_SKF /* I7 only: a transcript which might be either from Frotz or Glulxe */
 @e DUMB_FROTZ_SKF /* I7 only: a transcript file produced by dumb-frotz */
 @e DUMB_GLULXE_SKF /* I7 only: a transcript file produced by dumb-glulxe */
@@ -63,6 +64,9 @@ following on each to turn it into a skein.
 =
 skein *Skeins::from_i7_problems(filename *F, int cle) {
 	return Skeins::read(F, I7_OUTPUT_SKF, cle, NULL, FALSE);
+}
+skein *Skeins::from_i6_console_output(filename *F) {
+	return Skeins::read(F, I6_OUTPUT_SKF, FALSE, NULL, FALSE);
 }
 skein *Skeins::from_transcript(filename *F, int cle) {
 	return Skeins::read(F, GENERIC_SKF, cle, NULL, FALSE);
@@ -139,6 +143,7 @@ void Skeins::read_assistant(text_stream *line_text, text_file_position *tfp, voi
 		case PLAIN_SKF: @<Read from plain text@>; break;
 		case I7_SKEIN_SKF: @<Read from XML@>; break;
 		case I7_OUTPUT_SKF: @<Read from Inform 7 console output@>; break;
+		case I6_OUTPUT_SKF: @<Read from Inform 6 console output@>; break;
 		case DUMB_FROTZ_SKF: @<Read from a Frotz transcript@>; break;
 		case DUMB_GLULXE_SKF: @<Read from a Glulxe transcript@>; break;
 	}
@@ -295,6 +300,20 @@ the problem name and label the Skein node with it.
 		Skeins::new_node(sks, -1, mr.exp[0], sks->detected_format);
 		Regexp::dispose_of(&mr);
 		return;
+	}
+	Regexp::dispose_of(&mr);
+
+@<Read from Inform 6 console output@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, line_text, L"Inform %C%C%C%C (%C+ %C+ %C%C%C%C)")) {
+		if (sks->writing_to) Skeins::flush(sks);
+		sks->writing_to = NULL;
+		Regexp::dispose_of(&mr);
+		return;
+	}
+	if (Regexp::match(&mr, line_text, L"(%c*) %(%C+ seconds%) *")) {
+		Str::clear(line_text);
+		WRITE_TO(line_text, "%S", mr.exp[0]);
 	}
 	Regexp::dispose_of(&mr);
 

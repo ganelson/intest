@@ -20,6 +20,7 @@ set of commands, enumerated as follows.
 @e MATCH_BINARY_RCOM
 @e MATCH_FOLDER_RCOM
 @e MATCH_G_TRANSCRIPT_RCOM
+@e MATCH_I6_TRANSCRIPT_RCOM
 @e MATCH_PROBLEM_RCOM
 @e MATCH_TEXT_RCOM
 @e MATCH_PLATFORM_TEXT_RCOM
@@ -59,6 +60,7 @@ recipe_command instruction_set[] = {
 	{ MATCH_BINARY_RCOM, L"match binary", 2, TRUE, 0 },
 	{ MATCH_FOLDER_RCOM, L"match folder", 2, TRUE, 0 },
 	{ MATCH_G_TRANSCRIPT_RCOM, L"match glulxe transcript", 2, TRUE, 0 },
+	{ MATCH_I6_TRANSCRIPT_RCOM, L"match i6 transcript", 2, TRUE, 0 },
 	{ MATCH_PROBLEM_RCOM, L"match problem", 2, TRUE, 0 },
 	{ MATCH_TEXT_RCOM, L"match text", 2, TRUE, 0 },
 	{ MATCH_PLATFORM_TEXT_RCOM, L"match platform text", 2, TRUE, 0 },
