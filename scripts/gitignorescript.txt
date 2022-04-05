@@ -9,6 +9,7 @@ Examples/dc/Tests/Cases/_actual/
 Workspace/T*/*.txt
 Workspace/T*/Example.inform/Source/story.ni
 Workspace/T*/Example.inform/Build/
+Workspace/T*/Example.inform/Index/Headings.xml
 Workspace/T*/Example.inform/Build/auto.inf
 Workspace/T*/Example.inform/Build/*.txt
 Workspace/T*/Example.inform/Build/*.z8
