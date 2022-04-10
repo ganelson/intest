@@ -149,7 +149,7 @@ recipe is used. See the notes on variables in the section on recipes below.
 
 |-if PLATFORM| and |-endif|. Dashed commands in between these lines will be
 followed only if the variable |$$platform| matches the value |PLATFORM|. This
-value will be something like |osx|, |windows|, or |android|.
+value will be something like |macos|, |unix|, |linux|, |windows|, or |android|.
 
 @h Writing Delia.
 Recipe definitions are written in a very simple mini-language called Delia,

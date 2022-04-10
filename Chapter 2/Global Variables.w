@@ -100,7 +100,12 @@ filename *Globals::to_filename(text_stream *name) {
 When Intest starts up, it creates two variables to kick off with:
 
 =
-void Globals::start(void) {
+void Globals::create_platform(void) {
+	Globals::create(I"platform");
+	Globals::set(I"platform", Str::new_from_ISO_string(PLATFORM_STRING));
+}
+
+void Globals::create_workspace(void) {
 	Globals::create(I"platform");
 	Globals::set(I"platform", Str::new_from_ISO_string(PLATFORM_STRING));
 	Globals::create(I"workspace");

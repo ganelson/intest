@@ -39,9 +39,9 @@ returns an //intest_instructions// object.
 
 //main// then deals with a few incidental configuration switches -- for
 example, turning on or off coloured terminal text output -- and then calls
-//Globals::start//. This creates the first two global variables available to
-testing scripts: |$$platform|, which might be, say, |"Windows"|, and
-|$$workspace|, the path to the temporary filing system space used by
+//Globals::create_platform//. This creates the first global variable available to
+testing scripts: |$$platform|, which might be, say, |"windows"|. A little later,
+|$$workspace| follows, the path to the temporary filing system space used by
 Intest. Globals always have these double-dollar-signed names, and are
 also created by USING blocks (see below): see the functions //Globals::set//
 and //Globals::get//. Globals have only one data type -- they all hold text;

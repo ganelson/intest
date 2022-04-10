@@ -90,6 +90,7 @@ the default is |magiczap.intest|.
 	DISCARD_TEXT(sfn)
 
 @<Read the now-final command line and act upon it@> =
+	Globals::create_platform();
 	intest_instructions args = Instructions::read(ts_argc, ts_argv, home, script);
 
 	if (args.version_switch) printf("%s\n", INTEST_BUILD);
@@ -100,10 +101,11 @@ the default is |magiczap.intest|.
 	write_up = args.history_switch;
 	installation = Pathnames::installation_path("INTEST_PATH", I"intest");
 	if (args.verbose_switch) {
+		PRINT("Platform is '%s'\n", PLATFORM_STRING);
 		PRINT("Installation path is %p\n", installation);
 		Locales::write_locales(STDOUT);
 		PRINT("Available core count: %d\n", Platform::get_core_count());
 	}
-	Globals::start();
+	Globals::create_workspace();
 
 	if (home_project) Actions::perform(STDOUT, &args);

@@ -94,9 +94,9 @@ returns an <a href="1-cla.html#SP1_3" class="internal">intest_instructions</a> o
 
 <p class="commentary"><a href="1-mn.html" class="internal">Main</a> then deals with a few incidental configuration switches &mdash; for
 example, turning on or off coloured terminal text output &mdash; and then calls
-<a href="2-gv.html#SP7" class="internal">Globals::start</a>. This creates the first two global variables available to
-testing scripts: <span class="extract"><span class="ConsoleText-extract-syntax">$$platform</span></span>, which might be, say, <span class="extract"><span class="ConsoleText-extract-syntax">"Windows"</span></span>, and
-<span class="extract"><span class="ConsoleText-extract-syntax">$$workspace</span></span>, the path to the temporary filing system space used by
+<a href="2-gv.html#SP7" class="internal">Globals::create_platform</a>. This creates the first global variable available to
+testing scripts: <span class="extract"><span class="ConsoleText-extract-syntax">$$platform</span></span>, which might be, say, <span class="extract"><span class="ConsoleText-extract-syntax">"windows"</span></span>. A little later,
+<span class="extract"><span class="ConsoleText-extract-syntax">$$workspace</span></span> follows, the path to the temporary filing system space used by
 Intest. Globals always have these double-dollar-signed names, and are
 also created by USING blocks (see below): see the functions <a href="2-gv.html#SP4" class="internal">Globals::set</a>
 and <a href="2-gv.html#SP3" class="internal">Globals::get</a>. Globals have only one data type &mdash; they all hold text;
