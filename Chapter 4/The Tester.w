@@ -774,9 +774,6 @@ void Tester::expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
 		filename *F = Globals::to_filename(mr.exp[1]);
 		if (F) {
 			WRITE_TO(unsubstituted, "%f", F);
-		} else {
-			Errors::with_text("no such setting as %S", mr.exp[1]);
-			WRITE_TO(unsubstituted, "(novalue)");
 		}
 		WRITE_TO(unsubstituted, "%S", mr.exp[2]);
 	}

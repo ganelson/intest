@@ -85,7 +85,7 @@ pathname *Globals::to_pathname(text_stream *name) {
 @ =
 filename *Globals::to_filename(text_stream *name) {
 	text_stream *text = Globals::get(name);
-	if (text == NULL) return NULL;
+	if (Str::len(text) == 0) return NULL;
 	TEMPORARY_TEXT(val)
 	Str::copy(val, text);
 	LOOP_THROUGH_TEXT(pos, val)
