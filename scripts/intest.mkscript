@@ -1,6 +1,22 @@
-# This is the script from which inweb -makefile will construct a makefile.
-# To generate intest.mk from its source, use e.g.:
-# inweb/Tangled/inweb intest -prototype intest/scripts/makescript.txt -makefile intest/intest.mk 
+# This is "intest.mkscript", a script used to generate the makefile "intest.mk"
+# used to build the tool "intest". Do not edit "intest.mk" directly. Instead,
+# edit this script, and then rebuild "intest.mk" with the command:
+
+# inweb/Tangled/inweb intest -prototype intest/scripts/intest.mkscript -makefile intest/intest.mk
+
+# See the inweb manual for documentation on the *.mkscript file format, i.e.,
+# the format in which this file is written. But it is essentially just a makefile
+# with a number of special macro and loop features whose syntax involves braces
+# { ... }, so anywhere that you see braces, you're looking at something special
+# to *.mkscript; anything else is straightforward make syntax.
+
+# -----------------------------------------------------------------------------
+
+# Note that the resulting makescript expects to be used from a current working
+# directory which is the _one above_ "intest", _not_ from "intest" itself. So it
+# should usually be invoked as e.g. "make -f intest/intest.mk".
+
+# -----------------------------------------------------------------------------
 
 {platform-settings}
 
@@ -22,8 +38,8 @@ force:
 
 define make-me
 	$(INWEB) $(ME) -import-from modules -tangle
-	$(CC) -o $(ME)/Tangled/$(MYNAME).o $(ME)/Tangled/$(MYNAME).c
-	$(LINK) -o $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION) $(ME)/Tangled/$(MYNAME).o $(LINKEROPTS)
+	{compile from: $(ME)/Tangled/$(MYNAME).c   to:   $(ME)/Tangled/$(MYNAME).o}
+	{link    from: $(ME)/Tangled/$(MYNAME).o   to:   $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION)}
 endef
 
 # Testing the program:
