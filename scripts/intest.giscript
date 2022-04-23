@@ -1,3 +1,9 @@
+# This is "intest.giscript", a script used to generate the ".gitignore" file
+# in the intest repository. Do not edit ".gitignore" directly. Instead,
+# edit this script, and then rebuild ".gitignore" with the command:
+
+# inweb/Tangled/inweb -prototype intest/scripts/intest.giscript -gitignore intest/.gitignore
+
 {basics}
 
 *.DS_Store
