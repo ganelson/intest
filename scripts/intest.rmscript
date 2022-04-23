@@ -1,6 +1,6 @@
-# Intest @var(intest,Version Number)
+# Intest {bibliographic datum: Version Number of: intest}
 
-v@var(intest,Semantic Version Number) '@var(intest,Version Name)' (@var(intest,Build Date))
+v{bibliographic datum: Semantic Version Number of: intest} '{bibliographic datum: Version Name of: intest}' ({bibliographic datum: Build Date of: intest})
 
 ## About Intest
 
@@ -48,4 +48,4 @@ cases for Inweb: see [Testing Inweb](https://github.com/ganelson/inweb).
 ### Colophon
 
 This README.mk file was generated automatically by Inweb, and should not
-be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
+be edited. To make changes, edit intest.rmscript and re-generate.

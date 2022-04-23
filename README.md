@@ -48,5 +48,5 @@ cases for Inweb: see [Testing Inweb](https://github.com/ganelson/inweb).
 ### Colophon
 
 This README.mk file was generated automatically by Inweb, and should not
-be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
+be edited. To make changes, edit intest.rmscript and re-generate.
 

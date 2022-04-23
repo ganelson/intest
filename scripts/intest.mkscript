@@ -54,7 +54,7 @@ test:
 .PHONY: commit
 commit:
 	$(INWEB) -advance-build-file $(ME)/build.txt
-	$(INWEB) -prototype intest/scripts/READMEscript.txt -write-me intest/README.md
+	$(INWEB) -prototype intest/scripts/intest.rmscript -write-me intest/README.md
 	cd $(ME); git commit -a
 
 # Weaving the web for GitHub Pages:
@@ -64,7 +64,7 @@ pages:
 	$(INWEB) -advance-build-file $(ME)/build.txt
 	mkdir -p $(ME)/docs/$(MYNAME)
 	$(ME)/Tangled/$(MYNAME) -help > $(ME)/Figures/help.txt
-	$(INWEB) -prototype intest/scripts/READMEscript.txt -write-me intest/README.md
+	$(INWEB) -prototype intest/scripts/intest.rmscript -write-me intest/README.md
 	rm -f $(ME)/docs/*.html
 	rm -f $(ME)/docs/intest/*.html
 	cp -f $(ME)/docs-src/Intest.png $(ME)/docs/docs-assets/Intest.png
