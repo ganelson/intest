@@ -5,7 +5,7 @@ if ! ( inweb/Tangled/inweb intest -prototype intest/scripts/intest.mkscript -mak
 	exit 1
 fi
 echo "(Step 2 of 2: building)"
-if ! ( make -f intest/intest.mk; ) then
+if ! ( make -f intest/intest.mk force; ) then
 	exit 1
 fi
 echo "(Done!)"
