@@ -11,9 +11,9 @@ it's a general-purpose tool.
 
 Intest is a "literate program": it is written as a narrative intended to
 be readable by humans as well as by other programs. The human-readable form of
-Intest is a [companion website to this one](blob/master/docs/index.html).
+Intest is a [companion website to this one](docs/index.html).
 
-For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](blob/master/docs/intest/M-iti).
+For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](docs/intest/M-iti).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
