@@ -45,6 +45,38 @@ You should now have a working copy of Intest. To build it again, simply:
 "make -f intest/intest.mk". To test that it's working, try running the test
 cases for Inweb: see [Testing Inweb](https://github.com/ganelson/inweb).
 
+## Reporting Issues
+
+The bug tracker for Intest is powered by Jira and hosted
+[at the Atlassian website](https://inform7.atlassian.net/jira/software/c/projects/INTEST/issues).
+(Note that Inform, Inweb and Intest are three different projects in Jira: please
+do not report Inweb issues on the Inform bug tracker or vice versa.)
+
+The curator of the bug tracker is Brian Rushton, and the administrator is
+Hugo Labrande.
+
+## Pull Requests and Adding Features
+
+Intest might well be useful more widely: it's a nice tool to use, and people
+are very welcome to try it out.
+
+For now, though, its main function is to verify the Inform suite of software.
+Its future direction remains in the hands of the original author.
+
+At some point a more formal process may emerge, but for now community discussion
+of possible features is best kept to the IF forum. In particular, please do not
+use the bug trackers to propose new features.
+
+Pull requests adding functionality or making any significant changes are therefore
+not likely to be accepted from non-members of the wider Inform team without prior
+agreement, unless they are clear-cut bug fixes or corrections of typos, broken
+links, or similar. See also the note about copyright above.
+
+The Intest licence is highly permissive, and forks which develop in quite different
+ways are entirely within the rules. (But one of the few requirements of the
+Artistic Licence is that such forks be given a name which is not simply "Intest",
+to avoid confusion.)
+
 ### Colophon
 
 This README.mk file was generated automatically by Inweb, and should not
