@@ -9,19 +9,23 @@ command-line tools. Although it was written for development work on the Inform
 programming language (see [ganelson/inform](https://github.com/ganelson/inform)),
 it's a general-purpose tool.
 
-Intest is a literate program: it is written in ANSI C, but in the form of
-a "web". This means it can either be "tangled" to an executable, or "woven"
-to human-readable forms. The woven form is: [&#9733;&nbsp;intest](docs/intest/index.html).
+{set name: GITHUBPAGESLINK value: blob/master/docs}
+{set name: WEBICON value: &#9733;}
+{set name: DOCICON value: &#9654;}
 
-For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](docs/intest/M-iti).
+Intest is a "literate program": it is written as a narrative intended to
+be readable by humans as well as by other programs. The human-readable form of
+Intest is a [companion website to this one]({GITHUBPAGESLINK}/index.html).
+
+For the Intest manual, see [{WEBICON}&nbsp;intest/Preliminaries]({GITHUBPAGESLINK}/intest/M-iti).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
-enabled yet. As a result links marked &#9733; lead only to raw HTML
+enabled yet. As a result links marked {WEBICON} lead only to raw HTML
 source, not to served web pages. They can in the mean time be browsed offline
 as static HTML files stored in "docs".
 
-## Licence
+## Licence and copyright
 
 Except as noted, copyright in material in this repository (the "Package") is
 held by Graham Nelson (the "Author"), who retains copyright so that there is
@@ -30,6 +34,11 @@ becoming public, the Package is placed under the [Artistic License 2.0](https://
 This is a highly permissive licence, used by Perl among other notable projects,
 recognised by the Open Source Initiative as open and by the Free Software
 Foundation as free in both senses.
+
+A condition of any pull-request being made (i.e., to make suggested amendments
+to this software) is that, if the request is accepted, copyright on any contribution
+made by it immediately transfers to the project's copyright-holder, Graham Nelson.
+This is in order that there can be clear ownership.
 
 ## Build Instructions
 
