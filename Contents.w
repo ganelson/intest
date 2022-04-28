@@ -4,7 +4,7 @@ Purpose: A text-based command-line tool for testing other command-line tools.
 Language: InC
 Licence: Artistic License 2.0
 Version Name: The Remembering
-Version Number: 2.0
+Version Number: 2.1.0
 
 Import: foundation
 

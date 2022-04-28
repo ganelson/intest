@@ -1,6 +1,6 @@
-# Intest 2.0
+# Intest 2.1.0
 
-v2.0-alpha.1+1A32 'The Remembering' (28 April 2022)
+v2.1.0-beta+1A32 'The Remembering' (28 April 2022)
 
 ## About Intest
 
@@ -11,9 +11,9 @@ it's a general-purpose tool.
 
 Intest is a "literate program": it is written as a narrative intended to
 be readable by humans as well as by other programs. The human-readable form of
-Intest is a [companion website to this one](docs/index.html).
+Intest is a [companion website to this one](https://ganelson.github.io/intest/index.html).
 
-For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](docs/intest/M-iti).
+For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](https://ganelson.github.io/intest/intest/M-iti).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be

@@ -9,7 +9,7 @@ command-line tools. Although it was written for development work on the Inform
 programming language (see [ganelson/inform](https://github.com/ganelson/inform)),
 it's a general-purpose tool.
 
-{set name: GITHUBPAGESLINK value: docs}
+{set name: GITHUBPAGESLINK value: https://ganelson.github.io/intest}
 {set name: WEBICON value: &#9733;}
 {set name: DOCICON value: &#9654;}
 
