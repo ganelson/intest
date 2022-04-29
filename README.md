@@ -1,6 +1,6 @@
 # Intest 2.1.0
 
-v2.1.0-beta+1A32 'The Remembering' (28 April 2022)
+v2.1.0-beta+1A33 'The Remembering' (29 April 2022)
 
 ## About Intest
 
@@ -14,12 +14,6 @@ be readable by humans as well as by other programs. The human-readable form of
 Intest is a [companion website to this one](https://ganelson.github.io/intest/index.html).
 
 For the Intest manual, see [&#9733;&nbsp;intest/Preliminaries](https://ganelson.github.io/intest/intest/M-iti).
-
-__Disclaimer__. Because this is a private repository (until the next public
-release of Inform, when it will open), its GitHub pages server cannot be
-enabled yet. As a result links marked &#9733; lead only to raw HTML
-source, not to served web pages. They can in the mean time be browsed offline
-as static HTML files stored in "docs".
 
 ## Licence and copyright
 
