@@ -97,10 +97,11 @@ void Reporter::filter(text_stream *line_text, text_file_position *tfp, void *vrs
 
 @<Insert test report header@> =
 	if ((rs->success_code == PERFECT_OUTCOME) || (rs->success_code == CURSED_OUTCOME))
-		WRITE("<div class=\"headingboxSucceeded\">\n");
+		WRITE("<div class=\"headingpanellayout headingpanelSucceeded\">\n");
 	else
-		WRITE("<div class=\"headingboxFailed\">\n");
+		WRITE("<div class=\"headingpanellayout headingpanelFailed\">\n");
 	WRITE("<div class=\"headingtext\">");
+	HTML_OPEN_WITH("span", "class=\"headingpaneltext\"");
 	WRITE("Example ");
 	if (rs->test_case_letter) WRITE("%c: ", rs->test_case_letter);
 	WRITE("&#8216;%S&#8217;: ", rs->test->test_case_title);
@@ -110,8 +111,10 @@ void Reporter::filter(text_stream *line_text, text_file_position *tfp, void *vrs
 		case CURSED_OUTCOME: WRITE("Partly Succeeded"); break;
 		default: WRITE("Couldn't Test"); break;
 	}
+	WRITE("</span>\n");
 	WRITE("</div>\n");
 	WRITE("<div class=\"headingrubric\">");
+	HTML_OPEN_WITH("span", "class=\"headingpanelrubric\"");
 	switch (rs->success_code) {
 		case I7_FAILED_OUTCOME: WRITE("Problem messages meant it wouldn't translate"); break;
 		case I6_FAILED_OUTCOME: WRITE("Translated but failed to compile in Inform 6"); break;
@@ -119,6 +122,7 @@ void Reporter::filter(text_stream *line_text, text_file_position *tfp, void *vrs
 		case WRONG_TRANSCRIPT_OUTCOME: WRITE("Translated but produced the wrong transcript"); break;
 		case PERFECT_OUTCOME: WRITE("Translated and produced the correct transcript"); break;
 	}
+	HTML_CLOSE("span");
 	WRITE("</div>\n");
 	WRITE("</div>\n");
 
