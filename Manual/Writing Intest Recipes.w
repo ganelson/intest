@@ -120,6 +120,13 @@ to every case, but not all always. The recipe is by default the one called
 just |[Recipe]| (see below), but declaring |-case [NAME] F|, |-cases [NAME] D|,
 and so on, makes the recipe for those case(s) |[NAME]| instead.
 
+@ If, for whatever reason, you would like a given test not to be included
+in Intest's wildcard names such as |all|, then you can write, say,
+|-singular NAME|, where |NAME| is the test's name. For example, you might
+have a scratch test case called |temp| used only moment to moment and not
+considered part of the test suite proper, and then |-singular temp| would
+tell Intest not to include it when testing |all|.
+
 @ A recipe file must also define at least one recipe. There are two ways
 to do this:
 

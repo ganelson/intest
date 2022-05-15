@@ -306,7 +306,8 @@ int Actions::identify_wildcard(text_stream *token) {
 	return TAMECARD;
 }
 
-int Actions::matches_wildcard(test_case *tc, int w) {
+int Actions::matches_wildcard(test_case *tc, int w, dictionary *exemptions) {
+	if (Dictionaries::find(exemptions, tc->test_case_name)) return FALSE;
 	if (w == ALL_WILDCARD) return TRUE;
 	if (w == Actions::which_wildcard(tc)) return TRUE;
 	return FALSE;
@@ -432,7 +433,8 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(spi, test_source, args->search_path)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents)
-			if (Actions::matches_wildcard(tc, ai->operand.wild_card)) {
+			if (Actions::matches_wildcard(tc, ai->operand.wild_card,
+				args->singular_case_names)) {
 				ai->test_form = ai->action_type;
 				ai->action_type += SCHEDULED_TEST_ACTION;
 				Actions::perform_inner(OUT, args, ai, tc, count++);

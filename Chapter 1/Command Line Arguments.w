@@ -71,6 +71,7 @@ typedef struct intest_instructions {
 	struct filename *implied_recipe_file;
 	struct pathname *home;
 	struct pathname *groups_folder;
+	struct dictionary *singular_case_names;
 } intest_instructions;
 
 @<Initialise the arguments state@> =
@@ -87,6 +88,7 @@ typedef struct intest_instructions {
 	args.home = home;
 	args.groups_folder = NULL;
 	args.implied_recipe_file = intest_script;
+	args.singular_case_names = Dictionaries::new(10, TRUE);
 
 @h Actually reading the command line.
 What will do is to divide the sequence of tokens on the command line into

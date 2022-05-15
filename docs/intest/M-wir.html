@@ -36,7 +36,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">intest</a></li><li><a href="index.html#M">Manual</a></li><li><b>Writing Intest Recipes</b></li></ul></div>
 <p class="purpose">A guide to writing in Delia, Intest's recipe language.</p>
 
-<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. About test cases</a></li><li><a href="M-wir.html#SP3">&#167;3. Recipe files</a></li><li><a href="M-wir.html#SP7">&#167;7. Writing Delia</a></li><li><a href="M-wir.html#SP24">&#167;24. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. About test cases</a></li><li><a href="M-wir.html#SP3">&#167;3. Recipe files</a></li><li><a href="M-wir.html#SP8">&#167;8. Writing Delia</a></li><li><a href="M-wir.html#SP25">&#167;25. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. About test cases. </b>To use any of this, at least one test case is required, and there will
 probably be many. The typical arrangement is that each test case has a
@@ -162,7 +162,15 @@ just <span class="extract"><span class="extract-syntax">[Recipe]</span></span> (
 and so on, makes the recipe for those case(s) <span class="extract"><span class="extract-syntax">[NAME]</span></span> instead.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>A recipe file must also define at least one recipe. There are two ways
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>If, for whatever reason, you would like a given test not to be included
+in Intest's wildcard names such as <span class="extract"><span class="extract-syntax">all</span></span>, then you can write, say,
+<span class="extract"><span class="extract-syntax">-singular NAME</span></span>, where <span class="extract"><span class="extract-syntax">NAME</span></span> is the test's name. For example, you might
+have a scratch test case called <span class="extract"><span class="extract-syntax">temp</span></span> used only moment to moment and not
+considered part of the test suite proper, and then <span class="extract"><span class="extract-syntax">-singular temp</span></span> would
+tell Intest not to include it when testing <span class="extract"><span class="extract-syntax">all</span></span>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>A recipe file must also define at least one recipe. There are two ways
 to do this:
 </p>
 
@@ -188,7 +196,7 @@ dashes.)
 <p class="commentary">If no <span class="extract"><span class="extract-syntax">[NAME]</span></span> is given, the name is assumed to be just <span class="extract"><span class="extract-syntax">[Recipe]</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Those are the only essentials, but two other dashed commands exist:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Those are the only essentials, but two other dashed commands exist:
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">-set VARIABLE VALUE</span></span>. Variables are more usually set inside recipes, but
@@ -202,7 +210,7 @@ followed only if the variable <span class="extract"><span class="extract-syntax"
 value will be something like <span class="extract"><span class="extract-syntax">macos</span></span>, <span class="extract"><span class="extract-syntax">unix</span></span>, <span class="extract"><span class="extract-syntax">linux</span></span>, <span class="extract"><span class="extract-syntax">windows</span></span>, or <span class="extract"><span class="extract-syntax">android</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Writing Delia. </b>Recipe definitions are written in a very simple mini-language called Delia,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Writing Delia. </b>Recipe definitions are written in a very simple mini-language called Delia,
 for reasons which English users of Intest will appreciate. Had Intest been
 written by an American, it would have been called Julia.
 </p>
@@ -235,7 +243,7 @@ the quotation mark when inside quotes. A token which begins with a backtick,
 <span class="extract"><span class="extract-syntax">`thus</span></span>, is marked as not to be quoted: see below.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Delia has just one data structure, a set of named variables. Each of these
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Delia has just one data structure, a set of named variables. Each of these
 has a textual value; usually those represent filenames or parts of filenames,
 but not necessarily.
 </p>
@@ -272,7 +280,7 @@ area to avoid stepping on each other's feet. Provided the recipe uses <span clas
 it never needs to think about this complication.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The real usefulness of variables is that they are automatically substituted
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The real usefulness of variables is that they are automatically substituted
 into tokens. When Delia reads the token <span class="extract"><span class="extract-syntax">$PATH/$CASE.txt</span></span>, for example,
 it substitutes in the values of <span class="extract"><span class="extract-syntax">$PATH</span></span> and <span class="extract"><span class="extract-syntax">$CASE</span></span> to produce something
 like <span class="extract"><span class="extract-syntax">zap/Tests/planets.txt</span></span>. This process is called "expansion".
@@ -386,7 +394,7 @@ is that we want to ignore things like the time-stamp and compiler version,
 which will change daily.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Note that the filename is itself expanded before use, so that it can be
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,
 rather than from a file. See the example supplied with Intest for testing
@@ -414,7 +422,7 @@ running dc:
 <p class="commentary">which produces the concise output "2".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>A Delia recipe runs from the first line onwards. There are no loops,
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>A Delia recipe runs from the first line onwards. There are no loops,
 functions or subroutines, but there are conditionals. The run ends
 as soon as one of the three commands <span class="extract"><span class="ConsoleText-extract-syntax">pass</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">fail</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">or</span></span> is executed.
 </p>
@@ -441,7 +449,7 @@ worry that the test will halt. It will only do so on our explicit
 instruction.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Matching simply means comparing the contents of two files.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Matching simply means comparing the contents of two files.
 </p>
 
 <p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">match text: A B</span></span>. Here <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">B</span></span> are text files, and Intest will show
@@ -476,14 +484,14 @@ which are roughly the same as <span class="extract"><span class="ConsoleText-ext
 contextual way. Details here would be tiresome: see the Intest source code.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>However, the <span class="extract"><span class="ConsoleText-extract-syntax">match</span></span> commands have a very useful side-effect if the test
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>However, the <span class="extract"><span class="ConsoleText-extract-syntax">match</span></span> commands have a very useful side-effect if the test
 is being run by <span class="extract"><span class="ConsoleText-extract-syntax">-curse</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">-bless</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">-rebless</span></span> at the command line. If we
 are cursing, then <span class="extract"><span class="ConsoleText-extract-syntax">match text: A B</span></span> will delete <span class="extract"><span class="ConsoleText-extract-syntax">B</span></span>, the ideal form. If we
 are blessing, then <span class="extract"><span class="ConsoleText-extract-syntax">match text: A B</span></span> will copy <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> into <span class="extract"><span class="ConsoleText-extract-syntax">B</span></span>, thus declaring
 that the actual form this time should serve as ideal from now on.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b><span class="extract"><span class="ConsoleText-extract-syntax">match</span></span> is also just a little forgiving, in that it allows a few not quite
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b><span class="extract"><span class="ConsoleText-extract-syntax">match</span></span> is also just a little forgiving, in that it allows a few not quite
 equal texts to "match" each other. In particular:
 </p>
 
@@ -518,7 +526,7 @@ arrangements to ignore the exact build number of Inform when it leaks
 out into I7 console output or into story file transcripts.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>There is one other commonly used pass/fail command:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>There is one other commonly used pass/fail command:
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">exists: F</span></span>. This passes if the file at <span class="extract"><span class="extract-syntax">F</span></span> exists on disc, and fails otherwise.
@@ -533,12 +541,12 @@ For example,
 way to see whether it worked or not is to see whether it produced any output.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>The <span class="extract"><span class="extract-syntax">debugger: ...</span></span> command is set out exactly like <span class="extract"><span class="extract-syntax">step: ...</span></span>, but runs
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>The <span class="extract"><span class="extract-syntax">debugger: ...</span></span> command is set out exactly like <span class="extract"><span class="extract-syntax">step: ...</span></span>, but runs
 only when the test is being run by the <span class="extract"><span class="extract-syntax">-debug</span></span> action. This is then used to
 trigger the <span class="extract"><span class="extract-syntax">lldb</span></span> debugger; see the Inform 7 test recipe for more.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>These are the three main "stopping commands", which do cause the test to halt:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>These are the three main "stopping commands", which do cause the test to halt:
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">pass: 'NOTE'</span></span>. Stops the test and marks it a success. The text <span class="extract"><span class="extract-syntax">'NOTE'</span></span>
@@ -559,7 +567,7 @@ wrong. For example:
 <span class="reserved-syntax">    step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span>
 <span class="reserved-syntax">    or</span><span class="plain-syntax">: 'dc produced an error'</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>But there are actually a few others:
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>But there are actually a few others:
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">show F</span></span>. Stops the test and prints out the file <span class="extract"><span class="extract-syntax">F</span></span>, but only if the test
@@ -581,7 +589,7 @@ Inform testing only, there's a related:
 exist, but this possibility can be picked up by placing an <span class="extract"><span class="extract-syntax">or:</span></span> after them.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>As noted above, Delia has no loops. But it does have one control construct:
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.
 </p>
 
@@ -614,12 +622,12 @@ expression. That can be just a simple textual match:
 syntax for "one or more digits here".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>An alternative condition is <span class="extract"><span class="extract-syntax">if exists: FILE</span></span>, which is true if the named
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>An alternative condition is <span class="extract"><span class="extract-syntax">if exists: FILE</span></span>, which is true if the named
 file exists. This can allow for certain checks to be performed only where
 there is something to check against, for example.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>That's all of the important commands covered, but Delia has a small
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>That's all of the important commands covered, but Delia has a small
 miscellany of other features. It has a very limited ability to write to
 the file system itself:
 </p>
@@ -639,7 +647,7 @@ be used only to make subdirectories of <span class="extract"><span class="extrac
 try to clean up the work area yourself: Intest will handle that automatically.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Suppose the program to be tested produces output which takes a long time
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Suppose the program to be tested produces output which takes a long time
 to verify the correctness of. (This is the case for Inform 7, because its
 output needs to be fed through Inform 6 and then executed in a virtual
 machine before any results can be seen. Both steps take a second or so,
@@ -690,7 +698,7 @@ Besides being written to the file, the hash value is also stored in the
 local variable <span class="extract"><span class="extract-syntax">$HASHCODE</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>And finally, a great convenience for testing Inform 7, but useless for
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>And finally, a great convenience for testing Inform 7, but useless for
 anything else:
 </p>
 
@@ -702,7 +710,7 @@ in question, <span class="extract"><span class="extract-syntax">Z</span></span> 
 automatically written into the local variable <span class="extract"><span class="extract-syntax">$SCRIPT</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
 locale differences meant that some tests weren't portable between MacOS and
 Windows. The issue was that the console environment (i.e., the standard
 output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1

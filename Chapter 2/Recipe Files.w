@@ -130,6 +130,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 		@<Act on if or endif@>;
 		@<Act on set@>;
 		@<Act on groups@>;
+		@<Act on singular@>;
 		@<Act on a case type choice@>;
 		@<Act on a recipe choice@>;
 
@@ -172,6 +173,13 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 @<Act on groups@> =
 	if ((Str::eq_wide_string(opt, L"-groups")) && (i+1<to_arg_n)) {
 		args->groups_folder = Pathnames::from_text(argv[i+1]);
+		i++; continue;
+	}
+
+@<Act on singular@> =
+	if ((Str::eq_wide_string(opt, L"-singular")) && (i+1<to_arg_n)) {
+		dictionary *D = args->singular_case_names;
+		WRITE_TO(Dictionaries::create_text(D, argv[i+1]), "1");
 		i++; continue;
 	}
 
