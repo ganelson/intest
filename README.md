@@ -1,6 +1,6 @@
 # Intest 2.1.0
 
-v2.1.0-beta+1A35 'The Remembering' (15 May 2022)
+v2.1.0-beta+1A36 'The Remembering' (29 May 2022)
 
 ## About Intest
 

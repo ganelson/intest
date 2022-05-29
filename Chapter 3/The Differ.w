@@ -188,7 +188,7 @@ banner, followed by a diff of the after-texts.
 
 @<If both texts contain the Inform banner version line, diff around that@> =
 	match_results mr = Regexp::create_mr();
-	wchar_t *template = L"(%c*?)(Release %d+ / Serial number %d+ / Inform %c*)";
+	wchar_t *template = L"(%c*?)(Release %d+ / Serial number %d+ / Inform %c+?\n)%c*";
 	if (Regexp::match(&mr, A, template)) {
 		string_position A_ver = Str::plus(A_from, Str::len(mr.exp[0])); /* at the R in "Release" */
 		string_position A_post = Str::plus(A_ver, Str::len(mr.exp[1])); /* after version line ends */
