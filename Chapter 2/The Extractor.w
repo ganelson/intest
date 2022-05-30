@@ -115,7 +115,8 @@ lines, and we look out for the |{*}| marker.
 			Str::clear(line);
 			WRITE_TO(line, "\t%S", line_content);
 			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, line, L"%t\"(%c*?)\" *")) {
+			if (Regexp::match(&mr, line, L"%t\"(%c*?)\" ") ||
+				Regexp::match(&mr, line, L"%t\"(%c*?)\" *by *%c*") ) {
 				if (es->extractor_command == CENSUS_ACTION)
 					es->tc = RecipeFiles::observe_in_example(
 						es->case_list, es->force_vm, es->to_use_recipe);
@@ -152,7 +153,7 @@ extension file. There can be more than one.
 	else if (Regexp::match(&mr, line, L" *---- +documentation +---- *"))
 		es->documentation_found = TRUE;
 	if (es->documentation_found) {
-		if (Regexp::match(&mr, line, L" *Example: %*+ %c*")) {
+		if (Regexp::match(&mr, line, L" *Example: *%c*")) {
 			es->now_extracting = FALSE;
 			es->examples_found++;
 			es->about_to_extract = TRUE;
@@ -168,8 +169,12 @@ extension file. There can be more than one.
 			Str::copy_tail(ext_eg, line, i);
 			if ((es->extractor_command == CENSUS_ACTION) ||
 				(es->examples_found == es->seek_ref)) {
-				if ((Regexp::match(&mr, ext_eg, L"\"(%c*?)\" *")) && (es->tc))
-					RecipeFiles::NameTestCase(es->tc, mr.exp[0]);
+				if (Regexp::match(&mr, ext_eg, L"\"(%c*?)\" *") ||
+					Regexp::match(&mr, ext_eg, L"\"(%c*?)\" *by *%c*")) {
+					if (es->tc) {
+						RecipeFiles::NameTestCase(es->tc, mr.exp[0]);
+					}
+				}
 				es->now_extracting = TRUE;
 				Extractor::line_out(ext_eg, tfp, es);
 				return;
