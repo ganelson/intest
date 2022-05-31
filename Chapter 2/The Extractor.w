@@ -115,7 +115,7 @@ lines, and we look out for the |{*}| marker.
 			Str::clear(line);
 			WRITE_TO(line, "\t%S", line_content);
 			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, line, L"%t\"(%c*?)\" ") ||
+			if (Regexp::match(&mr, line, L"%t\"(%c*?)\" *") ||
 				Regexp::match(&mr, line, L"%t\"(%c*?)\" *by *%c*") ) {
 				if (es->extractor_command == CENSUS_ACTION)
 					es->tc = RecipeFiles::observe_in_example(
