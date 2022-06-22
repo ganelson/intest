@@ -107,7 +107,33 @@ pathname *Scheduler::work_area(int s) {
 			TEMPORARY_TEXT(TN)
 			WRITE_TO(TN, "T%d", t);
 			pathname *workspace = Globals::to_pathname(I"workspace");
-			thread_slots[t].sandbox = Pathnames::down(workspace, TN);
+			pathname *sandbox = Pathnames::down(workspace, TN);
+			if (Pathnames::create_in_file_system(sandbox) == FALSE) {
+				WRITE_TO(STDERR, "unable to create directory <%p>\n", sandbox);
+				Errors::fatal("cannot create workspace for tests to take place in");
+			} else {
+				pathname *eg = Pathnames::down(sandbox, I"Example.inform");
+				pathname *source = Pathnames::down(eg, I"Source");
+				pathname *build = Pathnames::down(eg, I"Build");
+				pathname *index = Pathnames::down(eg, I"Index");
+				pathname *details = Pathnames::down(eg, I"Details");
+				if ((Pathnames::create_in_file_system(eg) == FALSE) ||
+					(Pathnames::create_in_file_system(source) == FALSE) ||
+					(Pathnames::create_in_file_system(build) == FALSE) ||
+					(Pathnames::create_in_file_system(index) == FALSE) ||
+					(Pathnames::create_in_file_system(details) == FALSE)) {
+					WRITE_TO(STDERR, "unable to create subdirectories of <%p>\n", sandbox);
+					Errors::fatal("cannot create workspace for tests to take place in");
+				}
+				filename *uuid = Filenames::in(eg, I"uuid.txt");
+				text_stream UUID_struct;
+				text_stream *UUID = &UUID_struct;
+				if (STREAM_OPEN_TO_FILE(UUID, uuid, UTF8_ENC) == FALSE)
+					Errors::fatal_with_file("unable to write file", uuid);
+				WRITE_TO(UUID, "00000000-0000-0000-0000-000000000000");	
+				STREAM_CLOSE(UUID);
+			}
+			thread_slots[t].sandbox = sandbox;
 			DISCARD_TEXT(TN)
 		}
 	}
