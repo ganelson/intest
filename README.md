@@ -1,6 +1,6 @@
 # Intest 2.1.0
 
-v2.1.0-beta+1A39 'The Remembering' (22 June 2022)
+[Version](notes/versioning.md): 2.1.0-beta+1A40 'The Remembering' (21 August 2022)
 
 ## About Intest
 
@@ -32,6 +32,9 @@ made by it immediately transfers to the project's copyright-holder, Graham Nelso
 This is in order that there can be clear ownership.
 
 ## Build Instructions
+
+**Caution**: The `main` branch of this repository generally holds "unstable", that is,
+unreleased work-in-progress versions of Intest. See [notes/versioning.md](notes/versioning.md).
 
 Make a directory in which to work: let's call this "work". Then:
 
