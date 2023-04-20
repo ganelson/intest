@@ -243,7 +243,7 @@ sentence. Again, useful only for Inform 7.
 
 @<Perform a SCRIPT on the line@> =
 	if (text) {
-		if (Regexp::match(&mr, text, L"Test me with \"(%c*?)\".*")) {
+		if (Regexp::match(&mr, text, L"Test me with \"(%c*?)\"%c*")) {
 			Extractor::script_out(es->DEST, mr.exp[0]);
 		} else if (Regexp::match(&mr, text, L"Test me with \"(%c*?)")) {
 			Extractor::script_out(es->DEST, mr.exp[0]);
