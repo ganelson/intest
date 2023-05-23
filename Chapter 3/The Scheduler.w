@@ -116,7 +116,7 @@ pathname *Scheduler::work_area(int s) {
 				pathname *source = Pathnames::down(eg, I"Source");
 				pathname *build = Pathnames::down(eg, I"Build");
 				pathname *index = Pathnames::down(eg, I"Index");
-				pathname *details = Pathnames::down(eg, I"Details");
+				pathname *details = Pathnames::down(index, I"Details");
 				if ((Pathnames::create_in_file_system(eg) == FALSE) ||
 					(Pathnames::create_in_file_system(source) == FALSE) ||
 					(Pathnames::create_in_file_system(build) == FALSE) ||
