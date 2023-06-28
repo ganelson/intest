@@ -250,13 +250,9 @@ words, or at any rate, ending at a word boundary (in both texts).
 @<Any common prefix can be preserved@> =
 	string_position A_after_prefix = A_from;
 	string_position B_after_prefix = B_from;
-	for (; (Str::index(A_after_prefix) < Str::index(A_to)) &&
-			(Str::index(B_after_prefix) < Str::index(B_to));
-		A_after_prefix = Str::forward(A_after_prefix),
-		B_after_prefix = Str::forward(B_after_prefix))
-		if (Differ::distinct(Str::get(A_after_prefix), Str::get(B_after_prefix),
-			allow_platform_variance))
-			break;
+	if (allow_platform_variance) @<Advance through platform-variant common prefix@>
+	else @<Advance through identical common prefix@>;
+
 	LOGIF(DIFFER, "Common prefix size %d\n", Str::width_between(A_from, A_after_prefix));
 
 	/* roll backwards until we're at a word boundary between the prefix and the rest */
@@ -276,19 +272,49 @@ words, or at any rate, ending at a word boundary (in both texts).
 		return;
 	}
 
+@<Advance through identical common prefix@> =
+	for (; (Str::index(A_after_prefix) < Str::index(A_to)) &&
+			(Str::index(B_after_prefix) < Str::index(B_to));
+		A_after_prefix = Str::forward(A_after_prefix),
+		B_after_prefix = Str::forward(B_after_prefix))
+		if (Str::get(A_after_prefix) != Str::get(B_after_prefix))
+			break;
+
+@ Ordinarily, two characters are distinct if they are different Unicode values.
+But with |allow_platform_variance| set, forward and backslashes are counted
+as being the same. This allows files containing Windows filenames to be
+compared with those containing MacOS ones. A further complication is that when
+a backslash does occur, it may for other reasons be escaped by appearing as a
+doubled backslash. (Or, it may not.) We thus adopt the forgiving rule that once
+a slash-discrepancy is found, we will match any run of slashes against any other
+run of slashes from that point. As a result, |///| does not match |////|, but
+|"a/b"| matches |"a\\b"|.
+
+@<Advance through platform-variant common prefix@> =
+	for (; (Str::index(A_after_prefix) < Str::index(A_to)) &&
+			(Str::index(B_after_prefix) < Str::index(B_to));
+		A_after_prefix = Str::forward(A_after_prefix),
+		B_after_prefix = Str::forward(B_after_prefix)) {
+			wchar_t a = Str::get(A_after_prefix), b = Str::get(B_after_prefix);
+			if (a == b) continue;
+			if (((a == '/') && (b == '\\')) || ((a == '\\') && (b == '/'))) {
+				while ((Str::get(A_after_prefix) == '/') || (Str::get(A_after_prefix) == '\\')) 
+					A_after_prefix = Str::forward(A_after_prefix);
+				while ((Str::get(B_after_prefix) == '/') || (Str::get(B_after_prefix) == '\\'))
+					B_after_prefix = Str::forward(B_after_prefix);
+			} else {
+				break;
+			}
+		}
+
 @ Similarly, we're only interested in a common suffix going back to the start
 of a whole word.
 
 @<Any common suffix can be preserved@> =
 	string_position A_suffix = A_to;
 	string_position B_suffix = B_to;
-	for (; (Str::index(A_suffix) > Str::index(A_from)) &&
-		(Str::index(B_suffix) > Str::index(B_from));
-		A_suffix = Str::back(A_suffix),
-		B_suffix = Str::back(B_suffix))
-		if (Differ::distinct(Str::get(Str::back(A_suffix)), Str::get(Str::back(B_suffix)),
-			allow_platform_variance))
-			break;
+	if (allow_platform_variance) @<Retreat through platform-variant common suffix@>
+	else @<Retreat through identical common suffix@>;
 
 	/* roll forwards until we're at a word boundary between the front and the suffix */
 	while ((Str::width_between(A_suffix, A_to) > 0) &&
@@ -305,6 +331,31 @@ of a whole word.
 		ADD_TO_LINKED_LIST(E, edit, edits);
 		return;
 	}
+
+@<Retreat through identical common suffix@> =
+	for (; (Str::index(A_suffix) > Str::index(A_from)) &&
+		(Str::index(B_suffix) > Str::index(B_from));
+		A_suffix = Str::back(A_suffix),
+		B_suffix = Str::back(B_suffix))
+		if (Str::get(Str::back(A_suffix)) != Str::get(Str::back(B_suffix)))
+			break;
+
+@<Retreat through platform-variant common suffix@> =
+	for (; (Str::index(A_suffix) > Str::index(A_from)) &&
+		(Str::index(B_suffix) > Str::index(B_from));
+		A_suffix = Str::back(A_suffix),
+		B_suffix = Str::back(B_suffix)) {
+			wchar_t a = Str::get(Str::back(A_suffix)), b = Str::get(Str::back(B_suffix));
+			if (a == b) continue;
+			if (((a == '/') && (b == '\\')) || ((a == '\\') && (b == '/'))) {
+				while ((Str::get(Str::back(A_suffix)) == '/') || (Str::get(Str::back(A_suffix)) == '\\')) 
+					A_suffix = Str::back(A_suffix);
+				while ((Str::get(Str::back(B_suffix)) == '/') || (Str::get(Str::back(B_suffix)) == '\\'))
+					B_suffix = Str::back(B_suffix);
+			} else {
+				break;
+			}
+		}
 
 @ In the typical use case most of the strings will now be gone, and this is
 where the algorithm goes quadratic. We're going to look for the longest
@@ -365,21 +416,6 @@ the text has entirely changed, and we display this as cleanly as possible:
 	E = Differ::new_edit(B_from, B_to, INSERT_EDIT);
 	ADD_TO_LINKED_LIST(E, edit, edits);
 	return;
-
-@ Ordinarily, two characters are distinct if they are different Unicode values.
-But with |allow_platform_variance| set, forward and backslashes are counted
-as being the same. This allows files containing Windows filenames to be
-compared with those containing MacOS ones.
-
-=
-int Differ::distinct(wchar_t c, wchar_t d, int allow_platform_variance) {
-	if (c == d) return FALSE;
-	if (allow_platform_variance)
-		if ((c == '/') || (c == '\\'))
-			if ((d == '/') || (d == '\\'))
-				return FALSE;
-	return TRUE;
-}
 
 @ This was the definition of "word boundary" used, where these are expected
 to be adjacent characters (in either direction). For best results, we want
