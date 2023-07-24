@@ -153,15 +153,17 @@ this is a typical start of an EXAMPLE file:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    * Printing the banner text</span>
-<span class="plain-syntax">    (Banner printing at appropriate times; Bikini Atoll)</span>
-<span class="plain-syntax">    Delaying the banner for later.</span>
+<span class="plain-syntax">    Several lines of metadata</span>
+
+<span class="plain-syntax">    The descriptive text usually follows, but at some point -</span>
 
 <span class="plain-syntax">        {*}"Bikini Atoll" by Edward Teller</span>
 
 <span class="plain-syntax">        The Hut and the Tropical Beach are rooms.</span>
 </pre>
-<p class="commentary">The test case can only begin after the header, which always occupies three
-lines, and we look out for the <span class="extract"><span class="extract-syntax">{*}</span></span> marker.
+<p class="commentary">The test case can only begin after the header, lines of which can never open
+with the paste markers <span class="extract"><span class="extract-syntax">{*}</span></span> or <span class="extract"><span class="extract-syntax">{**}</span></span>, so the following safely ignores
+the header:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Consider entering extraction mode for EXAMPLE</span><span class="named-paragraph-number">2.1.2</span></span><span class="comment-syntax"> =</span>
@@ -169,7 +171,7 @@ lines, and we look out for the <span class="extract"><span class="extract-syntax
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line_content</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line_count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">3</span><span class="plain-syntax">) &amp;&amp; (</span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::begins_with_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"\t{*}"</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::begins_with_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"\t{*}"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy_tail</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line_content</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">examples_found</span><span class="plain-syntax">++ == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>

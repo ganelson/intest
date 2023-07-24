@@ -97,19 +97,21 @@ double-quoted text, then that's the title for the test case.
 this is a typical start of an EXAMPLE file:
 = (text)
 	* Printing the banner text
-	(Banner printing at appropriate times; Bikini Atoll)
-	Delaying the banner for later.
+	Several lines of metadata
+	
+	The descriptive text usually follows, but at some point -
 	
 	    {*}"Bikini Atoll" by Edward Teller
 	
 	    The Hut and the Tropical Beach are rooms.
 =
-The test case can only begin after the header, which always occupies three
-lines, and we look out for the |{*}| marker.
+The test case can only begin after the header, lines of which can never open
+with the paste markers |{*}| or |{**}|, so the following safely ignores
+the header:
 
 @<Consider entering extraction mode for EXAMPLE@> =
 	TEMPORARY_TEXT(line_content)
-	if ((tfp->line_count > 3) && (Str::begins_with_wide_string(line, L"\t{*}"))) {
+	if (Str::begins_with_wide_string(line, L"\t{*}")) {
 		Str::copy_tail(line_content, line, 4);
 		if (es->examples_found++ == 0) {
 			Str::clear(line);

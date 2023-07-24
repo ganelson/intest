@@ -285,6 +285,7 @@ void RecipeFiles::scan_directory_for_cases(linked_list *L,
 			(first == '[') ||
 			(Actions::identify_wildcard(leafname) != TAMECARD))
 			Errors::fatal_with_text("no test can legally be called '%S'", leafname);
+		if (Str::includes(leafname, I"-I.")) continue;
 		filename *F = Filenames::in(P, leafname);
 		RecipeFiles::scan_file_for_cases(L, t, F, rn);
 	}
