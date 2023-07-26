@@ -120,7 +120,8 @@ the index after |USEn|.
 =
 void RecipeFiles::read_using_instructions(intest_instructions *args,
 	int from_arg_n, int to_arg_n, text_stream **argv, pathname *project) {
-	int t = NO_SPT, multiple = FALSE, allowed_to_execute = TRUE;
+	int t = NO_SPT, multiple = FALSE, allowed_to_execute = TRUE,
+		allowed_not_to_exist = FALSE;
 	TEMPORARY_TEXT(recipe_name)
 	WRITE_TO(recipe_name, "[Recipe]");
 	@<Log the using instructions@>;
@@ -136,9 +137,15 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 
 		filename *F = NULL;
 		pathname *P = NULL;
-		if (multiple) P = Pathnames::from_text(opt);
-		else F = Filenames::from_text(opt);
-
+		TEMPORARY_TEXT(expanded)
+		RecipeFiles::expand(expanded, opt);
+		if (multiple) P = Pathnames::from_text(expanded);
+		else F = Filenames::from_text(expanded);
+		DISCARD_TEXT(expanded)
+		if (allowed_not_to_exist) {
+			if ((P) && (Directories::exists(P) == FALSE)) continue;
+			if ((F) && (TextFiles::exists(F) == FALSE)) continue;
+		}
 		if (t == NO_SPT) @<Load in a file of further using instructions@>
 		else @<Execute this as a using instruction@>;
 	}
@@ -186,14 +193,28 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 @<Act on a case type choice@> =
 	if (Str::eq(opt, I"-extension")) { t = EXTENSION_SPT; continue; }
 	else if (Str::eq(opt, I"-case")) { t = CASE_SPT; continue; }
+	else if (Str::eq(opt, I"-annotated-case")) { t = ANNOTATED_CASE_SPT; continue; }
 	else if (Str::eq(opt, I"-problem")) { t = PROBLEM_SPT; continue; }
 	else if (Str::eq(opt, I"-map")) { t = MAP_SPT; continue; }
 	else if (Str::eq(opt, I"-example")) { t = EXAMPLE_SPT; continue; }
 	else if (Str::eq(opt, I"-extensions")) { t = EXTENSION_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-cases")) { t = CASE_SPT; multiple = TRUE; continue; }
+	else if (Str::eq(opt, I"-annotated-cases")) { t = ANNOTATED_CASE_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-problems")) { t = PROBLEM_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-maps")) { t = MAP_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-examples")) { t = EXAMPLE_SPT; multiple = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-extension")) { t = EXTENSION_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-case")) { t = CASE_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-annotated-case")) { t = ANNOTATED_CASE_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-problem")) { t = PROBLEM_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-map")) { t = MAP_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-example")) { t = EXAMPLE_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-extensions")) { t = EXTENSION_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-cases")) { t = CASE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-annotated-cases")) { t = ANNOTATED_CASE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-problems")) { t = PROBLEM_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-maps")) { t = MAP_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-examples")) { t = EXAMPLE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::get_first_char(opt) == '-') Errors::fatal_with_text("unrecognised -using case type: '%S'", opt);
 
 @<Act on a recipe choice@> =
@@ -221,6 +242,7 @@ There are five basic search path types:
 @e NO_SPT from 0
 @e EXTENSION_SPT
 @e CASE_SPT
+@e ANNOTATED_CASE_SPT
 @e PROBLEM_SPT
 @e EXAMPLE_SPT
 @e MAP_SPT
@@ -260,11 +282,25 @@ text_stream *RecipeFiles::case_type_as_text(int spt) {
 	switch (spt) {
 		case EXTENSION_SPT: return I"extension";
 		case CASE_SPT: return I"case";
+		case ANNOTATED_CASE_SPT: return I"annotated case";
 		case PROBLEM_SPT: return I"problem";
 		case EXAMPLE_SPT: return I"example";
 		case MAP_SPT: return I"map";
 	}
 	return I"unknown";
+}
+
+@h Expanding filenames and pathnames.
+
+=
+void RecipeFiles::expand(OUTPUT_STREAM, text_stream *from) {
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, from, L"%$%$([A-Za-z]+)(%c*)")) {
+		WRITE("%S%S", Globals::get(mr.exp[0]), mr.exp[1]);
+	} else {
+		WRITE("%S", from);
+	}
+	Regexp::dispose_of(&mr);
 }
 
 @h Scanning and extracting.
@@ -303,6 +339,8 @@ filename *extraction_file = NULL;
 void RecipeFiles::scan_file_for_cases(linked_list *L, int t, filename *F, text_stream *rn) {
 	switch (t) {
 		case EXTENSION_SPT: @<Adopt Example cases from an extension file@>;
+		case ANNOTATED_CASE_SPT:
+			@<Adopt a single test case needing extraction@>;
 		case CASE_SPT: case PROBLEM_SPT: case MAP_SPT:
 			@<Adopt a single test case not needing extraction@>;
 		case EXAMPLE_SPT: @<Adopt Example cases from an example file@>;
@@ -325,6 +363,11 @@ void RecipeFiles::scan_file_for_cases(linked_list *L, int t, filename *F, text_s
 	Extractor::run(L, NULL, NULL, F, EXAMPLE_FORMAT, 0, CENSUS_ACTION, rn);
 	break;
 
+@<Adopt a single test case needing extraction@> =
+	extraction_file = F;
+	Extractor::run(L, NULL, NULL, F, ANNOTATED_FORMAT, 0, CENSUS_ACTION, rn);
+	break;
+
 @ These functions are called by the Extractor when it finds a test case in
 the relevant example or extension file. (Those are both Inform 7-only
 features.)
@@ -342,6 +385,12 @@ test_case *RecipeFiles::observe_in_example(linked_list *L, text_stream *force_vm
 	return tc;
 }
 
+test_case *RecipeFiles::observe_in_annotated_case(linked_list *L, text_stream *force_vm, text_stream *rn) {
+	test_case *tc = RecipeFiles::new_case(ANNOTATED_CASE_SPT, extraction_file, ANNOTATED_FORMAT, 0, force_vm, rn);
+	if (L) ADD_TO_LINKED_LIST(tc, test_case, L);
+	return tc;
+}
+
 @h Test cases.
 The content of a test case lives in a single file, but may live in only part
 of that file. The file can have three possible formats, though two of them
@@ -350,6 +399,9 @@ arise only for Inform 7.
 @d PLAIN_FORMAT 1 /* the file as a whole is one case */
 @d EXAMPLE_FORMAT 2 /* Inform example file discussing code which forms one case */
 @d EXTENSION_FORMAT 3 /* Inform extension file containing examples A, B, C, ... */
+@d ANNOTATED_FORMAT 4 /* test case, but with metadata key-value pairs first */
+
+@d MAX_METADATA_PAIRS 10
 
 =
 typedef struct test_case {
@@ -363,6 +415,9 @@ typedef struct test_case {
 	int test_type; /* one of the |_SPT| constants above */
 	int cursed; /* currently has no ideal output to test against */
 	struct text_stream *known_hash; /* md5 hash of known-correct code */
+	int no_kv_pairs;
+	struct text_stream *keys[MAX_METADATA_PAIRS];
+	struct text_stream *values[MAX_METADATA_PAIRS];
 	
 	struct pathname *work_area;
 	struct filename *commands_location;
@@ -407,12 +462,21 @@ test_case *RecipeFiles::new_case(int t, filename *F, int fref, int ref,
 	tc->cursed = FALSE;
 	tc->known_hash = NULL;
 	tc->left_bracket = '{'; tc->right_bracket = '}';
+	tc->no_kv_pairs = 0;
 	return tc;
 }
 
 void RecipeFiles::NameTestCase(test_case *tc, text_stream *title) {
 	if (tc == NULL) internal_error("naming null test case");
 	tc->test_case_title = Str::duplicate(title);
+}
+
+void RecipeFiles::AddKVPair(test_case *tc, text_stream *key, text_stream *value) {
+	if ((tc) && (tc->no_kv_pairs < MAX_METADATA_PAIRS-1)) {
+		tc->keys[tc->no_kv_pairs] = Str::duplicate(key);
+		tc->values[tc->no_kv_pairs] = Str::duplicate(value);
+		tc->no_kv_pairs++;
+	}
 }
 
 @ The following is the back end for the |-find| do action, and lists all
@@ -451,7 +515,8 @@ void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(spi, test_source, sources)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents) {
-			if ((tc->format_reference != EXAMPLE_FORMAT) &&
+			if ((tc->format_reference != ANNOTATED_FORMAT) &&
+				(tc->format_reference != EXAMPLE_FORMAT) &&
 				(tc->format_reference != EXTENSION_FORMAT))
 				Extractor::run(NULL, NULL,
 					tc, tc->test_location, tc->format_reference, 0, CENSUS_ACTION, NULL);

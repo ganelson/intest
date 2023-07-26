@@ -153,6 +153,18 @@ dictionary.
 	WRITE_TO(Dictionaries::create_text(D, I"WORK"), "%p", Thread_Work_Area);
 	WRITE_TO(Dictionaries::create_text(D, I"HASHCODE"), ""); /* set by |hash| commands */
 	WRITE_TO(Dictionaries::create_text(D, I"TYPE"), "%S", RecipeFiles::case_type_as_text(tc->test_type));
+	int for_found = FALSE, language_found = FALSE;
+	for (int i=0; i<tc->no_kv_pairs; i++) {
+		TEMPORARY_TEXT(key)
+		LOOP_THROUGH_TEXT(pos, tc->keys[i])
+			PUT_TO(key, Characters::toupper(Str::get(pos)));
+		WRITE_TO(Dictionaries::create_text(D, key), "%S", tc->values[i]);
+		if (Str::eq(key, I"FOR")) for_found = TRUE;
+		if (Str::eq(key, I"LANGUAGE")) language_found = TRUE;
+		DISCARD_TEXT(key)
+	}
+	if (for_found == FALSE) WRITE_TO(Dictionaries::create_text(D, I"FOR"), "Glulx");
+	if (language_found == FALSE) WRITE_TO(Dictionaries::create_text(D, I"LANGUAGE"), "Inform");
 
 @<Log the line@> =
 	line_count++;

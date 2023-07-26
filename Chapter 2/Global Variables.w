@@ -97,12 +97,17 @@ filename *Globals::to_filename(text_stream *name) {
 }
 
 @h Initialisation.
-When Intest starts up, it creates two variables to kick off with:
+When Intest starts up, it creates three variables to kick off with:
 
 =
-void Globals::create_platform(void) {
+void Globals::create_platform(pathname *home) {
 	Globals::create(I"platform");
 	Globals::set(I"platform", Str::new_from_ISO_string(PLATFORM_STRING));
+	TEMPORARY_TEXT(project_path)
+	WRITE_TO(project_path, "%p", home);
+	Globals::create(I"project");
+	Globals::set(I"project", project_path);
+	DISCARD_TEXT(project_path)
 }
 
 void Globals::create_workspace(void) {

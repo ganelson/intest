@@ -25,6 +25,10 @@ typedef struct extraction_state {
 	int extraction_line_count;
 	int extractor_command;
 	int concordance_offset;
+	int skip_next;
+	int no_kv_pairs;
+	struct text_stream *keys[MAX_METADATA_PAIRS];
+	struct text_stream *values[MAX_METADATA_PAIRS];
 	struct text_stream *to_use_recipe;
 	text_stream *force_vm;
 } extraction_state;
@@ -56,6 +60,8 @@ void Extractor::run(linked_list *L, OUTPUT_STREAM, test_case *tc, filename *F, i
 	es.concordance_offset = 0;
 	es.force_vm = NULL;
 	es.to_use_recipe = recipe_name;
+	es.skip_next = FALSE;
+	es.no_kv_pairs = 0;
 	TextFiles::read(F, FALSE, "can't open test case file", TRUE, &Extractor::fan, NULL, &es);
 }
 
@@ -72,6 +78,8 @@ void Extractor::fan(text_stream *line, text_file_position *tfp, void *ves) {
 @<Consider entering extraction mode@> =
 	switch (es->file_format) {
 		case PLAIN_FORMAT: @<Consider entering extraction mode for PLAIN@>;
+			break;
+		case ANNOTATED_FORMAT: @<Consider entering extraction mode for ANNOTATED@>;
 			break;
 		case EXAMPLE_FORMAT: @<Consider entering extraction mode for EXAMPLE@>;
 			break;
@@ -93,6 +101,34 @@ double-quoted text, then that's the title for the test case.
 		es->now_extracting = TRUE;
 	}
 
+@ An annotated case opens with key-value metadata pairs, then is verbatim
+after the first line not matching this.
+
+@<Consider entering extraction mode for ANNOTATED@> =
+	if (es->now_extracting == FALSE) {
+		if (tfp->line_count == 1) {
+			if ((es->extractor_command == CENSUS_ACTION) && (es->tc == NULL))
+				es->tc = RecipeFiles::observe_in_annotated_case(
+					es->case_list, es->force_vm, es->to_use_recipe);
+		}
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, line, L"(%C+) *: *(%c*) *")) {
+			text_stream *key = mr.exp[0], *value = mr.exp[1];
+			if (tfp->line_count == 1) {
+				if (Str::eq(key, I"Test") == FALSE) {
+					es->now_extracting = TRUE;
+				} else {
+					RecipeFiles::NameTestCase(es->tc, value);
+				}
+			}
+			if ((es->now_extracting == FALSE) && (es->tc))
+				RecipeFiles::AddKVPair(es->tc, key, value);
+		} else if (Str::is_whitespace(line)) {
+			es->now_extracting = TRUE;
+		}
+		Regexp::dispose_of(&mr);
+	}
+
 @ See the Inform 7 documentation examples to explain this more fully, but
 this is a typical start of an EXAMPLE file:
 = (text)
@@ -110,8 +146,24 @@ with the paste markers |{*}| or |{**}|, so the following safely ignores
 the header:
 
 @<Consider entering extraction mode for EXAMPLE@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, line, L"(%C+) *: *(%c*) *")) {
+		text_stream *key = mr.exp[0], *value = mr.exp[1];
+		if (Str::eq(key, I"Example")) {
+			es->no_kv_pairs = 0;
+			es->skip_next = FALSE;
+		}
+		if ((Str::eq(key, I"For")) && (Str::eq(value, I"Untestable"))) {
+			es->skip_next = TRUE;
+		} else if (es->no_kv_pairs < MAX_METADATA_PAIRS-1) {
+			es->keys[es->no_kv_pairs] = Str::duplicate(key);	
+			es->values[es->no_kv_pairs] = Str::duplicate(value);
+			es->no_kv_pairs++;
+		}
+	}
+	Regexp::dispose_of(&mr);
 	TEMPORARY_TEXT(line_content)
-	if (Str::begins_with_wide_string(line, L"\t{*}")) {
+	if ((Str::begins_with_wide_string(line, L"\t{*}")) && (es->skip_next == FALSE)) {
 		Str::copy_tail(line_content, line, 4);
 		if (es->examples_found++ == 0) {
 			Str::clear(line);
@@ -122,7 +174,11 @@ the header:
 				if (es->extractor_command == CENSUS_ACTION)
 					es->tc = RecipeFiles::observe_in_example(
 						es->case_list, es->force_vm, es->to_use_recipe);
-				if (es->tc) RecipeFiles::NameTestCase(es->tc, mr.exp[0]);
+				if (es->tc) {
+					RecipeFiles::NameTestCase(es->tc, mr.exp[0]);
+					for (int i=0; i<es->no_kv_pairs; i++)
+						RecipeFiles::AddKVPair(es->tc, es->keys[i], es->values[i]);
+				}
 			}
 			Regexp::dispose_of(&mr);
 			es->now_extracting = TRUE;
@@ -192,6 +248,7 @@ character in column 1.
 
 @<Consider leaving extraction mode@> =
 	if ((es->file_format != PLAIN_FORMAT) &&
+		(es->file_format != ANNOTATED_FORMAT) &&
 		(Str::len(line) > 0) &&
 		(Regexp::white_space(Str::get_first_char(line)) == FALSE))
 			es->now_extracting = FALSE;
@@ -200,7 +257,9 @@ character in column 1.
 we get rid of that before passing the line through.
 
 @<Extract the line@> =
-	if (es->file_format == PLAIN_FORMAT) Extractor::line_out(line, tfp, es);
+	if ((es->file_format == PLAIN_FORMAT) ||
+		(es->file_format == ANNOTATED_FORMAT))
+		Extractor::line_out(line, tfp, es);
 	else if (Str::get_first_char(line) == '\t') {
 		TEMPORARY_TEXT(rl)
 		Str::copy(rl, line);

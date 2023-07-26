@@ -173,28 +173,28 @@ few side-shows like these, the business is to discover the universe of test case
 </p>
 
 <p class="commentary">That universe is stored as a list of <a href="2-rf.html#SP2_9_1" class="internal">test_source</a> objects, each of
-which holds a list of <a href="2-rf.html#SP8" class="internal">test_case</a> objects coming from them. (There is one
-<a href="2-rf.html#SP8" class="internal">test_case</a> for each individually testable case.) Sources might be single
+which holds a list of <a href="2-rf.html#SP9" class="internal">test_case</a> objects coming from them. (There is one
+<a href="2-rf.html#SP9" class="internal">test_case</a> for each individually testable case.) Sources might be single
 named files, files containing multiple test cases embedded in some elaborate
 way (as with Inform 7 extensions), or directories holding batches of tests.
 </p>
 
-<p class="commentary">The work is done by <a href="2-rf.html#SP5" class="internal">RecipeFiles::scan_directory_for_cases</a> and
-<a href="2-rf.html#SP6" class="internal">RecipeFiles::scan_file_for_cases</a>; the former calls the latter on its
+<p class="commentary">The work is done by <a href="2-rf.html#SP6" class="internal">RecipeFiles::scan_directory_for_cases</a> and
+<a href="2-rf.html#SP7" class="internal">RecipeFiles::scan_file_for_cases</a>; the former calls the latter on its
 contents, but the latter is also called directly when the USING command
 names a single file rather than a directory.
 </p>
 
-<p class="commentary"><a href="2-rf.html#SP6" class="internal">RecipeFiles::scan_file_for_cases</a> makes one or more cases out of a single
+<p class="commentary"><a href="2-rf.html#SP7" class="internal">RecipeFiles::scan_file_for_cases</a> makes one or more cases out of a single
 file. In simple cases, the file is the test case, and all we need do is hand
-down to <a href="2-rf.html#SP9" class="internal">RecipeFiles::new_case</a>. In more complicated cases, the file is in
+down to <a href="2-rf.html#SP10" class="internal">RecipeFiles::new_case</a>. In more complicated cases, the file is in
 some elaborate format inside of which test cases are embedded, and we have
 to call <a href="2-te.html" class="internal">The Extractor</a> to extricate them: either way, though, the end
-result is that <a href="2-rf.html#SP9" class="internal">RecipeFiles::new_case</a> makes each <a href="2-rf.html#SP8" class="internal">test_case</a> object.
+result is that <a href="2-rf.html#SP10" class="internal">RecipeFiles::new_case</a> makes each <a href="2-rf.html#SP9" class="internal">test_case</a> object.
 </p>
 
 <p class="commentary">What we get for our trouble is a function, <a href="2-rf.html#SP3" class="internal">RecipeFiles::find_case</a>, which
-returns the <a href="2-rf.html#SP8" class="internal">test_case</a> for a test name like <span class="extract"><span class="ConsoleText-extract-syntax">Gelato</span></span>, or returns <span class="extract"><span class="ConsoleText-extract-syntax">NULL</span></span>
+returns the <a href="2-rf.html#SP9" class="internal">test_case</a> for a test name like <span class="extract"><span class="ConsoleText-extract-syntax">Gelato</span></span>, or returns <span class="extract"><span class="ConsoleText-extract-syntax">NULL</span></span>
 if no test has that name.
 </p>
 
@@ -248,7 +248,7 @@ program, <a href="3-ts.html#SP10" class="internal">Scheduler::perform_work</a> s
 </p>
 
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Individual tests. </b>What the workers do is to call <a href="4-tt.html#SP1" class="internal">Tester::test</a> on each <a href="3-ts.html#SP8" class="internal">test</a> it is given.
-A <a href="3-ts.html#SP8" class="internal">test</a> object is essentially an action code, plus a <a href="2-rf.html#SP8" class="internal">test_case</a>, plus
+A <a href="3-ts.html#SP8" class="internal">test</a> object is essentially an action code, plus a <a href="2-rf.html#SP9" class="internal">test_case</a>, plus
 a work area in the file system &mdash; each worker thread has its own work area,
 since otherwise interference between them would create havoc; but successive
 tests run by the same worker use the same work area, which is cleaned after
