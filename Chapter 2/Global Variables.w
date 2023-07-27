@@ -110,6 +110,11 @@ void Globals::create_platform(pathname *home) {
 	DISCARD_TEXT(project_path)
 }
 
+void Globals::create_internal(void) {
+	Globals::create(I"internal");
+	Globals::set(I"internal", I"inform7/Internal");
+}
+
 void Globals::create_workspace(void) {
 	Globals::create(I"platform");
 	Globals::set(I"platform", Str::new_from_ISO_string(PLATFORM_STRING));

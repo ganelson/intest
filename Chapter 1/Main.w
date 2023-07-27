@@ -38,8 +38,6 @@ int main(int argc, char **argv) {
 		}
 	}
 	Log::set_debug_log_filename(Filenames::in(home, I"intest-debug-log.txt"));
-	filename *script = NULL;
-	@<Work out the default name for the test script@>;
 	filename *history = Filenames::in(home, I"intest-history.txt");
 	Historian::research(history, &ts_argc, &ts_argv);
 	int write_up = FALSE;
@@ -93,25 +91,10 @@ stored in directory format.
 	text_stream *D = Pathnames::directory_name(home_project);	
 	if (Str::includes_at(D, Str::len(D)-5, I".i7xd")) extension_mode = TRUE;
 
-@ Every program to be tested has to provide a "script". It can be chosen at
-the command line, but the default is to take the tested program's directory
-leafname and add |.intest|. For example, if we're testing |magiczap|, then
-the default is |magiczap.intest|.
-
-@<Work out the default name for the test script@> =
-	if (extension_mode) {
-		pathname *P = Pathnames::down(installation, I"Recipes");
-		script = Filenames::in(P, I"extension.intest");
-	} else {
-		TEMPORARY_TEXT(sfn)
-		WRITE_TO(sfn, "%S.intest", Pathnames::directory_name(Pathnames::up(home)));
-		script = Filenames::in(home, sfn);
-		DISCARD_TEXT(sfn)
-	}
-
 @<Read the now-final command line and act upon it@> =
 	Globals::create_platform(home);
-	intest_instructions args = Instructions::read(ts_argc, ts_argv, home, script);
+	Globals::create_internal();
+	intest_instructions args = Instructions::read(ts_argc, ts_argv, home, extension_mode);
 
 	if (args.version_switch) printf("%s\n", INTEST_BUILD);
 	if (args.purge_switch) Tester::purge_all_work_areas(args.threads_available);

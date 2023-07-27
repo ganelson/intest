@@ -7,7 +7,7 @@ and to handle any errors it needs to issue.
 
 =
 intest_instructions Instructions::read(int argc, text_stream **argv,
-	pathname *home, filename *intest_script) {
+	pathname *home, int extension_mode) {
 	@<Register some configuration switches with Foundation@>;
 	intest_instructions args;
 	@<Initialise the arguments state@>;
@@ -25,6 +25,7 @@ and heading text in the normal Foundation way:
 @e COLOURS_CLSW
 @e VERBOSE_CLSW
 @e THREADS_CLSW
+@e INTERNAL_CLSW
 
 @<Register some configuration switches with Foundation@> =
 	CommandLine::declare_heading(
@@ -52,6 +53,8 @@ and heading text in the normal Foundation way:
 		L"print out all shell commands issued", FALSE);
 	CommandLine::declare_numerical_switch(THREADS_CLSW, L"threads", 1,
 		L"use X independent threads to test");
+	CommandLine::declare_numerical_switch(INTERNAL_CLSW, L"internal", 2,
+		L"use X as the internal Inform distribution resources");
 
 @ The following structure encodes a set of instructions from the user (probably
 from the command line) about what Intest should do on this run:
@@ -68,7 +71,8 @@ typedef struct intest_instructions {
 	struct recipe *compiling_recipe; /* not a user setting, but convenient for parsing */
 	struct linked_list *search_path; /* of |test_source| */
 	struct linked_list *to_do_list; /* of |action_item| */
-	struct filename *implied_recipe_file;
+	int implied_recipe_file;
+	int extension_mode;
 	struct pathname *home;
 	struct pathname *groups_folder;
 	struct dictionary *singular_case_names;
@@ -87,7 +91,8 @@ typedef struct intest_instructions {
 	args.threads_available = Platform::get_core_count();
 	args.home = home;
 	args.groups_folder = NULL;
-	args.implied_recipe_file = intest_script;
+	args.implied_recipe_file = TRUE;
+	args.extension_mode = extension_mode;
 	args.singular_case_names = Dictionaries::new(10, TRUE);
 
 @h Actually reading the command line.
@@ -126,20 +131,36 @@ void Instructions::read_instructions_into(intest_instructions *args,
 
 @ Once the boundaries of a block are found, we hand it over to the relevant
 authorities. The front end (only) of a do block is allowed to contain the
-Foundation-defined switches, so we clear thpse out of the way first.
+Foundation-defined switches, so we clear those out of the way first.
+
+Every program to be tested has to provide a "script". It can be chosen at
+the command line, in which case |args->implied_recipe_file| will be |FALSE|,
+but the default is to take the tested program's directory leafname and add
+|.intest|. For example, if we're testing |magiczap|, then the default is |magiczap.intest|.
 
 @<Complete block just finished, if any@> =
 	switch (block_mode) {
 		case USING_BLOCK_MODE:
 			RecipeFiles::read_using_instructions(args, block_from, i, argv, home);
-			args->implied_recipe_file = NULL;
+			args->implied_recipe_file = FALSE;
 			break;
 		case DO_BLOCK_MODE: {
 			int midway = Instructions::read_switches(args, block_from, i, argv);
 			if (midway < i) {
 				if (args->implied_recipe_file) {
-					RecipeFiles::read(args->implied_recipe_file, args, NULL);
-					args->implied_recipe_file = NULL;
+					filename *F = NULL;
+					if (args->extension_mode) {
+						pathname *P = Globals::to_pathname(I"internal");
+						P = Pathnames::down(P, I"Delia");
+						F = Filenames::in(P, I"extension.intest");
+					} else {
+						TEMPORARY_TEXT(sfn)
+						WRITE_TO(sfn, "%S.intest", Pathnames::directory_name(Pathnames::up(args->home)));
+						F = Filenames::in(args->home, sfn);
+						DISCARD_TEXT(sfn)
+					}
+					RecipeFiles::read(F, args, NULL);
+					args->implied_recipe_file = FALSE;
 				}
 				Actions::read_do_instructions(args, midway, i, argv);
 			}
@@ -193,6 +214,8 @@ void Instructions::respond(int id, int val, text_stream *arg, void *state) {
 			if ((val < 1) || (val > MAX_THREADS))
 				Errors::fatal("that number of threads is unsupported");
 			args->threads_available = val;
+			return;
+		case INTERNAL_CLSW: Globals::set(I"internal", arg);
 			return;
 	}
 }

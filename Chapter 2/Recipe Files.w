@@ -78,7 +78,10 @@ with the routine parsing the command line. In any case, nobody will hit:
 			(Str::get_last_char(line_tokens[pos]) == ']'))
 			name = line_tokens[pos++];
 		if (no_line_tokens > pos) {
-			Delia::compile(Filenames::from_text(line_tokens[pos++]), name); ext = TRUE;
+			TEMPORARY_TEXT(delia)
+			RecipeFiles::expand(delia, line_tokens[pos++]);
+			Delia::compile(Filenames::from_text(delia), name); ext = TRUE;
+			DISCARD_TEXT(delia)
 		}
 		if (no_line_tokens != pos) {
 			Errors::in_text_file("malformed -recipe", tfp); return;

@@ -150,6 +150,11 @@ dictionary.
 	WRITE_TO(Dictionaries::create_text(D, I"CASE"), "%S", tc->test_case_name);
 	WRITE_TO(Dictionaries::create_text(D, I"SCRIPT"), ""); /* set by the |extract| command, if used */
 	WRITE_TO(Dictionaries::create_text(D, I"PATH"), "%p", tc->work_area);
+	pathname *P = Filenames::up(tc->test_location);
+	while ((P) && (Str::eq(Pathnames::directory_name(P), I"Extensions") == FALSE))
+		P = Pathnames::up(P);
+	if (P) WRITE_TO(Dictionaries::create_text(D, I"NEST"), "%p", Pathnames::up(P));
+	else WRITE_TO(Dictionaries::create_text(D, I"NEST"), "<none>");
 	WRITE_TO(Dictionaries::create_text(D, I"WORK"), "%p", Thread_Work_Area);
 	WRITE_TO(Dictionaries::create_text(D, I"HASHCODE"), ""); /* set by |hash| commands */
 	WRITE_TO(Dictionaries::create_text(D, I"TYPE"), "%S", RecipeFiles::case_type_as_text(tc->test_type));
