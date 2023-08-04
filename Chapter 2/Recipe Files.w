@@ -198,12 +198,14 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 	else if (Str::eq(opt, I"-case")) { t = CASE_SPT; continue; }
 	else if (Str::eq(opt, I"-annotated-case")) { t = ANNOTATED_CASE_SPT; continue; }
 	else if (Str::eq(opt, I"-problem")) { t = PROBLEM_SPT; continue; }
+	else if (Str::eq(opt, I"-annotated-problem")) { t = ANNOTATED_PROBLEM_SPT; continue; }
 	else if (Str::eq(opt, I"-map")) { t = MAP_SPT; continue; }
 	else if (Str::eq(opt, I"-example")) { t = EXAMPLE_SPT; continue; }
 	else if (Str::eq(opt, I"-extensions")) { t = EXTENSION_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-cases")) { t = CASE_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-annotated-cases")) { t = ANNOTATED_CASE_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-problems")) { t = PROBLEM_SPT; multiple = TRUE; continue; }
+	else if (Str::eq(opt, I"-annotated-problems")) { t = ANNOTATED_PROBLEM_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-maps")) { t = MAP_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-examples")) { t = EXAMPLE_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-extension")) { t = EXTENSION_SPT; allowed_not_to_exist = TRUE; continue; }
@@ -247,6 +249,7 @@ There are five basic search path types:
 @e CASE_SPT
 @e ANNOTATED_CASE_SPT
 @e PROBLEM_SPT
+@e ANNOTATED_PROBLEM_SPT
 @e EXAMPLE_SPT
 @e MAP_SPT
 
@@ -286,6 +289,7 @@ text_stream *RecipeFiles::case_type_as_text(int spt) {
 		case EXTENSION_SPT: return I"extension";
 		case CASE_SPT: return I"case";
 		case ANNOTATED_CASE_SPT: return I"annotated case";
+		case ANNOTATED_PROBLEM_SPT: return I"annotated problem";
 		case PROBLEM_SPT: return I"problem";
 		case EXAMPLE_SPT: return I"example";
 		case MAP_SPT: return I"map";
@@ -324,7 +328,7 @@ void RecipeFiles::scan_directory_for_cases(linked_list *L,
 			(first == '[') ||
 			(Actions::identify_wildcard(leafname) != TAMECARD))
 			Errors::fatal_with_text("no test can legally be called '%S'", leafname);
-		if (Str::includes(leafname, I"-I.")) continue;
+		if (Str::includes(leafname, I"--")) continue;
 		filename *F = Filenames::in(P, leafname);
 		RecipeFiles::scan_file_for_cases(L, t, F, rn);
 	}
@@ -344,6 +348,8 @@ void RecipeFiles::scan_file_for_cases(linked_list *L, int t, filename *F, text_s
 		case EXTENSION_SPT: @<Adopt Example cases from an extension file@>;
 		case ANNOTATED_CASE_SPT:
 			@<Adopt a single test case needing extraction@>;
+		case ANNOTATED_PROBLEM_SPT:
+			@<Adopt a single problem case needing extraction@>;
 		case CASE_SPT: case PROBLEM_SPT: case MAP_SPT:
 			@<Adopt a single test case not needing extraction@>;
 		case EXAMPLE_SPT: @<Adopt Example cases from an example file@>;
@@ -371,6 +377,11 @@ void RecipeFiles::scan_file_for_cases(linked_list *L, int t, filename *F, text_s
 	Extractor::run(L, NULL, NULL, F, ANNOTATED_FORMAT, 0, CENSUS_ACTION, rn);
 	break;
 
+@<Adopt a single problem case needing extraction@> =
+	extraction_file = F;
+	Extractor::run(L, NULL, NULL, F, ANNOTATED_PROBLEM_FORMAT, 0, CENSUS_ACTION, rn);
+	break;
+
 @ These functions are called by the Extractor when it finds a test case in
 the relevant example or extension file. (Those are both Inform 7-only
 features.)
@@ -394,6 +405,12 @@ test_case *RecipeFiles::observe_in_annotated_case(linked_list *L, text_stream *f
 	return tc;
 }
 
+test_case *RecipeFiles::observe_in_annotated_problem(linked_list *L, text_stream *force_vm, text_stream *rn) {
+	test_case *tc = RecipeFiles::new_case(PROBLEM_SPT, extraction_file, ANNOTATED_PROBLEM_FORMAT, 0, force_vm, rn);
+	if (L) ADD_TO_LINKED_LIST(tc, test_case, L);
+	return tc;
+}
+
 @h Test cases.
 The content of a test case lives in a single file, but may live in only part
 of that file. The file can have three possible formats, though two of them
@@ -403,6 +420,7 @@ arise only for Inform 7.
 @d EXAMPLE_FORMAT 2 /* Inform example file discussing code which forms one case */
 @d EXTENSION_FORMAT 3 /* Inform extension file containing examples A, B, C, ... */
 @d ANNOTATED_FORMAT 4 /* test case, but with metadata key-value pairs first */
+@d ANNOTATED_PROBLEM_FORMAT 5 /* the same, but for a problem case */
 
 @d MAX_METADATA_PAIRS 10
 
@@ -455,9 +473,11 @@ test_case *RecipeFiles::new_case(int t, filename *F, int fref, int ref,
 	}
 
 	filename *DG = Filenames::set_extension(G, I"txt");
-	tc->commands_location = Filenames::in(
-		Pathnames::from_text_relative(Filenames::up(DG), I"_Command_Scripts"),
-		Filenames::get_leafname(DG));
+	TEMPORARY_TEXT(cs)
+	Filenames::write_unextended_leafname(cs, DG);
+	WRITE_TO(cs, "--S.txt");
+	tc->commands_location = Filenames::in(Filenames::up(DG), cs);
+	DISCARD_TEXT(cs)
 	tc->format_reference = fref;
 	tc->letter_reference = ref;
 	tc->test_me_detected = FALSE;

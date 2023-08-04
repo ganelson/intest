@@ -2,13 +2,11 @@
 
 To extract the text of a test case from its file on disc.
 
-@ Recall that each test case lives somewhere in a file, whose format is one
-of |PLAIN_FORMAT|, |EXAMPLE_FORMAT| or |EXTENSION_FORMAT|, though the latter two
-only ever arise when testing Inform 7.
+@ Recall that each test case lives somewhere in a file.
 
 Our main task in this section if to extract that test case, which is a
 trivial operation for |PLAIN_FORMAT| -- the entire file is the test case --
-but non-trivial for the other two, and requires some exhausting parsing.
+but non-trivial for the other cases, and requires some exhausting parsing.
 
 =
 typedef struct extraction_state {
@@ -81,6 +79,8 @@ void Extractor::fan(text_stream *line, text_file_position *tfp, void *ves) {
 			break;
 		case ANNOTATED_FORMAT: @<Consider entering extraction mode for ANNOTATED@>;
 			break;
+		case ANNOTATED_PROBLEM_FORMAT: @<Consider entering extraction mode for ANNOTATED PROBLEM@>;
+			break;
 		case EXAMPLE_FORMAT: @<Consider entering extraction mode for EXAMPLE@>;
 			break;
 		case EXTENSION_FORMAT: @<Consider entering extraction mode for EXTENSION@>;
@@ -125,6 +125,36 @@ after the first line not matching this.
 				RecipeFiles::AddKVPair(es->tc, key, value);
 		} else if (Str::is_whitespace(line)) {
 			es->now_extracting = TRUE;
+			return; /* do not include the blank line ending the pairs */
+		}
+		Regexp::dispose_of(&mr);
+	}
+
+@ An annotated case opens with key-value metadata pairs, then is verbatim
+after the first line not matching this.
+
+@<Consider entering extraction mode for ANNOTATED PROBLEM@> =
+	if (es->now_extracting == FALSE) {
+		if (tfp->line_count == 1) {
+			if ((es->extractor_command == CENSUS_ACTION) && (es->tc == NULL))
+				es->tc = RecipeFiles::observe_in_annotated_problem(
+					es->case_list, es->force_vm, es->to_use_recipe);
+		}
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, line, L"(%C+) *: *(%c*) *")) {
+			text_stream *key = mr.exp[0], *value = mr.exp[1];
+			if (tfp->line_count == 1) {
+				if (Str::eq(key, I"Problem") == FALSE) {
+					es->now_extracting = TRUE;
+				} else {
+					RecipeFiles::NameTestCase(es->tc, value);
+				}
+			}
+			if ((es->now_extracting == FALSE) && (es->tc))
+				RecipeFiles::AddKVPair(es->tc, key, value);
+		} else if (Str::is_whitespace(line)) {
+			es->now_extracting = TRUE;
+			return; /* do not include the blank line ending the pairs */
 		}
 		Regexp::dispose_of(&mr);
 	}
@@ -249,6 +279,7 @@ character in column 1.
 @<Consider leaving extraction mode@> =
 	if ((es->file_format != PLAIN_FORMAT) &&
 		(es->file_format != ANNOTATED_FORMAT) &&
+		(es->file_format != ANNOTATED_PROBLEM_FORMAT) &&
 		(Str::len(line) > 0) &&
 		(Regexp::white_space(Str::get_first_char(line)) == FALSE))
 			es->now_extracting = FALSE;
@@ -258,7 +289,8 @@ we get rid of that before passing the line through.
 
 @<Extract the line@> =
 	if ((es->file_format == PLAIN_FORMAT) ||
-		(es->file_format == ANNOTATED_FORMAT))
+		(es->file_format == ANNOTATED_FORMAT) ||
+		(es->file_format == ANNOTATED_PROBLEM_FORMAT))
 		Extractor::line_out(line, tfp, es);
 	else if (Str::get_first_char(line) == '\t') {
 		TEMPORARY_TEXT(rl)

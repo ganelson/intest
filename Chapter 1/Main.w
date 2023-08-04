@@ -98,7 +98,7 @@ stored in directory format.
 
 	if (args.version_switch) printf("%s\n", INTEST_BUILD);
 	if (args.purge_switch) Tester::purge_all_work_areas(args.threads_available);
-	if (args.verbose_switch) Shell::verbose();
+	if (args.verbose_switch) { Shell::verbose(); Tester::verbose(); }
 	Differ::set_colour_usage(args.colours_switch);
 	if (args.crash_switch) Errors::enter_debugger_mode();
 	write_up = args.history_switch;

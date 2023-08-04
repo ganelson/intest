@@ -8,6 +8,7 @@ set of commands, enumerated as follows.
 
 @e COPY_RCOM from 1
 @e DEBUGGER_RCOM
+@e DEFAULT_RCOM
 @e ELSE_RCOM
 @e ENDIF_RCOM
 @e EXISTS_RCOM
@@ -16,6 +17,8 @@ set of commands, enumerated as follows.
 @e FAIL_STEP_RCOM
 @e HASH_RCOM
 @e IF_RCOM
+@e IFDEF_RCOM
+@e IFNDEF_RCOM
 @e IF_EXISTS_RCOM
 @e MATCH_BINARY_RCOM
 @e MATCH_FOLDER_RCOM
@@ -48,6 +51,7 @@ typedef struct recipe_command {
 recipe_command instruction_set[] = {
 	{ COPY_RCOM, L"copy", 2, FALSE, 0 },
 	{ DEBUGGER_RCOM, L"debugger", -1, TRUE, 0 },
+	{ DEFAULT_RCOM, L"default", -1, FALSE, 0 },
 	{ ELSE_RCOM, L"else", 0, FALSE, 0 },
 	{ ENDIF_RCOM, L"endif", 0, FALSE, -1 },
 	{ EXISTS_RCOM, L"exists", 1, TRUE, 0 },
@@ -56,6 +60,8 @@ recipe_command instruction_set[] = {
 	{ FAIL_STEP_RCOM, L"fail step", -1, TRUE, 0 },
 	{ HASH_RCOM, L"hash", 2, TRUE, 0 },
 	{ IF_RCOM, L"if", 2, FALSE, 1 },
+	{ IFDEF_RCOM, L"ifdef", 1, FALSE, 1 },
+	{ IFNDEF_RCOM, L"ifndef", 1, FALSE, 1 },
 	{ IF_EXISTS_RCOM, L"if exists", 1, FALSE, 1 },
 	{ MATCH_BINARY_RCOM, L"match binary", 2, TRUE, 0 },
 	{ MATCH_FOLDER_RCOM, L"match folder", 2, TRUE, 0 },
@@ -210,7 +216,11 @@ void Delia::compile_command(recipe *R, text_stream *text,
 
 		@<Make sure the number of tokens is reasonable@>;
 		if (rc->rc_code == OR_RCOM) @<Make sure the or is allowed@>;
-		if (rc->rc_code == SET_RCOM) @<Make sure the set is well-formatted@>;
+		if ((rc->rc_code == SET_RCOM) || (rc->rc_code == DEFAULT_RCOM))
+			@<Make sure the set is well-formatted@>;
+		if ((rc->rc_code == IFDEF_RCOM) || (rc->rc_code == IFNDEF_RCOM))
+			@<Make sure the ifdef is well-formatted@>;
+		if (rc->rc_code == IF_RCOM) @<Make sure the if is well-formatted@>;
 		R->conditional_nesting += rc->changes_nesting;
 		@<Make sure the conditional nesting is allowed@>;
 
@@ -274,6 +284,28 @@ void Delia::compile_command(recipe *R, text_stream *text,
 			DISCARD_TEXT(ERM)
 			R->compilation_errors = TRUE;
 		}
+	}
+
+@<Make sure the if is well-formatted@> =
+	recipe_token *second = ENTRY_IN_LINKED_LIST(1, recipe_token, L->recipe_tokens);
+	text_stream *K = second->token_text;
+	if ((Str::get_first_char(K) == DELIA_QUOTE_CHARACTER) &&
+		(Str::get_last_char(K) == DELIA_QUOTE_CHARACTER)) {
+		Str::delete_first_character(K);
+		Str::delete_last_character(K);
+	}
+
+@<Make sure the ifdef is well-formatted@> =
+	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	text_stream *K = first->token_text;
+	if (Str::get_first_char(K) == '$') {
+		Str::delete_first_character(K);
+	} else {
+		TEMPORARY_TEXT(ERM)
+		WRITE_TO(ERM, "ifdef test '%S' doesn't begin with '$'", K);
+		Errors::in_text_file_S(ERM, tfp);
+		DISCARD_TEXT(ERM)
+		R->compilation_errors = TRUE;
 	}
 
 @<Make sure the conditional nesting is allowed@> =

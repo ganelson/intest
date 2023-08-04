@@ -115,7 +115,6 @@ and it's one that we are always executing.
 
 	int hash_value_written = FALSE;
 	dictionary *D = Dictionaries::new(10, TRUE);
-	@<Populate the test dictionary@>;
 
 	CREATE_EXECUTION_CONTEXT;
 	ENTER_EXECUTION_BLOCK(TRUE); /* the block for the entire recipe */
@@ -123,10 +122,36 @@ and it's one that we are always executing.
 	int line_count = 0;
 	int no_match_commands = 0;
 	int no_step_commands = 0;
-	recipe *R = Delia::find(tc->test_recipe_name);
+	TEMPORARY_TEXT(recipe_name)
+	TEMPORARY_TEXT(stipulation)
+	WRITE_TO(recipe_name, "%S", tc->test_recipe_name);
+	int stipulating = FALSE;
+	for (int i=0; i<Str::len(tc->test_recipe_name); i++) {
+		wchar_t c = Str::get_at(tc->test_recipe_name, i);
+		if (c == ':') {
+			if (stipulating == FALSE) {
+				Str::put_at(recipe_name, i, ']');
+				Str::put_at(recipe_name, i+1, 0);
+				stipulating = TRUE;
+			} else {
+				@<Add a stipulation@>;
+				Str::clear(stipulation);
+			}
+		} else if (c == ']') {
+			break;
+		} else if (stipulating) {
+			PUT_TO(stipulation, c);
+		}
+	}
+	@<Add a stipulation@>;
+	DISCARD_TEXT(recipe_name)
+	DISCARD_TEXT(stipulation)
+	@<Populate the test dictionary@>;
+
+	recipe *R = Delia::find(recipe_name);
 	if (R == NULL) {
 		Str::clear(verdict);
-		WRITE_TO(verdict, "no recipe called '%S' to test this with", tc->test_recipe_name);
+		WRITE_TO(verdict, "no recipe called '%S' to test this with", recipe_name);
 		passed = FALSE;
 	} else {
 		int still_going = TRUE;
@@ -142,40 +167,61 @@ and it's one that we are always executing.
 	Dictionaries::dispose_of(D);
 	LOGIF(TESTER, "Recipe completed: %s: %S\n", passed?"pass":"fail", verdict);
 
+@<Add a stipulation@> =
+	if (Str::len(stipulation) > 0) {
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, stipulation, L" *(%C+) *= *(%c*?) *")) {
+			text_stream *key = mr.exp[0];
+			text_stream *value = mr.exp[1];
+			Tester::populate(D, key, value);
+		} else {
+			Str::clear(verdict);
+			WRITE_TO(verdict, "stipulation '%S' made no sense for test '%S'",
+				stipulation, tc->test_recipe_name);
+			passed = FALSE;
+		}
+		Regexp::dispose_of(&mr);
+	}
+
 @ It would be tempting to use intest's main variables dictionary here, but that
 wouldn't be thread-safe, so each usage of this routine gets its own private
 dictionary.
 
 @<Populate the test dictionary@> =
-	WRITE_TO(Dictionaries::create_text(D, I"CASE"), "%S", tc->test_case_name);
-	WRITE_TO(Dictionaries::create_text(D, I"SCRIPT"), ""); /* set by the |extract| command, if used */
-	WRITE_TO(Dictionaries::create_text(D, I"PATH"), "%p", tc->work_area);
+	Tester::populate(D, I"CASE", tc->test_case_name);
+	Tester::populate(D, I"SCRIPT", I""); /* set by the |extract| command, if used */
+	Tester::populate_path(D, I"PATH", tc->work_area);
 	pathname *P = Filenames::up(tc->test_location);
 	while ((P) && (Str::eq(Pathnames::directory_name(P), I"Extensions") == FALSE))
 		P = Pathnames::up(P);
-	if (P) WRITE_TO(Dictionaries::create_text(D, I"NEST"), "%p", Pathnames::up(P));
-	else WRITE_TO(Dictionaries::create_text(D, I"NEST"), "<none>");
-	WRITE_TO(Dictionaries::create_text(D, I"WORK"), "%p", Thread_Work_Area);
-	WRITE_TO(Dictionaries::create_text(D, I"HASHCODE"), ""); /* set by |hash| commands */
-	WRITE_TO(Dictionaries::create_text(D, I"TYPE"), "%S", RecipeFiles::case_type_as_text(tc->test_type));
-	int for_found = FALSE, language_found = FALSE;
+	if (P) Tester::populate_path(D, I"NEST", Pathnames::up(P));
+	Tester::populate_path(D, I"WORK", Thread_Work_Area);
+	Tester::populate(D, I"HASHCODE", I""); /* set by |hash| commands */
+	Tester::populate(D, I"TYPE", RecipeFiles::case_type_as_text(tc->test_type));
 	for (int i=0; i<tc->no_kv_pairs; i++) {
 		TEMPORARY_TEXT(key)
 		LOOP_THROUGH_TEXT(pos, tc->keys[i])
 			PUT_TO(key, Characters::toupper(Str::get(pos)));
-		WRITE_TO(Dictionaries::create_text(D, key), "%S", tc->values[i]);
-		if (Str::eq(key, I"FOR")) for_found = TRUE;
-		if (Str::eq(key, I"LANGUAGE")) language_found = TRUE;
+		Tester::populate(D, key, tc->values[i]);
 		DISCARD_TEXT(key)
 	}
-	if (for_found == FALSE) WRITE_TO(Dictionaries::create_text(D, I"FOR"), "Glulx");
-	if (language_found == FALSE) WRITE_TO(Dictionaries::create_text(D, I"LANGUAGE"), "Inform");
+	Tester::populate_default(D, I"FOR", I"Glulx");
+	Tester::populate_default(D, I"LANGUAGE", I"Inform");
 
 @<Log the line@> =
 	line_count++;
 	LOGIF(TESTER, "%d: ", line_count);
 	for (int i=0; i<execution_state_sp; i++) LOGIF(TESTER, "%s ", execution_state[i]?"on":"off");
 	LOGIF(TESTER, "| $L\n", L);
+	if (Tester::running_verbosely()) {
+		int running = TRUE;
+		for (int i=0; i<execution_state_sp; i++) if (execution_state[i] == FALSE) running = FALSE;
+		if (running) {
+			WRITE_TO(STDOUT, "%04d: ", line_count);
+			Delia::log_line(STDOUT, L);
+			WRITE_TO(STDOUT, "\n");
+		}
+	}
 
 @<Interpret line@> =
 	int running = TRUE;
@@ -184,6 +230,14 @@ dictionary.
 		case IF_RCOM:
 			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
 			else @<Enter an execution block if a regular expression matches@>;
+			break;
+		case IFDEF_RCOM:
+			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
+			else @<Enter an execution block if a variable exists@>;
+			break;
+		case IFNDEF_RCOM:
+			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
+			else @<Enter an execution block if a variable does not exist@>;
 			break;
 		case IF_EXISTS_RCOM:
 			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
@@ -228,6 +282,20 @@ dictionary.
 	DISCARD_TEXT(P)
 	Regexp::dispose_of(&mr);
 
+@<Enter an execution block if a variable exists@> =
+	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	text_stream *key = first->token_text;
+	int enter = FALSE;
+	if (Dictionaries::find(D, key) != NULL) enter = TRUE;
+	ENTER_EXECUTION_BLOCK(enter);
+
+@<Enter an execution block if a variable does not exist@> =
+	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	text_stream *key = first->token_text;
+	int enter = FALSE;
+	if (Dictionaries::find(D, key) == NULL) enter = TRUE;
+	ENTER_EXECUTION_BLOCK(enter);
+
 @<Enter an execution block if a file exists@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
 	filename *putative = Tester::extract_as_filename(first, D);
@@ -240,6 +308,7 @@ dictionary.
 		case FAIL_STEP_RCOM:          @<Carry out a step@>; break;
 
 		case SET_RCOM:                @<Set a local variable@>; break;
+		case DEFAULT_RCOM:            @<Set a local variable@>; break;
 
 		case MATCH_TEXT_RCOM:         @<Carry out a match@>; break;
 		case MATCH_PLATFORM_TEXT_RCOM:@<Carry out a match@>; break;
@@ -329,8 +398,11 @@ documentation.
 			else
 				Tester::expand(V, T, D);
 		}
-	Str::copy(Dictionaries::create_text(D, name), V);
-	LOGIF(TESTER, "Variable %S set to <%S>\n", name, V);
+	if (L->command_used->rc_code == DEFAULT_RCOM) {
+		Tester::populate_default(D, name, V);
+	} else {
+		Tester::populate(D, name, V);
+	}
 	DISCARD_TEXT(V)
 
 @h Matches.
@@ -943,4 +1015,32 @@ int Tester::mask_G(uint64_t pos) {
 	if ((pos >= 44) && (pos < 48)) return TRUE; /* Inform 6 version */
 	if ((pos >= 54) && (pos < 60)) return TRUE; /* Serial number */
 	return FALSE;
+}
+
+@ This is just for the sake of good verbose output:
+
+=
+int tester_verbose = FALSE;
+void Tester::verbose(void) {
+	tester_verbose = TRUE;
+}
+int Tester::running_verbosely(void) {
+	return tester_verbose;
+}
+void Tester::populate(dictionary *D, text_stream *key, text_stream *value) {
+	if (tester_verbose) WRITE_TO(STDOUT, "      $%S <--- %S\n", key, value);
+	text_stream *T = Dictionaries::create_text(D, key);
+	Str::clear(T);
+	WRITE_TO(T, "%S", value);
+	LOGIF(TESTER, "Variable %S set to <%S>\n", key, value);
+}
+void Tester::populate_path(dictionary *D, text_stream *key, pathname *P) {
+	TEMPORARY_TEXT(value)
+	WRITE_TO(value, "%p", P);
+	Tester::populate(D, key, value);
+	DISCARD_TEXT(value)
+}
+void Tester::populate_default(dictionary *D, text_stream *key, text_stream *value) {
+	if (Dictionaries::find(D, key) == NULL)
+		Tester::populate(D, key, value);
 }
