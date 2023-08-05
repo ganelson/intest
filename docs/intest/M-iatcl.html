@@ -59,10 +59,44 @@ when of course no actual testing will happen.
 <p class="commentary">The rest of this section is entirely about how to write a <span class="extract"><span class="ConsoleText-extract-syntax">COMMAND</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Intest expects that <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> will be a directory, and that it will further
+<p class="commentary">Intest expects that <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> will be a directory, and that it will further
 contain a subdirectory called <span class="extract"><span class="ConsoleText-extract-syntax">Tests</span></span>. But that is really the only assumption
 it makes: there is no requirement for the project to be a web in the sense of
-Inweb, or to be one of the Inform tools.
+Inweb, or to be one of the Inform tools. As we will see, though, the project
+must provide detailed instructions on how the tests are to be performed.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>But for the benefit of Inform users, Intest can also be used in a simplified
+way in which <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> is an Inform extension (if stored in directory form) or kit. For example:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> 'Extensions/Emily Short/Locksmith-v15.i7xd' all</span>
+</pre>
+<p class="commentary">What makes this simpler is that the user need not write any instructions
+specifying what to test and how to test it: Intest knows how to test an Inform
+extension or kit, and handles it all automatically. That does come with a
+minor restriction: history (see below) is not available for these simple
+projects, but on the other hand, it is also not really needed since they
+typically have fewer than ten test cases.
+</p>
+
+<p class="commentary">Intest can only work in this simplified, Inform-specific way if it has access
+to the Inform "internals" directory, part of the core distribution for the
+programming language, which contains resources it will need in order to conduct
+these tests. That's no real restriction since, of course, if the user does not
+have Inform installed then there would be no way to test such extensions or
+kits anyway. But Intest needs to know where in the filing system the internals
+directory can be found. By default it assumes the path <span class="extract"><span class="ConsoleText-extract-syntax">inform7/Internal</span></span>,
+but this can be overridden with the <span class="extract"><span class="ConsoleText-extract-syntax">-internal</span></span> switch:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> '/Volumes/Experimental HD/unstable-inform/inform7/Internal'</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> 'Extensions/Emily Short/Locksmith-v15.i7xd' all</span>
+</pre>
+<p class="commentary">Note that this exactly follows the conventions used by the <span class="extract"><span class="ConsoleText-extract-syntax">inform7</span></span> and
+<span class="extract"><span class="ConsoleText-extract-syntax">inbuild</span></span> command-line tools, which also have an optional <span class="extract"><span class="ConsoleText-extract-syntax">-internal</span></span>
+command-line switch and the same default.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. History and substitution. </b>For each different project <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span>, Intest maintains a history of recent
@@ -220,8 +254,8 @@ succeeding use commands only if the platform is <span class="extract"><span clas
 </li><li>(b) <span class="extract"><span class="extract-syntax">-endif</span></span>. Go back to always acting on use commands.
 </li><li>(c) <span class="extract"><span class="extract-syntax">-set VAR VALUE</span></span>. Set the given variable to the given value.
 </li><li>(d) <span class="extract"><span class="extract-syntax">-groups PATH</span></span>. Sets the groups directory to the given pathname;
-failing which, any <span class="extract"><span class="extract-syntax">.testgrpup</span></span> files (see below) are looked for in the
-currently seleced directory.
+failing which, any <span class="extract"><span class="extract-syntax">.testgroup</span></span> files (see below) are looked for in the
+currently selected directory.
 </li><li>(e) <span class="extract"><span class="extract-syntax">[NAME]</span></span>. Sets the test recipe to be used for the cases about to be
 discovered. All recipe names are in square brackets; the default is just
 <span class="extract"><span class="extract-syntax">[Recipe]</span></span>.
@@ -259,8 +293,8 @@ following:
 </p>
 
 <ul class="items"><li>(i) <span class="extract"><span class="extract-syntax">all</span></span> means all known tests;
-</li><li>(ii) <span class="extract"><span class="extract-syntax">examples</span></span>, <span class="extract"><span class="extract-syntax">extensions</span></span>, <span class="extract"><span class="extract-syntax">problems</span></span>, <span class="extract"><span class="extract-syntax">cases</span></span>, <span class="extract"><span class="extract-syntax">maps</span></span> each mean all
-known tests of the given type of origin;
+</li><li>(ii) <span class="extract"><span class="extract-syntax">examples</span></span>, <span class="extract"><span class="extract-syntax">extensions</span></span>, <span class="extract"><span class="extract-syntax">problems</span></span>, <span class="extract"><span class="extract-syntax">cases</span></span> each mean all known
+tests of the given type of origin;
 </li><li>(iii) <span class="extract"><span class="extract-syntax">A</span></span>, <span class="extract"><span class="extract-syntax">B</span></span>, <span class="extract"><span class="extract-syntax">C</span></span>, ..., mean "the example with this letter in the (first)
 extension case";
 </li><li>(iv) <span class="extract"><span class="extract-syntax">^1</span></span>, <span class="extract"><span class="extract-syntax">^2</span></span>, <span class="extract"><span class="extract-syntax">^3</span></span>, ..., mean "the 1st (2nd, 3rd, ...) test case known",
@@ -276,7 +310,7 @@ group's file: <span class="extract"><span class="extract-syntax">:wrangly</span>
 multithreaded, whereas a double colon <span class="extract"><span class="extract-syntax">::wrangly</span></span> runs them one at a time;
 </li><li>(vii) and finally, of course, an explicit test case name refers to that test case.
 </li></ul>
-<p class="commentary">(Test types will be gone into in the next section.)
+<p class="commentary">For more on test types and groups, see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>But other do commands are also available:
@@ -389,18 +423,34 @@ any existing blessed transcript: equivalent to <span class="extract"><span class
 there's no such thing as <span class="extract"><span class="extract-syntax">-recurse</span></span>.)
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">-show &lt;cases&gt;</span></span>: Run a test just as far as the first <span class="extract"><span class="extract-syntax">show</span></span> step in its recipe,
-and then print out the file specified. For most recipes, this prints out, say,
-the console output generated by the program being tested.
+<p class="commentary"><span class="extract"><span class="extract-syntax">-show &lt;cases&gt;</span></span> or <span class="extract"><span class="extract-syntax">-show-TARGET</span></span>: Run a test just as far as the first <span class="extract"><span class="extract-syntax">show</span></span>
+step in its recipe which reveals a file marked as this target (<span class="extract"><span class="extract-syntax">-show</span></span> by itself
+showing the most important of these). What targets are available depends on
+the recipe for the test, and an error is thrown if the target can never be
+shown by that recipe, or if it can be but, as things turn out, isn't.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">-show-i6 &lt;cases&gt;</span></span>: Run a test just as far as taking it through the I6 compiler stage, and show the console output from I6. (This is for Inform only.)
+<p class="commentary">When testing Inform 7 test cases or examples, this can produce a variety of
+useful variations:
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">-show-t &lt;cases&gt;</span></span>: Run a test, and show the transcript of play from the
-resulting story file. (This is for Inform only.)
-</p>
-
+<ul class="items"><li>(1) <span class="extract"><span class="extract-syntax">-show-transcript</span></span> shows the transcript of the compiled story file as it
+plays out.
+</li><li>(2) <span class="extract"><span class="extract-syntax">-show-i7</span></span> shows the console output of the Inform 7 compiler when it
+compiles the given source text.
+</li><li>(3) <span class="extract"><span class="extract-syntax">-show-i6</span></span> shows the console output of the Inform 6 compiler when it
+compiles the result of (2), if this happens.
+</li><li>(4) <span class="extract"><span class="extract-syntax">-show-cc</span></span> shows the console output of the C compiler when it compiles
+the result of (2), if that happens.
+</li><li>(5) <span class="extract"><span class="extract-syntax">-show-link</span></span> shows the console output of the C linker when it links
+the result of (4), if that happens.
+</li><li>(6) <span class="extract"><span class="extract-syntax">-show-blurb</span></span> shows the blurb instructions for a release test.
+</li><li>(7) <span class="extract"><span class="extract-syntax">-show-ifiction</span></span> shows the iFiction file output in a release test.
+</li><li>(8) <span class="extract"><span class="extract-syntax">-show-ideal</span></span> shows the ideal output a test is looking for.
+</li><li>(9) <span class="extract"><span class="extract-syntax">-show</span></span> on its own shows what it thinks is the most likely thing you
+want: for a problem case or a case making an internal compiler unit test,
+it's <span class="extract"><span class="extract-syntax">-show-i7</span></span>; otherwise it's usually <span class="extract"><span class="extract-syntax">-show-transcript</span></span>.
+</li></ul>
 <p class="commentary"><span class="extract"><span class="extract-syntax">-debug &lt;cases&gt;</span></span>: Run a test, but when you get to the Inform 7 compiler stage, run it in the <span class="extract"><span class="extract-syntax">lldb</span></span> debugger and do not redirect <span class="extract"><span class="extract-syntax">stdout</span></span> or <span class="extract"><span class="extract-syntax">stderr</span></span>. (This is for Inform only.)
 </p>
 
@@ -533,7 +583,7 @@ but with "-1", "-2", ..., tacked on before the file extension. Thus:
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="M-iti.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresscurrent">iatcl</li><li class="progresssection"><a href="M-wir.html">wir</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="M-wir.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="M-iti.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresscurrent">iatcl</li><li class="progresssection"><a href="M-tuoc.html">tuoc</a></li><li class="progresssection"><a href="M-wir.html">wir</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="M-tuoc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

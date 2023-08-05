@@ -28,6 +28,8 @@ typedef struct extraction_state {
 	struct text_stream *keys[MAX_METADATA_PAIRS];
 	struct text_stream *values[MAX_METADATA_PAIRS];
 	struct text_stream *to_use_recipe;
+	struct text_stream *stars;
+	struct text_stream *title;
 	text_stream *force_vm;
 } extraction_state;
 
@@ -60,6 +62,8 @@ void Extractor::run(linked_list *L, OUTPUT_STREAM, test_case *tc, filename *F, i
 	es.to_use_recipe = recipe_name;
 	es.skip_next = FALSE;
 	es.no_kv_pairs = 0;
+	es.stars = NULL;
+	es.title = NULL;
 	TextFiles::read(F, FALSE, "can't open test case file", TRUE, &Extractor::fan, NULL, &es);
 }
 
@@ -182,8 +186,13 @@ the header:
 		if (Str::eq(key, I"Example")) {
 			es->no_kv_pairs = 0;
 			es->skip_next = FALSE;
-		}
-		if ((Str::eq(key, I"For")) && (Str::eq(value, I"Untestable"))) {
+			match_results mr2 = Regexp::create_mr();
+			if (Regexp::match(&mr2, line, L"(%C+) *: *(%*+) *(%c*) *")) {
+				es->stars = Str::duplicate(mr2.exp[1]);
+				es->title = Str::duplicate(mr2.exp[2]);
+			}
+			Regexp::dispose_of(&mr2);
+		} else if ((Str::eq(key, I"For")) && (Str::eq(value, I"Untestable"))) {
 			es->skip_next = TRUE;
 		} else if (es->no_kv_pairs < MAX_METADATA_PAIRS-1) {
 			es->keys[es->no_kv_pairs] = Str::duplicate(key);	
@@ -205,7 +214,12 @@ the header:
 					es->tc = RecipeFiles::observe_in_example(
 						es->case_list, es->force_vm, es->to_use_recipe);
 				if (es->tc) {
-					RecipeFiles::NameTestCase(es->tc, mr.exp[0]);
+					if (Str::len(es->title) > 0)
+						RecipeFiles::NameTestCase(es->tc, es->title);
+					else
+						RecipeFiles::NameTestCase(es->tc, mr.exp[0]);
+					if (Str::len(es->stars) > 0)
+						RecipeFiles::AddKVPair(es->tc, I"Stars", es->stars);
 					for (int i=0; i<es->no_kv_pairs; i++)
 						RecipeFiles::AddKVPair(es->tc, es->keys[i], es->values[i]);
 				}

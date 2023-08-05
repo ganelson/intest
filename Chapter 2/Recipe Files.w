@@ -14,6 +14,7 @@ commands and the syntac which divides them off from recipes, no more.
 void RecipeFiles::read(filename *F, intest_instructions *args, char *err) {
 	if (err) TextFiles::read(F, FALSE, err, TRUE, &RecipeFiles::scan, NULL, args);
 	else TextFiles::read(F, FALSE, NULL, FALSE, &RecipeFiles::scan, NULL, args);
+	text_file_position *tfp = NULL;
 	@<Finish compiling any inline recipe which has ended@>;
 }
 
@@ -80,8 +81,11 @@ with the routine parsing the command line. In any case, nobody will hit:
 		if (no_line_tokens > pos) {
 			TEMPORARY_TEXT(delia)
 			RecipeFiles::expand(delia, line_tokens[pos++]);
-			Delia::compile(Filenames::from_text(delia), name); ext = TRUE;
+			recipe *R = Delia::compile(Filenames::from_text(delia), name); ext = TRUE;
 			DISCARD_TEXT(delia)
+			if (R == NULL) {
+				Errors::in_text_file("recipe failed to compile", tfp); return;
+			}
 		}
 		if (no_line_tokens != pos) {
 			Errors::in_text_file("malformed -recipe", tfp); return;
@@ -106,8 +110,11 @@ with the routine parsing the command line. In any case, nobody will hit:
 @<Finish compiling any inline recipe which has ended@> =
 	if (args->compiling_recipe) 
 		if (args->compiling_recipe->end_found) {
-			Delia::end_compilation(args->compiling_recipe);
+			recipe *R = Delia::end_compilation(args->compiling_recipe);
 			args->compiling_recipe = NULL;
+			if (R == NULL) {
+				Errors::in_text_file("recipe failed to compile", tfp); return;
+			}
 		}
 
 @h Reading the use command block.
@@ -199,27 +206,32 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 	else if (Str::eq(opt, I"-annotated-case")) { t = ANNOTATED_CASE_SPT; continue; }
 	else if (Str::eq(opt, I"-problem")) { t = PROBLEM_SPT; continue; }
 	else if (Str::eq(opt, I"-annotated-problem")) { t = ANNOTATED_PROBLEM_SPT; continue; }
-	else if (Str::eq(opt, I"-map")) { t = MAP_SPT; continue; }
 	else if (Str::eq(opt, I"-example")) { t = EXAMPLE_SPT; continue; }
+	else if (Str::eq(opt, I"-annotated-example")) { t = EXAMPLE_SPT; continue; }
+
 	else if (Str::eq(opt, I"-extensions")) { t = EXTENSION_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-cases")) { t = CASE_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-annotated-cases")) { t = ANNOTATED_CASE_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-problems")) { t = PROBLEM_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-annotated-problems")) { t = ANNOTATED_PROBLEM_SPT; multiple = TRUE; continue; }
-	else if (Str::eq(opt, I"-maps")) { t = MAP_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-examples")) { t = EXAMPLE_SPT; multiple = TRUE; continue; }
+	else if (Str::eq(opt, I"-annotated-examples")) { t = EXAMPLE_SPT; multiple = TRUE; continue; }
+
 	else if (Str::eq(opt, I"-possible-extension")) { t = EXTENSION_SPT; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-case")) { t = CASE_SPT; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-annotated-case")) { t = ANNOTATED_CASE_SPT; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-problem")) { t = PROBLEM_SPT; allowed_not_to_exist = TRUE; continue; }
-	else if (Str::eq(opt, I"-possible-map")) { t = MAP_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-annotated-problem")) { t = ANNOTATED_PROBLEM_SPT; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-example")) { t = EXAMPLE_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-annotated-example")) { t = EXAMPLE_SPT; allowed_not_to_exist = TRUE; continue; }
+
 	else if (Str::eq(opt, I"-possible-extensions")) { t = EXTENSION_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-cases")) { t = CASE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-annotated-cases")) { t = ANNOTATED_CASE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-problems")) { t = PROBLEM_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
-	else if (Str::eq(opt, I"-possible-maps")) { t = MAP_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-annotated-problems")) { t = ANNOTATED_PROBLEM_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-examples")) { t = EXAMPLE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-annotated-examples")) { t = EXAMPLE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::get_first_char(opt) == '-') Errors::fatal_with_text("unrecognised -using case type: '%S'", opt);
 
 @<Act on a recipe choice@> =
@@ -251,7 +263,6 @@ There are five basic search path types:
 @e PROBLEM_SPT
 @e ANNOTATED_PROBLEM_SPT
 @e EXAMPLE_SPT
-@e MAP_SPT
 
 =
 typedef struct test_source {
@@ -288,11 +299,10 @@ text_stream *RecipeFiles::case_type_as_text(int spt) {
 	switch (spt) {
 		case EXTENSION_SPT: return I"extension";
 		case CASE_SPT: return I"case";
-		case ANNOTATED_CASE_SPT: return I"annotated case";
-		case ANNOTATED_PROBLEM_SPT: return I"annotated problem";
+		case ANNOTATED_CASE_SPT: return I"case";
+		case ANNOTATED_PROBLEM_SPT: return I"problem";
 		case PROBLEM_SPT: return I"problem";
 		case EXAMPLE_SPT: return I"example";
-		case MAP_SPT: return I"map";
 	}
 	return I"unknown";
 }
@@ -350,7 +360,7 @@ void RecipeFiles::scan_file_for_cases(linked_list *L, int t, filename *F, text_s
 			@<Adopt a single test case needing extraction@>;
 		case ANNOTATED_PROBLEM_SPT:
 			@<Adopt a single problem case needing extraction@>;
-		case CASE_SPT: case PROBLEM_SPT: case MAP_SPT:
+		case CASE_SPT: case PROBLEM_SPT:
 			@<Adopt a single test case not needing extraction@>;
 		case EXAMPLE_SPT: @<Adopt Example cases from an example file@>;
 		default: internal_error("bad search path type");
@@ -512,7 +522,7 @@ test cases whose names or titles match a given regular expression. If the
 void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *sources, text_stream *match) {
 	if (Str::len(match) > 0) WRITE("Test cases matching '%S':\n", match);
 	linked_list *matches = NEW_LINKED_LIST(test_case);
-	RecipeFiles::find_cases_matching(matches, sources, match, FALSE);
+	RecipeFiles::find_cases_matching(matches, sources, NULL, match, FALSE);
 	int n = 0;
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
@@ -527,13 +537,18 @@ void RecipeFiles::perform_catalogue(OUTPUT_STREAM, linked_list *sources, text_st
 @ Which employs:
 
 =
-void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources, text_stream *match, int exactly) {
+void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources,
+	text_stream *key, text_stream *match, int exactly) {
 	TEMPORARY_TEXT(re)
-	if (exactly) WRITE_TO(re, "%S", match);
-	else WRITE_TO(re, "%%c*%S%%c*", match);
+	if (exactly) {
+		WRITE_TO(re, "%S", match);
+	} else {
+		WRITE_TO(re, "%%c*%S%%c*", match);
+	}
 	wchar_t wregexp[MAX_NAME_MATCH_LENGTH];
 	Str::copy_to_wide_string(wregexp, re, MAX_NAME_MATCH_LENGTH);
 	DISCARD_TEXT(re)
+	match_results mr2 = Regexp::create_mr();
 	test_source *spi;
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(spi, test_source, sources)
@@ -543,14 +558,23 @@ void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources
 				(tc->format_reference != EXTENSION_FORMAT))
 				Extractor::run(NULL, NULL,
 					tc, tc->test_location, tc->format_reference, 0, CENSUS_ACTION, NULL);
-			match_results mr = Regexp::create_mr();
-			if ((match == NULL) ||
-				(Regexp::match(&mr, tc->test_case_name, wregexp)) ||
-				(Regexp::match(&mr, tc->test_case_title, wregexp))) {
+			int pass = FALSE;
+			if (match == NULL) pass = TRUE;
+			if (key == NULL) {
+				if ((Regexp::match(&mr2, tc->test_case_name, wregexp)) ||
+					(Regexp::match(&mr2, tc->test_case_title, wregexp))) pass = TRUE;
+			} else if (Str::eq_insensitive(key, I"NAME")) {
+				if (Regexp::match(&mr2, tc->test_case_name, wregexp)) pass = TRUE;
+			} else if (Str::eq_insensitive(key, I"TITLE")) {
+				if (Regexp::match(&mr2, tc->test_case_title, wregexp)) pass = TRUE;
+			} else {
+				for (int i=0; i<tc->no_kv_pairs; i++)
+					if (Str::eq_insensitive(key, tc->keys[i]))
+						if (Regexp::match(&mr2, tc->values[i], wregexp)) pass = TRUE;
+			}
+			if (pass) {
 				ADD_TO_LINKED_LIST(tc, test_case, matches);
 			}
-			Regexp::dispose_of(&mr);
 		}
+	Regexp::dispose_of(&mr2);
 }
-
-

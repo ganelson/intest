@@ -452,7 +452,7 @@ void *Scheduler::perform_work(void *argument) {
 	LOOP_OVER(T, test)
 		if (T->allocated_to == s) {
 			int result = Tester::test(T->full_results, T->to_be_tested,
-				T->allocation_id + 1, s, T->action_type);
+				T->allocation_id + 1, s, T->action_type, NULL);
 			@<Mark test T as completed@>;
 		}
 	if (TRACE_THREADING) printf("(Thread in slot %d has finished.)\n", s);

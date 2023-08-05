@@ -11,6 +11,7 @@ Import: foundation
 Manual
 	Introduction to Intest
 	Intest at the Command Line
+	The Universe of Cases
 	Writing Intest Recipes
 	Reference Card
 

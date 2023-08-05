@@ -40,11 +40,12 @@ int main(int argc, char **argv) {
 	Log::set_debug_log_filename(Filenames::in(home, I"intest-debug-log.txt"));
 	filename *history = Filenames::in(home, I"intest-history.txt");
 	Historian::research(history, &ts_argc, &ts_argv);
-	int write_up = FALSE;
 
-	@<Read the now-final command line and act upon it@>;
-
-	if ((write_up) && (extension_mode == FALSE)) Historian::write_up(history);
+	if (problem_count == 0) {
+		int write_up = FALSE;
+		@<Read the now-final command line and act upon it@>;
+		if ((write_up) && (extension_mode == FALSE)) Historian::write_up(history);
+	}
 
 	Basics::end();
 	return (problem_count == 0)?0:1;
@@ -96,18 +97,20 @@ stored in directory format.
 	Globals::create_internal();
 	intest_instructions args = Instructions::read(ts_argc, ts_argv, home, extension_mode);
 
-	if (args.version_switch) printf("%s\n", INTEST_BUILD);
-	if (args.purge_switch) Tester::purge_all_work_areas(args.threads_available);
-	if (args.verbose_switch) { Shell::verbose(); Tester::verbose(); }
-	Differ::set_colour_usage(args.colours_switch);
-	if (args.crash_switch) Errors::enter_debugger_mode();
-	write_up = args.history_switch;
-	if (args.verbose_switch) {
-		PRINT("Platform is '%s'\n", PLATFORM_STRING);
-		PRINT("Installation path is %p\n", installation);
-		Locales::write_locales(STDOUT);
-		PRINT("Available core count: %d\n", Platform::get_core_count());
-	}
-	Globals::create_workspace();
+	if ((home_project) && (problem_count == 0)) {
+		if (args.version_switch) printf("%s\n", INTEST_BUILD);
+		if (args.purge_switch) Tester::purge_all_work_areas(args.threads_available);
+		if (args.verbose_switch) { Shell::verbose(); Tester::verbose(); }
+		Differ::set_colour_usage(args.colours_switch);
+		if (args.crash_switch) Errors::enter_debugger_mode();
+		write_up = args.history_switch;
+		if (args.verbose_switch) {
+			PRINT("Platform is '%s'\n", PLATFORM_STRING);
+			PRINT("Installation path is %p\n", installation);
+			Locales::write_locales(STDOUT);
+			PRINT("Available core count: %d\n", Platform::get_core_count());
+		}
+		Globals::create_workspace();
 
-	if (home_project) Actions::perform(STDOUT, &args);
+		Actions::perform(STDOUT, &args);
+	}

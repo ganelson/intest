@@ -32,9 +32,7 @@ set of commands, enumerated as follows.
 @e OR_RCOM
 @e PASS_RCOM
 @e SET_RCOM
-@e SHOW_I6_RCOM
 @e SHOW_RCOM
-@e SHOW_TRANSCRIPT_RCOM
 @e STEP_RCOM
 
 @ And here's some metadata about them:
@@ -75,9 +73,7 @@ recipe_command instruction_set[] = {
 	{ OR_RCOM, L"or", -1, FALSE, 0 },
 	{ PASS_RCOM, L"pass", 1, FALSE, 0 },
 	{ SET_RCOM, L"set", -1, FALSE, 0 },
-	{ SHOW_I6_RCOM, L"show i6", 1, TRUE, 0 },
-	{ SHOW_RCOM, L"show", 1, TRUE, 0 },
-	{ SHOW_TRANSCRIPT_RCOM, L"show transcript", 1, TRUE, 0 },
+	{ SHOW_RCOM, L"show", -1, TRUE, 0 },
 	{ STEP_RCOM, L"step", -1, TRUE, 0 },
 	{ -1, NULL, 0, FALSE, 0 }
 };
@@ -221,6 +217,7 @@ void Delia::compile_command(recipe *R, text_stream *text,
 		if ((rc->rc_code == IFDEF_RCOM) || (rc->rc_code == IFNDEF_RCOM))
 			@<Make sure the ifdef is well-formatted@>;
 		if (rc->rc_code == IF_RCOM) @<Make sure the if is well-formatted@>;
+		if (rc->rc_code == SHOW_RCOM) @<Make sure the show is well-formatted@>;
 		R->conditional_nesting += rc->changes_nesting;
 		@<Make sure the conditional nesting is allowed@>;
 
@@ -306,6 +303,35 @@ void Delia::compile_command(recipe *R, text_stream *text,
 		Errors::in_text_file_S(ERM, tfp);
 		DISCARD_TEXT(ERM)
 		R->compilation_errors = TRUE;
+	}
+
+@<Make sure the show is well-formatted@> =
+	switch (LinkedLists::len(L->recipe_tokens)) {
+		case 1: break;
+		case 2: {
+			recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+			text_stream *K = first->token_text;
+			int bad = FALSE;
+			LOOP_THROUGH_TEXT(pos, K) {
+				wchar_t c = Str::get(pos);
+				if (((c < 'a') || (c > 'z')) && ((c < '0') || (c > '9')) && (c != '-'))
+					bad = TRUE;
+			}
+			if (bad) {
+				TEMPORARY_TEXT(ERM)
+				WRITE_TO(ERM, "'show' item '%S' should contain only lower-case "
+					"letters, digits and dashes", K);
+				Errors::in_text_file_S(ERM, tfp);
+				DISCARD_TEXT(ERM)
+				R->compilation_errors = TRUE;
+			}
+			break;
+		}
+		default: {
+			Errors::in_text_file_S(I"'show' must take 1 or 2 tokens", tfp);
+			R->compilation_errors = TRUE;
+			break;
+		}
 	}
 
 @<Make sure the conditional nesting is allowed@> =

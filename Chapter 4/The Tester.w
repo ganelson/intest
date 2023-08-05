@@ -21,8 +21,9 @@ The debugging log is split into multiple logs, one per thread, only if the
 performance is greatly reduced if so.
 
 =
-int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count, int action_type) {
-	if (tc == NULL) internal_error("no test case");
+int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count,
+	int action_type, text_stream *action_details) {
+	if (tc == NULL) internal_error(((char *) tc) /* "no test case" */);
 	int passed = TRUE;
 	if (splitting_logs) {
 		CREATE_MUTEX(mutex);
@@ -110,8 +111,19 @@ and it's one that we are always executing.
 }
 
 @<Follow the test recipe@> =
-	LOGIF(TESTER, "Following test recipe %S on %S (action %d)\n",
-		tc->test_recipe_name, tc->test_case_name, action_type);
+	LOGIF(TESTER, "Following test recipe %S on %S (aka '%S') (action %d)\n",
+		tc->test_recipe_name, tc->test_case_name, tc->test_case_title, action_type);
+	if (Tester::running_verbosely()) {
+		WRITE_TO(STDOUT, "Following test recipe %S on %S (aka '%S') (action %d)\n",
+			tc->test_recipe_name, tc->test_case_name, tc->test_case_title, action_type);
+		WRITE_TO(STDOUT, "Global variables:\n");
+		linked_list *L = Globals::all();
+		text_stream *name;
+		LOOP_OVER_LINKED_LIST(name, text_stream, L) {
+			WRITE_TO(STDOUT, "      $$%S = %S\n", name, Globals::get(name));
+		}
+		WRITE_TO(STDOUT, "Local variables at start:\n");
+	}
 
 	int hash_value_written = FALSE;
 	dictionary *D = Dictionaries::new(10, TRUE);
@@ -148,6 +160,10 @@ and it's one that we are always executing.
 	DISCARD_TEXT(stipulation)
 	@<Populate the test dictionary@>;
 
+	if (Tester::running_verbosely()) {
+		WRITE_TO(STDOUT, "Recipe execution:\n");
+	}
+
 	recipe *R = Delia::find(recipe_name);
 	if (R == NULL) {
 		Str::clear(verdict);
@@ -155,12 +171,45 @@ and it's one that we are always executing.
 		passed = FALSE;
 	} else {
 		int still_going = TRUE;
-		recipe_line *L;
-		LOOP_OVER_LINKED_LIST(L, recipe_line, R->lines)
-			if (still_going) {
-				@<Log the line@>;
-				@<Interpret line@>;
+		if (action_type == SHOW_ACTION) {
+			linked_list *allowed = Tester::spot_show_target(R, action_details);
+			if (allowed) {
+				Str::clear(verdict);
+				WRITE_TO(verdict,
+					"test runs with recipe '%S' which cannot produce the show "
+					"target '-show-%S'",
+					recipe_name, action_details);
+				if (LinkedLists::len(allowed) == 0) WRITE_TO(verdict, " (or any other)");
+				else {
+					WRITE_TO(verdict, ", only ");
+					text_stream *X;
+					int c = 0;
+					LOOP_OVER_LINKED_LIST(X, text_stream, allowed) {
+						if (c++ > 0) WRITE_TO(verdict, ", ");
+						if (Str::len(X) > 0) WRITE_TO(verdict, "-show-%S", X);
+						else WRITE_TO(verdict, "-show");
+					}
+				}
+				passed = FALSE;
+				still_going = FALSE;
 			}
+		}
+		if (still_going) {
+			int show_made = FALSE;
+			recipe_line *L;
+			LOOP_OVER_LINKED_LIST(L, recipe_line, R->lines)
+				if (still_going) {
+					@<Log the line@>;
+					@<Interpret line@>;
+				}
+			if ((action_type == SHOW_ACTION) && (show_made == FALSE)) {
+				passed = FALSE;
+				Str::clear(verdict);
+				WRITE_TO(verdict,
+					"test completed without reaching a '-show-%S' command",
+					action_details);
+			}
+		}
 	}
 	if ((passed) && (hash_value_written))
 		Hasher::assign_to_case(tc, Dictionaries::get_text(D, I"HASHCODE"));
@@ -189,14 +238,13 @@ dictionary.
 
 @<Populate the test dictionary@> =
 	Tester::populate(D, I"CASE", tc->test_case_name);
-	Tester::populate(D, I"SCRIPT", I""); /* set by the |extract| command, if used */
+	Tester::populate(D, I"TITLE", tc->test_case_title);
 	Tester::populate_path(D, I"PATH", tc->work_area);
 	pathname *P = Filenames::up(tc->test_location);
 	while ((P) && (Str::eq(Pathnames::directory_name(P), I"Extensions") == FALSE))
 		P = Pathnames::up(P);
 	if (P) Tester::populate_path(D, I"NEST", Pathnames::up(P));
 	Tester::populate_path(D, I"WORK", Thread_Work_Area);
-	Tester::populate(D, I"HASHCODE", I""); /* set by |hash| commands */
 	Tester::populate(D, I"TYPE", RecipeFiles::case_type_as_text(tc->test_type));
 	for (int i=0; i<tc->no_kv_pairs; i++) {
 		TEMPORARY_TEXT(key)
@@ -205,8 +253,6 @@ dictionary.
 		Tester::populate(D, key, tc->values[i]);
 		DISCARD_TEXT(key)
 	}
-	Tester::populate_default(D, I"FOR", I"Glulx");
-	Tester::populate_default(D, I"LANGUAGE", I"Inform");
 
 @<Log the line@> =
 	line_count++;
@@ -326,8 +372,6 @@ dictionary.
 		case MKDIR_RCOM:              @<Make a directory@>; break;
 
 		case SHOW_RCOM:               if (action_type == SHOW_ACTION) @<Show file@>; break;
-		case SHOW_I6_RCOM:            if (action_type == SHOW_I6_ACTION) @<Show file@>; break;
-		case SHOW_TRANSCRIPT_RCOM:    if (action_type == SHOW_TRANSCRIPT_ACTION) @<Show file@>; break;
 
 		default: internal_error("unknown recipe command");
 	}
@@ -430,6 +474,7 @@ while the second is a record of what it ought to come out as.
 		case CURSE_ACTION: @<Perform a curse@>; break;
 		case SHOW_ACTION:
 		case TEST_ACTION:
+		case LIST_ACTION:
 		case DEBUGGER_ACTION:
 		case DIFF_ACTION:
 		case BBDIFF_ACTION:
@@ -647,7 +692,7 @@ The |extract| command only makes sense for Inform 7 test cases.
 			Errors::fatal_with_text("extract can only be to Z or G, not %S", T);
 		DISCARD_TEXT(T)
 	}
-	WRITE_TO(Dictionaries::get_text(D, I"SCRIPT"), "%f", script_file);
+	if (script_file) Tester::populate_file(D, I"SCRIPT", script_file);
 
 @ The |exists| command requires a file to exist on disc.
 
@@ -662,20 +707,36 @@ The |extract| command only makes sense for Inform 7 test cases.
 		}
 	}
 
-@ The |show| and |show i6| commands both use this:
+@ The |show| command has an optional second token:
 
 @<Show file@> =
-	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
-	filename *putative = Tester::extract_as_filename(first, D);
-	if (TextFiles::exists(putative)) {
-		Extractor::cat(OUT, putative);
-		still_going = FALSE;
-		passed = TRUE;
+	recipe_token *what_token = NULL;
+	recipe_token *file_token = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	if (LinkedLists::len(L->recipe_tokens) == 2) {
+		what_token = file_token;
+		file_token = ENTRY_IN_LINKED_LIST(1, recipe_token, L->recipe_tokens);
+	}
+	text_stream *what_to_show = Str::new();
+	if (what_token) Tester::expand(what_to_show, what_token, D);
+	filename *putative = Tester::extract_as_filename(file_token, D);
+	
+	if (Str::eq_insensitive(action_details, what_to_show)) {
+		if (TextFiles::exists(putative)) {
+			Extractor::cat(OUT, putative);
+			still_going = FALSE;
+			passed = TRUE;
+			show_made = TRUE;
+		} else {
+			Str::clear(verdict);
+			WRITE_TO(verdict, "can't show file, as it doesn't exist: %f", putative);
+			still_going = FALSE;
+			@<Or...@>;
+		}
 	} else {
-		Str::clear(verdict);
-		WRITE_TO(verdict, "can't show file, as it doesn't exist: %f", putative);
-		still_going = FALSE;
-		@<Or...@>;
+		if (Tester::running_verbosely()) {
+			WRITE_TO(STDOUT, "      not showing because seeking '%S' not '%S'\n",
+				action_details, what_to_show);
+		}
 	}
 
 @ The |hash| command hashes the first-named file, writing the resulting
@@ -704,10 +765,11 @@ checksum to the second-named file, and also remembering its value.
 			BinaryFiles::md5(TO, to_hash, NULL);
 			STREAM_CLOSE(TO);
 		}
-		text_stream *hash_value = Dictionaries::get_text(D, I"HASHCODE");
-		Hasher::read_hash(hash_value, checksum);
+		TEMPORARY_TEXT(hash)
+		Hasher::read_hash(hash, checksum);
+		Tester::populate(D, I"HASHCODE", hash);
 		hash_value_written = TRUE;
-		if (Hasher::compare_hashes(tc, hash_value)) {
+		if (Hasher::compare_hashes(tc, hash)) {
 			still_going = FALSE;
 			passed = TRUE;
 			Str::clear(verdict);
@@ -716,6 +778,7 @@ checksum to the second-named file, and also remembering its value.
 			left_bracket = '(';
 			right_bracket = ')';
 		}
+		DISCARD_TEXT(hash)
 	}
 
 @ The |copy| command copies the first-named file to the second filename.
@@ -1017,7 +1080,38 @@ int Tester::mask_G(uint64_t pos) {
 	return FALSE;
 }
 
-@ This is just for the sake of good verbose output:
+@h Spotting show targets.
+This is quite slow and memory-profligate, which really doesn't matter. If
+|target| is something shown by at least one command in the recipe, return
+|NULL|; otherwise, release a linked list of the different targets which
+are allowed.
+
+=
+linked_list *Tester::spot_show_target(recipe *R, text_stream *target) {
+	recipe_line *L;
+	linked_list *allowed = NEW_LINKED_LIST(text_stream);
+	LOOP_OVER_LINKED_LIST(L, recipe_line, R->lines)
+		if (L->command_used->rc_code == SHOW_RCOM) {
+			text_stream *offered = Str::new();
+			if (LinkedLists::len(L->recipe_tokens) == 2) {
+				recipe_token *first =
+					ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+				offered = first->token_text;
+			}
+			if (Str::eq_insensitive(offered, target)) return NULL;
+			int known = FALSE;
+			text_stream *X;
+			LOOP_OVER_LINKED_LIST(X, text_stream, allowed)
+				if (Str::eq_insensitive(X, offered))
+					known = TRUE;
+			if (known == FALSE)
+				ADD_TO_LINKED_LIST(offered, text_stream, allowed);
+		}
+	return allowed;
+}
+
+@h Verbosity.
+This is just for the sake of good output in |-verbose| mode:
 
 =
 int tester_verbose = FALSE;
@@ -1037,6 +1131,12 @@ void Tester::populate(dictionary *D, text_stream *key, text_stream *value) {
 void Tester::populate_path(dictionary *D, text_stream *key, pathname *P) {
 	TEMPORARY_TEXT(value)
 	WRITE_TO(value, "%p", P);
+	Tester::populate(D, key, value);
+	DISCARD_TEXT(value)
+}
+void Tester::populate_file(dictionary *D, text_stream *key, filename *F) {
+	TEMPORARY_TEXT(value)
+	WRITE_TO(value, "%f", F);
 	Tester::populate(D, key, value);
 	DISCARD_TEXT(value)
 }

@@ -24,6 +24,7 @@ void Actions::read_do_instructions(intest_instructions *args,
 		text_stream *opt = argv[index];
 
 		int action = TEST_ACTION; /* which command is used */
+		text_stream *action_details = Str::new();
 		int ops_from = index+1, ops_to = index; /* operands run from |ops_from| to |ops_to| */
 		filename *redirect_output = NULL; /* optional file to redirect output to */
 
@@ -71,10 +72,9 @@ section, "actions":
 @e REPORT_ACTION
 @e SCRIPT_ACTION
 @e SHOW_ACTION
-@e SHOW_I6_ACTION
-@e SHOW_TRANSCRIPT_ACTION
 @e SKEIN_ACTION
 @e TEST_ACTION
+@e LIST_ACTION
 
 @d SCHEDULED_TEST_ACTION 100 /* must be more than all of the above */
 
@@ -88,12 +88,17 @@ section, "actions":
 	else if (Str::eq(opt, I"-report")) { action = REPORT_ACTION; arity = 5; }
 	else if (Str::eq(opt, I"-combine")) { action = COMBINE_REPORTS_ACTION; arity = 2; }
 	else if (Str::eq(opt, I"-open")) { action = OPEN_ACTION; }
-	else if (Str::eq(opt, I"-show")) { action = SHOW_ACTION; }
-	else if (Str::eq(opt, I"-show-i6")) { action = SHOW_I6_ACTION; }
-	else if (Str::eq(opt, I"-show-t")) { action = SHOW_TRANSCRIPT_ACTION; }
+	else if (Str::eq(opt, I"-show")) {
+		action = SHOW_ACTION;
+		Str::clear(action_details);
+	} else if (Str::prefix_eq(opt, I"-show-", 6)) {
+		action = SHOW_ACTION;
+		Str::substr(action_details, Str::at(opt, 6), Str::end(opt));
+	}
 	else if (Str::eq(opt, I"-bbdiff")) { action = BBDIFF_ACTION; }
 	else if (Str::eq(opt, I"-diff")) { action = DIFF_ACTION; }
 	else if (Str::eq(opt, I"-test")) { action = TEST_ACTION; }
+	else if (Str::eq(opt, I"-list")) { action = LIST_ACTION; }
 	else if (Str::eq(opt, I"-debug")) { action = DEBUGGER_ACTION; }
 	else if (Str::eq(opt, I"-bless")) { action = BLESS_ACTION; }
 	else if (Str::eq(opt, I"-curse")) { action = CURSE_ACTION; }
@@ -151,6 +156,7 @@ At this point |pos| is the index of the first operand. We must find the range
 		case COMBINE_REPORTS_ACTION: @<Create action item for COMBINE REPORTS@>; break;
 		case FIND_ACTION: @<Create action item for FIND@>; break;
 		case SKEIN_ACTION: @<Create action item for SKEIN@>; break;
+		case SHOW_ACTION: @<Create action item for SHOW@>; break;
 		default: @<Create more typical action items@>; break;
 	}
 	DISCARD_TEXT(assoc_text)
@@ -192,6 +198,14 @@ At this point |pos| is the index of the first operand. We must find the range
 	assoc_text = argv[ops_from+1];
 	Actions::create(action, redirect_output, NULL, args,
 		assoc_number, assoc_number2, assoc_file1, assoc_file2, assoc_text);
+
+@<Create action item for SHOW@> =
+	assoc_file1 = Filenames::from_text(argv[ops_from]);
+	assoc_text = Str::duplicate(action_details);
+	if (ops_to >= ops_from)
+		for (int j = ops_from; j <= ops_to; j++)
+			Actions::create(action, redirect_output, argv[j], args,
+				assoc_number, assoc_number2, assoc_file1, assoc_file2, assoc_text);
 
 @<Create more typical action items@> =
 	if (ops_to >= ops_from)
@@ -279,7 +293,6 @@ case_specifier Actions::parse_specifier(text_stream *token, intest_instructions 
 @d CASES_WILDCARD -3
 @d PROBLEMS_WILDCARD -4
 @d EXTENSIONS_WILDCARD -5
-@d MAPS_WILDCARD -6
 
 =
 int Actions::identify_wildcard(text_stream *token) {
@@ -297,7 +310,6 @@ int Actions::identify_wildcard(text_stream *token) {
 	if (Str::eq(token, I"examples")) return EXAMPLES_WILDCARD;
 	if (Str::eq(token, I"cases")) return CASES_WILDCARD;
 	if (Str::eq(token, I"problems")) return PROBLEMS_WILDCARD;
-	if (Str::eq(token, I"maps")) return MAPS_WILDCARD;
 	if (Str::eq(token, I"extensions")) return EXTENSIONS_WILDCARD;
 	if (Str::get_first_char(token) == '^') {
 		int n = Str::atoi(token, 1);
@@ -316,7 +328,6 @@ int Actions::matches_wildcard(test_case *tc, int w, dictionary *exemptions) {
 int Actions::which_wildcard(test_case *tc) {
 	if (tc->format_reference == EXAMPLE_FORMAT) return EXAMPLES_WILDCARD;
 	if (tc->test_type == PROBLEM_SPT) return PROBLEMS_WILDCARD;
-	if (tc->test_type == MAP_SPT) return MAPS_WILDCARD;
 	if (tc->format_reference == EXTENSION_FORMAT) return EXTENSIONS_WILDCARD;
 	return CASES_WILDCARD;
 }
@@ -326,7 +337,6 @@ char *Actions::name_of_wildcard(int w) {
 		case EXAMPLES_WILDCARD: return "examples"; break;
 		case EXTENSIONS_WILDCARD: return "extensions"; break;
 		case PROBLEMS_WILDCARD: return "problems"; break;
-		case MAPS_WILDCARD: return "maps"; break;
 		case CASES_WILDCARD: return "cases"; break;
 	}
 	return "?";
@@ -394,7 +404,8 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 
 @<Perform this regular expressed case@> =
 	linked_list *matches = NEW_LINKED_LIST(test_case);
-	RecipeFiles::find_cases_matching(matches, args->search_path, ai->operand.regexp_wild_card, FALSE);
+	RecipeFiles::find_cases_matching(matches, args->search_path, NULL,
+		ai->operand.regexp_wild_card, FALSE);
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
 		Actions::perform_inner(OUT, args, ai, tc, count++);
@@ -418,14 +429,24 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	linked_list *matches = NEW_LINKED_LIST(test_case);
 	text_stream *name;
 	LOOP_OVER_LINKED_LIST(name, text_stream, names_in_group) {
-		RecipeFiles::find_cases_matching(matches, args->search_path, name, TRUE);
+		match_results mr = Regexp::create_mr();
+		text_stream *key = NULL, *match = name;
+		int exactly = TRUE;
+		if (Regexp::match(&mr, name, L"$*(%C+) is (%c*)")) {
+			key = mr.exp[0]; match = mr.exp[1];
+		} else if (Regexp::match(&mr, name, L"$*(%C+) includes (%c*)")) {
+			key = mr.exp[0]; match = mr.exp[1]; exactly = FALSE;
+		}
+		RecipeFiles::find_cases_matching(matches, args->search_path, key, match, exactly);
 	}
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
 		ai->test_form = ai->action_type;
-		if (scheduled) ai->action_type += SCHEDULED_TEST_ACTION;
+		if ((ai->action_type != LIST_ACTION) && (scheduled))
+			ai->action_type += SCHEDULED_TEST_ACTION;
 		Actions::perform_inner(OUT, args, ai, tc, count++);
-		if (scheduled) ai->action_type -= SCHEDULED_TEST_ACTION;
+		if ((ai->action_type != LIST_ACTION) && (scheduled))
+			ai->action_type -= SCHEDULED_TEST_ACTION;
 	}
 
 @<Perform this matched case@> =
@@ -448,7 +469,7 @@ void Actions::read_group(text_stream *text, text_file_position *tfp, void *vm) {
 	linked_list *matches = (linked_list *) vm;
 	Str::trim_white_space(text);
 	wchar_t c = Str::get_first_char(text);
-	if ((c == 0) || (c == '#')) return;
+	if ((c == 0) || (c == '#') || (c == '!')) return;
 	ADD_TO_LINKED_LIST(Str::duplicate(text), text_stream, matches);
 }
 
@@ -460,15 +481,17 @@ void Actions::perform_inner(OUTPUT_STREAM, intest_instructions *args,
 	action_item *ai, test_case *itc, int count) {
 	text_stream *TO = OUT;
 	text_stream TO_struct;
+	int file_opened = FALSE;
 	if ((ai->action_type < SCHEDULED_TEST_ACTION) && (ai->redirection_filename)) {
 		filename *F = ai->redirection_filename;
 		if (itc) @<Expand NAME and NUMBER in the redirection filename@>;
 		TO = &TO_struct;
 		if (STREAM_OPEN_TO_FILE(TO, F, UTF8_ENC) == FALSE)
 			Errors::fatal_with_file("unable to write file", F);
+		file_opened = TRUE;
 	}
 	@<Finally do something, or at leask ask somebody else to@>;
-	if ((ai->action_type < SCHEDULED_TEST_ACTION) && (ai->redirection_filename)) STREAM_CLOSE(TO);
+	if (file_opened) STREAM_CLOSE(TO);
 }
 
 @ If the leafname of the redirection file is |something_[NUMBER]| then we
@@ -496,6 +519,15 @@ substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 			RecipeFiles::perform_catalogue(TO, args->search_path, NULL); break;
 		case FIND_ACTION:
 			RecipeFiles::perform_catalogue(TO, args->search_path, ai->assoc_text); break;
+		case LIST_ACTION:
+			if (itc) {
+				if (Str::eq(itc->test_case_name, itc->test_case_title)) {
+					WRITE_TO(TO, "%S\n", itc->test_case_name);
+				} else {
+					WRITE_TO(TO, "%S = '%S'\n", itc->test_case_name, itc->test_case_title);
+				}
+			}
+			break;
 		case SOURCE_ACTION:
 		case CONCORDANCE_ACTION:
 			if (itc)
@@ -513,18 +545,16 @@ substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 			}
 			break;
 		case OPEN_ACTION:
-			Shell::apply("open", itc->test_location); break;
+			if (itc) Shell::apply("open", itc->test_location); break;
 		case BBDIFF_ACTION:
 		case DIFF_ACTION:
-		case TEST_ACTION:
 		case DEBUGGER_ACTION:
 		case BLESS_ACTION:
 		case CURSE_ACTION:
 		case SHOW_ACTION:
-		case SHOW_I6_ACTION:
-		case SHOW_TRANSCRIPT_ACTION:
 		case REBLESS_ACTION:
-			Tester::test(TO, itc, count, -1, ai->action_type); break;
+		case TEST_ACTION:
+			if (itc) Tester::test(TO, itc, count, -1, ai->action_type, ai->assoc_text); break;
 		case REPORT_ACTION:
 			Reporter::report_single(TO, itc, ai); break;
 		case COMBINE_REPORTS_ACTION:
@@ -538,5 +568,6 @@ substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 				ai->action_type += SCHEDULED_TEST_ACTION;
 				break;
 			}
+			WRITE_TO(STDERR, "Action is %d\n", ai->action_type);
 			internal_error("unimplemented action");
 	}

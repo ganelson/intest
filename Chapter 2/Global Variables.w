@@ -19,11 +19,23 @@ Variables are never destroyed, so we have just three basic operations: create,
 get and set. Variables are identified by name:
 
 =
+linked_list *created_globals = NULL;
 void Globals::create(text_stream *name) {
 	LOGIF(VARIABLES, "global: created %S\n", name);
 	if (globals_dictionary == NULL)
 		globals_dictionary = Dictionaries::new(32, TRUE);
-	Dictionaries::create_text(globals_dictionary, name);
+	if (Dictionaries::find(globals_dictionary, name) == NULL) {
+		Dictionaries::create_text(globals_dictionary, name);
+		if (created_globals == NULL)
+			created_globals = NEW_LINKED_LIST(text_stream);
+		ADD_TO_LINKED_LIST(name, text_stream, created_globals);
+	}
+}
+
+linked_list *Globals::all(void) {
+	if (created_globals == NULL)
+		created_globals = NEW_LINKED_LIST(text_stream);
+	return created_globals;
 }
 
 @ Get is easy:

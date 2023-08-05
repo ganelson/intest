@@ -36,200 +36,52 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">intest</a></li><li><a href="index.html#M">Manual</a></li><li><b>Writing Intest Recipes</b></li></ul></div>
 <p class="purpose">A guide to writing in Delia, Intest's recipe language.</p>
 
-<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. About test cases</a></li><li><a href="M-wir.html#SP3">&#167;3. Recipe files</a></li><li><a href="M-wir.html#SP8">&#167;8. Writing Delia</a></li><li><a href="M-wir.html#SP25">&#167;25. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. Writing Delia</a></li><li><a href="M-wir.html#SP2">&#167;2. Syntax and tokens</a></li><li><a href="M-wir.html#SP3">&#167;3. Variables</a></li><li><a href="M-wir.html#SP9">&#167;9. Expansion</a></li><li><a href="M-wir.html#SP16">&#167;16. Control flow</a></li><li><a href="M-wir.html#SP20">&#167;20. Steps</a></li><li><a href="M-wir.html#SP22">&#167;22. Matches</a></li><li><a href="M-wir.html#SP25">&#167;25. Files and directories</a></li><li><a href="M-wir.html#SP27">&#167;27. Conditionals</a></li><li><a href="M-wir.html#SP32">&#167;32. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. About test cases. </b>To use any of this, at least one test case is required, and there will
-probably be many. The typical arrangement is that each test case has a
-name &mdash; say, "sorting" &mdash; and comes with a file of input for the program
-being tested &mdash; say, <span class="extract"><span class="extract-syntax">sorting.txt</span></span>. Intest therefore requires each test
-case to be specified by a text file. (Its contents don't have to be the
-input to the program, though, and there are even situations where it's
-convenient to make it an empty text file existing only for the sake of
-its name.)
-</p>
-
-<p class="commentary">So you need to create a text file for each test case. This should be
-called <span class="extract"><span class="extract-syntax">NAME.txt</span></span>, where <span class="extract"><span class="extract-syntax">NAME</span></span> is the test case name. There are some
-rules about these names:
-</p>
-
-<ul class="items"><li>(a) They are case-sensitive, so "Frogs" is different from "frogs". This
-is true even if your file system is case-insensitive, as it probably is.
-Your computer may regard <span class="extract"><span class="extract-syntax">Frogs.txt</span></span> and <span class="extract"><span class="extract-syntax">frogs.txt</span></span> as the same file,
-but to Intest those names would refer to different cases. It follows
-that you can't practicably have two case names which are the same except
-for casing.
-</li><li>(b) The names <span class="extract"><span class="extract-syntax">all</span></span>, <span class="extract"><span class="extract-syntax">examples</span></span>, <span class="extract"><span class="extract-syntax">extensions</span></span>, <span class="extract"><span class="extract-syntax">problems</span></span>, <span class="extract"><span class="extract-syntax">cases</span></span>, and
-<span class="extract"><span class="extract-syntax">maps</span></span> are reserved for Intest wildcards, and can't be used.
-</li><li>(c) A name cannot begin with a dash <span class="extract"><span class="extract-syntax">-</span></span>, a caret <span class="extract"><span class="extract-syntax">^</span></span>, a question mark <span class="extract"><span class="extract-syntax">?</span></span>,
-an exclamation mark <span class="extract"><span class="extract-syntax">!</span></span>, an open bracket <span class="extract"><span class="extract-syntax">(</span></span>, a square bracket <span class="extract"><span class="extract-syntax">[</span></span>,
-a full stop <span class="extract"><span class="extract-syntax">.</span></span>, an underscore <span class="extract"><span class="extract-syntax">_</span></span>, or a digit. It's probably best to
-start with a letter.
-</li><li>(d) A name cannot consist only of a number or a single letter.
-</li><li>(e) A name cannot contain a colon or a slash, forwards or backwards, and
-must contain only filename-safe characters. It can contain white space, but
-your life will be easier if it doesn't. Similarly, best to avoid accented
-letters or emoji.
-</li></ul>
-<p class="commentary">If you are testing Inform 7, it is conventional that a test case name which
-ends in <span class="extract"><span class="extract-syntax">-G</span></span> is one needing to be compiled for the Glulx virtual machine,
-and a name which ends in <span class="extract"><span class="extract-syntax">-Z</span></span> needs to be compiled for the Z-machine.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>There are five types of case, but three are used only for testing Inform 7,
-and can be ignored by everybody else. The important ones are:
-</p>
-
-<ul class="items"><li>(a) "case" &mdash; where the expectation is that the program being tested will
-accept this test case and not produce errors, and
-</li><li>(b) "problem" &mdash; where the expectation is that the program will reject it
-with error messages.
-</li></ul>
-<p class="commentary">The other three are:
-</p>
-
-<ul class="items"><li>(c) "example" &mdash; a "case", but written into an Inform documentation file,
-a format which takes a bit of decoding.
-</li><li>(d) "extension" &mdash; a "case", but one of the examples from an Inform extension
-file, a format which takes even more decoding.
-</li><li>(e) "map" &mdash; a "case", but to do with spatial maps drawn out from Inform
-source text, in a way not worth going into here.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Recipe files. </b>As previously noted, Intest needs a recipe file in order to run in any
-useful fashion; by default, Intest expects to find this file at
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    PROJECT/Tests/PROJECT.intest</span>
-</pre>
-<p class="commentary">where <span class="extract"><span class="extract-syntax">PROJECT</span></span> is the name of the tested project's home directory. But
-with the <span class="extract"><span class="extract-syntax">-using</span></span> switch at the command line, an alternative file cam be
-used somewhere else.
-</p>
-
-<p class="commentary">An Intest recipe file is a UTF-8 encoded text file. It is a list of commands
-which, for the most part, tell Intest where to find test cases, and then
-definitions of recipes, which Intest can then use to test them.
-</p>
-
-<p class="commentary">Here is a typical simple recipe file. It begins with a command, telling Intest
-the location of a directory of test cases which will have type <span class="extract"><span class="extract-syntax">case</span></span>, and
-then gives a single recipe, which Intest will use on whatever cases it
-discovered in that directory.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">-cases</span><span class="plain-syntax"> 'inform7/kinds-test/Tests/Test Cases'</span>
-
-<span class="identifier-syntax">-recipe</span>
-
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_Results_Actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_Results_Ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-
-<span class="reserved-syntax">    step</span><span class="plain-syntax">: inform7/kinds-test/Tangled/kinds-test -test-</span><span class="function-syntax">$CASE</span><span class="plain-syntax"> </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'produced errors in kinds-test' </span><span class="function-syntax">$A</span>
-
-<span class="reserved-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
-
-<span class="reserved-syntax">    exists</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'passed without errors but no blessed output existed'</span>
-
-<span class="reserved-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'produced incorrect output'</span>
-
-<span class="identifier-syntax">-end</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>As that example suggests, each line is a command, and each command begins
-with a dash <span class="extract"><span class="extract-syntax">-</span></span>, except that blank lines are ignored. So are comment lines,
-beginning with exclamation marks <span class="extract"><span class="extract-syntax">!</span></span>.
-</p>
-
-<p class="commentary">A recipe file normally begins by declaring where all the cases live:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-case F</span></span>, where <span class="extract"><span class="extract-syntax">F</span></span> is a filename. Make this a test case of type "case".
-Similarly for <span class="extract"><span class="extract-syntax">-problem</span></span>, <span class="extract"><span class="extract-syntax">-example</span></span>, <span class="extract"><span class="extract-syntax">-extension</span></span>, and <span class="extract"><span class="extract-syntax">-map</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-cases D</span></span>, where <span class="extract"><span class="extract-syntax">D</span></span> is a directory name. Make every validly named text file
-in this directory a test case of type "case". Similarly for <span class="extract"><span class="extract-syntax">-problems</span></span>,
-<span class="extract"><span class="extract-syntax">-examples</span></span>, <span class="extract"><span class="extract-syntax">-extensions</span></span>, and <span class="extract"><span class="extract-syntax">-maps</span></span>.
-</p>
-
-<p class="commentary">Each case has a recipe assigned to it. Often the same recipe will be assigned
-to every case, but not all always. The recipe is by default the one called
-just <span class="extract"><span class="extract-syntax">[Recipe]</span></span> (see below), but declaring <span class="extract"><span class="extract-syntax">-case [NAME] F</span></span>, <span class="extract"><span class="extract-syntax">-cases [NAME] D</span></span>,
-and so on, makes the recipe for those case(s) <span class="extract"><span class="extract-syntax">[NAME]</span></span> instead.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>If, for whatever reason, you would like a given test not to be included
-in Intest's wildcard names such as <span class="extract"><span class="extract-syntax">all</span></span>, then you can write, say,
-<span class="extract"><span class="extract-syntax">-singular NAME</span></span>, where <span class="extract"><span class="extract-syntax">NAME</span></span> is the test's name. For example, you might
-have a scratch test case called <span class="extract"><span class="extract-syntax">temp</span></span> used only moment to moment and not
-considered part of the test suite proper, and then <span class="extract"><span class="extract-syntax">-singular temp</span></span> would
-tell Intest not to include it when testing <span class="extract"><span class="extract-syntax">all</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>A recipe file must also define at least one recipe. There are two ways
-to do this:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-recipe [NAME] FILE</span></span> says that the recipe <span class="extract"><span class="extract-syntax">[NAME]</span></span> is defined in the given
-text file. This is the old-fashioned way; experienced showed that it was
-more convenient to write &mdash;
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-recipe [NAME]</span></span> followed by a definition written in the main file itself:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -recipe [NAME]</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    -end</span>
-</pre>
-<p class="commentary">where the definition occupies the lines in between the <span class="extract"><span class="extract-syntax">-recipe</span></span> line and the
-<span class="extract"><span class="extract-syntax">-end</span></span> line. (Those lines in between are not commands and don't start with
-dashes.)
-</p>
-
-<p class="commentary">If no <span class="extract"><span class="extract-syntax">[NAME]</span></span> is given, the name is assumed to be just <span class="extract"><span class="extract-syntax">[Recipe]</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Those are the only essentials, but two other dashed commands exist:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-set VARIABLE VALUE</span></span>. Variables are more usually set inside recipes, but
-they can also be set here, as global variables whose values apply whatever
-recipe is used. See the notes on variables in the section on recipes below.
-(The variable, being global, will be called <span class="extract"><span class="extract-syntax">$$VARIABLE</span></span> in Delia code.)
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-if PLATFORM</span></span> and <span class="extract"><span class="extract-syntax">-endif</span></span>. Dashed commands in between these lines will be
-followed only if the variable <span class="extract"><span class="extract-syntax">$$platform</span></span> matches the value <span class="extract"><span class="extract-syntax">PLATFORM</span></span>. This
-value will be something like <span class="extract"><span class="extract-syntax">macos</span></span>, <span class="extract"><span class="extract-syntax">unix</span></span>, <span class="extract"><span class="extract-syntax">linux</span></span>, <span class="extract"><span class="extract-syntax">windows</span></span>, or <span class="extract"><span class="extract-syntax">android</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Writing Delia. </b>Recipe definitions are written in a very simple mini-language called Delia,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Writing Delia. </b>Recipe definitions are written in a very simple mini-language called Delia,
 for reasons which English users of Intest will appreciate. Had Intest been
 written by an American, it would have been called Julia.
 </p>
 
-<p class="commentary">In Delia, once again, blanks lines and lines beginning with exclamation
-marks <span class="extract"><span class="extract-syntax">!</span></span> are ignored. All other lines must have the form
+<p class="commentary">This example recipe shows the basic syntax. In this recipe, which creates three
+"variables" <span class="extract"><span class="extract-syntax">$A</span></span>, <span class="extract"><span class="extract-syntax">$I</span></span> and <span class="extract"><span class="extract-syntax">$SOURCE</span></span>, a command-line program called <span class="extract"><span class="extract-syntax">launcher</span></span>
+is to be called using <span class="extract"><span class="extract-syntax">$SOURCE</span></span> as the filename of its input. Its output is
+then redirected into the file <span class="extract"><span class="extract-syntax">$A</span></span>, which is compared against <span class="extract"><span class="extract-syntax">$I</span></span> to see
+if the right output was printed.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
+<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--A.txt</span>
+<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--I.txt</span>
+
+<span class="reserved-syntax">    step</span><span class="plain-syntax">: launcher </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
+<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'launcher produced error messages' </span><span class="function-syntax">$A</span>
+
+<span class="reserved-syntax">    exists</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span>
+<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'launcher produced no errors, but no blessed output existed'</span>
+
+<span class="reserved-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
+<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'produced incorrect output'</span>
+
+<span class="reserved-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
+</pre>
+<p class="commentary">In this example the test has four possible outcomes at which it might
+halt: at the three <span class="extract"><span class="extract-syntax">or:...</span></span> lines, which halt a test because the previous
+instruction failed in some way; or, if things go better, on the last line
+where the <span class="extract"><span class="extract-syntax">pass:</span></span> instruction says that the test has completed as it should.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Syntax and tokens. </b>Blanks lines and lines beginning with exclamation marks <span class="extract"><span class="extract-syntax">!</span></span> are ignored.
+All other lines must have the form
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    command</span><span class="plain-syntax">: token1 ... tokenN</span>
 </pre>
-<p class="commentary">where different commands need different numbers of tokens. Most commands
-are a single word, but a few are more than one. There are sometimes no
-tokens at all, in which case no colon is required:
+<p class="commentary">where different commands need different numbers of "tokens".
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    command</span>
-</pre>
 <p class="commentary">The command and its tokens must occupy a single line and no comment is
 allowed at the end of it. Quotation marks can be used to make multiple words
 a single token; thus:
@@ -239,63 +91,166 @@ a single token; thus:
 <span class="reserved-syntax">    exists</span><span class="plain-syntax">: 'My Tests/output.txt'</span>
 </pre>
 <p class="commentary">is a command plus a single token, not two. A backslash can be used to escape
-the quotation mark when inside quotes. A token which begins with a backtick,
-<span class="extract"><span class="extract-syntax">`thus</span></span>, is marked as not to be quoted: see below.
+the quotation mark when inside quotes.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Delia has just one data structure, a set of named variables. Each of these
-has a textual value; usually those represent filenames or parts of filenames,
-but not necessarily.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Variables. </b>Delia has just one data structure: a set of named variables. The language has
+no concept of "types": all data is text. A variable can hold any amount of
+text, including none. Note that there is a difference between a variable
+existing but holding the empty text as its value, and not existing at all.
 </p>
 
-<p class="commentary">There are a very few "global" variables, written with a double dollar sign.
-Global means they have the same value regardless of which test case is being
-worked on. One global is automatically defined: <span class="extract"><span class="extract-syntax">$$platform</span></span>, as mentioned
-above, which is a string such as <span class="extract"><span class="extract-syntax">osx</span></span> or <span class="extract"><span class="extract-syntax">windows</span></span>. It is always better
-to avoid using this where possible. All other global variables are created
+<p class="commentary">In practice, this text is usually used to hold filenames, pathnames, or
+fragments of command-line commands not yet issued, but it can in principle
+be used for almost anything.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Variables can be either "global", written <span class="extract"><span class="extract-syntax">$$NAME</span></span>, or "local", written
+<span class="extract"><span class="extract-syntax">$NAME</span></span>. A Delia recipe can create and modify local variables freely, but
+can neither create nor modify globals, which are handed down to it from above.
+They are therefore constant throughout the life of a test which is running, and
+they have the same value for all tests being conducted in the same run of
+Intest. The following globals are automatically defined:
+</p>
+
+<ul class="items"><li>(1) <span class="extract"><span class="extract-syntax">$$platform</span></span>, as mentioned above, which is a string such as <span class="extract"><span class="extract-syntax">osx</span></span> or <span class="extract"><span class="extract-syntax">windows</span></span>.
+Avoid using this where possible. All other global variables are created
 by the <span class="extract"><span class="extract-syntax">-set</span></span> command at the top of the recipe file: see above.
+</li><li>(2) <span class="extract"><span class="extract-syntax">$$project</span></span> is the path to the project being tested.
+</li><li>(3) <span class="extract"><span class="extract-syntax">$$internal</span></span> is the path to the Inform internals directory, assumed to be
+<span class="extract"><span class="extract-syntax">inform7/Internal</span></span> unless the <span class="extract"><span class="extract-syntax">-internal</span></span> switch has said otherwise. This will
+only be useful for testing Inform-related programs, of course, and not always then.
+</li><li>(4) <span class="extract"><span class="extract-syntax">$$workspace</span></span> is the path to a directory where Intest can write temporary
+files as it pleases. Do not use this for throwaway files in the course of a
+test unless you are quite sure multiple tests running at once will not interfere
+with each other: if you are not sure, use <span class="extract"><span class="extract-syntax">$WORK</span></span> instead (see below).
+</li><li>(5) <span class="extract"><span class="extract-syntax">$$nest</span></span> is used only internally, and on automatic tests of extensions or
+kits for Inform: it then holds the path to the directory or "nest" of resources
+from which the extension or kit seems to be drawn.
+</li></ul>
+<p class="commentary">Other global variables may have been created using <span class="extract"><span class="extract-syntax">-set</span></span> in the intest
+file (or at the command line): see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>.
 </p>
 
-<p class="commentary">Other variables are "local" and written with a single dollar sign. These have
-different values for different test cases. For every Delia recipe, three are
-automatically defined:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>For the most part, a Delia recipe can create its own local variables quite
+freely, but it doesn't begin with a completely blank slate. As it starts:
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">$CASE</span></span> is the name of the test case;
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">$PATH</span></span> is the pathname to the directory which the test case is in;
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">$TYPE</span></span> is the type of test case this is: <span class="extract"><span class="extract-syntax">case</span></span>, <span class="extract"><span class="extract-syntax">problem</span></span>, <span class="extract"><span class="extract-syntax">example</span></span>,
-<span class="extract"><span class="extract-syntax">extension</span></span> or <span class="extract"><span class="extract-syntax">map</span></span>;
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">$WORK</span></span> is the pathname of a directory set aside by Intest for any intermediate
+<ul class="items"><li>(1) <span class="extract"><span class="extract-syntax">$CASE</span></span> is the name (not the title, if that differs) of the test case.
+</li><li>(2) <span class="extract"><span class="extract-syntax">$TITLE</span></span> is the title (not the name, if that differs) of the test case.
+</li><li>(3) <span class="extract"><span class="extract-syntax">$PATH</span></span> is the pathname to the directory which the test case is in.
+</li><li>(4) <span class="extract"><span class="extract-syntax">$TYPE</span></span> is the type of test case this is: <span class="extract"><span class="extract-syntax">case</span></span>, <span class="extract"><span class="extract-syntax">problem</span></span>, <span class="extract"><span class="extract-syntax">example</span></span>,
+<span class="extract"><span class="extract-syntax">extension</span></span>.
+</li><li>(5) <span class="extract"><span class="extract-syntax">$WORK</span></span> is the pathname of a directory set aside by Intest for any intermediate
 files we might need to produce during the test process &mdash; these must all be
 temporary files we can happily lose when the test is completed. The real
 usefulness of this comes when Intest is running a batch of tests across
 multiple threads, because those threads each need their own independent work
 area to avoid stepping on each other's feet. Provided the recipe uses <span class="extract"><span class="extract-syntax">$WORK</span></span>,
 it never needs to think about this complication.
+</li><li>(6) If the Intest file specifies "stipulations" on the test case, those set
+local variables for it: see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>. In this example,
+the recipe <span class="extract"><span class="extract-syntax">[Reactor]</span></span> starts with the given settings of <span class="extract"><span class="extract-syntax">$TEMP</span></span> and <span class="extract"><span class="extract-syntax">$STATUS</span></span>.
+</li></ul>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'</span>
+<span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Cold:STATUS=Safe] 'fusionreactor/Tests/ColdCases'</span>
+<span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'</span>
+</pre>
+<ul class="items"><li>(7) If the test case itself contains annotations, those are also used to
+create local variables which the test starts with. In the following example,
+any test of <span class="extract"><span class="extract-syntax">Nettles</span></span> would begin with the recipe having appropriate values
+of <span class="extract"><span class="extract-syntax">$LANGUAGE</span></span>, <span class="extract"><span class="extract-syntax">$FOR</span></span> and <span class="extract"><span class="extract-syntax">$INTOPTIONS</span></span>.
+</li></ul>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    Test: Nettles</span>
+<span class="plain-syntax">    Language: Basic</span>
+<span class="plain-syntax">    For: Glulx</span>
+<span class="plain-syntax">    IntOptions: -u -q -dataresourcetext '3:$PATH/Nettles--X.txt'</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The special variable <span class="extract"><span class="extract-syntax">$SCRIPT</span></span> is created by the <span class="extract"><span class="extract-syntax">extract:</span></span> instruction
+(see below), and is only useful for testing Inform. It is created if one
+of two things happens:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The real usefulness of variables is that they are automatically substituted
-into tokens. When Delia reads the token <span class="extract"><span class="extract-syntax">$PATH/$CASE.txt</span></span>, for example,
-it substitutes in the values of <span class="extract"><span class="extract-syntax">$PATH</span></span> and <span class="extract"><span class="extract-syntax">$CASE</span></span> to produce something
-like <span class="extract"><span class="extract-syntax">zap/Tests/planets.txt</span></span>. This process is called "expansion".
+<ul class="items"><li>(a) A text file exists in the same directory as the test case, and with the
+<span class="extract"><span class="extract-syntax">--S</span></span> filename suffix. For example, if the test is in <span class="extract"><span class="extract-syntax">zap/Tests/Cases/DeathRay.txt</span></span>,
+then Intest will look for the file <span class="extract"><span class="extract-syntax">zap/Tests/Cases/DeathRay--S.txt</span></span>. If that
+file exists, <span class="extract"><span class="extract-syntax">$SCRIPT</span></span> will be set to its filename.
+</li><li>(b) The test case contains a sentence of source text in the form
+"Test me with "Command 1 / Command 2 / ..."." If it does, Intest will
+use a generic script which types TEST ME, then QUIT, then Y (to confirm
+quitting), and will set <span class="extract"><span class="extract-syntax">$SCRIPT</span></span> to that filename.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The special variable <span class="extract"><span class="extract-syntax">$HASHCODE</span></span> is created by the <span class="extract"><span class="extract-syntax">hash:</span></span> instruction:
+see below.
 </p>
 
-<p class="commentary">For example, when a new variable is created with:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>When tinkering with recipes, it's sometimes very helpful to be able to
+see what's happening to all of these variables. Running Intest in its
+<span class="extract"><span class="extract-syntax">-verbose</span></span> mode will do that. For example, if we run Intest on its
+example project, we can sit back and watch what it's doing:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> intest/Examples/dc</span><span class="ConsoleText-identifier-syntax"> -verbose</span><span class="ConsoleText-plain-syntax"> minus</span>
+<span class="ConsoleText-plain-syntax">...</span>
+<span class="ConsoleText-plain-syntax">Global variables:</span>
+<span class="ConsoleText-plain-syntax">      $$platform = macos</span>
+<span class="ConsoleText-plain-syntax">      $$project = intest/Examples/dc/Tests</span>
+<span class="ConsoleText-plain-syntax">      $$internal = inform7/Internal</span>
+<span class="ConsoleText-plain-syntax">      $$workspace = /Users/gnelson/Natural Inform/intest/Workspace</span>
+<span class="ConsoleText-plain-syntax">Local variables at start:</span>
+<span class="ConsoleText-plain-syntax">      $CASE &lt;--- minus</span>
+<span class="ConsoleText-plain-syntax">      $TITLE &lt;---</span>
+<span class="ConsoleText-plain-syntax">      $PATH &lt;--- intest/Examples/dc/Tests/Cases</span>
+<span class="ConsoleText-plain-syntax">      $WORK &lt;--- /Users/gnelson/Natural Inform/intest/Workspace/T0</span>
+<span class="ConsoleText-plain-syntax">      $TYPE &lt;--- case</span>
+<span class="ConsoleText-plain-syntax">Recipe execution:</span>
+<span class="ConsoleText-plain-syntax">0001:   mkdir: $PATH/_actual</span>
+<span class="ConsoleText-plain-syntax">shell: mkdir -p 'intest/Examples/dc/Tests/Cases/_actual'</span>
+<span class="ConsoleText-plain-syntax">0002:   mkdir: $PATH/_ideal</span>
+<span class="ConsoleText-plain-syntax">shell: mkdir -p 'intest/Examples/dc/Tests/Cases/_ideal'</span>
+<span class="ConsoleText-plain-syntax">0003:   set: $A = $PATH/_actual/$CASE.txt</span>
+<span class="ConsoleText-plain-syntax">      $A &lt;--- intest/Examples/dc/Tests/Cases/_actual/minus.txt</span>
+<span class="ConsoleText-plain-syntax">0004:   set: $I = $PATH/_ideal/$CASE.txt</span>
+<span class="ConsoleText-plain-syntax">      $I &lt;--- intest/Examples/dc/Tests/Cases/_ideal/minus.txt</span>
+<span class="ConsoleText-plain-syntax">0005:   step: dc $[$PATH/$CASE.txt$] &gt;$A 2&gt;&amp;1</span>
+<span class="ConsoleText-plain-syntax">shell: 'dc'  '-e'  '10 3 - p' &gt;'intest/Examples/dc/Tests/Cases/_actual/minus.txt'  2&gt;&amp;1</span>
+<span class="ConsoleText-plain-syntax">0006:   or: 'failed dc' $A</span>
+<span class="ConsoleText-plain-syntax">0007:   show: $A</span>
+<span class="ConsoleText-plain-syntax">0008:   match text: $A $I</span>
+<span class="ConsoleText-plain-syntax">0009:   or: 'produced the wrong output'</span>
+<span class="ConsoleText-plain-syntax">0010:   pass: 'passed'</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Expansion. </b>Variables are only useful for their values, and their values are used by
+means of "expansion".
+</p>
+
+<p class="commentary">When Delia reads the token <span class="extract"><span class="ConsoleText-extract-syntax">$PATH/$CASE.txt</span></span>, for example, it substitutes in
+the values of <span class="extract"><span class="ConsoleText-extract-syntax">$PATH</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">$CASE</span></span>. If <span class="extract"><span class="ConsoleText-extract-syntax">$PATH</span></span> is <span class="extract"><span class="ConsoleText-extract-syntax">zap/Tests</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">$CASE</span></span> is
+<span class="extract"><span class="ConsoleText-extract-syntax">planets</span></span>, the result would be <span class="extract"><span class="ConsoleText-extract-syntax">zap/Tests/planets.txt</span></span>. This process is called
+"expansion", and Delia applies it to almost every token.
+</p>
+
+<p class="commentary">Expansion fails with an error if the local variable named does not in fact
+exist. Thus Intest will refuse to expand <span class="extract"><span class="ConsoleText-extract-syntax">My$BARGAIN</span></span>, rather than expand it
+to just <span class="extract"><span class="ConsoleText-extract-syntax">My</span></span> or leave it as it stands, if the variable <span class="extract"><span class="ConsoleText-extract-syntax">$BARGAIN</span></span> does not
+exist. (This is even true if the variable <span class="extract"><span class="ConsoleText-extract-syntax">$BARGAI</span></span> should exist.)
+</p>
+
+<p class="commentary">The instruction <span class="extract"><span class="ConsoleText-extract-syntax">set:</span></span> either creates a new local variable, or changes the
+value of an existing one:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$NAME</span><span class="plain-syntax"> = VALUE</span>
 </pre>
-<p class="commentary">the <span class="extract"><span class="extract-syntax">VALUE</span></span> is expanded before being written into the new variable <span class="extract"><span class="extract-syntax">$NAME</span></span>.
+<p class="commentary">Note that the <span class="extract"><span class="extract-syntax">VALUE</span></span> token here is expanded, but the <span class="extract"><span class="extract-syntax">$NAME</span></span> token is not,
+for obvious reasons. This is one of the exceptions hinted at above.
 </p>
 
-<p class="commentary">A wrinkle here is that if the setting value has multiple tokens:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>A wrinkle here is that if the setting value has multiple tokens:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -321,7 +276,25 @@ the tokens, <span class="extract"><span class="extract-syntax">$FILE.txt</span><
 "My" and "File".
 </p>
 
-<p class="commentary">Quote-expansion is not always what we want. For example, suppose we further
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The instruction <span class="extract"><span class="extract-syntax">default:</span></span> is entirely the same as <span class="extract"><span class="extract-syntax">set:</span></span>, except that it
+takes effect only if the variable does not yet exist. Thus:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    default</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span><span class="plain-syntax"> = Kerosene</span>
+</pre>
+<p class="commentary">is exactly equivalent to
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    ifndef</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span>
+<span class="reserved-syntax">        set</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span><span class="plain-syntax"> = Kerosene</span>
+<span class="reserved-syntax">    endif</span>
+</pre>
+<p class="commentary">but is less laborious.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Quote-expansion is not always what we want. For example, suppose we further
 defined:
 </p>
 
@@ -351,7 +324,7 @@ expansion of the first token:
 <span class="extract"><span class="extract-syntax">&gt;file</span></span> or <span class="extract"><span class="extract-syntax">2&gt;&amp;1</span></span>, quoting just the file parts.
 </p>
 
-<p class="commentary">Quote-expansion also supports one more feature: the token <span class="extract"><span class="extract-syntax">$[filename$]</span></span>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Quote-expansion also supports one more feature: the token <span class="extract"><span class="extract-syntax">$[filename$]</span></span>
 expands to the (tokenised and further expanded) contents of the file named.
 Thus for example if the file <span class="extract"><span class="extract-syntax">Frog.txt</span></span> contains the words "never turn your
 back on a frog", then
@@ -374,7 +347,7 @@ signs in the file as being literal), use yet another backtick:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    $[`Toad.txt$]</span>
 </pre>
-<p class="commentary">Finally, the syntax
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Finally, the syntax
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -394,7 +367,7 @@ is that we want to ignore things like the time-stamp and compiler version,
 which will change daily.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Note that the filename is itself expanded before use, so that it can be
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,
 rather than from a file. See the example supplied with Intest for testing
@@ -422,81 +395,162 @@ running dc:
 <p class="commentary">which produces the concise output "2".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>A Delia recipe runs from the first line onwards. There are no loops,
-functions or subroutines, but there are conditionals. The run ends
-as soon as one of the three commands <span class="extract"><span class="ConsoleText-extract-syntax">pass</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">fail</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">or</span></span> is executed.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Control flow. </b>As we shall see, there are conditionals in the Delia language, but no loops
+and no subroutines, macros, function or procedure calls. Delia is intentionally
+not Turing-complete: it tries to balance flexibility with simplicity.
 </p>
 
-<p class="commentary">Testing consists mainly of running some programs, "steps", and then
-checking that their output is correct, "matching". There are two sorts
-of step:
+<p class="commentary">A test therefore flows from top to bottom of the recipe, perhaps skipping some
+stages because of conditionals. But it doesn't always get to the bottom, because
+a multi-stage test can end early for several reasons.
 </p>
 
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">step: COMMAND</span></span>. Runs the shell command <span class="extract"><span class="ConsoleText-extract-syntax">COMMAND</span></span>. The step passes if the
+<p class="commentary">The following "stopping commands" are the main ways a test can halt:
+</p>
+
+<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">pass: 'NOTE'</span></span>. Stops the test and marks it a success. The text <span class="extract"><span class="ConsoleText-extract-syntax">'NOTE'</span></span>
+is optional, and is a summary used when Intest prints its results.
+</p>
+
+<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">fail: 'NOTE'</span></span>. Stops the test and marks it a failure. The text <span class="extract"><span class="ConsoleText-extract-syntax">'NOTE'</span></span>
+is optional, and is a summary used when Intest prints its results.
+</p>
+
+<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">or: 'NOTE' FILE</span></span>. If the step or match performed immediately before this line
+failed, this stops the whole test and marks it as a failure. The <span class="extract"><span class="ConsoleText-extract-syntax">FILE</span></span>,
+which is optional, is then printed out when Intest describes what went
+wrong. For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span>
+<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'dc produced an error'</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Control also stops, with a pass for the test, if it runs into a <span class="extract"><span class="extract-syntax">show: ...</span></span>
+command of the right sort when the tester is looking for that. For example,
+suppose the command being used is:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -show-transcript</span><span class="ConsoleText-plain-syntax"> Pine2</span>
+</pre>
+<p class="commentary">The tester then runs the test case <span class="extract"><span class="ConsoleText-extract-syntax">Pine2</span></span> in hopes of running into an
+instruction like this:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    show</span><span class="plain-syntax">: transcript </span><span class="function-syntax">$TF</span>
+</pre>
+<p class="commentary">If it finds such an instruction, it prints out the file which <span class="extract"><span class="extract-syntax">$TF</span></span> (i.e.,
+the second token, whatever it is) and ends the test then and there.
+</p>
+
+<p class="commentary">If the tester is not looking to show a transcript, it will pass over
+<span class="extract"><span class="extract-syntax">show: transcript ...</span></span> doing nothing.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>If a target is considered especially important to see, it can be given
+the empty target name. The command for that is then <span class="extract"><span class="extract-syntax">show: $X</span></span>, with just
+one token, and the tester looks for this in response to just <span class="extract"><span class="extract-syntax">-show</span></span>
+on the command line, rather than a more general <span class="extract"><span class="extract-syntax">-show-TARGET</span></span>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>If the file does not exist for some reason, the test continues, but the
+step is considered a fail. This possibility can be picked up by placing
+an <span class="extract"><span class="extract-syntax">or:</span></span> immediately following:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    show</span><span class="plain-syntax">: transcript </span><span class="function-syntax">$TF</span>
+<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'heaven knows why, but the transcript file does not exist'</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Steps. </b>A "step" is a shell command issued to the host system: it actually does
+something as part of the test, in other words, rather than simply preparing
+to do things or looking at the result.
+</p>
+
+<p class="commentary">There are two sorts of step:
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">step: COMMAND</span></span>. Runs the shell command <span class="extract"><span class="extract-syntax">COMMAND</span></span>. The step passes if the
 command returns the exit code 0, which for Unix utilities conventionally
 means that no errors occurred. It fails on all non-zero exit codes.
 </p>
 
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">fail step: COMMAND</span></span>. The same, but this time expecting a non-zero exit
+<p class="commentary"><span class="extract"><span class="extract-syntax">fail step: COMMAND</span></span>. The same as <span class="extract"><span class="extract-syntax">step:</span></span>, but this time expecting a non-zero exit
 code, and failing on zero.
 </p>
 
-<p class="commentary">What happens if a step "fails"? The answer is that nothing happens and
-the recipe simply carries on, unless the next line is an <span class="extract"><span class="ConsoleText-extract-syntax">or:</span></span> command,
-as we shall see next. So if the shell command doesn't follow Unix
-conventions with its exit code, or if we just don't care, we needn't
-worry that the test will halt. It will only do so on our explicit
-instruction.
+<p class="commentary"><span class="extract"><span class="extract-syntax">debugger: COMMAND</span></span>. The same as <span class="extract"><span class="extract-syntax">step:</span></span>, but runs the command in only when
+the test is being run by the <span class="extract"><span class="extract-syntax">-debug</span></span> action. The idea is to do something
+like this:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Matching simply means comparing the contents of two files.
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    debugger</span><span class="plain-syntax">: lldb -f launcher -- </span><span class="function-syntax">$SOURCE</span>
+<span class="reserved-syntax">    step</span><span class="plain-syntax">: launcher </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
+<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'launcher produced error messages' </span><span class="function-syntax">$A</span>
+</pre>
+<p class="commentary">The idea is that if the test is mysteriously crashing at this stage then
+running it with <span class="extract"><span class="extract-syntax">-debug</span></span> will divert into the debugger instead, what that
+crash can be investigated.
 </p>
 
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">match text: A B</span></span>. Here <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">B</span></span> are text files, and Intest will show
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>What happens if a step "fails"? The answer is that nothing happens and the
+recipe simply carries on, unless the next line is an <span class="extract"><span class="extract-syntax">or:</span></span> command, as noted
+above. So if the shell command doesn't follow Unix conventions with its exit
+code, or if we just don't care, we needn't worry that the test will halt. It
+will only do so on our explicit instruction.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Matches. </b>Matching simply means comparing the contents of two files.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">match text: A B</span></span>. Here <span class="extract"><span class="extract-syntax">A</span></span> and <span class="extract"><span class="extract-syntax">B</span></span> are text files, and Intest will show
 diffs if they disagree.
 </p>
 
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">match platform text: A B</span></span>. The same, but now forward and backslashes are
-counted as being equivalent to each other. This enables filesnames printed
+<p class="commentary"><span class="extract"><span class="extract-syntax">match platform text: A B</span></span>. The same, but now forward and backslashes are
+counted as being equivalent to each other. This enables filenames printed
 out on Windows to be compared with those printed out on other platforms.
 </p>
 
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">match binary: A B</span></span>. Now they are binaries, so Intest will simply report
+<p class="commentary"><span class="extract"><span class="extract-syntax">match binary: A B</span></span>. Now they are binaries, so Intest will simply report
 that they disagree, if they do.
 </p>
 
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">match folder: A B</span></span>. This time they are folders (i.e., directories), and
+<p class="commentary"><span class="extract"><span class="extract-syntax">match folder: A B</span></span>. This time they are folders (i.e., directories), and
 Intest will expect the entire contents (other than any hidden files
-beginning with <span class="extract"><span class="ConsoleText-extract-syntax">.</span></span>) to agree. This recurses downwards through any
+beginning with <span class="extract"><span class="extract-syntax">.</span></span>) to agree. This recurses downwards through any
 subfolders.
 </p>
 
 <p class="commentary">All of these are commands which can pass or fail, so that they can be followed
-by an <span class="extract"><span class="ConsoleText-extract-syntax">or</span></span> command taking effect only if they fail. If a test fails because
-of a failed <span class="extract"><span class="ConsoleText-extract-syntax">match</span></span>, then the command line options <span class="extract"><span class="ConsoleText-extract-syntax">-diff</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">-bbdiff</span></span>
-cause these tools to be invoked on <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">B</span></span>, the two matched files which
+by an <span class="extract"><span class="extract-syntax">or</span></span> command taking effect only if they fail. If a test fails because
+of a failed <span class="extract"><span class="extract-syntax">match</span></span>, then the command line options <span class="extract"><span class="extract-syntax">-diff</span></span> or <span class="extract"><span class="extract-syntax">-bbdiff</span></span>
+cause these tools to be invoked on <span class="extract"><span class="extract-syntax">A</span></span> and <span class="extract"><span class="extract-syntax">B</span></span>, the two matched files which
 failed.
 </p>
 
-<p class="commentary">There are also four Inform-specific forms of matching: <span class="extract"><span class="ConsoleText-extract-syntax">match problem</span></span>,
-<span class="extract"><span class="ConsoleText-extract-syntax">match i6 transcript</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">match frotz transcript</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">match glulxe transcript</span></span>,
-which are roughly the same as <span class="extract"><span class="ConsoleText-extract-syntax">match text</span></span>, but display differences in a more
+<p class="commentary">There are also four Inform-specific forms of matching: <span class="extract"><span class="extract-syntax">match problem</span></span>,
+<span class="extract"><span class="extract-syntax">match i6 transcript</span></span>, <span class="extract"><span class="extract-syntax">match frotz transcript</span></span> and <span class="extract"><span class="extract-syntax">match glulxe transcript</span></span>,
+which are roughly the same as <span class="extract"><span class="extract-syntax">match text</span></span>, but display differences in a more
 contextual way. Details here would be tiresome: see the Intest source code.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>However, the <span class="extract"><span class="ConsoleText-extract-syntax">match</span></span> commands have a very useful side-effect if the test
-is being run by <span class="extract"><span class="ConsoleText-extract-syntax">-curse</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">-bless</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">-rebless</span></span> at the command line. If we
-are cursing, then <span class="extract"><span class="ConsoleText-extract-syntax">match text: A B</span></span> will delete <span class="extract"><span class="ConsoleText-extract-syntax">B</span></span>, the ideal form. If we
-are blessing, then <span class="extract"><span class="ConsoleText-extract-syntax">match text: A B</span></span> will copy <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> into <span class="extract"><span class="ConsoleText-extract-syntax">B</span></span>, thus declaring
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>However, the <span class="extract"><span class="extract-syntax">match</span></span> commands have a very useful side-effect if the test
+is being run by <span class="extract"><span class="extract-syntax">-curse</span></span>, <span class="extract"><span class="extract-syntax">-bless</span></span> or <span class="extract"><span class="extract-syntax">-rebless</span></span> at the command line. If we
+are cursing, then <span class="extract"><span class="extract-syntax">match text: A B</span></span> will delete <span class="extract"><span class="extract-syntax">B</span></span>, the ideal form. If we
+are blessing, then <span class="extract"><span class="extract-syntax">match text: A B</span></span> will copy <span class="extract"><span class="extract-syntax">A</span></span> into <span class="extract"><span class="extract-syntax">B</span></span>, thus declaring
 that the actual form this time should serve as ideal from now on.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b><span class="extract"><span class="ConsoleText-extract-syntax">match</span></span> is also just a little forgiving, in that it allows a few not quite
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b><span class="extract"><span class="extract-syntax">match</span></span> is also just a little forgiving, in that it allows a few not quite
 equal texts to "match" each other. In particular:
 </p>
 
-<p class="commentary">On a <span class="extract"><span class="ConsoleText-extract-syntax">match text: A B</span></span>, a line of A and a line of B will match even if they
-disagree about the decimal number appearing in a use of <span class="extract"><span class="ConsoleText-extract-syntax">/Tn/</span></span>, where <span class="extract"><span class="ConsoleText-extract-syntax">n</span></span>
+<p class="commentary">On a <span class="extract"><span class="extract-syntax">match text: A B</span></span>, a line of A and a line of B will match even if they
+disagree about the decimal number appearing in a use of <span class="extract"><span class="extract-syntax">/Tn/</span></span>, where <span class="extract"><span class="extract-syntax">n</span></span>
 is that number. For example, these two lines match:
 </p>
 
@@ -526,7 +580,7 @@ arrangements to ignore the exact build number of Inform when it leaks
 out into I7 console output or into story file transcripts.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>There is one other commonly used pass/fail command:
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Files and directories. </b>There is one other commonly used pass/fail command:
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">exists: F</span></span>. This passes if the file at <span class="extract"><span class="extract-syntax">F</span></span> exists on disc, and fails otherwise.
@@ -541,55 +595,28 @@ For example,
 way to see whether it worked or not is to see whether it produced any output.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>The <span class="extract"><span class="extract-syntax">debugger: ...</span></span> command is set out exactly like <span class="extract"><span class="extract-syntax">step: ...</span></span>, but runs
-only when the test is being run by the <span class="extract"><span class="extract-syntax">-debug</span></span> action. This is then used to
-trigger the <span class="extract"><span class="extract-syntax">lldb</span></span> debugger; see the Inform 7 test recipe for more.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>These are the three main "stopping commands", which do cause the test to halt:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">pass: 'NOTE'</span></span>. Stops the test and marks it a success. The text <span class="extract"><span class="extract-syntax">'NOTE'</span></span>
-is optional, and is a summary used when Intest prints its results.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">fail: 'NOTE'</span></span>. Stops the test and marks it a failure. The text <span class="extract"><span class="extract-syntax">'NOTE'</span></span>
-is optional, and is a summary used when Intest prints its results.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">or: 'NOTE' FILE</span></span>. If the step performed immediately before this line
-failed, this stops the whole test and marks it as a failure. The <span class="extract"><span class="extract-syntax">FILE</span></span>,
-which is optional, is then printed out when Intest describes what went
-wrong. For example:
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>In addition, Delia has a very limited ability to write to the file system itself:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'dc produced an error'</span>
+<span class="reserved-syntax">    copy</span><span class="plain-syntax">: FROM TO</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>But there are actually a few others:
+<p class="commentary">copies a file. This should only be used to copy into the work area <span class="extract"><span class="extract-syntax">$WORK</span></span>.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">show F</span></span>. Stops the test and prints out the file <span class="extract"><span class="extract-syntax">F</span></span>, but only if the test
-is being run by the <span class="extract"><span class="extract-syntax">-show</span></span> command: otherwise, does nothing and carries on.
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    mkdir</span><span class="plain-syntax">: PATH</span>
+</pre>
+<p class="commentary">ensures the existence of directory at the given <span class="extract"><span class="extract-syntax">PATH</span></span>. (Again, this should
+be used only to make subdirectories of <span class="extract"><span class="extract-syntax">$WORK</span></span>.)
 </p>
 
-<p class="commentary">This is how we implement the <span class="extract"><span class="extract-syntax">-show</span></span> command-line feature of Intest. Typically,
-it's used to show the full console output from the program being tested. For
-Inform testing only, there's a related:
+<p class="commentary">There is intentionally no deletion command. You could fake this easily with
+<span class="extract"><span class="extract-syntax">step: rm ...</span></span>, but don't try to clean up the work area yourself: Intest will
+handle that automatically.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">show i6: F</span></span>. The same, but for the <span class="extract"><span class="extract-syntax">-show-i6</span></span> command instead of <span class="extract"><span class="extract-syntax">-show</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">show transcript: F</span></span>. The same, but for the <span class="extract"><span class="extract-syntax">-show-t</span></span> command instead of <span class="extract"><span class="extract-syntax">-show</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">show:</span></span>, <span class="extract"><span class="extract-syntax">show i6:</span></span> and <span class="extract"><span class="extract-syntax">show transcript:</span></span> all fail if the file <span class="extract"><span class="extract-syntax">F</span></span> does not
-exist, but this possibility can be picked up by placing an <span class="extract"><span class="extract-syntax">or:</span></span> after them.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>As noted above, Delia has no loops. But it does have one control construct:
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Conditionals. </b>As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.
 </p>
 
@@ -622,32 +649,48 @@ expression. That can be just a simple textual match:
 syntax for "one or more digits here".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>An alternative condition is <span class="extract"><span class="extract-syntax">if exists: FILE</span></span>, which is true if the named
-file exists. This can allow for certain checks to be performed only where
+<p class="commentary">The regular expression syntax here is a slightly non-standard one used in
+the Inform tools, and it's not intended for anything elaborate. <span class="extract"><span class="extract-syntax">%C</span></span>
+matches any non-whitespace character, <span class="extract"><span class="extract-syntax">%c</span></span> any character, <span class="extract"><span class="extract-syntax">[abc]</span></span> matches
+any of the characters <span class="extract"><span class="extract-syntax">a</span></span>, <span class="extract"><span class="extract-syntax">b</span></span> or <span class="extract"><span class="extract-syntax">c</span></span>, <span class="extract"><span class="extract-syntax">+</span></span> means "one or more", <span class="extract"><span class="extract-syntax">*</span></span> means
+"0 or more", but look out for the fact that a space means "any amount
+of whitespace".
+</p>
+
+<p class="commentary">Moreover, if the <span class="extract"><span class="extract-syntax">EXPRESSION</span></span> is quoted, the quotes are removed again
+before the test is performed. Thus:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> 'More Balloons'</span>
+</pre>
+<p class="commentary">then <span class="extract"><span class="extract-syntax">$CASE</span></span> is tested against the text <span class="extract"><span class="extract-syntax">More Balloons</span></span>, not <span class="extract"><span class="extract-syntax">'More Balloons'</span></span>.
+Similarly,
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> ''</span>
+</pre>
+<p class="commentary">tests if <span class="extract"><span class="extract-syntax">$CASE</span></span> is the empty text.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>An alternative condition is <span class="extract"><span class="extract-syntax">if exists: FILE</span></span> tests if the named file
+exists. This can allow for certain checks to be performed only where
 there is something to check against, for example.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>That's all of the important commands covered, but Delia has a small
-miscellany of other features. It has a very limited ability to write to
-the file system itself:
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b><span class="extract"><span class="extract-syntax">ifdef: $NAME</span></span> is true if and only if the local variable <span class="extract"><span class="extract-syntax">$NAME</span></span> exists.
+Note that this will pass if <span class="extract"><span class="extract-syntax">$NAME</span></span> has the empty text has its value, i.e.,
+is currently blank: it will only fail if the variable has never been created.
+Note also that some variables are automatically created before the recipe
+even begins &mdash; see above.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    copy</span><span class="plain-syntax">: FROM TO</span>
-</pre>
-<p class="commentary">copies a file. This should only be used to copy into the work area <span class="extract"><span class="extract-syntax">$WORK</span></span>.
+<p class="commentary"><span class="extract"><span class="extract-syntax">ifndef: $NAME</span></span> is the usual opposite of this, i.e., it is true if and only
+if <span class="extract"><span class="extract-syntax">$NAME</span></span> has never been created.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    mkdir</span><span class="plain-syntax">: PATH</span>
-</pre>
-<p class="commentary">ensures the existence of directory at the given <span class="extract"><span class="extract-syntax">PATH</span></span>. (Again, this should
-be used only to make subdirectories of <span class="extract"><span class="extract-syntax">$WORK</span></span>.) There is intentionally no
-<span class="extract"><span class="extract-syntax">rm</span></span> command. You could fake this easily with <span class="extract"><span class="extract-syntax">step: rm ...</span></span>, but don't
-try to clean up the work area yourself: Intest will handle that automatically.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Suppose the program to be tested produces output which takes a long time
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>Suppose the program to be tested produces output which takes a long time
 to verify the correctness of. (This is the case for Inform 7, because its
 output needs to be fed through Inform 6 and then executed in a virtual
 machine before any results can be seen. Both steps take a second or so,
@@ -698,7 +741,7 @@ Besides being written to the file, the hash value is also stored in the
 local variable <span class="extract"><span class="extract-syntax">$HASHCODE</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>And finally, a great convenience for testing Inform 7, but useless for
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>And finally, a great convenience for testing Inform 7, but useless for
 anything else:
 </p>
 
@@ -710,7 +753,7 @@ in question, <span class="extract"><span class="extract-syntax">Z</span></span> 
 automatically written into the local variable <span class="extract"><span class="extract-syntax">$SCRIPT</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
 locale differences meant that some tests weren't portable between MacOS and
 Windows. The issue was that the console environment (i.e., the standard
 output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1
@@ -762,7 +805,7 @@ to the given locale. So:
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="M-iatcl.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresssection"><a href="M-iatcl.html">iatcl</a></li><li class="progresscurrent">wir</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="M-tuoc.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresssection"><a href="M-iatcl.html">iatcl</a></li><li class="progresssection"><a href="M-tuoc.html">tuoc</a></li><li class="progresscurrent">wir</li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="M-rc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>
