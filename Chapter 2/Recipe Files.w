@@ -202,6 +202,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 
 @<Act on a case type choice@> =
 	if (Str::eq(opt, I"-extension")) { t = EXTENSION_SPT; continue; }
+	else if (Str::eq(opt, I"-annotated-extension")) { t = EXTENSION_SPT; continue; }
 	else if (Str::eq(opt, I"-case")) { t = CASE_SPT; continue; }
 	else if (Str::eq(opt, I"-annotated-case")) { t = ANNOTATED_CASE_SPT; continue; }
 	else if (Str::eq(opt, I"-problem")) { t = PROBLEM_SPT; continue; }
@@ -210,6 +211,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 	else if (Str::eq(opt, I"-annotated-example")) { t = EXAMPLE_SPT; continue; }
 
 	else if (Str::eq(opt, I"-extensions")) { t = EXTENSION_SPT; multiple = TRUE; continue; }
+	else if (Str::eq(opt, I"-annotated-extensions")) { t = EXTENSION_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-cases")) { t = CASE_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-annotated-cases")) { t = ANNOTATED_CASE_SPT; multiple = TRUE; continue; }
 	else if (Str::eq(opt, I"-problems")) { t = PROBLEM_SPT; multiple = TRUE; continue; }
@@ -218,6 +220,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 	else if (Str::eq(opt, I"-annotated-examples")) { t = EXAMPLE_SPT; multiple = TRUE; continue; }
 
 	else if (Str::eq(opt, I"-possible-extension")) { t = EXTENSION_SPT; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-annotated-extension")) { t = EXTENSION_SPT; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-case")) { t = CASE_SPT; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-annotated-case")) { t = ANNOTATED_CASE_SPT; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-problem")) { t = PROBLEM_SPT; allowed_not_to_exist = TRUE; continue; }
@@ -226,6 +229,7 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 	else if (Str::eq(opt, I"-possible-annotated-example")) { t = EXAMPLE_SPT; allowed_not_to_exist = TRUE; continue; }
 
 	else if (Str::eq(opt, I"-possible-extensions")) { t = EXTENSION_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
+	else if (Str::eq(opt, I"-possible-annotated-extensions")) { t = EXTENSION_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-cases")) { t = CASE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-annotated-cases")) { t = ANNOTATED_CASE_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }
 	else if (Str::eq(opt, I"-possible-problems")) { t = PROBLEM_SPT; multiple = TRUE; allowed_not_to_exist = TRUE; continue; }

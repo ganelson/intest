@@ -206,6 +206,11 @@ text to show deletions and insertions when displaying differences.
 the standard output. (Unlike make, Intest is by default silent.)
 </p>
 
+<p class="commentary"><span class="extract"><span class="extract-syntax">-set VAR=VALUE</span></span> creates the global variable <span class="extract"><span class="extract-syntax">$$VAR</span></span> and sets it to <span class="extract"><span class="extract-syntax">VALUE</span></span>.
+The variable name <span class="extract"><span class="extract-syntax">VAR</span></span> must contain only upper-case letters, digits or
+underscores.
+</p>
+
 <p class="commentary"><span class="extract"><span class="extract-syntax">-threads=N</span></span> tells Intest to use up to <span class="extract"><span class="extract-syntax">N</span></span> independent threads, with one test
 at a time running on each thread. Experience shows that setting <span class="extract"><span class="extract-syntax">N</span></span> to be
 the number of processor cores you have, doubling if you have hyperthreading,
@@ -233,12 +238,12 @@ named test cases available, and work out which recipe to use with each.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -using PROJECT/Tests/PROJECT.intest</span>
 </pre>
-<p class="commentary">You can alternatively say <span class="extract"><span class="extract-syntax">-using R</span></span> for any recipe file <span class="extract"><span class="extract-syntax">R</span></span>, which need not
+<p class="commentary">You can alternatively say <span class="extract"><span class="extract-syntax">-using R</span></span> for any intest file <span class="extract"><span class="extract-syntax">R</span></span>, which need not
 be in the project folder.
 </p>
 
 <p class="commentary">It is also possible, though seldom useful, to give your recipe instructions
-at the command line and not in a recipe file at all. Newcomers to Intest
+at the command line and not in an intest file at all. Newcomers to Intest
 should simply skip the following discussion, but:
 </p>
 
@@ -246,30 +251,7 @@ should simply skip the following discussion, but:
 <span class="plain-syntax">    -using USE1 USE2 ... USEn</span>
 </pre>
 <p class="commentary">can instead be a list of use commands, some of a single token, some of
-two or more. These can be:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">-if P</span></span>, where <span class="extract"><span class="extract-syntax">P</span></span> is a platform name, such as "windows". Act on the
-succeeding use commands only if the platform is <span class="extract"><span class="extract-syntax">P</span></span>.
-</li><li>(b) <span class="extract"><span class="extract-syntax">-endif</span></span>. Go back to always acting on use commands.
-</li><li>(c) <span class="extract"><span class="extract-syntax">-set VAR VALUE</span></span>. Set the given variable to the given value.
-</li><li>(d) <span class="extract"><span class="extract-syntax">-groups PATH</span></span>. Sets the groups directory to the given pathname;
-failing which, any <span class="extract"><span class="extract-syntax">.testgroup</span></span> files (see below) are looked for in the
-currently selected directory.
-</li><li>(e) <span class="extract"><span class="extract-syntax">[NAME]</span></span>. Sets the test recipe to be used for the cases about to be
-discovered. All recipe names are in square brackets; the default is just
-<span class="extract"><span class="extract-syntax">[Recipe]</span></span>.
-</li><li>(f) A choice of test case type: <span class="extract"><span class="extract-syntax">-extension</span></span>, <span class="extract"><span class="extract-syntax">-case</span></span>, <span class="extract"><span class="extract-syntax">-problem</span></span>, <span class="extract"><span class="extract-syntax">-map</span></span>
-or <span class="extract"><span class="extract-syntax">-example</span></span>. This indicates that the next run of tokens will be
-filenames of individual test cases of that type.
-</li><li>(g) A pluralised choice of these: <span class="extract"><span class="extract-syntax">-extensions</span></span>, <span class="extract"><span class="extract-syntax">-cases</span></span>, <span class="extract"><span class="extract-syntax">-problems</span></span>,
-<span class="extract"><span class="extract-syntax">-maps</span></span> or <span class="extract"><span class="extract-syntax">-examples</span></span>. This indicates that the next run of tokens will be
-pathnames of directories holding multiple test cases of that type.
-</li><li>(h) A filename or directory name. Look here for test cases of the current
-type, and assign them the current recipe.
-</li></ul>
-<p class="commentary">(Test types, and what it means to scan a directory for test cases, will be
-gone into in the next section.)
+two or more. In effect, those are lines in an intest file.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Doing. </b>The "doing" part of an Intest command is usually a list of test cases to

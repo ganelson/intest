@@ -228,9 +228,7 @@ of one to four asterisks, rating the example by difficulty, and then a title.
 examples come from Inform documentation.)
 </p>
 
-<p class="commentary">It does not really make sense for an extension to be "annotated". Extensions
-are, for our purposes, clusters of other test cases, which can individually
-be annotated or not (though we expect they will be).
+<p class="commentary">Similarly, all cases arising from extensions are "annotated".
 </p>
 
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Declaring the test cases. </b>A recipe file normally begins by declaring where all the cases live:
@@ -245,11 +243,11 @@ in this directory a test case of type "case". Similarly for <span class="extract
 <span class="extract"><span class="extract-syntax">-examples</span></span>, <span class="extract"><span class="extract-syntax">-extensions</span></span>.
 </p>
 
-<p class="commentary">These create unannotated cases. To make annotated ones, use <span class="extract"><span class="extract-syntax">-annotated-case</span></span>,
-<span class="extract"><span class="extract-syntax">-annotated-problem</span></span>, <span class="extract"><span class="extract-syntax">-annotated-example</span></span> or their plurals. (Note that
-<span class="extract"><span class="extract-syntax">-annotated-extension</span></span> is not possible: an extension contains cases and
-examples which can themselves be annotated, but it makes no sense for an
-extension itself to be.)
+<p class="commentary"><span class="extract"><span class="extract-syntax">-case</span></span> and <span class="extract"><span class="extract-syntax">-problem</span></span> create unannotated cases and problems: to make
+annotated ones, use <span class="extract"><span class="extract-syntax">-annotated-case</span></span> and <span class="extract"><span class="extract-syntax">-annotated-problem</span></span>. Similarly
+for their plurals. Intest also recognises <span class="extract"><span class="extract-syntax">-annotated-example</span></span> and <span class="extract"><span class="extract-syntax">-annotated-extension</span></span>,
+but since tests from examples or extensions are always annotated anyway, this
+doesn't change matters.
 </p>
 
 <p class="commentary">As a final variation, note that Intest will ordinarily throw an error if

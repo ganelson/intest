@@ -89,7 +89,12 @@ kits for Inform: it then holds the path to the directory or "nest" of resources
 from which the extension or kit seems to be drawn.
 
 Other global variables may have been created using |-set| in the intest
-file (or at the command line): see //The Universe of Cases//.
+file, for which see //The Universe of Cases//, or at the command line.
+For example,
+= (text as ConsoleText)
+	$ ../intest/Tangled/intest inform7 -set WORD=plugh all
+=
+runs the tests for |inform7| with the global variable |$$WORD| set to |plugh|.
 
 @ For the most part, a Delia recipe can create its own local variables quite
 freely, but it doesn't begin with a completely blank slate. As it starts:
@@ -324,22 +329,39 @@ A test therefore flows from top to bottom of the recipe, perhaps skipping some
 stages because of conditionals. But it doesn't always get to the bottom, because
 a multi-stage test can end early for several reasons.
 
-The following "stopping commands" are the main ways a test can halt:
+One way a test can halt is if it runs into one of the "stopping commands":
 
 |pass: 'NOTE'|. Stops the test and marks it a success. The text |'NOTE'|
 is optional, and is a summary used when Intest prints its results.
 
-|fail: 'NOTE'|. Stops the test and marks it a failure. The text |'NOTE'|
-is optional, and is a summary used when Intest prints its results.
+|fail: 'NOTE' FILE|. Stops the test and marks it a failure. The text |'NOTE'|
+is optional, and is a summary used when Intest prints its results. The |FILE|,
+which is also optional, is then printed out when Intest describes what went
+wrong.
+
+But tests can also halt because one of its steps or matches fails. For example,
+perhaps a test needs to run a C compiler as a step, and this unexpectedly
+produces error messages rather than compiling. When that happens, a test
+will usually stop immediately and will be marked as a failure. However:
 
 |or: 'NOTE' FILE|. If the step or match performed immediately before this line
-failed, this stops the whole test and marks it as a failure. The |FILE|,
-which is optional, is then printed out when Intest describes what went
-wrong. For example:
+failed, the failure message |'NOTE'| is used. The |FILE|, which is optional,
+is then printed out when Intest describes what went wrong. For example:
 = (text as Delia)
 	step: dc -e $EXPRESSION
 	or: 'dc produced an error'
 =
+
+More generally, the conditional |iffail:| can be used, which causes the rest
+to continue despite the failure of a step. In fact, that last example is
+equivalent to:
+= (text as Delia)
+	step: dc -e $EXPRESSION
+	iffail:
+		fail: 'dc produced an error'
+	endif
+=
+|iffail:| can thus be used to send tests down differing paths if steps fail.
 
 @ Control also stops, with a pass for the test, if it runs into a |show: ...|
 command of the right sort when the tester is looking for that. For example,
@@ -551,6 +573,32 @@ even begins -- see above.
 
 |ifndef: $NAME| is the usual opposite of this, i.e., it is true if and only
 if |$NAME| has never been created.
+
+@ As we have seen, |iffail:| is true if and only if the previous step or
+match failed, and |ifpass:| is similarly defined. (Note that these cause
+execution to continue where it otherwise would not.)
+
+@ |if showing: ITEM| is true if and only if the test is being run with
+the action |-show-ITEM|. This is useful if you want a recipe to make it
+possible to show some elaborate intermediate data which is usually not
+needed at all: with |if showing:|, you can have that data created only
+when somebody wants to see it.
+
+@ |if compatible: FORMAT COMPATIBILITY| is true if and only if the
+Inform platform text |FORMAT| matches the compatibility text |COMPATIBILITY|.
+For example:
+= (text as Delia)
+	if compatible: inform6/32 'Glulx only'
+=
+will be true. This is meaningful only when testing Inform, of course.
+Errors are generated if either |FORMAT| or |COMPATIBILITY| is malformed.
+
+@ |if format valid: FORMAT| is true if and only if |FORMAT| is a valid
+Inform platform text. For example:
+= (text as Delia)
+	if format valid: Python/gil
+=
+is currently not true.
 
 @ Suppose the program to be tested produces output which takes a long time
 to verify the correctness of. (This is the case for Inform 7, because its

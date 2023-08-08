@@ -135,6 +135,10 @@ text to show deletions and insertions when displaying differences.
 |-verbose| and |-no-verbose| turn on or off the echoing of shell commands to
 the standard output. (Unlike make, Intest is by default silent.)
 
+|-set VAR=VALUE| creates the global variable |$$VAR| and sets it to |VALUE|.
+The variable name |VAR| must contain only upper-case letters, digits or
+underscores.
+
 |-threads=N| tells Intest to use up to |N| independent threads, with one test
 at a time running on each thread. Experience shows that setting |N| to be
 the number of processor cores you have, doubling if you have hyperthreading,
@@ -156,46 +160,17 @@ This is because the default |-using| setting is
 = (text)
 	-using PROJECT/Tests/PROJECT.intest
 =
-You can alternatively say |-using R| for any recipe file |R|, which need not
+You can alternatively say |-using R| for any intest file |R|, which need not
 be in the project folder.
 
 It is also possible, though seldom useful, to give your recipe instructions
-at the command line and not in a recipe file at all. Newcomers to Intest
+at the command line and not in an intest file at all. Newcomers to Intest
 should simply skip the following discussion, but:
 = (text)
 	-using USE1 USE2 ... USEn
 =
 can instead be a list of use commands, some of a single token, some of
-two or more. These can be:
-
-(a) |-if P|, where |P| is a platform name, such as "windows". Act on the
-succeeding use commands only if the platform is |P|.
-
-(b) |-endif|. Go back to always acting on use commands.
-
-(c) |-set VAR VALUE|. Set the given variable to the given value. 
-
-(d) |-groups PATH|. Sets the groups directory to the given pathname;
-failing which, any |.testgroup| files (see below) are looked for in the
-currently selected directory.
-
-(e) |[NAME]|. Sets the test recipe to be used for the cases about to be
-discovered. All recipe names are in square brackets; the default is just
-|[Recipe]|.
-
-(f) A choice of test case type: |-extension|, |-case|, |-problem|, |-map|
-or |-example|. This indicates that the next run of tokens will be
-filenames of individual test cases of that type.
-
-(g) A pluralised choice of these: |-extensions|, |-cases|, |-problems|,
-|-maps| or |-examples|. This indicates that the next run of tokens will be
-pathnames of directories holding multiple test cases of that type.
-
-(h) A filename or directory name. Look here for test cases of the current
-type, and assign them the current recipe.
-
-(Test types, and what it means to scan a directory for test cases, will be
-gone into in the next section.)
+two or more. In effect, those are lines in an intest file.
 
 @h Doing.
 The "doing" part of an Intest command is usually a list of test cases to

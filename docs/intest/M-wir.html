@@ -36,7 +36,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">intest</a></li><li><a href="index.html#M">Manual</a></li><li><b>Writing Intest Recipes</b></li></ul></div>
 <p class="purpose">A guide to writing in Delia, Intest's recipe language.</p>
 
-<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. Writing Delia</a></li><li><a href="M-wir.html#SP2">&#167;2. Syntax and tokens</a></li><li><a href="M-wir.html#SP3">&#167;3. Variables</a></li><li><a href="M-wir.html#SP9">&#167;9. Expansion</a></li><li><a href="M-wir.html#SP16">&#167;16. Control flow</a></li><li><a href="M-wir.html#SP20">&#167;20. Steps</a></li><li><a href="M-wir.html#SP22">&#167;22. Matches</a></li><li><a href="M-wir.html#SP25">&#167;25. Files and directories</a></li><li><a href="M-wir.html#SP27">&#167;27. Conditionals</a></li><li><a href="M-wir.html#SP32">&#167;32. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. Writing Delia</a></li><li><a href="M-wir.html#SP2">&#167;2. Syntax and tokens</a></li><li><a href="M-wir.html#SP3">&#167;3. Variables</a></li><li><a href="M-wir.html#SP9">&#167;9. Expansion</a></li><li><a href="M-wir.html#SP16">&#167;16. Control flow</a></li><li><a href="M-wir.html#SP20">&#167;20. Steps</a></li><li><a href="M-wir.html#SP22">&#167;22. Matches</a></li><li><a href="M-wir.html#SP25">&#167;25. Files and directories</a></li><li><a href="M-wir.html#SP27">&#167;27. Conditionals</a></li><li><a href="M-wir.html#SP36">&#167;36. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Writing Delia. </b>Recipe definitions are written in a very simple mini-language called Delia,
 for reasons which English users of Intest will appreciate. Had Intest been
@@ -129,28 +129,35 @@ kits for Inform: it then holds the path to the directory or "nest" of resources
 from which the extension or kit seems to be drawn.
 </li></ul>
 <p class="commentary">Other global variables may have been created using <span class="extract"><span class="extract-syntax">-set</span></span> in the intest
-file (or at the command line): see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>.
+file, for which see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>, or at the command line.
+For example,
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">../intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -set</span><span class="ConsoleText-plain-syntax"> WORD=plugh all</span>
+</pre>
+<p class="commentary">runs the tests for <span class="extract"><span class="ConsoleText-extract-syntax">inform7</span></span> with the global variable <span class="extract"><span class="ConsoleText-extract-syntax">$$WORD</span></span> set to <span class="extract"><span class="ConsoleText-extract-syntax">plugh</span></span>.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>For the most part, a Delia recipe can create its own local variables quite
 freely, but it doesn't begin with a completely blank slate. As it starts:
 </p>
 
-<ul class="items"><li>(1) <span class="extract"><span class="extract-syntax">$CASE</span></span> is the name (not the title, if that differs) of the test case.
-</li><li>(2) <span class="extract"><span class="extract-syntax">$TITLE</span></span> is the title (not the name, if that differs) of the test case.
-</li><li>(3) <span class="extract"><span class="extract-syntax">$PATH</span></span> is the pathname to the directory which the test case is in.
-</li><li>(4) <span class="extract"><span class="extract-syntax">$TYPE</span></span> is the type of test case this is: <span class="extract"><span class="extract-syntax">case</span></span>, <span class="extract"><span class="extract-syntax">problem</span></span>, <span class="extract"><span class="extract-syntax">example</span></span>,
-<span class="extract"><span class="extract-syntax">extension</span></span>.
-</li><li>(5) <span class="extract"><span class="extract-syntax">$WORK</span></span> is the pathname of a directory set aside by Intest for any intermediate
+<ul class="items"><li>(1) <span class="extract"><span class="ConsoleText-extract-syntax">$CASE</span></span> is the name (not the title, if that differs) of the test case.
+</li><li>(2) <span class="extract"><span class="ConsoleText-extract-syntax">$TITLE</span></span> is the title (not the name, if that differs) of the test case.
+</li><li>(3) <span class="extract"><span class="ConsoleText-extract-syntax">$PATH</span></span> is the pathname to the directory which the test case is in.
+</li><li>(4) <span class="extract"><span class="ConsoleText-extract-syntax">$TYPE</span></span> is the type of test case this is: <span class="extract"><span class="ConsoleText-extract-syntax">case</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">problem</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">example</span></span>,
+<span class="extract"><span class="ConsoleText-extract-syntax">extension</span></span>.
+</li><li>(5) <span class="extract"><span class="ConsoleText-extract-syntax">$WORK</span></span> is the pathname of a directory set aside by Intest for any intermediate
 files we might need to produce during the test process &mdash; these must all be
 temporary files we can happily lose when the test is completed. The real
 usefulness of this comes when Intest is running a batch of tests across
 multiple threads, because those threads each need their own independent work
-area to avoid stepping on each other's feet. Provided the recipe uses <span class="extract"><span class="extract-syntax">$WORK</span></span>,
+area to avoid stepping on each other's feet. Provided the recipe uses <span class="extract"><span class="ConsoleText-extract-syntax">$WORK</span></span>,
 it never needs to think about this complication.
 </li><li>(6) If the Intest file specifies "stipulations" on the test case, those set
 local variables for it: see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>. In this example,
-the recipe <span class="extract"><span class="extract-syntax">[Reactor]</span></span> starts with the given settings of <span class="extract"><span class="extract-syntax">$TEMP</span></span> and <span class="extract"><span class="extract-syntax">$STATUS</span></span>.
+the recipe <span class="extract"><span class="ConsoleText-extract-syntax">[Reactor]</span></span> starts with the given settings of <span class="extract"><span class="ConsoleText-extract-syntax">$TEMP</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">$STATUS</span></span>.
 </li></ul>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'</span>
@@ -405,27 +412,48 @@ stages because of conditionals. But it doesn't always get to the bottom, because
 a multi-stage test can end early for several reasons.
 </p>
 
-<p class="commentary">The following "stopping commands" are the main ways a test can halt:
+<p class="commentary">One way a test can halt is if it runs into one of the "stopping commands":
 </p>
 
 <p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">pass: 'NOTE'</span></span>. Stops the test and marks it a success. The text <span class="extract"><span class="ConsoleText-extract-syntax">'NOTE'</span></span>
 is optional, and is a summary used when Intest prints its results.
 </p>
 
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">fail: 'NOTE'</span></span>. Stops the test and marks it a failure. The text <span class="extract"><span class="ConsoleText-extract-syntax">'NOTE'</span></span>
-is optional, and is a summary used when Intest prints its results.
+<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">fail: 'NOTE' FILE</span></span>. Stops the test and marks it a failure. The text <span class="extract"><span class="ConsoleText-extract-syntax">'NOTE'</span></span>
+is optional, and is a summary used when Intest prints its results. The <span class="extract"><span class="ConsoleText-extract-syntax">FILE</span></span>,
+which is also optional, is then printed out when Intest describes what went
+wrong.
+</p>
+
+<p class="commentary">But tests can also halt because one of its steps or matches fails. For example,
+perhaps a test needs to run a C compiler as a step, and this unexpectedly
+produces error messages rather than compiling. When that happens, a test
+will usually stop immediately and will be marked as a failure. However:
 </p>
 
 <p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">or: 'NOTE' FILE</span></span>. If the step or match performed immediately before this line
-failed, this stops the whole test and marks it as a failure. The <span class="extract"><span class="ConsoleText-extract-syntax">FILE</span></span>,
-which is optional, is then printed out when Intest describes what went
-wrong. For example:
+failed, the failure message <span class="extract"><span class="ConsoleText-extract-syntax">'NOTE'</span></span> is used. The <span class="extract"><span class="ConsoleText-extract-syntax">FILE</span></span>, which is optional,
+is then printed out when Intest describes what went wrong. For example:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span>
 <span class="reserved-syntax">    or</span><span class="plain-syntax">: 'dc produced an error'</span>
 </pre>
+<p class="commentary">More generally, the conditional <span class="extract"><span class="extract-syntax">iffail:</span></span> can be used, which causes the rest
+to continue despite the failure of a step. In fact, that last example is
+equivalent to:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span>
+<span class="reserved-syntax">    iffail</span><span class="plain-syntax">:</span>
+<span class="reserved-syntax">        fail</span><span class="plain-syntax">: 'dc produced an error'</span>
+<span class="reserved-syntax">    endif</span>
+</pre>
+<p class="commentary"><span class="extract"><span class="extract-syntax">iffail:</span></span> can thus be used to send tests down differing paths if steps fail.
+</p>
+
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Control also stops, with a pass for the test, if it runs into a <span class="extract"><span class="extract-syntax">show: ...</span></span>
 command of the right sort when the tester is looking for that. For example,
 suppose the command being used is:
@@ -690,7 +718,41 @@ even begins &mdash; see above.
 if <span class="extract"><span class="extract-syntax">$NAME</span></span> has never been created.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>Suppose the program to be tested produces output which takes a long time
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>As we have seen, <span class="extract"><span class="extract-syntax">iffail:</span></span> is true if and only if the previous step or
+match failed, and <span class="extract"><span class="extract-syntax">ifpass:</span></span> is similarly defined. (Note that these cause
+execution to continue where it otherwise would not.)
+</p>
+
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b><span class="extract"><span class="extract-syntax">if showing: ITEM</span></span> is true if and only if the test is being run with
+the action <span class="extract"><span class="extract-syntax">-show-ITEM</span></span>. This is useful if you want a recipe to make it
+possible to show some elaborate intermediate data which is usually not
+needed at all: with <span class="extract"><span class="extract-syntax">if showing:</span></span>, you can have that data created only
+when somebody wants to see it.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b><span class="extract"><span class="extract-syntax">if compatible: FORMAT COMPATIBILITY</span></span> is true if and only if the
+Inform platform text <span class="extract"><span class="extract-syntax">FORMAT</span></span> matches the compatibility text <span class="extract"><span class="extract-syntax">COMPATIBILITY</span></span>.
+For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    if compatible</span><span class="plain-syntax">: inform6/32 'Glulx only'</span>
+</pre>
+<p class="commentary">will be true. This is meaningful only when testing Inform, of course.
+Errors are generated if either <span class="extract"><span class="extract-syntax">FORMAT</span></span> or <span class="extract"><span class="extract-syntax">COMPATIBILITY</span></span> is malformed.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b><span class="extract"><span class="extract-syntax">if format valid: FORMAT</span></span> is true if and only if <span class="extract"><span class="extract-syntax">FORMAT</span></span> is a valid
+Inform platform text. For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    if format valid</span><span class="plain-syntax">: Python/gil</span>
+</pre>
+<p class="commentary">is currently not true.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b>Suppose the program to be tested produces output which takes a long time
 to verify the correctness of. (This is the case for Inform 7, because its
 output needs to be fed through Inform 6 and then executed in a virtual
 machine before any results can be seen. Both steps take a second or so,
@@ -741,7 +803,7 @@ Besides being written to the file, the hash value is also stored in the
 local variable <span class="extract"><span class="extract-syntax">$HASHCODE</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>And finally, a great convenience for testing Inform 7, but useless for
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>And finally, a great convenience for testing Inform 7, but useless for
 anything else:
 </p>
 
@@ -753,7 +815,7 @@ in question, <span class="extract"><span class="extract-syntax">Z</span></span> 
 automatically written into the local variable <span class="extract"><span class="extract-syntax">$SCRIPT</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
 locale differences meant that some tests weren't portable between MacOS and
 Windows. The issue was that the console environment (i.e., the standard
 output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1

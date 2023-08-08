@@ -178,9 +178,7 @@ of one to four asterisks, rating the example by difficulty, and then a title.
 (This exactly follows the format used by the "indoc" tool for Inform:
 examples come from Inform documentation.)
 
-It does not really make sense for an extension to be "annotated". Extensions
-are, for our purposes, clusters of other test cases, which can individually
-be annotated or not (though we expect they will be).
+Similarly, all cases arising from extensions are "annotated".
 
 @h Declaring the test cases.
 A recipe file normally begins by declaring where all the cases live:
@@ -192,11 +190,11 @@ Similarly for |-problem|, |-example|, |-extension|.
 in this directory a test case of type "case". Similarly for |-problems|,
 |-examples|, |-extensions|.
 
-These create unannotated cases. To make annotated ones, use |-annotated-case|,
-|-annotated-problem|, |-annotated-example| or their plurals. (Note that
-|-annotated-extension| is not possible: an extension contains cases and
-examples which can themselves be annotated, but it makes no sense for an
-extension itself to be.)
+|-case| and |-problem| create unannotated cases and problems: to make
+annotated ones, use |-annotated-case| and |-annotated-problem|. Similarly
+for their plurals. Intest also recognises |-annotated-example| and |-annotated-extension|,
+but since tests from examples or extensions are always annotated anyway, this
+doesn't change matters.
 
 As a final variation, note that Intest will ordinarily throw an error if
 it cannot find cases at the places named. If you don't want that, use the
