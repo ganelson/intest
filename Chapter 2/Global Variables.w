@@ -38,11 +38,25 @@ linked_list *Globals::all(void) {
 	return created_globals;
 }
 
+int Globals::exists(text_stream *name) {
+	if (Str::len(name) == 0) return FALSE;
+	TEMPORARY_TEXT(key)
+	if ((Str::get_at(name, 0) == '$') && (Str::get_at(name, 1) == '$')) {
+		Str::substr(key, Str::at(name, 2), Str::end(name));
+	} else {
+		Str::copy(key, name);
+	}
+	int found = FALSE;
+	if (Dictionaries::find(globals_dictionary, key)) found = TRUE;
+	DISCARD_TEXT(key)
+	return found;
+}
+
 @ Get is easy:
 
 =
 text_stream *Globals::get(text_stream *name) {
-	if (name == NULL) return NULL;
+	if (Str::len(name) == 0) return FALSE;
 	return Dictionaries::get_text(globals_dictionary, name);
 }
 

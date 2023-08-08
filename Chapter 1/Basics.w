@@ -17,6 +17,7 @@ the following are called:
 =
 void Basics::start(int argc, char **argv) {
 	Foundation::start(argc, argv);
+	ArchModule::start();
 	@<Declare new memory allocation reasons@>;
 	@<Declare new debugging log aspects@>;
 	@<Declare new writers and loggers@>;

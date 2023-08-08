@@ -19,7 +19,12 @@ set of commands, enumerated as follows.
 @e IF_RCOM
 @e IFDEF_RCOM
 @e IFNDEF_RCOM
+@e IFFAIL_RCOM
+@e IFPASS_RCOM
+@e IF_COMPATIBLE_RCOM
 @e IF_EXISTS_RCOM
+@e IF_FORMAT_VALID_RCOM
+@e IF_SHOWING_RCOM
 @e MATCH_BINARY_RCOM
 @e MATCH_FOLDER_RCOM
 @e MATCH_G_TRANSCRIPT_RCOM
@@ -54,13 +59,18 @@ recipe_command instruction_set[] = {
 	{ ENDIF_RCOM, L"endif", 0, FALSE, -1 },
 	{ EXISTS_RCOM, L"exists", 1, TRUE, 0 },
 	{ EXTRACT_RCOM, L"extract", 2, FALSE, 0 },
-	{ FAIL_RCOM, L"fail", 1, FALSE, 0 },
+	{ FAIL_RCOM, L"fail", -1, FALSE, 0 },
 	{ FAIL_STEP_RCOM, L"fail step", -1, TRUE, 0 },
 	{ HASH_RCOM, L"hash", 2, TRUE, 0 },
 	{ IF_RCOM, L"if", 2, FALSE, 1 },
 	{ IFDEF_RCOM, L"ifdef", 1, FALSE, 1 },
 	{ IFNDEF_RCOM, L"ifndef", 1, FALSE, 1 },
+	{ IFFAIL_RCOM, L"iffail", 0, FALSE, 1 },
+	{ IFPASS_RCOM, L"ifpass", 0, FALSE, 1 },
+	{ IF_COMPATIBLE_RCOM, L"if compatible", 2, FALSE, 1 },
 	{ IF_EXISTS_RCOM, L"if exists", 1, FALSE, 1 },
+	{ IF_FORMAT_VALID_RCOM, L"if format valid", 1, FALSE, 1 },
+	{ IF_SHOWING_RCOM, L"if showing", 1, FALSE, 1 },
 	{ MATCH_BINARY_RCOM, L"match binary", 2, TRUE, 0 },
 	{ MATCH_FOLDER_RCOM, L"match folder", 2, TRUE, 0 },
 	{ MATCH_G_TRANSCRIPT_RCOM, L"match glulxe transcript", 2, TRUE, 0 },
@@ -216,8 +226,11 @@ void Delia::compile_command(recipe *R, text_stream *text,
 			@<Make sure the set is well-formatted@>;
 		if ((rc->rc_code == IFDEF_RCOM) || (rc->rc_code == IFNDEF_RCOM))
 			@<Make sure the ifdef is well-formatted@>;
+		if ((rc->rc_code == IFPASS_RCOM) || (rc->rc_code == IFFAIL_RCOM))
+			@<Make sure the ifpass is well-formatted@>;
 		if (rc->rc_code == IF_RCOM) @<Make sure the if is well-formatted@>;
 		if (rc->rc_code == SHOW_RCOM) @<Make sure the show is well-formatted@>;
+		if (rc->rc_code == FAIL_RCOM) @<Make sure the fail is well-formatted@>;
 		R->conditional_nesting += rc->changes_nesting;
 		@<Make sure the conditional nesting is allowed@>;
 
@@ -295,13 +308,40 @@ void Delia::compile_command(recipe *R, text_stream *text,
 @<Make sure the ifdef is well-formatted@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
 	text_stream *K = first->token_text;
-	if (Str::get_first_char(K) == '$') {
+	if ((Str::get_at(K, 0) == '$') && (Str::get_at(K, 1) == '$')) {
+		/* leave this alone */
+	} else if (Str::get_at(K, 0) == '$') {
 		Str::delete_first_character(K);
 	} else {
 		TEMPORARY_TEXT(ERM)
 		WRITE_TO(ERM, "ifdef test '%S' doesn't begin with '$'", K);
 		Errors::in_text_file_S(ERM, tfp);
 		DISCARD_TEXT(ERM)
+		R->compilation_errors = TRUE;
+	}
+
+@<Make sure the ifpass is well-formatted@> =
+	if (LinkedLists::len(L->recipe_tokens) > 0) {
+		Errors::in_text_file_S(I"'ifpass' and 'iffail' do not take tokens", tfp);
+		R->compilation_errors = TRUE;
+	} else if (R->last_command == NULL) {
+		TEMPORARY_TEXT(ERM)
+		WRITE_TO(ERM, "'ifpass' or 'iffail' can't be the first command");
+		Errors::in_text_file_S(ERM, tfp);
+		DISCARD_TEXT(ERM)
+		R->compilation_errors = TRUE;
+	} else if (R->last_command->supports_or == FALSE) {
+		TEMPORARY_TEXT(ERM)
+		WRITE_TO(ERM, "'ifpass' or 'iffail' can't follow a '%w' command",
+			R->last_command->keyword);
+		Errors::in_text_file_S(ERM, tfp);
+		DISCARD_TEXT(ERM)
+		R->compilation_errors = TRUE;
+	}
+
+@<Make sure the fail is well-formatted@> =
+	if ((LinkedLists::len(L->recipe_tokens) == 0) || (LinkedLists::len(L->recipe_tokens) > 2)) {
+		Errors::in_text_file_S(I"'fail' takes either 1 or 2 tokens", tfp);
 		R->compilation_errors = TRUE;
 	}
 

@@ -21,6 +21,7 @@ OPTIONS are as follows:
 -no-history      don't use command history (default is -history)
 -internal=N X    use X as the internal Inform distribution resources
 -purge           delete any extraneous files from the intest workspace on disc
+-set X           set a global variable, e.g., -set '$$magic = XYZZY'
 -threads=N       use X independent threads to test
 -verbose         print out all shell commands issued (default is -no-verbose)
 

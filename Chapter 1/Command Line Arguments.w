@@ -21,6 +21,7 @@ command-line syntax is too complicated. Still, we register some switches
 and heading text in the normal Foundation way:
 
 @e PURGE_CLSW
+@e SET_CLSW
 @e HISTORY_CLSW
 @e COLOURS_CLSW
 @e VERBOSE_CLSW
@@ -45,6 +46,8 @@ and heading text in the normal Foundation way:
 
 	CommandLine::declare_switch(PURGE_CLSW, L"purge", 1,
 		L"delete any extraneous files from the intest workspace on disc");
+	CommandLine::declare_switch(SET_CLSW, L"set", 2,
+		L"set a global variable, e.g., -set '$$magic = XYZZY'");
 	CommandLine::declare_boolean_switch(HISTORY_CLSW, L"history", 1,
 		L"use command history", TRUE);
 	CommandLine::declare_boolean_switch(COLOURS_CLSW, L"colours", 1,
@@ -215,6 +218,17 @@ void Instructions::respond(int id, int val, text_stream *arg, void *state) {
 				Errors::fatal("that number of threads is unsupported");
 			args->threads_available = val;
 			return;
+		case SET_CLSW: {
+			match_results mr = Regexp::create_mr();
+			if (Regexp::match(&mr, arg, L" *([A-Z0-9_]+) *= *(%c*?) *")) {
+				Globals::create(Str::duplicate(mr.exp[0]));
+				Globals::set(Str::duplicate(mr.exp[0]), Str::duplicate(mr.exp[1]));
+			} else {
+				Errors::fatal("following -set should be 'NAME = VALUE'");
+			}
+			Regexp::dispose_of(&mr);
+			return;
+		}
 		case INTERNAL_CLSW: Globals::set(I"internal", arg);
 			return;
 	}

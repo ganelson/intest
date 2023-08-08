@@ -7,6 +7,7 @@ Version Name: The Remembering
 Version Number: 2.2.0
 
 Import: foundation
+Import: arch
 
 Manual
 	Introduction to Intest

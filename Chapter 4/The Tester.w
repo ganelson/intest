@@ -195,7 +195,7 @@ and it's one that we are always executing.
 			}
 		}
 		if (still_going) {
-			int show_made = FALSE;
+			int show_made = FALSE, last_step_passed = NOT_APPLICABLE;
 			recipe_line *L;
 			LOOP_OVER_LINKED_LIST(L, recipe_line, R->lines)
 				if (still_going) {
@@ -285,9 +285,29 @@ dictionary.
 			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
 			else @<Enter an execution block if a variable does not exist@>;
 			break;
+		case IFPASS_RCOM:
+			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
+			else @<Enter an execution block if the last command worked@>;
+			break;
+		case IFFAIL_RCOM:
+			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
+			else @<Enter an execution block if the last command did not work@>;
+			break;
+		case IF_SHOWING_RCOM:
+			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
+			else @<Enter an execution block if running this -show action@>;
+			break;
+		case IF_COMPATIBLE_RCOM:
+			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
+			else @<Enter an execution block if this VM is compatible@>;
+			break;
 		case IF_EXISTS_RCOM:
 			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
 			else @<Enter an execution block if a file exists@>;
+			break;
+		case IF_FORMAT_VALID_RCOM:
+			if (running == FALSE) ENTER_EXECUTION_BLOCK(FALSE)
+			else @<Enter an execution block if this VM exists@>;
 			break;
 		case ELSE_RCOM:
 			if (execution_state_sp <= 1) internal_error("else without if in recipe");
@@ -304,7 +324,12 @@ dictionary.
 			break;
 		case FAIL_RCOM:
 			if (running) {
-				still_going = FALSE; passed = FALSE; Delia::dequote_first_token(verdict, L);
+				still_going = FALSE; passed = FALSE; 
+				recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+				Str::clear(verdict);
+				Tester::expand(verdict, first, D);
+				recipe_token *second = ENTRY_IN_LINKED_LIST(1, recipe_token, L->recipe_tokens);
+				if (second) damning_evidence = Tester::extract_as_filename(second, D);
 			}
 			break;
 		case OR_RCOM: break;
@@ -332,14 +357,60 @@ dictionary.
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
 	text_stream *key = first->token_text;
 	int enter = FALSE;
-	if (Dictionaries::find(D, key) != NULL) enter = TRUE;
+	if ((Globals::exists(key)) || (Dictionaries::find(D, key) != NULL)) enter = TRUE;
 	ENTER_EXECUTION_BLOCK(enter);
 
 @<Enter an execution block if a variable does not exist@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
 	text_stream *key = first->token_text;
+	int enter = TRUE;
+	if ((Globals::exists(key)) || (Dictionaries::find(D, key) != NULL)) enter = FALSE;
+	ENTER_EXECUTION_BLOCK(enter);
+
+@<Enter an execution block if the last command worked@> =
 	int enter = FALSE;
-	if (Dictionaries::find(D, key) == NULL) enter = TRUE;
+	if (last_step_passed == TRUE) enter = TRUE;
+	ENTER_EXECUTION_BLOCK(enter);
+
+@<Enter an execution block if the last command did not work@> =
+	int enter = FALSE;
+	if (last_step_passed == FALSE) enter = TRUE;
+	ENTER_EXECUTION_BLOCK(enter);
+
+@<Enter an execution block if running this -show action@> =
+	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	text_stream *item = first->token_text;
+	int enter = FALSE;
+	if ((action_type == SHOW_ACTION) &&
+		(Str::eq_insensitive(action_details, item))) enter = TRUE;
+	ENTER_EXECUTION_BLOCK(enter);
+
+@<Enter an execution block if this VM is compatible@> =
+	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	recipe_token *second = ENTRY_IN_LINKED_LIST(1, recipe_token, L->recipe_tokens);
+	TEMPORARY_TEXT(A)
+	TEMPORARY_TEXT(B)
+	Tester::expand(A, first, D);
+	Tester::expand(B, second, D);
+	target_vm *VM = TargetVMs::find(A);
+	if (VM == NULL)
+		Errors::with_text("malformed compilation format: '%S'", A);
+	compatibility_specification *cs = Compatibility::from_text(B);
+	if (cs == NULL)
+		Errors::with_text("malformed compatibility text: '%S'", B);
+	int enter = FALSE;
+	if ((cs) && (VM) && (Compatibility::test(cs, VM))) enter = TRUE;
+	DISCARD_TEXT(A)
+	DISCARD_TEXT(B)
+	ENTER_EXECUTION_BLOCK(enter);
+
+@<Enter an execution block if this VM exists@> =
+	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	TEMPORARY_TEXT(A)
+	Tester::expand(A, first, D);
+	target_vm *VM = TargetVMs::find(A);
+	int enter = FALSE;
+	if (VM) enter = TRUE;
 	ENTER_EXECUTION_BLOCK(enter);
 
 @<Enter an execution block if a file exists@> =
@@ -348,6 +419,7 @@ dictionary.
 	ENTER_EXECUTION_BLOCK(TextFiles::exists(putative));
 
 @<Interpret an unconditional line@> =
+	last_step_passed = NOT_APPLICABLE;
 	switch (L->command_used->rc_code) {
 		case STEP_RCOM:               @<Carry out a step@>; break;
 		case DEBUGGER_RCOM:	          if (action_type == DEBUGGER_ACTION) @<Carry out a step@>; break;		
@@ -397,6 +469,7 @@ to be zero (for |step|) or non-zero (for |fail step|).
 				WRITE_TO(verdict, "step %d should have failed but didn't", no_step_commands);
 				passed = FALSE; still_going = FALSE;
 				@<Or...@>;
+				if (last_step_passed == FALSE) last_step_passed = TRUE;
 			}
 		} else {
 			if (rv != 0) {
@@ -421,6 +494,10 @@ one in the event of failure.
 		Delia::dequote_first_token(verdict, next_line);
 		recipe_token *second = ENTRY_IN_LINKED_LIST(1, recipe_token, next_line->recipe_tokens);
 		if (second) damning_evidence = Tester::extract_as_filename(second, D);
+	} else if ((next_line) &&
+		((next_line->command_used->rc_code == IFPASS_RCOM) ||
+			(next_line->command_used->rc_code == IFFAIL_RCOM))) {
+		still_going = TRUE; last_step_passed = FALSE;
 	}
 
 @h Variables.
