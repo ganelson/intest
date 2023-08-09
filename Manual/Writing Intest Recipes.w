@@ -615,33 +615,22 @@ case to perform one "hash", that is, reducing a text file to a hash code.
 These hash codes are then cached between runs of Intest, which always
 knows the last hash value found on a run of the test case which passed.
 
-All of that is accomplished with two global variable settings and one
-single command. Note that the two globals have to be set outside of Delia;
-they aren't dependent on any single test case. They are:
+This has to be enabled before use by setting |$$hash_cache| to the filename
+in which to stash hash values between runs. This can be done by
+writing |-set hash_cache FILE| in the intest file, where |FILE| is the filename.
 
-|-set hash_utility HASHPROGRAM|, which tells Intest what program to use
-in order to determine the hash: this is expected to behave like the Unix
-tool |md5|, in that the shell command |utility FILENAME| would print a
-hash code for the named file and then halt. But if all you want is an |md5|
-hash, there is no need to set this variable, because Intest has a built-in
-implementation of md5 and can use that instead.
-
-|-set hash_cache FILE|, which tells Intest where to store known-good hash
-values in between runs. If this is not set, hash values may be generated
-but are not cached, so that there is little benefit.
-
-|hash: FROM TO| takes a hash value of the file |FROM| and writes it into
-a (very short) file |TO|. This is a pass/fail command, which means that it
-can be followed by an |or:|, but perhaps unexpectedly, it fails if the
-checksum is the same as the last time this checksum was performed for the
-test case in question. That enables something like this:
+The Delia instruction |hash: FROM| does nothing unless the action is |-test|.
+This is a pass/fail command, which means that it can be followed by an |or:|,
+but perhaps unexpectedly, it fails if the checksum is the same as the last time
+this checksum was performed for the test case in question. That enables
+something like this:
 = (text as Delia)
 	hash: $I6SOURCE $WORK/checksum.txt
 	or: 'passed (matching cached I6 known to work)'
 =
 (Uniquely, the |or:| in this case causes the overall test to pass, not fail.)
-Besides being written to the file, the hash value is also stored in the
-local variable |$HASHCODE|.
+A side-effect here is that the hash value is also stored in the local variable
+|$HASHCODE|, which is why you can't create your own |$HASHCODE| variable.
 
 @ And finally, a great convenience for testing Inform 7, but useless for
 anything else:

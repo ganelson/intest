@@ -769,29 +769,16 @@ These hash codes are then cached between runs of Intest, which always
 knows the last hash value found on a run of the test case which passed.
 </p>
 
-<p class="commentary">All of that is accomplished with two global variable settings and one
-single command. Note that the two globals have to be set outside of Delia;
-they aren't dependent on any single test case. They are:
+<p class="commentary">This has to be enabled before use by setting <span class="extract"><span class="extract-syntax">$$hash_cache</span></span> to the filename
+in which to stash hash values between runs. This can be done by
+writing <span class="extract"><span class="extract-syntax">-set hash_cache FILE</span></span> in the intest file, where <span class="extract"><span class="extract-syntax">FILE</span></span> is the filename.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">-set hash_utility HASHPROGRAM</span></span>, which tells Intest what program to use
-in order to determine the hash: this is expected to behave like the Unix
-tool <span class="extract"><span class="extract-syntax">md5</span></span>, in that the shell command <span class="extract"><span class="extract-syntax">utility FILENAME</span></span> would print a
-hash code for the named file and then halt. But if all you want is an <span class="extract"><span class="extract-syntax">md5</span></span>
-hash, there is no need to set this variable, because Intest has a built-in
-implementation of md5 and can use that instead.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-set hash_cache FILE</span></span>, which tells Intest where to store known-good hash
-values in between runs. If this is not set, hash values may be generated
-but are not cached, so that there is little benefit.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">hash: FROM TO</span></span> takes a hash value of the file <span class="extract"><span class="extract-syntax">FROM</span></span> and writes it into
-a (very short) file <span class="extract"><span class="extract-syntax">TO</span></span>. This is a pass/fail command, which means that it
-can be followed by an <span class="extract"><span class="extract-syntax">or:</span></span>, but perhaps unexpectedly, it fails if the
-checksum is the same as the last time this checksum was performed for the
-test case in question. That enables something like this:
+<p class="commentary">The Delia instruction <span class="extract"><span class="extract-syntax">hash: FROM</span></span> does nothing unless the action is <span class="extract"><span class="extract-syntax">-test</span></span>.
+This is a pass/fail command, which means that it can be followed by an <span class="extract"><span class="extract-syntax">or:</span></span>,
+but perhaps unexpectedly, it fails if the checksum is the same as the last time
+this checksum was performed for the test case in question. That enables
+something like this:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -799,8 +786,8 @@ test case in question. That enables something like this:
 <span class="reserved-syntax">    or</span><span class="plain-syntax">: 'passed (matching cached I6 known to work)'</span>
 </pre>
 <p class="commentary">(Uniquely, the <span class="extract"><span class="extract-syntax">or:</span></span> in this case causes the overall test to pass, not fail.)
-Besides being written to the file, the hash value is also stored in the
-local variable <span class="extract"><span class="extract-syntax">$HASHCODE</span></span>.
+A side-effect here is that the hash value is also stored in the local variable
+<span class="extract"><span class="extract-syntax">$HASHCODE</span></span>, which is why you can't create your own <span class="extract"><span class="extract-syntax">$HASHCODE</span></span> variable.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>And finally, a great convenience for testing Inform 7, but useless for

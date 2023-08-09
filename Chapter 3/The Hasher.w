@@ -38,10 +38,9 @@ void Hasher::read_hash(text_stream *V, filename *F) {
 
 void Hasher::detect_hash(text_stream *line_text, text_file_position *tfp, void *vto) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L"%c*? = (%C+)%c*")) {
+	if (Regexp::match(&mr, line_text, L" *(%C+) *"))
 		Str::copy((text_stream *) vto, mr.exp[0]);
-		Regexp::dispose_of(&mr);
-	}
+	Regexp::dispose_of(&mr);
 }
 
 @h The hash cache.
@@ -61,8 +60,8 @@ void Hasher::detect_hashes(text_stream *line_text, text_file_position *tfp, void
 	if (Regexp::match(&mr, line_text, L"(%c*?) = (%C+)%c*")) {
 		test_case *tc = RecipeFiles::find_case(args, mr.exp[0]);
 		if (tc) Hasher::assign_to_case(tc, mr.exp[1]);
-		Regexp::dispose_of(&mr);
 	}
+	Regexp::dispose_of(&mr);
 }
 
 @ Once we've finished running, we may know new hashes; here we update the

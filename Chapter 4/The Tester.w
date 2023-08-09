@@ -822,28 +822,9 @@ checksum to the second-named file, and also remembering its value.
 @<Carry out a hash@> =
 	if (action_type == TEST_ACTION) {
 		recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
-		recipe_token *second = ENTRY_IN_LINKED_LIST(1, recipe_token, L->recipe_tokens);
 		filename *to_hash = Tester::extract_as_filename(first, D);
-		filename *checksum = Tester::extract_as_filename(second, D);
-		text_stream *hash_utility = Globals::get(I"hash_utility");
-		if (Str::len(hash_utility) > 0) {
-			TEMPORARY_TEXT(COMMAND)
-			Shell::plain_text(COMMAND, hash_utility);
-			Shell::plain(COMMAND, " ");
-			Shell::quote_file(COMMAND, to_hash);
-			Shell::redirect(COMMAND, checksum);
-			Shell::run(COMMAND);
-			DISCARD_TEXT(COMMAND)
-		} else {
-			text_stream TO_struct;
-			text_stream *TO = &TO_struct;
-			if (STREAM_OPEN_TO_FILE(TO, checksum, UTF8_ENC) == FALSE)
-				Errors::fatal_with_file("unable to write to file", checksum);
-			BinaryFiles::md5(TO, to_hash, NULL);
-			STREAM_CLOSE(TO);
-		}
 		TEMPORARY_TEXT(hash)
-		Hasher::read_hash(hash, checksum);
+		BinaryFiles::md5(hash, to_hash, NULL);
 		Tester::populate(D, I"HASHCODE", hash);
 		hash_value_written = TRUE;
 		if (Hasher::compare_hashes(tc, hash)) {

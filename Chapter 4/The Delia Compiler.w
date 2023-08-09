@@ -61,7 +61,7 @@ recipe_command instruction_set[] = {
 	{ EXTRACT_RCOM, L"extract", 2, FALSE, 0 },
 	{ FAIL_RCOM, L"fail", -1, FALSE, 0 },
 	{ FAIL_STEP_RCOM, L"fail step", -1, TRUE, 0 },
-	{ HASH_RCOM, L"hash", 2, TRUE, 0 },
+	{ HASH_RCOM, L"hash", 1, TRUE, 0 },
 	{ IF_RCOM, L"if", 2, FALSE, 1 },
 	{ IFDEF_RCOM, L"ifdef", 1, FALSE, 1 },
 	{ IFNDEF_RCOM, L"ifndef", 1, FALSE, 1 },
