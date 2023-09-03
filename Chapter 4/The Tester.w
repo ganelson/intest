@@ -139,7 +139,7 @@ and it's one that we are always executing.
 	WRITE_TO(recipe_name, "%S", tc->test_recipe_name);
 	int stipulating = FALSE;
 	for (int i=0; i<Str::len(tc->test_recipe_name); i++) {
-		wchar_t c = Str::get_at(tc->test_recipe_name, i);
+		inchar32_t c = Str::get_at(tc->test_recipe_name, i);
 		if (c == ':') {
 			if (stipulating == FALSE) {
 				Str::put_at(recipe_name, i, ']');
@@ -219,7 +219,7 @@ and it's one that we are always executing.
 @<Add a stipulation@> =
 	if (Str::len(stipulation) > 0) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, stipulation, L" *(%C+) *= *(%c*?) *")) {
+		if (Regexp::match(&mr, stipulation, U" *(%C+) *= *(%c*?) *")) {
 			text_stream *key = mr.exp[0];
 			text_stream *value = mr.exp[1];
 			Tester::populate(D, key, value);
@@ -345,7 +345,7 @@ dictionary.
 	TEMPORARY_TEXT(P)
 	Tester::expand(A, first, D);
 	Tester::expand(P, second, D);
-	wchar_t P_C_string[1024];
+	inchar32_t P_C_string[1024];
 	Str::copy_to_wide_string(P_C_string, P, 1024);
 	match_results mr = Regexp::create_mr();
 	ENTER_EXECUTION_BLOCK(Regexp::match(&mr, A, P_C_string));
@@ -979,7 +979,7 @@ void Tester::expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
 	TEMPORARY_TEXT(unsubstituted)
 	Str::copy(unsubstituted, original);
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, unsubstituted, L"(%c*)$$(%i+)(%c*)")) {
+	while (Regexp::match(&mr, unsubstituted, U"(%c*)$$(%i+)(%c*)")) {
 		Str::copy(unsubstituted, mr.exp[0]);
 		filename *F = Globals::to_filename(mr.exp[1]);
 		if (F) {
@@ -987,7 +987,7 @@ void Tester::expand(OUTPUT_STREAM, recipe_token *T, dictionary *D) {
 		}
 		WRITE_TO(unsubstituted, "%S", mr.exp[2]);
 	}
-	while (Regexp::match(&mr, unsubstituted, L"(%c*)$(%i+)(%c*)")) {
+	while (Regexp::match(&mr, unsubstituted, U"(%c*)$(%i+)(%c*)")) {
 		Str::copy(unsubstituted, mr.exp[0]);
 		text_stream *dv = Dictionaries::get_text(D, mr.exp[1]);
 		if (dv) WRITE_TO(unsubstituted, "%S", dv);
@@ -1029,7 +1029,7 @@ to standard output, but |2>'&1'| sends errors to a file literally called |&1|.
 
 @<Apply quotation marks as needed@> =
 	TEMPORARY_TEXT(quoted)
-	wchar_t c = Str::get_first_char(unquoted);
+	inchar32_t c = Str::get_first_char(unquoted);
 	int n = T->token_quoted;
 	if ((c == '>') || (c == '<')) { PUT(c); Str::delete_first_character(unquoted); }
 	else if ((Characters::isdigit(c)) && (Str::get_at(unquoted, 1) == '>')) {
@@ -1106,9 +1106,9 @@ void Tester::read_tokens(text_stream *line_text, text_file_position *tfp, void *
 @<Expand token from hash@> =
 	int z = NOT_APPLICABLE;
 	TEMPORARY_TEXT(name)
-	if (Str::begins_with_wide_string(unquoted, L"zmachine:")) {
+	if (Str::begins_with_wide_string(unquoted, U"zmachine:")) {
 		Str::substr(name, Str::at(unquoted, 9), Str::end(unquoted)); z = TRUE;
-	} else if (Str::begins_with_wide_string(unquoted, L"glulx:")) {
+	} else if (Str::begins_with_wide_string(unquoted, U"glulx:")) {
 		Str::substr(name, Str::at(unquoted, 6), Str::end(unquoted)); z = FALSE;
 	} else {
 		WRITE_TO(name, "%S", unquoted);

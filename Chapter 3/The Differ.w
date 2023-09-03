@@ -124,7 +124,7 @@ void Differ::print_edit_list_as_HTML(OUTPUT_STREAM, linked_list *L, text_stream 
 
 void Differ::print_fragment_as_HTML(OUTPUT_STREAM, text_stream *original) {
 	LOOP_THROUGH_TEXT(pos, original) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		switch (c) {
 			case '<': WRITE("&lt;"); break;
 			case '>': WRITE("&gt;"); break;
@@ -188,7 +188,7 @@ banner, followed by a diff of the after-texts.
 
 @<If both texts contain the Inform banner version line, diff around that@> =
 	match_results mr = Regexp::create_mr();
-	wchar_t *template = L"(%c*?)(Release %d+ / Serial number %d+ / Inform %c+?\n)%c*";
+	inchar32_t *template = U"(%c*?)(Release %d+ / Serial number %d+ / Inform %c+?\n)%c*";
 	if (Regexp::match(&mr, A, template)) {
 		string_position A_ver = Str::plus(A_from, Str::len(mr.exp[0])); /* at the R in "Release" */
 		string_position A_post = Str::plus(A_ver, Str::len(mr.exp[1])); /* after version line ends */
@@ -295,7 +295,7 @@ run of slashes from that point. As a result, |///| does not match |////|, but
 			(Str::index(B_after_prefix) < Str::index(B_to));
 		A_after_prefix = Str::forward(A_after_prefix),
 		B_after_prefix = Str::forward(B_after_prefix)) {
-			wchar_t a = Str::get(A_after_prefix), b = Str::get(B_after_prefix);
+			inchar32_t a = Str::get(A_after_prefix), b = Str::get(B_after_prefix);
 			if (a == b) continue;
 			if (((a == '/') && (b == '\\')) || ((a == '\\') && (b == '/'))) {
 				while ((Str::get(A_after_prefix) == '/') || (Str::get(A_after_prefix) == '\\')) 
@@ -345,7 +345,7 @@ of a whole word.
 		(Str::index(B_suffix) > Str::index(B_from));
 		A_suffix = Str::back(A_suffix),
 		B_suffix = Str::back(B_suffix)) {
-			wchar_t a = Str::get(Str::back(A_suffix)), b = Str::get(Str::back(B_suffix));
+			inchar32_t a = Str::get(Str::back(A_suffix)), b = Str::get(Str::back(B_suffix));
 			if (a == b) continue;
 			if (((a == '/') && (b == '\\')) || ((a == '\\') && (b == '/'))) {
 				while ((Str::get(Str::back(A_suffix)) == '/') || (Str::get(Str::back(A_suffix)) == '\\')) 
@@ -423,7 +423,7 @@ a version of |isalpha| which respects Unicode, or else the above algorithm
 will sometimes show edits mid-word at accented letters.
 
 =
-int Differ::boundary(wchar_t c, wchar_t d) {
+int Differ::boundary(inchar32_t c, inchar32_t d) {
 	if ((Characters::isalpha(c)) && (Characters::isalpha(d))) return FALSE;
 	return TRUE;
 }

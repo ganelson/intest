@@ -174,7 +174,7 @@ status line early in play. We don't want that.
 @<Read from plain text@> =
 	Skeins::new_node(sks, tfp->line_count+1, NULL, sks->detected_format);
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, line_text, L"(%c*?)[/\\]T%d+[/\\](%c*)")) {
+	while (Regexp::match(&mr, line_text, U"(%c*?)[/\\]T%d+[/\\](%c*)")) {
 		Str::clear(line_text);
 		WRITE_TO(line_text, "Txx/%S", mr.exp[1]);
 	}
@@ -245,7 +245,7 @@ file, |<item nodeId="...">| is what declares a node ID, and it's now easy
 to match for that:
 
 @<Extract the node ID, if this line declares one@> =
-	if (Regexp::match(&mr, line_text, L"<item nodeId=\"(%c*)\">"))
+	if (Regexp::match(&mr, line_text, U"<item nodeId=\"(%c*)\">"))
 		Str::copy(sks->current_node, mr.exp[0]);
 
 @ Sometimes the I7 app wants us to make a skein from the whole file, and
@@ -253,18 +253,18 @@ sometimes just from a single node in it. Either way, this is run when
 we are at a node whose contents we care about:
 
 @<We want this node@> =
-	if (Regexp::match(&mr, line_text, L"<command %c*>"))
+	if (Regexp::match(&mr, line_text, U"<command %c*>"))
 		Str::put_at(sks->next_label, 0, 1);
-	if ((Regexp::match(&mr, line_text, L"<result %c*>")) && (sks->actual_flag)) {
+	if ((Regexp::match(&mr, line_text, U"<result %c*>")) && (sks->actual_flag)) {
 		Skeins::new_node(sks, -1, sks->next_label, sks->detected_format);
 		return;
 	}
-	if ((Regexp::match(&mr, line_text, L"<commentary %c*>")) && (sks->actual_flag == FALSE)) {
+	if ((Regexp::match(&mr, line_text, U"<commentary %c*>")) && (sks->actual_flag == FALSE)) {
 		Skeins::new_node(sks, -1, sks->next_label, sks->detected_format);
 		return;
 	}
-	if ((Regexp::match(&mr, line_text, L"</result%c*>")) ||
-		(Regexp::match(&mr, line_text, L"</commentary%c*>"))) {
+	if ((Regexp::match(&mr, line_text, U"</result%c*>")) ||
+		(Regexp::match(&mr, line_text, U"</commentary%c*>"))) {
 		if (sks->writing_to) Skeins::flush(sks);
 		sks->writing_to = NULL;
 		return;
@@ -289,14 +289,14 @@ the problem name and label the Skein node with it.
 
 @<Read from Inform 7 console output@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L"Inform 7 has finished%c*")) {
+	if (Regexp::match(&mr, line_text, U"Inform 7 has finished%c*")) {
 		if (sks->writing_to) Skeins::flush(sks);
 		sks->writing_to = NULL;
 		Regexp::dispose_of(&mr);
 		return;
 	}
-	if (Regexp::match(&mr, line_text, L"%c*Offending filename%c*")) return;
-	if (Regexp::match(&mr, line_text, L"Problem__ (%c*)")) {
+	if (Regexp::match(&mr, line_text, U"%c*Offending filename%c*")) return;
+	if (Regexp::match(&mr, line_text, U"Problem__ (%c*)")) {
 		Skeins::new_node(sks, -1, mr.exp[0], sks->detected_format);
 		Regexp::dispose_of(&mr);
 		return;
@@ -305,20 +305,20 @@ the problem name and label the Skein node with it.
 
 @<Read from Inform 6 console output@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L"Inform %C%C%C%C (%C+ %C+ %C%C%C%C)")) {
+	if (Regexp::match(&mr, line_text, U"Inform %C%C%C%C (%C+ %C+ %C%C%C%C)")) {
 		if (sks->writing_to) Skeins::flush(sks);
 		sks->writing_to = NULL;
 		Regexp::dispose_of(&mr);
 		return;
 	}
-	if (Regexp::match(&mr, line_text, L"(%c*) %(%C+ seconds%) *")) {
+	if (Regexp::match(&mr, line_text, U"(%c*) %(%C+ seconds%) *")) {
 		Str::clear(line_text);
 		WRITE_TO(line_text, "%S", mr.exp[0]);
 	}
 	Regexp::dispose_of(&mr);
 
 @<Read from a Frotz transcript@> =
-	wchar_t la[6];
+	inchar32_t la[6];
 	Str::copy_to_wide_string(la, line_text, 6);
 	if ((tfp->line_count == 1) && (la[0] == 0)) return;
 	if ((tfp->line_count == 2) && (la[0] == 'E') &&
@@ -331,14 +331,14 @@ the problem name and label the Skein node with it.
 	if (la[0] == '>') return;
 
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L" %[quitting the game%]%c*")) {
+	if (Regexp::match(&mr, line_text, U" %[quitting the game%]%c*")) {
 		Regexp::dispose_of(&mr);
 		return;
 	}
 
 	if ((la[0] == ' ') && (la[1] == ' ') && (la[2] == '>') && (la[3] == '[')) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, line_text, L"%c%c%c%c%d+%] (%c+)")) {
+		if (Regexp::match(&mr, line_text, U"%c%c%c%c%d+%] (%c+)")) {
 			TEMPORARY_TEXT(label)
 			WRITE_TO(label, "reply to \"%S\"", mr.exp[0]);
 			Skeins::new_node(sks, -1, label, sks->detected_format);
@@ -360,25 +360,25 @@ the problem name and label the Skein node with it.
 	}
 
 @<Read from a Glulxe transcript@> =
-	wchar_t la[6];
+	inchar32_t la[6];
 	Str::copy_to_wide_string(la, line_text, 6);
 	if (sks->writing_to == NULL)
 		Skeins::new_node(sks, -1,
 			Str::new_from_ISO_string("opening text"), sks->detected_format);
 
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L">Are you sure you want to quit?%c*")) {
+	if (Regexp::match(&mr, line_text, U">Are you sure you want to quit?%c*")) {
 		Regexp::dispose_of(&mr);
 		return;
 	}
 
-	if (Regexp::match(&mr, line_text, L">%(Testing.%)%c*")) {
+	if (Regexp::match(&mr, line_text, U">%(Testing.%)%c*")) {
 		Regexp::dispose_of(&mr);
 		break;
 	}
 
 	if ((la[0] == '>') && (la[1] == '[') &&
-		(Regexp::match(&mr, line_text, L"%c%c%d+%] (%c+)"))) {
+		(Regexp::match(&mr, line_text, U"%c%c%d+%] (%c+)"))) {
 		TEMPORARY_TEXT(label)
 		WRITE_TO(label, "reply to \"%S\"", mr.exp[0]);
 		Skeins::new_node(sks, -1, label, sks->detected_format);
@@ -418,7 +418,7 @@ Otherwise, we simply add the new line to the current turn buffer.
 void Skeins::remove_XML_escapes(OUTPUT_STREAM, text_stream *F) {
 	int L = Str::len(F);
 	for (int i = 0; i < L; i++) {
-		wchar_t la[6];
+		inchar32_t la[6];
 		Str::copy_to_wide_string(la, F, 6);
 
 		if ((la[0] == '&') && (la[1] == 'l') && (la[2] == 't') && (la[3] == ';')) {

@@ -47,11 +47,11 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e TESTER_DA
 
 @<Declare new debugging log aspects@> =
-	Log::declare_aspect(VARIABLES_DA, L"variables", FALSE, FALSE);
-	Log::declare_aspect(INSTRUCTIONS_DA, L"instructions", FALSE, FALSE);
-	Log::declare_aspect(DIFFER_DA, L"differ", FALSE, FALSE);
-	Log::declare_aspect(HASHER_DA, L"hasher", FALSE, FALSE);
-	Log::declare_aspect(TESTER_DA, L"tester", FALSE, FALSE);
+	Log::declare_aspect(VARIABLES_DA, U"variables", FALSE, FALSE);
+	Log::declare_aspect(INSTRUCTIONS_DA, U"instructions", FALSE, FALSE);
+	Log::declare_aspect(DIFFER_DA, U"differ", FALSE, FALSE);
+	Log::declare_aspect(HASHER_DA, U"hasher", FALSE, FALSE);
+	Log::declare_aspect(TESTER_DA, U"tester", FALSE, FALSE);
 
 @h Writers and loggers.
 This enables the |%k| and |$L| format notations in |WRITE| and |LOG|

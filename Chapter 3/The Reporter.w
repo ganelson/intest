@@ -65,22 +65,22 @@ void Reporter::filter(text_stream *line_text, text_file_position *tfp, void *vrs
 	report_state *rs = vrs;
 	text_stream *OUT = rs->REPORT_TO;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L" <!--CONTENT BEGINS-->")) {
+	if (Regexp::match(&mr, line_text, U" <!--CONTENT BEGINS-->")) {
 		WRITE("<!--INTEST REPORT BEGINS-->\n");
 		rs->stage = 2;
 	}
-	else if (Regexp::match(&mr, line_text, L" <!--BANNER BEGINS-->")) rs->stage = 3;
-	else if (Regexp::match(&mr, line_text, L" <!--HEADING BEGINS-->")) {
+	else if (Regexp::match(&mr, line_text, U" <!--BANNER BEGINS-->")) rs->stage = 3;
+	else if (Regexp::match(&mr, line_text, U" <!--HEADING BEGINS-->")) {
 		rs->stage = 4;
 		@<Insert test report header@>;
-	} else if (Regexp::match(&mr, line_text, L" <!--HEADING ENDS-->")) rs->stage = 5;
-	else if (Regexp::match(&mr, line_text, L" <!--BANNER ENDS-->")) rs->stage = 6;
-	else if (Regexp::match(&mr, line_text, L" <!--PROBLEMS BEGIN-->")) {
+	} else if (Regexp::match(&mr, line_text, U" <!--HEADING ENDS-->")) rs->stage = 5;
+	else if (Regexp::match(&mr, line_text, U" <!--BANNER ENDS-->")) rs->stage = 6;
+	else if (Regexp::match(&mr, line_text, U" <!--PROBLEMS BEGIN-->")) {
 		rs->stage = 7;
 		@<Insert additional material@>;
 	}
-	else if (Regexp::match(&mr, line_text, L" <!--PROBLEMS END-->")) rs->stage = 8;
-	else if (Regexp::match(&mr, line_text, L" <!--CONTENT ENDS-->")) {
+	else if (Regexp::match(&mr, line_text, U" <!--PROBLEMS END-->")) rs->stage = 8;
+	else if (Regexp::match(&mr, line_text, U" <!--CONTENT ENDS-->")) {
 		rs->stage = 9;
 		@<Insert test report footer@>;
 		WRITE("<!--INTEST REPORT ENDS-->\n");
@@ -230,8 +230,8 @@ void Reporter::combine_filter(text_stream *line_text, text_file_position *tfp, v
 	report_state *rs = vrs;
 	text_stream *OUT = rs->REPORT_TO;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L"<!--INTEST REPORT BEGINS-->")) rs->stage = 2;
-	else if (Regexp::match(&mr, line_text, L"<!--INTEST REPORT ENDS-->")) rs->stage = 3;
+	if (Regexp::match(&mr, line_text, U"<!--INTEST REPORT BEGINS-->")) rs->stage = 2;
+	else if (Regexp::match(&mr, line_text, U"<!--INTEST REPORT ENDS-->")) rs->stage = 3;
 	else if (((rs->stage == 1) && (rs->first_flag)) || ((rs->stage == 3) && (rs->last_flag)))
 		WRITE("%S\n", line_text);
 	else if (rs->stage == 2) {
