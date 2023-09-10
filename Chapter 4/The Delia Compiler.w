@@ -45,46 +45,46 @@ set of commands, enumerated as follows.
 =
 typedef struct recipe_command {
 	int rc_code; /* one of the |*_RCOM| codes below */
-	wchar_t *keyword;
+	inchar32_t *keyword;
 	int tokens_required; /* or negative for "any number, including none" */
 	int supports_or; /* an |or:| command can follow */
 	int changes_nesting;
 } recipe_command;
 
 recipe_command instruction_set[] = {
-	{ COPY_RCOM, L"copy", 2, FALSE, 0 },
-	{ DEBUGGER_RCOM, L"debugger", -1, TRUE, 0 },
-	{ DEFAULT_RCOM, L"default", -1, FALSE, 0 },
-	{ ELSE_RCOM, L"else", 0, FALSE, 0 },
-	{ ENDIF_RCOM, L"endif", 0, FALSE, -1 },
-	{ EXISTS_RCOM, L"exists", 1, TRUE, 0 },
-	{ EXTRACT_RCOM, L"extract", 2, FALSE, 0 },
-	{ FAIL_RCOM, L"fail", -1, FALSE, 0 },
-	{ FAIL_STEP_RCOM, L"fail step", -1, TRUE, 0 },
-	{ HASH_RCOM, L"hash", 1, TRUE, 0 },
-	{ IF_RCOM, L"if", 2, FALSE, 1 },
-	{ IFDEF_RCOM, L"ifdef", 1, FALSE, 1 },
-	{ IFNDEF_RCOM, L"ifndef", 1, FALSE, 1 },
-	{ IFFAIL_RCOM, L"iffail", 0, FALSE, 1 },
-	{ IFPASS_RCOM, L"ifpass", 0, FALSE, 1 },
-	{ IF_COMPATIBLE_RCOM, L"if compatible", 2, FALSE, 1 },
-	{ IF_EXISTS_RCOM, L"if exists", 1, FALSE, 1 },
-	{ IF_FORMAT_VALID_RCOM, L"if format valid", 1, FALSE, 1 },
-	{ IF_SHOWING_RCOM, L"if showing", 1, FALSE, 1 },
-	{ MATCH_BINARY_RCOM, L"match binary", 2, TRUE, 0 },
-	{ MATCH_FOLDER_RCOM, L"match folder", 2, TRUE, 0 },
-	{ MATCH_G_TRANSCRIPT_RCOM, L"match glulxe transcript", 2, TRUE, 0 },
-	{ MATCH_I6_TRANSCRIPT_RCOM, L"match i6 transcript", 2, TRUE, 0 },
-	{ MATCH_PROBLEM_RCOM, L"match problem", 2, TRUE, 0 },
-	{ MATCH_TEXT_RCOM, L"match text", 2, TRUE, 0 },
-	{ MATCH_PLATFORM_TEXT_RCOM, L"match platform text", 2, TRUE, 0 },
-	{ MATCH_Z_TRANSCRIPT_RCOM, L"match frotz transcript", 2, TRUE, 0 },
-	{ MKDIR_RCOM, L"mkdir", 1, FALSE, 0 },
-	{ OR_RCOM, L"or", -1, FALSE, 0 },
-	{ PASS_RCOM, L"pass", 1, FALSE, 0 },
-	{ SET_RCOM, L"set", -1, FALSE, 0 },
-	{ SHOW_RCOM, L"show", -1, TRUE, 0 },
-	{ STEP_RCOM, L"step", -1, TRUE, 0 },
+	{ COPY_RCOM, U"copy", 2, FALSE, 0 },
+	{ DEBUGGER_RCOM, U"debugger", -1, TRUE, 0 },
+	{ DEFAULT_RCOM, U"default", -1, FALSE, 0 },
+	{ ELSE_RCOM, U"else", 0, FALSE, 0 },
+	{ ENDIF_RCOM, U"endif", 0, FALSE, -1 },
+	{ EXISTS_RCOM, U"exists", 1, TRUE, 0 },
+	{ EXTRACT_RCOM, U"extract", 2, FALSE, 0 },
+	{ FAIL_RCOM, U"fail", -1, FALSE, 0 },
+	{ FAIL_STEP_RCOM, U"fail step", -1, TRUE, 0 },
+	{ HASH_RCOM, U"hash", 1, TRUE, 0 },
+	{ IF_RCOM, U"if", 2, FALSE, 1 },
+	{ IFDEF_RCOM, U"ifdef", 1, FALSE, 1 },
+	{ IFNDEF_RCOM, U"ifndef", 1, FALSE, 1 },
+	{ IFFAIL_RCOM, U"iffail", 0, FALSE, 1 },
+	{ IFPASS_RCOM, U"ifpass", 0, FALSE, 1 },
+	{ IF_COMPATIBLE_RCOM, U"if compatible", 2, FALSE, 1 },
+	{ IF_EXISTS_RCOM, U"if exists", 1, FALSE, 1 },
+	{ IF_FORMAT_VALID_RCOM, U"if format valid", 1, FALSE, 1 },
+	{ IF_SHOWING_RCOM, U"if showing", 1, FALSE, 1 },
+	{ MATCH_BINARY_RCOM, U"match binary", 2, TRUE, 0 },
+	{ MATCH_FOLDER_RCOM, U"match folder", 2, TRUE, 0 },
+	{ MATCH_G_TRANSCRIPT_RCOM, U"match glulxe transcript", 2, TRUE, 0 },
+	{ MATCH_I6_TRANSCRIPT_RCOM, U"match i6 transcript", 2, TRUE, 0 },
+	{ MATCH_PROBLEM_RCOM, U"match problem", 2, TRUE, 0 },
+	{ MATCH_TEXT_RCOM, U"match text", 2, TRUE, 0 },
+	{ MATCH_PLATFORM_TEXT_RCOM, U"match platform text", 2, TRUE, 0 },
+	{ MATCH_Z_TRANSCRIPT_RCOM, U"match frotz transcript", 2, TRUE, 0 },
+	{ MKDIR_RCOM, U"mkdir", 1, FALSE, 0 },
+	{ OR_RCOM, U"or", -1, FALSE, 0 },
+	{ PASS_RCOM, U"pass", 1, FALSE, 0 },
+	{ SET_RCOM, U"set", -1, FALSE, 0 },
+	{ SHOW_RCOM, U"show", -1, TRUE, 0 },
+	{ STEP_RCOM, U"step", -1, TRUE, 0 },
 	{ -1, NULL, 0, FALSE, 0 }
 };
 
@@ -181,13 +181,13 @@ tokens. The divider is a colon, which is optional (in which case, no tokens).
 void Delia::compile_line(text_stream *text, text_file_position *tfp, void *state) {
 	recipe *R = (recipe *) state;
 	match_results mr = Regexp::create_mr();
-	if ((Regexp::string_is_white_space(text)) || (Regexp::match(&mr, text, L" *!%c*"))) {
+	if ((Regexp::string_is_white_space(text)) || (Regexp::match(&mr, text, U" *!%c*"))) {
 		;
-	} else if (Regexp::match(&mr, text, L" *-end *")) {
+	} else if (Regexp::match(&mr, text, U" *-end *")) {
 		R->end_found = TRUE;
-	} else if (Regexp::match(&mr, text, L" *(%c*?): *(%c*)")) {
+	} else if (Regexp::match(&mr, text, U" *(%c*?): *(%c*)")) {
 		Delia::compile_command(R, text, mr.exp[0], mr.exp[1], tfp);
-	} else if (Regexp::match(&mr, text, L" *(%c*?)")) {
+	} else if (Regexp::match(&mr, text, U" *(%c*?)")) {
 		Delia::compile_command(R, text, mr.exp[0], Str::new(), tfp);
 	}
 	Regexp::dispose_of(&mr);
@@ -353,7 +353,7 @@ void Delia::compile_command(recipe *R, text_stream *text,
 			text_stream *K = first->token_text;
 			int bad = FALSE;
 			LOOP_THROUGH_TEXT(pos, K) {
-				wchar_t c = Str::get(pos);
+				inchar32_t c = Str::get(pos);
 				if (((c < 'a') || (c > 'z')) && ((c < '0') || (c > '9')) && (c != '-'))
 					bad = TRUE;
 			}
@@ -394,7 +394,7 @@ string at white space boundaries, except within the shell quote character.
 void Delia::tokenise(linked_list *L, text_stream *txt) {
 	string_position P = Str::start(txt);
 	while (Characters::is_space_or_tab(Str::get(P))) P = Str::forward(P);
-	wchar_t first = Str::get(P);
+	inchar32_t first = Str::get(P);
 	if (first == 0) return;
 
 	recipe_token *T = CREATE(recipe_token);

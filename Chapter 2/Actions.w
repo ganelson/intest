@@ -300,11 +300,11 @@ int Actions::identify_wildcard(text_stream *token) {
 	LOOP_THROUGH_TEXT(pos, token)
 		if (Str::get(pos) == '%')
 			return REGEXP_WILDCARD;
-	int c = Str::get_first_char(token);
+	inchar32_t c = Str::get_first_char(token);
 	if (c == ':') return GROUP_WILDCARD;
 	if (Str::len(token) == 1) {
-		if ((c >= 'A') && (c <= 'Z')) return c - 'A' + EXTENSION_WILDCARD_BASE;
-		if ((c >= 'a') && (c <= 'z')) return c - 'a' + EXTENSION_WILDCARD_BASE;
+		if ((c >= 'A') && (c <= 'Z')) return (int) c - 'A' + EXTENSION_WILDCARD_BASE;
+		if ((c >= 'a') && (c <= 'z')) return (int) c - 'a' + EXTENSION_WILDCARD_BASE;
 	}
 	if (Str::eq(token, I"all")) return ALL_WILDCARD;
 	if (Str::eq(token, I"examples")) return EXAMPLES_WILDCARD;
@@ -432,9 +432,9 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 		match_results mr = Regexp::create_mr();
 		text_stream *key = NULL, *match = name;
 		int exactly = TRUE;
-		if (Regexp::match(&mr, name, L"$*(%C+) is (%c*)")) {
+		if (Regexp::match(&mr, name, U"$*(%C+) is (%c*)")) {
 			key = mr.exp[0]; match = mr.exp[1];
-		} else if (Regexp::match(&mr, name, L"$*(%C+) includes (%c*)")) {
+		} else if (Regexp::match(&mr, name, U"$*(%C+) includes (%c*)")) {
 			key = mr.exp[0]; match = mr.exp[1]; exactly = FALSE;
 		}
 		RecipeFiles::find_cases_matching(matches, args->search_path, key, match, exactly);
@@ -468,7 +468,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 void Actions::read_group(text_stream *text, text_file_position *tfp, void *vm) {
 	linked_list *matches = (linked_list *) vm;
 	Str::trim_white_space(text);
-	wchar_t c = Str::get_first_char(text);
+	inchar32_t c = Str::get_first_char(text);
 	if ((c == 0) || (c == '#') || (c == '!')) return;
 	ADD_TO_LINKED_LIST(Str::duplicate(text), text_stream, matches);
 }
@@ -501,11 +501,11 @@ substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
 	TEMPORARY_TEXT(leaf)
 	leaf = Str::duplicate(Filenames::get_leafname(F));
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, leaf, L"(%c*?)%[NAME%](%c*)")) {
+	while (Regexp::match(&mr, leaf, U"(%c*?)%[NAME%](%c*)")) {
 		Str::clear(leaf);
 		WRITE_TO(leaf, "%S%s%S", mr.exp[0], itc->test_case_name, mr.exp[1]);
 	}
-	while (Regexp::match(&mr, leaf, L"(%c*?)%[NUMBER%](%c*)")) {
+	while (Regexp::match(&mr, leaf, U"(%c*?)%[NUMBER%](%c*)")) {
 		Str::clear(leaf);
 		WRITE_TO(leaf, "%S%d%S", mr.exp[0], count, mr.exp[1]);
 	}

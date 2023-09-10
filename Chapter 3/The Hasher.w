@@ -38,7 +38,7 @@ void Hasher::read_hash(text_stream *V, filename *F) {
 
 void Hasher::detect_hash(text_stream *line_text, text_file_position *tfp, void *vto) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L" *(%C+) *"))
+	if (Regexp::match(&mr, line_text, U" *(%C+) *"))
 		Str::copy((text_stream *) vto, mr.exp[0]);
 	Regexp::dispose_of(&mr);
 }
@@ -57,7 +57,7 @@ void Hasher::read_hashes(intest_instructions *args) {
 void Hasher::detect_hashes(text_stream *line_text, text_file_position *tfp, void *vargs) {
 	intest_instructions *args = (intest_instructions *) vargs;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L"(%c*?) = (%C+)%c*")) {
+	if (Regexp::match(&mr, line_text, U"(%c*?) = (%C+)%c*")) {
 		test_case *tc = RecipeFiles::find_case(args, mr.exp[0]);
 		if (tc) Hasher::assign_to_case(tc, mr.exp[1]);
 	}

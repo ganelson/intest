@@ -98,7 +98,7 @@ double-quoted text, then that's the title for the test case.
 @<Consider entering extraction mode for PLAIN@> =
 	if (tfp->line_count == 1) {
 		match_results mr = Regexp::create_mr();
-		if ((Regexp::match(&mr, line, L"\"(%c*?)\" *")) && (es->tc)) {
+		if ((Regexp::match(&mr, line, U"\"(%c*?)\" *")) && (es->tc)) {
 			RecipeFiles::NameTestCase(es->tc, mr.exp[0]);
 			Regexp::dispose_of(&mr);
 		}
@@ -116,7 +116,7 @@ after the first line not matching this.
 					es->case_list, es->force_vm, es->to_use_recipe);
 		}
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, line, L"(%C+) *: *(%c*) *")) {
+		if (Regexp::match(&mr, line, U"(%C+) *: *(%c*) *")) {
 			text_stream *key = mr.exp[0], *value = mr.exp[1];
 			if (tfp->line_count == 1) {
 				if (Str::eq(key, I"Test") == FALSE) {
@@ -145,7 +145,7 @@ after the first line not matching this.
 					es->case_list, es->force_vm, es->to_use_recipe);
 		}
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, line, L"(%C+) *: *(%c*) *")) {
+		if (Regexp::match(&mr, line, U"(%C+) *: *(%c*) *")) {
 			text_stream *key = mr.exp[0], *value = mr.exp[1];
 			if (tfp->line_count == 1) {
 				if (Str::eq(key, I"Problem") == FALSE) {
@@ -181,13 +181,13 @@ the header:
 
 @<Consider entering extraction mode for EXAMPLE@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%C+) *: *(%c*) *")) {
+	if (Regexp::match(&mr, line, U"(%C+) *: *(%c*) *")) {
 		text_stream *key = mr.exp[0], *value = mr.exp[1];
 		if (Str::eq(key, I"Example")) {
 			es->no_kv_pairs = 0;
 			es->skip_next = FALSE;
 			match_results mr2 = Regexp::create_mr();
-			if (Regexp::match(&mr2, line, L"(%C+) *: *(%*+) *(%c*) *")) {
+			if (Regexp::match(&mr2, line, U"(%C+) *: *(%*+) *(%c*) *")) {
 				es->stars = Str::duplicate(mr2.exp[1]);
 				es->title = Str::duplicate(mr2.exp[2]);
 			}
@@ -202,14 +202,14 @@ the header:
 	}
 	Regexp::dispose_of(&mr);
 	TEMPORARY_TEXT(line_content)
-	if ((Str::begins_with_wide_string(line, L"\t{*}")) && (es->skip_next == FALSE)) {
+	if ((Str::begins_with_wide_string(line, U"\t{*}")) && (es->skip_next == FALSE)) {
 		Str::copy_tail(line_content, line, 4);
 		if (es->examples_found++ == 0) {
 			Str::clear(line);
 			WRITE_TO(line, "\t%S", line_content);
 			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, line, L"%t\"(%c*?)\" *") ||
-				Regexp::match(&mr, line, L"%t\"(%c*?)\" *by *%c*") ) {
+			if (Regexp::match(&mr, line, U"%t\"(%c*?)\" *") ||
+				Regexp::match(&mr, line, U"%t\"(%c*?)\" *by *%c*") ) {
 				if (es->extractor_command == CENSUS_ACTION)
 					es->tc = RecipeFiles::observe_in_example(
 						es->case_list, es->force_vm, es->to_use_recipe);
@@ -231,7 +231,7 @@ the header:
 		}
 	}
 	if ((es->extraction_line_count > 0) &&
-		(Str::begins_with_wide_string(line, L"\t{**}"))) {
+		(Str::begins_with_wide_string(line, U"\t{**}"))) {
 		Str::copy_tail(line_content, line, 5);
 		if (es->examples_found == 1) {
 			Str::clear(line);
@@ -246,16 +246,16 @@ extension file. There can be more than one.
 
 @<Consider entering extraction mode for EXTENSION@> =
 	match_results mr = Regexp::create_mr();
-	if ((tfp->line_count == 1) && (Regexp::match(&mr, line, L"%c*for Glulx only%c*")))
+	if ((tfp->line_count == 1) && (Regexp::match(&mr, line, U"%c*for Glulx only%c*")))
 		es->force_vm = Str::new_from_ISO_string("G");
-	if (Regexp::match(&mr, line, L" *---- +DOCUMENTATION +---- *"))
+	if (Regexp::match(&mr, line, U" *---- +DOCUMENTATION +---- *"))
 		es->documentation_found = TRUE;
-	else if (Regexp::match(&mr, line, L" *---- +Documentation +---- *"))
+	else if (Regexp::match(&mr, line, U" *---- +Documentation +---- *"))
 		es->documentation_found = TRUE;
-	else if (Regexp::match(&mr, line, L" *---- +documentation +---- *"))
+	else if (Regexp::match(&mr, line, U" *---- +documentation +---- *"))
 		es->documentation_found = TRUE;
 	if (es->documentation_found) {
-		if (Regexp::match(&mr, line, L" *Example: *%c*")) {
+		if (Regexp::match(&mr, line, U" *Example: *%c*")) {
 			es->now_extracting = FALSE;
 			es->examples_found++;
 			es->about_to_extract = TRUE;
@@ -263,7 +263,7 @@ extension file. There can be more than one.
 				es->tc = RecipeFiles::observe_in_extension(es->case_list,
 					es->examples_found, es->force_vm, es->to_use_recipe);
 		}
-		if ((es->about_to_extract) && (Str::begins_with_wide_string(line, L"\t*:"))) {
+		if ((es->about_to_extract) && (Str::begins_with_wide_string(line, U"\t*:"))) {
 			es->about_to_extract = FALSE;
 			int i = 3;
 			while (Regexp::white_space(Str::get_at(line, i))) i++;
@@ -271,8 +271,8 @@ extension file. There can be more than one.
 			Str::copy_tail(ext_eg, line, i);
 			if ((es->extractor_command == CENSUS_ACTION) ||
 				(es->examples_found == es->seek_ref)) {
-				if (Regexp::match(&mr, ext_eg, L"\"(%c*?)\" *") ||
-					Regexp::match(&mr, ext_eg, L"\"(%c*?)\" *by *%c*")) {
+				if (Regexp::match(&mr, ext_eg, U"\"(%c*?)\" *") ||
+					Regexp::match(&mr, ext_eg, U"\"(%c*?)\" *by *%c*")) {
 					if (es->tc) {
 						RecipeFiles::NameTestCase(es->tc, mr.exp[0]);
 					}
@@ -337,9 +337,9 @@ or "Use command line echoing" sentence.
 
 @<Perform a SOURCE on the line@> =
 	if ((text) && (es->tc)) {
-		if (Regexp::match(&mr, text, L"%c*Test me with \"%c*"))
+		if (Regexp::match(&mr, text, U"%c*Test me with \"%c*"))
 			es->tc->test_me_detected = TRUE;
-		if (Regexp::match(&mr, text, L"%c*Use command line echoing%c*"))
+		if (Regexp::match(&mr, text, U"%c*Use command line echoing%c*"))
 			es->tc->command_line_echoing_detected = TRUE;
 		WRITE_TO(es->DEST, "%S\n", text);
 	} else if (text) WRITE_TO(es->DEST, "%S\n", text);
@@ -350,13 +350,13 @@ sentence. Again, useful only for Inform 7.
 
 @<Perform a SCRIPT on the line@> =
 	if (text) {
-		if (Regexp::match(&mr, text, L"Test me with \"(%c*?)\"%c*")) {
+		if (Regexp::match(&mr, text, U"Test me with \"(%c*?)\"%c*")) {
 			Extractor::script_out(es->DEST, mr.exp[0]);
-		} else if (Regexp::match(&mr, text, L"Test me with \"(%c*?)")) {
+		} else if (Regexp::match(&mr, text, U"Test me with \"(%c*?)")) {
 			Extractor::script_out(es->DEST, mr.exp[0]);
 			es->continue_script = TRUE;
 		} else if (es->continue_script) {
-			if (Regexp::match(&mr, text, L"(%c*?)\"%c*?")) {
+			if (Regexp::match(&mr, text, U"(%c*?)\"%c*?")) {
 				Extractor::script_out(es->DEST, mr.exp[0]);
 				es->continue_script = FALSE;
 			} else Extractor::script_out(es->DEST, text);
@@ -378,7 +378,7 @@ void Extractor::script_out(OUTPUT_STREAM, text_stream *from) {
 	TEMPORARY_TEXT(script)
 	Str::copy(script, from);
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, script, L"(%c+?) */ *(%c*)")) {
+	while (Regexp::match(&mr, script, U"(%c+?) */ *(%c*)")) {
 		if (Str::len(mr.exp[0]) > 0) WRITE("%S\n", mr.exp[0]);
 		Str::copy(script, mr.exp[1]);
 	}

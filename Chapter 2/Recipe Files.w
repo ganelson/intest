@@ -43,7 +43,7 @@ with the routine parsing the command line. In any case, nobody will hit:
 	string_position pos = Str::start(line_text);
 	while (TRUE) {
 		while (Regexp::white_space(Str::get(pos))) pos = Str::forward(pos);
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if ((c == 0) || (c == '!')) break;
 
 		if (no_line_tokens == MAX_LINE_TOKENS) {
@@ -177,24 +177,24 @@ void RecipeFiles::read_using_instructions(intest_instructions *args,
 				allowed_to_execute?"yes":"no");
 		i++; continue;
 	}
-	if (Str::eq_wide_string(opt, L"-endif")) { allowed_to_execute = TRUE; continue; }
+	if (Str::eq_wide_string(opt, U"-endif")) { allowed_to_execute = TRUE; continue; }
 	if (allowed_to_execute == FALSE) continue;
 
 @<Act on set@> =
-	if ((Str::eq_wide_string(opt, L"-set")) && (i+2<to_arg_n)) {
+	if ((Str::eq_wide_string(opt, U"-set")) && (i+2<to_arg_n)) {
 		Globals::create(argv[i+1]);
 		Globals::set(argv[i+1], argv[i+2]);
 		i += 2; continue;
 	}
 
 @<Act on groups@> =
-	if ((Str::eq_wide_string(opt, L"-groups")) && (i+1<to_arg_n)) {
+	if ((Str::eq_wide_string(opt, U"-groups")) && (i+1<to_arg_n)) {
 		args->groups_folder = Pathnames::from_text(argv[i+1]);
 		i++; continue;
 	}
 
 @<Act on singular@> =
-	if ((Str::eq_wide_string(opt, L"-singular")) && (i+1<to_arg_n)) {
+	if ((Str::eq_wide_string(opt, U"-singular")) && (i+1<to_arg_n)) {
 		dictionary *D = args->singular_case_names;
 		WRITE_TO(Dictionaries::create_text(D, argv[i+1]), "1");
 		i++; continue;
@@ -316,7 +316,7 @@ text_stream *RecipeFiles::case_type_as_text(int spt) {
 =
 void RecipeFiles::expand(OUTPUT_STREAM, text_stream *from) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, from, L"%$%$([A-Za-z]+)(%c*)")) {
+	if (Regexp::match(&mr, from, U"%$%$([A-Za-z]+)(%c*)")) {
 		WRITE("%S%S", Globals::get(mr.exp[0]), mr.exp[1]);
 	} else {
 		WRITE("%S", from);
@@ -334,7 +334,7 @@ void RecipeFiles::scan_directory_for_cases(linked_list *L,
 	if (FOLD == NULL) Errors::fatal_with_path("unable to open test cases folder", P);
 	TEMPORARY_TEXT(leafname)
 	while (Directories::next(FOLD, leafname)) {
-		wchar_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
+		inchar32_t first = Str::get_first_char(leafname), last = Str::get_last_char(leafname);
 		if (Platform::is_folder_separator(last)) continue;
 		if (first == '.') continue;
 		if (first == '(') continue;
@@ -549,7 +549,7 @@ void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources
 	} else {
 		WRITE_TO(re, "%%c*%S%%c*", match);
 	}
-	wchar_t wregexp[MAX_NAME_MATCH_LENGTH];
+	inchar32_t wregexp[MAX_NAME_MATCH_LENGTH];
 	Str::copy_to_wide_string(wregexp, re, MAX_NAME_MATCH_LENGTH);
 	DISCARD_TEXT(re)
 	match_results mr2 = Regexp::create_mr();

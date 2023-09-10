@@ -30,34 +30,34 @@ and heading text in the normal Foundation way:
 
 @<Register some configuration switches with Foundation@> =
 	CommandLine::declare_heading(
-		L"This is intest, a command-line tool for testing command-line tools\n\n"
-		L"intest PROJECT OPTIONS -using RECIPEFILE -do INSTRUCTIONS\n\n"
-		L"PROJECT is the home folder of the project to be tested\n\n"
-		L"-using RECIPEFILE tells intest where to find test recipes: default\n"
-		L"is PROJECT/Tests/PROJECT.intest\n\n"
-		L"-do INSTRUCTIONS tells intest what to do with its tests:\n"
-		L"    ACTION CASE1 CASE2 ... performs the given action, which may be:\n"
-		L"    -test (default), -show, -curse, -bless, -rebless, -open, -show-i6\n"
-		L"    CASEs can be identified by name, or by 'all', 'cases', 'problems', etc.\n"
-		L"    a bare number as a CASE means this case number in the command history\n\n"
-		L"'intest ?' shows the command history; 'intest ?N' repeats command N from it\n\n"
-		L"OPTIONS are as follows:\n"
+		U"This is intest, a command-line tool for testing command-line tools\n\n"
+		U"intest PROJECT OPTIONS -using RECIPEFILE -do INSTRUCTIONS\n\n"
+		U"PROJECT is the home folder of the project to be tested\n\n"
+		U"-using RECIPEFILE tells intest where to find test recipes: default\n"
+		U"is PROJECT/Tests/PROJECT.intest\n\n"
+		U"-do INSTRUCTIONS tells intest what to do with its tests:\n"
+		U"    ACTION CASE1 CASE2 ... performs the given action, which may be:\n"
+		U"    -test (default), -show, -curse, -bless, -rebless, -open, -show-i6\n"
+		U"    CASEs can be identified by name, or by 'all', 'cases', 'problems', etc.\n"
+		U"    a bare number as a CASE means this case number in the command history\n\n"
+		U"'intest ?' shows the command history; 'intest ?N' repeats command N from it\n\n"
+		U"OPTIONS are as follows:\n"
 	);
 
-	CommandLine::declare_switch(PURGE_CLSW, L"purge", 1,
-		L"delete any extraneous files from the intest workspace on disc");
-	CommandLine::declare_switch(SET_CLSW, L"set", 2,
-		L"set a global variable, e.g., -set '$$magic = XYZZY'");
-	CommandLine::declare_boolean_switch(HISTORY_CLSW, L"history", 1,
-		L"use command history", TRUE);
-	CommandLine::declare_boolean_switch(COLOURS_CLSW, L"colours", 1,
-		L"show discrepancies in red and green using terminal emulation", TRUE);
-	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"print out all shell commands issued", FALSE);
-	CommandLine::declare_numerical_switch(THREADS_CLSW, L"threads", 1,
-		L"use X independent threads to test");
-	CommandLine::declare_numerical_switch(INTERNAL_CLSW, L"internal", 2,
-		L"use X as the internal Inform distribution resources");
+	CommandLine::declare_switch(PURGE_CLSW, U"purge", 1,
+		U"delete any extraneous files from the intest workspace on disc");
+	CommandLine::declare_switch(SET_CLSW, U"set", 2,
+		U"set a global variable, e.g., -set '$$magic = XYZZY'");
+	CommandLine::declare_boolean_switch(HISTORY_CLSW, U"history", 1,
+		U"use command history", TRUE);
+	CommandLine::declare_boolean_switch(COLOURS_CLSW, U"colours", 1,
+		U"show discrepancies in red and green using terminal emulation", TRUE);
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
+		U"print out all shell commands issued", FALSE);
+	CommandLine::declare_numerical_switch(THREADS_CLSW, U"threads", 1,
+		U"use X independent threads to test");
+	CommandLine::declare_numerical_switch(INTERNAL_CLSW, U"internal", 2,
+		U"use X as the internal Inform distribution resources");
 
 @ The following structure encodes a set of instructions from the user (probably
 from the command line) about what Intest should do on this run:
@@ -188,7 +188,7 @@ int Instructions::read_switches(intest_instructions *args,
 	for (int i=from_arg_n; i<to_arg_n; i++) {
 		text_stream *opt = argv[i];
 		text_stream *arg = NULL; if (i+1 < to_arg_n) arg = argv[i+1];
-		if (Regexp::match(&mr, opt, L"-+(%c*)")) {
+		if (Regexp::match(&mr, opt, U"-+(%c*)")) {
 			clf_reader_state crs;
 			crs.state = (void *) args; crs.f = &Instructions::respond; crs.g = NULL;
 			crs.subs = FALSE; crs.nrt = 0;
@@ -220,7 +220,7 @@ void Instructions::respond(int id, int val, text_stream *arg, void *state) {
 			return;
 		case SET_CLSW: {
 			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, arg, L" *([A-Z0-9_]+) *= *(%c*?) *")) {
+			if (Regexp::match(&mr, arg, U" *([A-Z0-9_]+) *= *(%c*?) *")) {
 				Globals::create(Str::duplicate(mr.exp[0]));
 				Globals::set(Str::duplicate(mr.exp[0]), Str::duplicate(mr.exp[1]));
 			} else {

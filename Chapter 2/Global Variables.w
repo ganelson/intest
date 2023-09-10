@@ -77,7 +77,7 @@ void Globals::set(text_stream *name, text_stream *original) {
 
 @<Make substitutions@> =
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, value, L"(%c*)$$(%i+)(%c*)")) {
+	while (Regexp::match(&mr, value, U"(%c*)$$(%i+)(%c*)")) {
 		Str::copy(value, mr.exp[0]);
 		if (Dictionaries::find(globals_dictionary, mr.exp[1])) {
 			WRITE_TO(value, "%S", Globals::get(mr.exp[1]));

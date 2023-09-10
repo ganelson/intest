@@ -116,14 +116,14 @@ void Historian::research(filename *H, int *argc, text_stream ***argv) {
 @<Substitute preset case numbers@> =
 	match_results mr = Regexp::create_mr();
 	for (int i=1; i<*argc; i++)
-		if (Regexp::match(&mr, (*argv)[i], L"%d+"))
+		if (Regexp::match(&mr, (*argv)[i], U"%d+"))
 			expands = TRUE;
 	if (expands) {
 		text_stream **new_argv =
 			Memory::calloc(*argc, sizeof(text_stream *), COMMAND_HISTORY_MREASON);
 		for (int i=0; i<*argc; i++) {
 			text_stream *p = (*argv)[i];
-			if ((i>0) && (Regexp::match(&mr, p, L"%d+"))) {
+			if ((i>0) && (Regexp::match(&mr, p, U"%d+"))) {
 				int f = Str::atoi(p, 0);
 				if ((f > 0) && (f <= no_preset_cases))
 					new_argv[i] = preset_cases[f-1];
@@ -144,7 +144,7 @@ void Historian::read_history_file(filename *H, int display_mode) {
 void Historian::read(text_stream *line_text, text_file_position *tfp, void *dmp) {
 	int display_mode = *((int *) dmp);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line_text, L"%?(%d+). (%c*)")) {
+	if (Regexp::match(&mr, line_text, U"%?(%d+). (%c*)")) {
 		TEMPORARY_TEXT(epoch_text)
 		TEMPORARY_TEXT(command_text)
 		Str::copy(epoch_text, mr.exp[0]);
@@ -154,7 +154,7 @@ void Historian::read(text_stream *line_text, text_file_position *tfp, void *dmp)
 		hm->epoch = Str::atoi(epoch_text, 0);
 		if (hm->epoch >= present_epoch) present_epoch = hm->epoch + 1;
 		hm->token_list = NEW_LINKED_LIST(text_stream);
-		while (Regexp::match(&mr, command_text, L"(%C+) *(%c*)")) {
+		while (Regexp::match(&mr, command_text, U"(%C+) *(%c*)")) {
 			text_stream *tok = Str::duplicate(mr.exp[0]);
 			ADD_TO_LINKED_LIST(tok, text_stream, hm->token_list);
 			Str::copy(command_text, mr.exp[1]);
@@ -164,7 +164,7 @@ void Historian::read(text_stream *line_text, text_file_position *tfp, void *dmp)
 		DISCARD_TEXT(epoch_text)
 		DISCARD_TEXT(command_text)
 	}
-	if (Regexp::match(&mr, line_text, L"(%d+) = *(%c*)"))
+	if (Regexp::match(&mr, line_text, U"(%d+) = *(%c*)"))
 		if (no_preset_cases < MAX_PRESET_CASES)
 			preset_cases[no_preset_cases++] = Str::duplicate(mr.exp[1]);
 	Regexp::dispose_of(&mr);
