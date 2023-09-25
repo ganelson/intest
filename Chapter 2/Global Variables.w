@@ -141,15 +141,23 @@ void Globals::create_internal(void) {
 	Globals::set(I"internal", I"inform7/Internal");
 }
 
-void Globals::create_workspace(void) {
+void Globals::create_workspace(pathname *P, pathname *internal) {
 	Globals::create(I"platform");
 	Globals::set(I"platform", Str::new_from_ISO_string(PLATFORM_STRING));
 	Globals::create(I"workspace");
-	pathname *P = Pathnames::down(installation, I"Workspace");
+	Globals::create(I"solutions");
+	if (P == NULL) P = Pathnames::down(installation, I"Workspace");
 	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);
 	Globals::set(I"workspace", PT);
+	if (internal == NULL) Globals::set(I"solutions", PT);
 	DISCARD_TEXT(PT)
+	if (internal) {
+		TEMPORARY_TEXT(PT)
+		WRITE_TO(PT, "%p", Pathnames::down(internal, I"Delia"));
+		Globals::set(I"solutions", PT);
+		DISCARD_TEXT(PT)
+	}
 }
 
 text_stream *Globals::get_platform(void) {

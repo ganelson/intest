@@ -110,7 +110,45 @@ stored in directory format.
 			Locales::write_locales(STDOUT);
 			PRINT("Available core count: %d\n", Platform::get_core_count());
 		}
-		Globals::create_workspace();
+		Globals::create_workspace(args.workspace, args.internal_path);
 
+		text_stream results;
+		if (args.results_file) {
+			if (args.internal_path == NULL)
+				Errors::fatal("if '-results' is used, so must '-internal' be");
+			args.results_stream = &results;
+			text_stream *OUT = args.results_stream;
+			if (STREAM_OPEN_TO_FILE(OUT, args.results_file, UTF8_ENC) == FALSE)
+				Errors::fatal_with_file("unable to open results file: %f",
+					args.results_file);
+			pathname *models = Pathnames::down(args.internal_path, I"HTML");
+			HTML::header(OUT, I"Testing",
+				Main::filename_by_platform(models, I"platform.css"),
+				Main::filename_by_platform(models, I"main.css"),
+				Main::filename_by_platform(models, I"main.js"),
+				NULL,
+				NULL);
+			HTML_OPEN("h1");
+			WRITE("Test Report");
+			HTML_CLOSE("h1");
+		}
 		Actions::perform(STDOUT, &args);
+		if (args.results_file) {
+			RecipeFiles::report_on_cases(args.results_stream);
+			HTML::footer(args.results_stream);
+			STREAM_CLOSE(args.results_stream);
+		}
 	}
+
+@ This utility has been borrowed from Inform's |html| module:
+
+=
+filename *Main::filename_by_platform(pathname *models, text_stream *leafname) {
+	TEMPORARY_TEXT(variation)
+	WRITE_TO(variation, "%s-%S", PLATFORM_STRING, leafname);
+	/* NB: PLATFORM_STRING is a C string, so that %s is correct */
+	filename *F = Filenames::in(models, variation);
+	if (TextFiles::exists(F) == FALSE) F = Filenames::in(models, leafname);
+	DISCARD_TEXT(variation)
+	return F;
+}

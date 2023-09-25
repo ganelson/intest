@@ -27,6 +27,8 @@ and heading text in the normal Foundation way:
 @e VERBOSE_CLSW
 @e THREADS_CLSW
 @e INTERNAL_CLSW
+@e RESULTS_CLSW
+@e WORKSPACE_CLSW
 
 @<Register some configuration switches with Foundation@> =
 	CommandLine::declare_heading(
@@ -56,8 +58,12 @@ and heading text in the normal Foundation way:
 		U"print out all shell commands issued", FALSE);
 	CommandLine::declare_numerical_switch(THREADS_CLSW, U"threads", 1,
 		U"use X independent threads to test");
-	CommandLine::declare_numerical_switch(INTERNAL_CLSW, U"internal", 2,
+	CommandLine::declare_switch(INTERNAL_CLSW, U"internal", 2,
 		U"use X as the internal Inform distribution resources");
+	CommandLine::declare_switch(RESULTS_CLSW, U"results", 2,
+		U"write an HTML results page to filename X for use in the Inform apps");
+	CommandLine::declare_switch(WORKSPACE_CLSW, U"workspace", 2,
+		U"use directory X (which must exist) for temporary file storage");
 
 @ The following structure encodes a set of instructions from the user (probably
 from the command line) about what Intest should do on this run:
@@ -79,6 +85,10 @@ typedef struct intest_instructions {
 	struct pathname *home;
 	struct pathname *groups_folder;
 	struct dictionary *singular_case_names;
+	struct pathname *internal_path;
+	struct filename *results_file;
+	struct text_stream *results_stream;
+	struct pathname *workspace;
 } intest_instructions;
 
 @<Initialise the arguments state@> =
@@ -97,6 +107,10 @@ typedef struct intest_instructions {
 	args.implied_recipe_file = TRUE;
 	args.extension_mode = extension_mode;
 	args.singular_case_names = Dictionaries::new(10, TRUE);
+	args.internal_path = NULL;
+	args.results_file = NULL;
+	args.results_stream = NULL;
+	args.workspace = NULL;
 
 @h Actually reading the command line.
 What will do is to divide the sequence of tokens on the command line into
@@ -229,7 +243,14 @@ void Instructions::respond(int id, int val, text_stream *arg, void *state) {
 			Regexp::dispose_of(&mr);
 			return;
 		}
-		case INTERNAL_CLSW: Globals::set(I"internal", arg);
+		case INTERNAL_CLSW: 
+			args->internal_path = Pathnames::from_text(arg);
+			Globals::set(I"internal", arg);
+			return;
+		case WORKSPACE_CLSW: 
+			args->workspace = Pathnames::from_text(arg);
+			return;
+		case RESULTS_CLSW: args->results_file = Filenames::from_text(arg);
 			return;
 	}
 }

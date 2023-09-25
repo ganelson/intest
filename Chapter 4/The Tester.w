@@ -35,11 +35,11 @@ int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count,
 	} else {
 		@<Actually test@>;
 	}
+	if (tc->HTML_report) @<Write an HTML-format report on this test@>;
 	return passed;
 }
 
 @<Actually test@> =
-	pathname *Work_Area = Globals::to_pathname(I"workspace");
 	int n = thread_count;
 	if (n < 0) n = 0; /* if we're not multi-tasking, use thread 0's work area */
 	pathname *Thread_Work_Area = Scheduler::work_area(n);
@@ -746,15 +746,16 @@ The |extract| command only makes sense for Inform 7 test cases.
 	filename *i7_here = Tester::extract_as_filename(first, D);
 	int test_me_exists = Tester::extract_source_to_file(i7_here, tc);
 	filename *script_file = NULL;
+	pathname *Solutions_Area = Globals::to_pathname(I"solutions");
 	if (TextFiles::exists(tc->commands_location)) {
 		script_file = tc->commands_location;
 	} else if (test_me_exists) {
 		TEMPORARY_TEXT(T)
 		Tester::expand(T, second, D);
 		if (Str::eq(T, I"Z"))
-			script_file = Filenames::in(Work_Area, I"ZT.sol");
+			script_file = Filenames::in(Solutions_Area, I"ZT.sol");
 		else if (Str::eq(T, I"G"))
-			script_file = Filenames::in(Work_Area, I"GT.sol");
+			script_file = Filenames::in(Solutions_Area, I"GT.sol");
 		else
 			Errors::fatal_with_text("extract can only be to Z or G, not %S", T);
 		DISCARD_TEXT(T)
@@ -762,9 +763,9 @@ The |extract| command only makes sense for Inform 7 test cases.
 		TEMPORARY_TEXT(T)
 		Tester::expand(T, second, D);
 		if (Str::eq(T, I"Z"))
-			script_file = Filenames::in(Work_Area, I"ZQ.sol");
+			script_file = Filenames::in(Solutions_Area, I"ZQ.sol");
 		else if (Str::eq(T, I"G"))
-			script_file = Filenames::in(Work_Area, I"GQ.sol");
+			script_file = Filenames::in(Solutions_Area, I"GQ.sol");
 		else
 			Errors::fatal_with_text("extract can only be to Z or G, not %S", T);
 		DISCARD_TEXT(T)
@@ -1167,6 +1168,14 @@ linked_list *Tester::spot_show_target(recipe *R, text_stream *target) {
 		}
 	return allowed;
 }
+
+@h HTML reportage.
+
+@<Write an HTML-format report on this test@> =
+	text_stream *OUT = tc->HTML_report;
+	HTML_OPEN("p");
+	WRITE("Oh well, tested %S, result %d.", tc->test_case_name, passed);
+	HTML_CLOSE("p");
 
 @h Verbosity.
 This is just for the sake of good output in |-verbose| mode:

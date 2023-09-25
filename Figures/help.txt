@@ -19,11 +19,13 @@ OPTIONS are as follows:
 
 -no-colours      don't show discrepancies in red and green using terminal emulation (default is -colours)
 -no-history      don't use command history (default is -history)
--internal=N X    use X as the internal Inform distribution resources
+-internal X      use X as the internal Inform distribution resources
 -purge           delete any extraneous files from the intest workspace on disc
+-results X       write an HTML results page to filename X for use in the Inform apps
 -set X           set a global variable, e.g., -set '$$magic = XYZZY'
 -threads=N       use X independent threads to test
 -verbose         print out all shell commands issued (default is -no-verbose)
+-workspace X     use directory X (which must exist) for temporary file storage
 
 -at X            specify that this tool is installed at X
 -crash           intentionally crash on internal errors, for backtracing (default is -no-crash)
