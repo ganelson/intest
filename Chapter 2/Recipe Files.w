@@ -459,6 +459,8 @@ typedef struct test_case {
 	int test_me_detected;
 	int command_line_echoing_detected;
 	int left_bracket, right_bracket;
+	
+	struct text_stream *HTML_report;
 	CLASS_DEFINITION
 } test_case;
 
@@ -500,6 +502,7 @@ test_case *RecipeFiles::new_case(int t, filename *F, int fref, int ref,
 	tc->known_hash = NULL;
 	tc->left_bracket = '{'; tc->right_bracket = '}';
 	tc->no_kv_pairs = 0;
+	tc->HTML_report = Str::new();
 	return tc;
 }
 
@@ -585,4 +588,20 @@ void RecipeFiles::find_cases_matching(linked_list *matches, linked_list *sources
 			}
 		}
 	Regexp::dispose_of(&mr2);
+}
+
+@ This is only used if we have been asked to construct a results page as HTML:
+
+=
+void RecipeFiles::report_on_cases(OUTPUT_STREAM) {
+	test_case *tc;
+	LOOP_OVER(tc, test_case) {
+		if (Str::len(tc->HTML_report) > 0) {
+			HTML_OPEN("h2");
+			WRITE("Test case: %S (%S)", tc->test_case_name, tc->test_case_title);
+			HTML_CLOSE("h2");
+			WRITE("%S", tc->HTML_report);
+			HTML_TAG("hr");
+		}
+	}
 }
