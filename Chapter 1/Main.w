@@ -129,12 +129,11 @@ stored in directory format.
 				NULL,
 				NULL);
 			HTML_OPEN("h1");
-			WRITE("Test Report");
+			WRITE("Intest Report");
 			HTML_CLOSE("h1");
 		}
 		Actions::perform(STDOUT, &args);
 		if (args.results_file) {
-			RecipeFiles::report_on_cases(args.results_stream);
 			HTML::footer(args.results_stream);
 			STREAM_CLOSE(args.results_stream);
 		}

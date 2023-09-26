@@ -352,22 +352,67 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	Scheduler::start(args->threads_available);
 
 	int count = 1;
+	linked_list *report_on = NEW_LINKED_LIST(test_case);
 	action_item *ai;
 	LOOP_OVER_LINKED_LIST(ai, action_item, args->to_do_list)
 		@<Perform this action item@>;
 
 	Scheduler::test(OUT);
 	Hasher::write_hashes();
+
+	if (args->results_stream) {
+		action_item *ai;
+		LOOP_OVER_LINKED_LIST(ai, action_item, args->to_do_list)
+			@<Report back on this action item@>;
+	}
 }
+
+@<Close friends get to call him tc@> =
+	if (args->results_stream) {
+		ADD_TO_LINKED_LIST(tc, test_case, report_on);
+		tc->HTML_report = Str::new();
+	}
 
 @<Perform this action item@> =
 	if (ai->operand.wild_card >= COUNT_WILDCARD_BASE) @<Perform this counted case@>
 	else if (ai->operand.wild_card >= EXTENSION_WILDCARD_BASE) @<Perform this lettered case@>
-	else if (ai->operand.wild_card == TAMECARD)
+	else if (ai->operand.wild_card == TAMECARD) {
+		ADD_TO_LINKED_LIST(ai->operand.specific_case, test_case, report_on);
 		Actions::perform_inner(OUT, args, ai, ai->operand.specific_case, count++);
+	}
 	else if (ai->operand.wild_card == REGEXP_WILDCARD) @<Perform this regular expressed case@>
 	else if (ai->operand.wild_card == GROUP_WILDCARD) @<Perform this grouped case@>
 	else @<Perform this matched case@>;
+
+@<Report back on this action item@> =
+	text_stream *OUT = args->results_stream;
+	HTML_OPEN_WITH("div", "class=\"markdowncontent\"");
+	HTML_OPEN("p");
+	switch(ai->action_type) {
+		case BLESS_ACTION:
+			WRITE("Blessing the current output as correct for the following:");
+			break;
+		case REBLESS_ACTION:
+			WRITE("Replacing the previously blessed output with the current behaviour of:");
+			break;
+		case CURSE_ACTION:
+			WRITE("Throwing away the previously blessed output from:");
+			break;
+		case TEST_ACTION:
+			WRITE("Testing to see if the following compile and produce the correct, or 'blessed', output:");
+			break;
+	}
+	HTML_CLOSE("p");	
+	HTML_OPEN("table");
+	test_case *tc;
+	LOOP_OVER_LINKED_LIST(tc, test_case, report_on) {
+		int I = Streams::get_indentation(OUT);
+		Streams::set_indentation(OUT, 0);
+		WRITE("%S", tc->HTML_report);
+		Streams::set_indentation(OUT, I);
+	}
+	HTML_CLOSE("table");
+	HTML_CLOSE("div");
 
 @<Perform this counted case@> =
 	int find_count = 0;
@@ -376,6 +421,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	LOOP_OVER_LINKED_LIST(spi, test_source, args->search_path)
 		LOOP_OVER_LINKED_LIST(tc, test_case, spi->contents)
 			if (find_count++ == ai->operand.wild_card - COUNT_WILDCARD_BASE) {
+				@<Close friends get to call him tc@>;
 				Actions::perform_inner(OUT, args, ai, tc, count++);
 				goto ExitCountSearch;
 			}
@@ -396,6 +442,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 			if ((tc->format_reference == EXTENSION_FORMAT) &&
 				(tc->letter_reference ==
 					ai->operand.wild_card - EXTENSION_WILDCARD_BASE + 1)) {
+				@<Close friends get to call him tc@>;
 				Actions::perform_inner(OUT, args, ai, tc, count++);
 				goto ExitLetterSearch;
 			}
@@ -408,6 +455,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 		ai->operand.regexp_wild_card, FALSE);
 	test_case *tc;
 	LOOP_OVER_LINKED_LIST(tc, test_case, matches) {
+		@<Close friends get to call him tc@>;
 		Actions::perform_inner(OUT, args, ai, tc, count++);
 	}
 
@@ -444,6 +492,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 		ai->test_form = ai->action_type;
 		if ((ai->action_type != LIST_ACTION) && (scheduled))
 			ai->action_type += SCHEDULED_TEST_ACTION;
+		@<Close friends get to call him tc@>;
 		Actions::perform_inner(OUT, args, ai, tc, count++);
 		if ((ai->action_type != LIST_ACTION) && (scheduled))
 			ai->action_type -= SCHEDULED_TEST_ACTION;
@@ -458,6 +507,7 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 				args->singular_case_names)) {
 				ai->test_form = ai->action_type;
 				ai->action_type += SCHEDULED_TEST_ACTION;
+				@<Close friends get to call him tc@>;
 				Actions::perform_inner(OUT, args, ai, tc, count++);
 				ai->action_type -= SCHEDULED_TEST_ACTION;
 			}

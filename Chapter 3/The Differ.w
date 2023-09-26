@@ -129,6 +129,7 @@ void Differ::print_fragment_as_HTML(OUTPUT_STREAM, text_stream *original) {
 			case '<': WRITE("&lt;"); break;
 			case '>': WRITE("&gt;"); break;
 			case '&': WRITE("&amp;"); break;
+			case '\n': WRITE("<br>"); break;
 			default: WRITE("%c", c); break;
 		}
 	}
