@@ -495,7 +495,7 @@ same "label" and the same "text".
 
 =
 int Skeins::compare(OUTPUT_STREAM, skein *A, skein *I, int problems,
-	int allow_platform_variance) {
+	int allow_platform_variance, int as_HTML) {
 	int count = 1, error_count = 0;
 	char *thing = "problem";
 	if (problems == FALSE) { count = 0; thing = "turn"; }
@@ -513,8 +513,11 @@ int Skeins::compare(OUTPUT_STREAM, skein *A, skein *I, int problems,
 			continue;
 		}
 	}
-	if (error_count >= MAX_COMPARE_ERRORS_REPORTED)
+	if (error_count >= MAX_COMPARE_ERRORS_REPORTED) {
+		if (as_HTML) HTML_OPEN_WITH("p", "class=\"skeinerror\"");
 		WRITE("...and so on (stopped reading after %d errors)\n", MAX_COMPARE_ERRORS_REPORTED);
+		if (as_HTML) HTML_CLOSE("p");
+	}
 	if (error_count > 0) return 1; else return 0;
 }
 
@@ -530,13 +533,19 @@ int Skeins::compare(OUTPUT_STREAM, skein *A, skein *I, int problems,
 	if (Str::ne(A->text, I->text)) {
 		diff_results *DR = Differ::diff(I->text, A->text, allow_platform_variance);
 		if (LinkedLists::len(DR->edits) > 0) {
+			if (as_HTML) HTML_OPEN_WITH("p", "class=\"skeinerror\"");
 			if (A->from_format == PLAIN_SKF)
 				WRITE("Discrepancy at %k:\n", A);
 			else
 				WRITE("Discrepancy on %s %d (%k):\n", thing, count, A);
-			INDENT;
-			Differ::print_results(OUT, DR, A->text);
-			OUTDENT;
+			if (as_HTML) HTML_CLOSE("p");
+			if (as_HTML) {
+				Differ::print_results_as_HTML(OUT, DR, A->text);
+			} else {
+				INDENT;
+				Differ::print_results(OUT, DR, A->text);
+				OUTDENT;
+			}
 			error_count++;
 		}
 	}
@@ -545,28 +554,63 @@ int Skeins::compare(OUTPUT_STREAM, skein *A, skein *I, int problems,
 	I = I->down;
 
 @<The two skeins have different labels at this node@> =
-	WRITE("Unexpected %s %d (%k not %k):\n%S", thing, count++, A, I, A->text); INDENT;
-	OUTDENT;
+	if (as_HTML) HTML_OPEN_WITH("p", "class=\"skeinerror\"");
+	WRITE("Unexpected %s %d (%k not %k):\n", thing, count++, A, I);
+	if (as_HTML) HTML_CLOSE("p");
+	Skeins::show_fragment(OUT, A->text, as_HTML);
 	A = A->down;
 	error_count++;
 
 @<The actual skein is still going, but the ideal one has run out@> =
+	if (as_HTML) HTML_OPEN_WITH("p", "class=\"skeinerror\"");
 	if (A->from_format == PLAIN_SKF)
-		WRITE("Extra %k:\n%S", A, A->text);
+		WRITE("Extra %k:\n", A);
 	else
-		WRITE("Unexpected %s %d (%k):\n%S", thing, count++, A, A->text); INDENT;
-	OUTDENT;
+		WRITE("Unexpected %s %d (%k):\n", thing, count++, A);
+	if (as_HTML) HTML_CLOSE("p");
+	Skeins::show_fragment(OUT, A->text, as_HTML);
 	A = A->down;
 	error_count++;
 
 @<The ideal skein is still going, but the actual one has run out@> =
+	if (as_HTML) HTML_OPEN_WITH("p", "class=\"skeinerror\"");
 	if (I->from_format == PLAIN_SKF)
-		WRITE("Missing %k:\n%S", I, I->text);
+		WRITE("Missing %k:\n", I);
 	else
-		WRITE("Missing %s (%k):\n%S", thing, I, I->text); INDENT;
-	OUTDENT;
+		WRITE("Missing %s (%k):\n", thing, I);
+	if (as_HTML) HTML_CLOSE("p");
+	Skeins::show_fragment(OUT, A->text, as_HTML);
 	I = I->down;
 	error_count++;
+
+@
+
+=
+void Skeins::show_fragment(OUTPUT_STREAM, text_stream *what, int as_HTML) {
+	if (as_HTML) {
+		TEMPORARY_TEXT(chunk)
+		WRITE_TO(chunk, "%S", what);
+		if (Str::get_last_char(chunk) == '\n') Str::delete_last_character(chunk);
+		HTML_OPEN_WITH("p", "class=\"node\"");
+		Differ::print_fragment_as_HTML(OUT, chunk);
+		HTML_CLOSE("p");
+		DISCARD_TEXT(chunk);
+/*		HTML_OPEN("pre");
+		int from=0, to=Str::len(what)-1;
+		if (Str::get_last_char(what) == '\n') to--;
+		for (int i=from; i<=to; i++) {
+			inchar32_t c = Str::get_at(what, i);
+			if (c == '\"') WRITE("&quot;");
+			else if (c == '<') WRITE("&lt;");
+			else if (c == '>') WRITE("&gt;");
+			else PUT(c);
+		}
+		HTML_CLOSE("pre");
+*/
+	} else {
+		WRITE("%S", what);
+	}
+}
 
 @ This powers |-test-skein|, which specifies an exact node ID and wants to
 compare only the text at that one node. We therefore make mimimal |skein|

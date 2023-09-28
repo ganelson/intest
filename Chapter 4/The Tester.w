@@ -35,7 +35,6 @@ int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count,
 	} else {
 		@<Actually test@>;
 	}
-	if (tc->HTML_report) @<Write an HTML-format report on this test@>;
 	return passed;
 }
 
@@ -54,9 +53,11 @@ int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count,
 all possible.
 
 @<Perform and report on the test@> =
+	int compare_as_HTML = FALSE;
+	if (tc->HTML_report) compare_as_HTML = TRUE;
 	TEMPORARY_TEXT(verdict) /* brief text summarising the outcome, e.g., "passed" */
 	WRITE_TO(verdict, "passed");
-	filename *damning_evidence = NULL;
+	filename *damning_evidence = NULL, *mismatched_file = NULL;
 	filename *match_fail1 = NULL, *match_fail2 = NULL;
 	char left_bracket = '[', right_bracket = ']';
 	@<Follow the test recipe@>;
@@ -65,6 +66,7 @@ all possible.
 	if (damning_evidence) Extractor::cat(OUT, damning_evidence);
 	tc->left_bracket = left_bracket;
 	tc->right_bracket = right_bracket;
+	if (tc->HTML_report) @<Write an HTML-format report on this test@>;
 	DISCARD_TEXT(verdict)
 
 @ Running with |-diff| or |-bbdiff| delegates the displaying of match errors
@@ -325,9 +327,8 @@ dictionary.
 		case FAIL_RCOM:
 			if (running) {
 				still_going = FALSE; passed = FALSE; 
-				recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
 				Str::clear(verdict);
-				Tester::expand(verdict, first, D);
+				Delia::dequote_first_token(verdict, L);
 				recipe_token *second = ENTRY_IN_LINKED_LIST(1, recipe_token, L->recipe_tokens);
 				if (second) damning_evidence = Tester::extract_as_filename(second, D);
 			}
@@ -613,7 +614,10 @@ for these, three of which are highly specific to Inform 7.
 		passed = FALSE;
 		Str::clear(verdict); WRITE_TO(verdict, "failed to match");
 		still_going = FALSE; match_fail1 = matching_actual; match_fail2 = matching_ideal;
-		if (action_type != SHOW_ACTION) Extractor::cat(OUT, DO);
+		if (action_type != SHOW_ACTION) {
+			if (tc->HTML_report == NULL) Extractor::cat(OUT, DO);
+			mismatched_file = DO;
+		}
 		@<Or...@>;
 	}
 
@@ -626,7 +630,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_plain_text(matching_actual);
 	skein *I = Skeins::from_plain_text(matching_ideal);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, FALSE, FALSE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, FALSE, FALSE, compare_as_HTML) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -641,7 +645,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_plain_text(matching_actual);
 	skein *I = Skeins::from_plain_text(matching_ideal);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, FALSE, TRUE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, FALSE, TRUE, compare_as_HTML) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -684,7 +688,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_Z_transcript(matching_actual, cle);
 	skein *I = Skeins::from_Z_transcript(matching_ideal, cle);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, FALSE, FALSE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, FALSE, FALSE, compare_as_HTML) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -700,7 +704,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_G_transcript(matching_actual, cle);
 	skein *I = Skeins::from_G_transcript(matching_ideal, cle);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, FALSE, FALSE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, FALSE, FALSE, compare_as_HTML) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -715,7 +719,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_i6_console_output(matching_actual);
 	skein *I = Skeins::from_i6_console_output(matching_ideal);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, FALSE, TRUE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, FALSE, TRUE, compare_as_HTML) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -731,7 +735,7 @@ for these, three of which are highly specific to Inform 7.
 	skein *A = Skeins::from_i7_problems(matching_actual, cle);
 	skein *I = Skeins::from_i7_problems(matching_ideal, cle);
 	rv = 0;
-	if (Skeins::compare(TO, A, I, TRUE, FALSE) > 0) rv = 1;
+	if (Skeins::compare(TO, A, I, TRUE, FALSE, compare_as_HTML) > 0) rv = 1;
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
@@ -1170,9 +1174,53 @@ linked_list *Tester::spot_show_target(recipe *R, text_stream *target) {
 
 @<Write an HTML-format report on this test@> =
 	text_stream *OUT = tc->HTML_report;
-	HTML_OPEN("p");
-	WRITE("Oh well, tested %S, result %d.", tc->test_case_name, passed);
-	HTML_CLOSE("p");
+	HTML_OPEN("tr");
+	HTML_OPEN("td");
+	if (passed) {
+		if (action_type == TEST_ACTION) WRITE("&#x2705;");
+		else WRITE("&#x2692;&#xFE0F;");
+	} else WRITE("&#x274C;");
+	HTML_CLOSE("td");
+	HTML_OPEN("td");
+	WRITE("%S", tc->test_case_name);
+	if ((Str::len(tc->test_case_title) > 0) && (Str::ne(tc->test_case_title, tc->test_case_name)))
+	WRITE(" (aka <em>%S</em>)", tc->test_case_title);
+	HTML_CLOSE("td");
+	HTML_OPEN("td");
+	if (passed) {
+		if (action_type == TEST_ACTION) WRITE("passed");
+		else WRITE("done");
+	} else WRITE("%S", verdict);
+	HTML_CLOSE("td");
+	HTML_CLOSE("tr");
+	if (damning_evidence) {
+		HTML_OPEN("tr");
+		HTML_OPEN("td");
+		HTML_CLOSE("td");
+		HTML_OPEN_WITH("td", "colspan=\"2\"");
+		HTML_OPEN("pre");
+		int I = Streams::get_indentation(tc->HTML_report);
+		Streams::set_indentation(tc->HTML_report, 0);
+		Extractor::cat(tc->HTML_report, damning_evidence);
+		Streams::set_indentation(tc->HTML_report, I);
+		HTML_CLOSE("pre");		
+		HTML_CLOSE("td");
+		HTML_CLOSE("tr");
+	}
+	if (mismatched_file) {
+		HTML_OPEN("tr");
+		HTML_OPEN("td");
+		HTML_CLOSE("td");
+		HTML_OPEN_WITH("td", "colspan=\"2\"");
+		HTML_OPEN_WITH("div", "class=\"skeinreport\"");
+		int I = Streams::get_indentation(tc->HTML_report);
+		Streams::set_indentation(tc->HTML_report, 0);
+		Extractor::cat(tc->HTML_report, mismatched_file);
+		Streams::set_indentation(tc->HTML_report, I);
+		HTML_CLOSE("div");
+		HTML_CLOSE("td");
+		HTML_CLOSE("tr");
+	}
 
 @h Verbosity.
 This is just for the sake of good output in |-verbose| mode:
