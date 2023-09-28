@@ -377,8 +377,9 @@ void Actions::perform(OUTPUT_STREAM, intest_instructions *args) {
 	if (ai->operand.wild_card >= COUNT_WILDCARD_BASE) @<Perform this counted case@>
 	else if (ai->operand.wild_card >= EXTENSION_WILDCARD_BASE) @<Perform this lettered case@>
 	else if (ai->operand.wild_card == TAMECARD) {
-		ADD_TO_LINKED_LIST(ai->operand.specific_case, test_case, report_on);
-		Actions::perform_inner(OUT, args, ai, ai->operand.specific_case, count++);
+		test_case *tc = ai->operand.specific_case;
+		@<Close friends get to call him tc@>;
+		Actions::perform_inner(OUT, args, ai, tc, count++);
 	}
 	else if (ai->operand.wild_card == REGEXP_WILDCARD) @<Perform this regular expressed case@>
 	else if (ai->operand.wild_card == GROUP_WILDCARD) @<Perform this grouped case@>
