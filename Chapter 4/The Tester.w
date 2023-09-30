@@ -1111,9 +1111,6 @@ typedef struct token_expand_state {
 
 void Tester::read_tokens(text_stream *line_text, text_file_position *tfp, void *vTES) {
 	linked_list *L = NEW_LINKED_LIST(recipe_token);
-	LOOP_THROUGH_TEXT(pos, line_text)
-		if (Str::get(pos) == DELIA_QUOTE_CHARACTER)
-			Str::put(pos, SHELL_QUOTE_CHARACTER);
 	Delia::tokenise(L, line_text);
 	token_expand_state *T = (token_expand_state *) vTES;
 	recipe_token *RT;

@@ -513,8 +513,12 @@ void RecipeFiles::NameTestCase(test_case *tc, text_stream *title) {
 
 void RecipeFiles::AddKVPair(test_case *tc, text_stream *key, text_stream *value) {
 	if ((tc) && (tc->no_kv_pairs < MAX_METADATA_PAIRS-1)) {
+		text_stream *add_value = Str::duplicate(value);
+		LOOP_THROUGH_TEXT(pos, add_value)
+			if (Str::get(pos) == DELIA_QUOTE_CHARACTER)
+				Str::put(pos, SHELL_QUOTE_CHARACTER);
 		tc->keys[tc->no_kv_pairs] = Str::duplicate(key);
-		tc->values[tc->no_kv_pairs] = Str::duplicate(value);
+		tc->values[tc->no_kv_pairs] = add_value;
 		tc->no_kv_pairs++;
 	}
 }
