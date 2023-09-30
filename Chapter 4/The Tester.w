@@ -352,6 +352,14 @@ dictionary.
 	ENTER_EXECUTION_BLOCK(Regexp::match(&mr, A, P_C_string));
 	DISCARD_TEXT(A)
 	DISCARD_TEXT(P)
+	if (mr.no_matched_texts >= 1)
+		Tester::populate(D, I"SUBEXPRESSION1", Str::duplicate(mr.exp[0]));
+	if (mr.no_matched_texts >= 2)
+		Tester::populate(D, I"SUBEXPRESSION2", Str::duplicate(mr.exp[1]));
+	if (mr.no_matched_texts >= 3)
+		Tester::populate(D, I"SUBEXPRESSION3", Str::duplicate(mr.exp[2]));
+	if (mr.no_matched_texts >= 4)
+		Tester::populate(D, I"SUBEXPRESSION4", Str::duplicate(mr.exp[3]));
 	Regexp::dispose_of(&mr);
 
 @<Enter an execution block if a variable exists@> =
@@ -443,6 +451,7 @@ dictionary.
 		case EXISTS_RCOM:             @<Require existence of file@>; break;
 		case COPY_RCOM:               @<Copy a file@>; break;
 		case MKDIR_RCOM:              @<Make a directory@>; break;
+		case REMOVE_RCOM:             @<Remove a file@>; break;
 
 		case SHOW_RCOM:               if (action_type == SHOW_ACTION) @<Show file@>; break;
 
@@ -868,6 +877,13 @@ checksum to the second-named file, and also remembering its value.
 	Shell::quote_path(COMMAND, to_make);
 	Shell::run(COMMAND);
 	DISCARD_TEXT(COMMAND)
+
+@ |remove| deletes a file:
+
+@<Remove a file@> =
+	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
+	filename *to_delete = Tester::extract_as_filename(first, D);
+	BinaryFiles::delete(to_delete);
 
 @ =
 int Tester::extract_source_to_file(filename *F, test_case *tc) {
