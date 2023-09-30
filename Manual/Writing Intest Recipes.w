@@ -512,9 +512,12 @@ copies a file. This should only be used to copy into the work area |$WORK|.
 ensures the existence of directory at the given |PATH|. (Again, this should
 be used only to make subdirectories of |$WORK|.)
 
-There is intentionally no deletion command. You could fake this easily with
-|step: rm ...|, but don't try to clean up the work area yourself: Intest will
-handle that automatically.
+There is now also a deletion command:
+= (text as Delia)
+	remove: FILE
+=
+to remove a single file. Use this as little as possible and don't try to clean
+up the work area yourself: Intest will handle that automatically.
 
 @h Conditionals.
 As noted above, Delia has no loops. But it does have one control construct:
@@ -560,6 +563,15 @@ Similarly,
 	if: $CASE ''
 =
 tests if |$CASE| is the empty text.
+
+@ If round brackets are used to match subexpressions, then the result of
+such matches is written to the variables |$SUBEXPRESSION1| to |$SUBEXPRESSION4|.
+For example,
+= (text as Delia)
+	if: $CASE '(%C+) (%d+) *(%c*)'
+=
+matches the text |price 200 ringgit| and sets |$SUBEXPRESSION1| to |$SUBEXPRESSION3|
+to "price", "200" and "ringgit" respectively.
 
 @ An alternative condition is |if exists: FILE| tests if the named file
 exists. This can allow for certain checks to be performed only where

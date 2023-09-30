@@ -36,6 +36,7 @@ set of commands, enumerated as follows.
 @e MKDIR_RCOM
 @e OR_RCOM
 @e PASS_RCOM
+@e REMOVE_RCOM
 @e SET_RCOM
 @e SHOW_RCOM
 @e STEP_RCOM
@@ -82,6 +83,7 @@ recipe_command instruction_set[] = {
 	{ MKDIR_RCOM, U"mkdir", 1, FALSE, 0 },
 	{ OR_RCOM, U"or", -1, FALSE, 0 },
 	{ PASS_RCOM, U"pass", 1, FALSE, 0 },
+	{ REMOVE_RCOM, U"remove", 1, FALSE, 0 },
 	{ SET_RCOM, U"set", -1, FALSE, 0 },
 	{ SHOW_RCOM, U"show", -1, TRUE, 0 },
 	{ STEP_RCOM, U"step", -1, TRUE, 0 },

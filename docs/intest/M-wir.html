@@ -36,7 +36,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">intest</a></li><li><a href="index.html#M">Manual</a></li><li><b>Writing Intest Recipes</b></li></ul></div>
 <p class="purpose">A guide to writing in Delia, Intest's recipe language.</p>
 
-<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. Writing Delia</a></li><li><a href="M-wir.html#SP2">&#167;2. Syntax and tokens</a></li><li><a href="M-wir.html#SP3">&#167;3. Variables</a></li><li><a href="M-wir.html#SP9">&#167;9. Expansion</a></li><li><a href="M-wir.html#SP16">&#167;16. Control flow</a></li><li><a href="M-wir.html#SP20">&#167;20. Steps</a></li><li><a href="M-wir.html#SP22">&#167;22. Matches</a></li><li><a href="M-wir.html#SP25">&#167;25. Files and directories</a></li><li><a href="M-wir.html#SP27">&#167;27. Conditionals</a></li><li><a href="M-wir.html#SP36">&#167;36. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. Writing Delia</a></li><li><a href="M-wir.html#SP2">&#167;2. Syntax and tokens</a></li><li><a href="M-wir.html#SP3">&#167;3. Variables</a></li><li><a href="M-wir.html#SP9">&#167;9. Expansion</a></li><li><a href="M-wir.html#SP16">&#167;16. Control flow</a></li><li><a href="M-wir.html#SP20">&#167;20. Steps</a></li><li><a href="M-wir.html#SP22">&#167;22. Matches</a></li><li><a href="M-wir.html#SP25">&#167;25. Files and directories</a></li><li><a href="M-wir.html#SP27">&#167;27. Conditionals</a></li><li><a href="M-wir.html#SP37">&#167;37. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Writing Delia. </b>Recipe definitions are written in a very simple mini-language called Delia,
 for reasons which English users of Intest will appreciate. Had Intest been
@@ -639,9 +639,14 @@ way to see whether it worked or not is to see whether it produced any output.)
 be used only to make subdirectories of <span class="extract"><span class="extract-syntax">$WORK</span></span>.)
 </p>
 
-<p class="commentary">There is intentionally no deletion command. You could fake this easily with
-<span class="extract"><span class="extract-syntax">step: rm ...</span></span>, but don't try to clean up the work area yourself: Intest will
-handle that automatically.
+<p class="commentary">There is now also a deletion command:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    remove</span><span class="plain-syntax">: FILE</span>
+</pre>
+<p class="commentary">to remove a single file. Use this as little as possible and don't try to clean
+up the work area yourself: Intest will handle that automatically.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Conditionals. </b>As noted above, Delia has no loops. But it does have one control construct:
@@ -702,12 +707,24 @@ Similarly,
 <p class="commentary">tests if <span class="extract"><span class="extract-syntax">$CASE</span></span> is the empty text.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>An alternative condition is <span class="extract"><span class="extract-syntax">if exists: FILE</span></span> tests if the named file
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>If round brackets are used to match subexpressions, then the result of
+such matches is written to the variables <span class="extract"><span class="extract-syntax">$SUBEXPRESSION1</span></span> to <span class="extract"><span class="extract-syntax">$SUBEXPRESSION4</span></span>.
+For example,
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> '(%C+) (%d+) *(%c*)'</span>
+</pre>
+<p class="commentary">matches the text <span class="extract"><span class="extract-syntax">price 200 ringgit</span></span> and sets <span class="extract"><span class="extract-syntax">$SUBEXPRESSION1</span></span> to <span class="extract"><span class="extract-syntax">$SUBEXPRESSION3</span></span>
+to "price", "200" and "ringgit" respectively.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>An alternative condition is <span class="extract"><span class="extract-syntax">if exists: FILE</span></span> tests if the named file
 exists. This can allow for certain checks to be performed only where
 there is something to check against, for example.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b><span class="extract"><span class="extract-syntax">ifdef: $NAME</span></span> is true if and only if the local variable <span class="extract"><span class="extract-syntax">$NAME</span></span> exists.
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b><span class="extract"><span class="extract-syntax">ifdef: $NAME</span></span> is true if and only if the local variable <span class="extract"><span class="extract-syntax">$NAME</span></span> exists.
 Note that this will pass if <span class="extract"><span class="extract-syntax">$NAME</span></span> has the empty text has its value, i.e.,
 is currently blank: it will only fail if the variable has never been created.
 Note also that some variables are automatically created before the recipe
@@ -718,19 +735,19 @@ even begins &mdash; see above.
 if <span class="extract"><span class="extract-syntax">$NAME</span></span> has never been created.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>As we have seen, <span class="extract"><span class="extract-syntax">iffail:</span></span> is true if and only if the previous step or
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>As we have seen, <span class="extract"><span class="extract-syntax">iffail:</span></span> is true if and only if the previous step or
 match failed, and <span class="extract"><span class="extract-syntax">ifpass:</span></span> is similarly defined. (Note that these cause
 execution to continue where it otherwise would not.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b><span class="extract"><span class="extract-syntax">if showing: ITEM</span></span> is true if and only if the test is being run with
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b><span class="extract"><span class="extract-syntax">if showing: ITEM</span></span> is true if and only if the test is being run with
 the action <span class="extract"><span class="extract-syntax">-show-ITEM</span></span>. This is useful if you want a recipe to make it
 possible to show some elaborate intermediate data which is usually not
 needed at all: with <span class="extract"><span class="extract-syntax">if showing:</span></span>, you can have that data created only
 when somebody wants to see it.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b><span class="extract"><span class="extract-syntax">if compatible: FORMAT COMPATIBILITY</span></span> is true if and only if the
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b><span class="extract"><span class="extract-syntax">if compatible: FORMAT COMPATIBILITY</span></span> is true if and only if the
 Inform platform text <span class="extract"><span class="extract-syntax">FORMAT</span></span> matches the compatibility text <span class="extract"><span class="extract-syntax">COMPATIBILITY</span></span>.
 For example:
 </p>
@@ -742,7 +759,7 @@ For example:
 Errors are generated if either <span class="extract"><span class="extract-syntax">FORMAT</span></span> or <span class="extract"><span class="extract-syntax">COMPATIBILITY</span></span> is malformed.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b><span class="extract"><span class="extract-syntax">if format valid: FORMAT</span></span> is true if and only if <span class="extract"><span class="extract-syntax">FORMAT</span></span> is a valid
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b><span class="extract"><span class="extract-syntax">if format valid: FORMAT</span></span> is true if and only if <span class="extract"><span class="extract-syntax">FORMAT</span></span> is a valid
 Inform platform text. For example:
 </p>
 
@@ -752,7 +769,7 @@ Inform platform text. For example:
 <p class="commentary">is currently not true.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b>Suppose the program to be tested produces output which takes a long time
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>Suppose the program to be tested produces output which takes a long time
 to verify the correctness of. (This is the case for Inform 7, because its
 output needs to be fed through Inform 6 and then executed in a virtual
 machine before any results can be seen. Both steps take a second or so,
@@ -790,7 +807,7 @@ A side-effect here is that the hash value is also stored in the local variable
 <span class="extract"><span class="extract-syntax">$HASHCODE</span></span>, which is why you can't create your own <span class="extract"><span class="extract-syntax">$HASHCODE</span></span> variable.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>And finally, a great convenience for testing Inform 7, but useless for
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>And finally, a great convenience for testing Inform 7, but useless for
 anything else:
 </p>
 
@@ -802,7 +819,7 @@ in question, <span class="extract"><span class="extract-syntax">Z</span></span> 
 automatically written into the local variable <span class="extract"><span class="extract-syntax">$SCRIPT</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Cautionary tale about encodings. </b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
 locale differences meant that some tests weren't portable between MacOS and
 Windows. The issue was that the console environment (i.e., the standard
 output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1
