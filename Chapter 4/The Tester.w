@@ -578,22 +578,13 @@ while the second is a record of what it ought to come out as.
 @ To "bless" is to make the actual output also the ideal.
 
 @<Perform a blessing@> =
-	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "cp -p ");
-	Shell::quote_file(COMMAND, matching_actual);
-	Shell::quote_file(COMMAND, matching_ideal);
-	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND)
+	BinaryFiles::copy(matching_actual, matching_ideal, TRUE);
 	Str::clear(verdict); WRITE_TO(verdict, "passed (blessing this transcript in future)");
 
 @ To "curse" is to delete the ideal.
 
 @<Perform a curse@> =
-	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "rm ");
-	Shell::quote_file(COMMAND, matching_ideal);
-	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND)
+	BinaryFiles::delete(matching_ideal);
 	if (action_type == CURSE_ACTION) {
 		Str::clear(verdict); WRITE_TO(verdict, "cursed (no test conducted)");
 	}
@@ -658,15 +649,6 @@ for these, three of which are highly specific to Inform 7.
 	Skeins::dispose_of(A);
 	Skeins::dispose_of(I);
 	STREAM_CLOSE(TO);
-	DISCARD_TEXT(COMMAND)
-
-@<Perform a plain text test match using diff@> =
-	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "diff ");
-	Shell::quote_file(COMMAND, matching_actual);
-	Shell::quote_file(COMMAND, matching_ideal);
-	Shell::redirect(COMMAND, DO);
-	rv = Shell::run(COMMAND);
 	DISCARD_TEXT(COMMAND)
 
 @<Perform a binary test match@> =
@@ -860,23 +842,14 @@ checksum to the second-named file, and also remembering its value.
 	recipe_token *second = ENTRY_IN_LINKED_LIST(1, recipe_token, L->recipe_tokens);
 	filename *from = Tester::extract_as_filename(first, D);
 	filename *to = Tester::extract_as_filename(second, D);
-	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "cp -p ");
-	Shell::quote_file(COMMAND, from);
-	Shell::quote_file(COMMAND, to);
-	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND)
+	BinaryFiles::copy(from, to, TRUE);
 
 @ The |mkdir| command ensures that a named directory exists.
 
 @<Make a directory@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
 	pathname *to_make = Tester::extract_as_pathname(first, D);
-	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "mkdir -p ");
-	Shell::quote_path(COMMAND, to_make);
-	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND)
+	Pathnames::create_in_file_system(to_make);
 
 @ |remove| deletes a file:
 
@@ -920,28 +893,18 @@ void Tester::purge_work_area(int n) {
 }
 
 @<Remove text files from the work area@> =
-	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "cd ");
-	Shell::quote_path(COMMAND, Thread_Work_Area);
-	WRITE_TO(COMMAND, "; rm -f *.txt");
-	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND)
+	Directories::delete_contents(Thread_Work_Area, I".txt");
 
 @<Remove miscellaneous files from the materials@> =
-	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "find ");
-	Shell::quote_path(COMMAND, Example_materials);
-	WRITE_TO(COMMAND, " -mindepth 1 -delete");
-	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND)
+	Directories::delete_contents_recursively(Example_materials, NULL);
 
 @<Clean out the project, too@> =
-	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "cd ");
-	Shell::quote_path(COMMAND, Example_inform);
-	WRITE_TO(COMMAND, "; rm -f Build/*.*; rm -f Index/Details/*.*;  rm -f Index/*.*");
-	Shell::run(COMMAND);
-	DISCARD_TEXT(COMMAND)
+	pathname *P = Pathnames::down(Example_inform, I"Build");
+	Directories::delete_contents(P, NULL);
+	P = Pathnames::down(Example_inform, I"Details");
+	Directories::delete_contents(P, NULL);
+	P = Pathnames::down(Example_inform, I"Index");
+	Directories::delete_contents(P, NULL);
 
 @ When we want a filename, we don't want it quoted.
 
