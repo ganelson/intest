@@ -579,7 +579,7 @@ int Skeins::compare(OUTPUT_STREAM, skein *A, skein *I, int problems,
 	else
 		WRITE("Missing %s (%k):\n", thing, I);
 	if (as_HTML) HTML_CLOSE("p");
-	Skeins::show_fragment(OUT, A->text, as_HTML);
+	Skeins::show_fragment(OUT, I->text, as_HTML);
 	I = I->down;
 	error_count++;
 
