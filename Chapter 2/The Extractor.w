@@ -148,13 +148,17 @@ after the first line not matching this.
 		if (Regexp::match(&mr, line, U"(%C+) *: *(%c*) *")) {
 			text_stream *key = mr.exp[0], *value = mr.exp[1];
 			if (tfp->line_count == 1) {
-				if (Str::eq(key, I"Problem") == FALSE) {
-					es->now_extracting = TRUE;
-				} else {
+				if (Str::eq(key, I"Problem")) {
 					RecipeFiles::NameTestCase(es->tc, value);
+					RecipeFiles::AddKVPair(es->tc, I"Warning", I"No");
+				} else if (Str::eq(key, I"Warning")) {
+					RecipeFiles::NameTestCase(es->tc, value);
+					RecipeFiles::AddKVPair(es->tc, I"Warning", I"Yes");
+				} else {
+					es->now_extracting = TRUE;
 				}
 			}
-			if ((es->now_extracting == FALSE) && (es->tc))
+			if ((es->now_extracting == FALSE) && (es->tc) && (Str::ne(key, I"Warning")))
 				RecipeFiles::AddKVPair(es->tc, key, value);
 		} else if (Str::is_whitespace(line)) {
 			es->now_extracting = TRUE;
