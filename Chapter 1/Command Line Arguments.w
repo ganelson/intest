@@ -204,7 +204,9 @@ int Instructions::read_switches(intest_instructions *args,
 		text_stream *arg = NULL; if (i+1 < to_arg_n) arg = argv[i+1];
 		if (Regexp::match(&mr, opt, U"-+(%c*)")) {
 			clf_reader_state crs;
-			crs.state = (void *) args; crs.f = &Instructions::respond; crs.g = NULL;
+			crs.state = (void *) args;
+			crs.subcommand_selected = CommandLine::get_empty_subcommand();
+			crs.f = &Instructions::respond; crs.g = NULL;
 			crs.subs = FALSE; crs.nrt = 0;
 			int N = CommandLine::read_pair(&crs, mr.exp[0], arg);
 			if (N > 0) { i += N - 1; }

@@ -2,7 +2,7 @@
 # used to build the tool "intest". Do not edit "intest.mk" directly. Instead,
 # edit this script, and then rebuild "intest.mk" with the command:
 
-# inweb/Tangled/inweb intest -prototype intest/scripts/intest.mkscript -makefile intest/intest.mk
+# inweb/Tangled/inweb make-makefile intest -to intest/intest.mk
 
 # See the inweb manual for documentation on the *.mkscript file format, i.e.,
 # the format in which this file is written. But it is essentially just a makefile
@@ -37,7 +37,7 @@ force:
 	$(call make-me)
 
 define make-me
-	$(INWEB) $(ME) -import-from modules -tangle
+	$(INWEB) tangle $(ME) -import-from modules
 	{compile from: $(ME)/Tangled/$(MYNAME).c   to:   $(ME)/Tangled/$(MYNAME).o}
 	{link    from: $(ME)/Tangled/$(MYNAME).o   to:   $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION)}
 endef
@@ -53,23 +53,23 @@ test:
 
 .PHONY: commit
 commit:
-	$(INWEB) -advance-build-file $(ME)/build.txt
-	$(INWEB) -prototype intest/scripts/intest.rmscript -write-me intest/README.md
+	$(INWEB) advance-build $(ME)
+	$(INWEB) make-readme $(ME)
 	cd $(ME); git commit -a
 
 # Weaving the web for GitHub Pages:
 
 .PHONY: pages
 pages:
-	$(INWEB) -advance-build-file $(ME)/build.txt
+	$(INWEB) advance-build $(ME)
 	mkdir -p $(ME)/docs/$(MYNAME)
 	$(ME)/Tangled/$(MYNAME) -help > $(ME)/Figures/help.txt
-	$(INWEB) -prototype intest/scripts/intest.rmscript -write-me intest/README.md
+	$(INWEB) make-readme $(ME)
 	rm -f $(ME)/docs/*.html
 	rm -f $(ME)/docs/intest/*.html
 	cp -f $(ME)/docs-src/Intest.png $(ME)/docs/docs-assets/Intest.png
-	$(INWEB) -colony $(COLONY) -member overview -weave
-	$(INWEB) -colony $(COLONY) -member intest -weave
+	$(INWEB) weave -colony $(COLONY) -member overview
+	$(INWEB) weave -colony $(COLONY) -member intest
 
 # Cleaning up:
 

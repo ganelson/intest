@@ -17,6 +17,7 @@ is PROJECT/Tests/PROJECT.intest
 
 OPTIONS are as follows:
 
+
 -no-colours      don't show discrepancies in red and green using terminal emulation (default is -colours)
 -no-history      don't use command history (default is -history)
 -internal X      use X as the internal Inform distribution resources
@@ -30,7 +31,7 @@ OPTIONS are as follows:
 -at X            specify that this tool is installed at X
 -crash           intentionally crash on internal errors, for backtracing (default is -no-crash)
 -fixtime         pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
--help            print this help information
+-help            print general help information
 -locale X        set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
 -log X           write the debugging log to include diagnostics on X
 -version         print out version number
