@@ -1,0 +1,20 @@
+Colony {
+	default: pattern "GitHubPages" breadcrumbs "Home: //overview//"
+
+	member: "overview" at "docs-src/index.inweb" to "" breadcrumbs ""
+	member: "intest" at "" to "intest"
+	member: "arch" at "arch-module" to "arch-module"
+	external: "inweb" at "../inweb"
+	external: "foundation" at "../inweb/foundation-module"
+
+	Navigation {
+		[[Home "<Intest.png@72>" -> overview]]
+		[[Item "intest"]]
+		[[Item "arch"]]
+		[[Menu "Repository"]]
+		[[Item "<github.png> github" -> https://github.com/ganelson/intest]]
+		[[Menu "Related Projects"]]
+		[[Item "<github.png> inweb" -> https://github.com/ganelson/inweb]]
+		[[Item "<github.png> inform" -> https://github.com/ganelson/inform]]
+	}
+}

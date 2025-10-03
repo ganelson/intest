@@ -25,7 +25,7 @@
 # The colony file for this collection of webs contains information about their
 # paths, where they are woven to, and so on
 
-COLONY = $(ME)/colony.txt
+COLONY = $(ME)/colony.inweb
 
 # Making the program:
 
@@ -67,9 +67,9 @@ pages:
 	$(INWEB) make-readme $(ME)
 	rm -f $(ME)/docs/*.html
 	rm -f $(ME)/docs/intest/*.html
+	rm -f $(ME)/docs/arch-module/*.html
 	cp -f $(ME)/docs-src/Intest.png $(ME)/docs/docs-assets/Intest.png
-	$(INWEB) weave -colony $(COLONY) -member overview
-	$(INWEB) weave -colony $(COLONY) -member intest
+	$(INWEB) weave $(COLONY)
 
 # Cleaning up:
 

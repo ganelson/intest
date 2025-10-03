@@ -3,8 +3,7 @@
 To deal with multiple object code formats.
 
 @h Target VMs.
-For a fuller explanation of these, see //What This Module Does//, but briefly:
-a //target_vm// object represents a choice of both Inter architecture and
+A //target_vm// object represents a choice of both Inter architecture and
 also a format for final code-generation from Inter. For example, it might
 represent "16-bit with debugging enabled to be generated to Inform 6 code",
 or, say, "32-bit to be generated to ANSI C code".
@@ -138,7 +137,9 @@ target_vm *TargetVMs::new(inter_architecture *arch, text_stream *format,
 
 @ Plumbing is included here to add "options" to a VM's textual description. The
 idea is that these allow for the user to specify additional and VM-specific
-command-line options (using |-format|) which are then picked up by //final//.
+command-line options (using |-format|) which are then picked up in final
+code generation.
+
 Thus, a request for |-format=C/32d/no-halt/stack=240| would cause a new variant of
 |C/32d| to be created which would have the (purely hypothetical) list of
 options |I"no-halt", I"stack=240"|. It is then up to the C final code generator
@@ -165,7 +166,7 @@ text_stream *TargetVMs::get_full_format_text(target_vm *VM) {
 	return VM->full_format;
 }
 
-@ And now for reading. The following is used by //inbuild// when reading the
+@ And now for reading. The following is used by Inbuild when reading the
 command-line option |-format=T|: the text |T| is supplied as a parameter here.
 
 Note however that it actually calls //TargetVMs::find_with_hint//. The |debug|
@@ -261,7 +262,7 @@ the option |no-pointer-nonsense| and return that.
 @ If we get here, we've failed to make any match using the modern notation.
 
 So next we try to deduce a VM from the given filename extension, which is the
-clumsy way that VMs used to be referred to on the //inform7// command line. For
+clumsy way that VMs used to be referred to on the Inform 7 command line. For
 example, |-format=ulx| produces |Inform6/32| or |Inform6/32d| (depending on
 the |debug| hint).
 
@@ -426,7 +427,7 @@ inter_architecture *TargetVMs::get_architecture(target_vm *VM) {
 }
 
 @ Different VMs have different in-browser interpreters, which means that
-//inblorb// needs to be given different release instructions for them. If the
+Inblorb needs to be given different release instructions for them. If the
 user doesn't specify any particular interpreter, she gets the following.
 
 On some platforms this will make no sense, and in those cases the function

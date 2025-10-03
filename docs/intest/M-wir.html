@@ -18,16 +18,14 @@
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
-		<h1><a href="../index.html">
-<img src="../docs-assets/Intest.png" height=72">
-</a></h1>
+		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">intest</span></a></li>
+<li><a href="../arch-module/index.html">arch</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=18> github</a></li>
+<li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../inform/docs/index.html">inform</a></li>
-
+<li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> inweb</a></li>
+<li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=0> inform</a></li>
 </ul>
 		</nav>
 		<main role="main">
@@ -819,7 +817,7 @@ in question, <span class="extract"><span class="extract-syntax">Z</span></span> 
 automatically written into the local variable <span class="extract"><span class="extract-syntax">$SCRIPT</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Cautionary tale about encodings.</b>When we first ported <a href="../../../inweb/docs/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Cautionary tale about encodings.</b>When we first ported <a href="../inweb/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
 locale differences meant that some tests weren't portable between MacOS and
 Windows. The issue was that the console environment (i.e., the standard
 output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1
@@ -846,7 +844,7 @@ setting:
 <p class="commentary"><span class="extract"><span class="extract-syntax">-locale LOCALE=ENCODING</span></span> where <span class="extract"><span class="extract-syntax">LOCALE</span></span> is one of <span class="extract"><span class="extract-syntax">shell</span></span> or <span class="extract"><span class="extract-syntax">console</span></span>, and
 <span class="extract"><span class="extract-syntax">ENCODING</span></span> is one of <span class="extract"><span class="extract-syntax">platform</span></span>, <span class="extract"><span class="extract-syntax">utf-8</span></span> or <span class="extract"><span class="extract-syntax">iso-latin1</span></span>. (The <span class="extract"><span class="extract-syntax">platform</span></span>
 encoding means "whatever is normal on the current platform".) Running with the
-<span class="extract"><span class="extract-syntax">-verbose</span></span> option in <a href="../../../inweb/docs/index.html" class="internal">inweb</a> or <a href="index.html" class="internal">intest</a> will show the locales being used:
+<span class="extract"><span class="extract-syntax">-verbose</span></span> option in <a href="../inweb/index.html" class="internal">inweb</a> or <a href="index.html" class="internal">intest</a> will show the locales being used:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">

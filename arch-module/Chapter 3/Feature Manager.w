@@ -74,8 +74,8 @@ void Features::list(OUTPUT_STREAM, int state, compiler_feature *except) {
 }
 
 @ In the code above, features are set up as inactive by default -- even "core",
-which the compiler absolutely cannot live without. So //supervisor: Project Services//
-calls the following before switching on optional things that it wants.
+which the compiler absolutely cannot live without. So Inform calls the following
+before switching on optional things that it wants.
 
 =
 void Features::activate_bare_minimum(void) {

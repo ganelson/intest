@@ -8,7 +8,7 @@ expectation that it will have 32-bit rather than 16-bit integers. These are
 not different Inter formats: two Inter files could, in fact, be identical
 and yet one could be intended to be code-generated to a 32-bit program
 and another to 16-bit. In effect, an "architecture" holds the settings which
-//inform7// uses when turning source text into Inter code.
+Inform uses when turning source text into Inter code.
 
 Each different architecture is represented by one of these:
 

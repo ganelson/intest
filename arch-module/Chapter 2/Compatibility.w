@@ -162,9 +162,9 @@ compatibility_specification *Compatibility::from_text(text_stream *text) {
 
 @ The above gets us down from, say, "for Glulx only" to just "Glulx", and
 calls the function //Compatibility::parse_specifics// to handle that specific part --
-though it may be more complicated. See the //arch-test// unit test for
-examples. While parsing those specifics we maintain a state in the following
-structure:
+though it may be more complicated.
+
+While parsing those specifics we maintain a state in the following structure:
 
 =
 typedef struct compat_parser_state {

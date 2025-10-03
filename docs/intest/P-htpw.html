@@ -32,16 +32,14 @@ MathJax = {
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
-		<h1><a href="../index.html">
-<img src="../docs-assets/Intest.png" height=72">
-</a></h1>
+		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">intest</span></a></li>
+<li><a href="../arch-module/index.html">arch</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=18> github</a></li>
+<li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../inform/docs/index.html">inform</a></li>
-
+<li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> inweb</a></li>
+<li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=0> inform</a></li>
 </ul>
 		</nav>
 		<main role="main">
@@ -56,16 +54,16 @@ MathJax = {
 Intest, which is a literate program or "web". Before diving in:
 </p>
 
-<ul class="items"><li>(a) It helps to have some experience of reading webs: see <a href="../../../inweb/docs/index.html" class="internal">inweb</a> for more.
+<ul class="items"><li>(a) It helps to have some experience of reading webs: see <a href="../inweb/index.html" class="internal">inweb</a> for more.
 </li><li>(b) Intest is written in C, in fact ANSI C99, but this is disguised by the
-fact that it uses some extension syntaxes provided by the <a href="../../../inweb/docs/index.html" class="internal">inweb</a> literate
-programming tool, making it a dialect of C called InC. See <a href="../../../inweb/docs/index.html" class="internal">inweb</a> for
+fact that it uses some extension syntaxes provided by the <a href="../inweb/index.html" class="internal">inweb</a> literate
+programming tool, making it a dialect of C called InC. See <a href="../inweb/index.html" class="internal">inweb</a> for
 full details, but essentially: it's C without predeclarations or header files,
 and where functions have names like <span class="extract"><span class="extract-syntax">Tags::add_by_name</span></span> rather than just <span class="extract"><span class="extract-syntax">add_by_name</span></span>.
-</li><li>(c) Intest makes use of a "module" of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
+</li><li>(c) Intest makes use of a "module" of utility functions called <a href="../foundation/index.html" class="internal">foundation</a>.
 This is a web in its own right. There's no need to read it in full, but if
 you haven't seen a Foundation-based program before, you may want to take a
-quick look at <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
+quick look at <a href="../foundation/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Instructions and their blocks.</b>Intest is a C program, so it begins at <a href="1-mn.html" class="internal">Main</a>. This works out where Intest
 is installed, which project Intest is to test, and where the file specifying
@@ -120,7 +118,7 @@ is either:
 </p>
 
 <ul class="items"><li>(a) an OPTIONS block, like <span class="extract"><span class="ConsoleText-extract-syntax">-verbose</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">-colours</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">-threads=N</span></span>, handled by the
-command-line-reading functions in the <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a> library;
+command-line-reading functions in the <a href="../foundation/index.html" class="internal">foundation</a> library;
 </li><li>(b) a DO block, introduced by <span class="extract"><span class="ConsoleText-extract-syntax">-do</span></span>, or by following directly on from the
 conventional switches (a);
 </li><li>(c) a USING block, introduced by <span class="extract"><span class="ConsoleText-extract-syntax">-using</span></span>.
@@ -247,28 +245,28 @@ Once all threads have finished, and Intest is back to being a single-threaded
 program, <a href="3-ts.html#SP10" class="internal">Scheduler::perform_work</a> summarises the results.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Individual tests.</b>What the workers do is to call <a href="4-tt.html#SP1" class="internal">Tester::test</a> on each <a href="3-ts.html#SP8" class="internal">test</a> it is given.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Individual tests.</b>What the workers do is to call <a href="4-tt2.html#SP1" class="internal">Tester::test</a> on each <a href="3-ts.html#SP8" class="internal">test</a> it is given.
 A <a href="3-ts.html#SP8" class="internal">test</a> object is essentially an action code, plus a <a href="2-rf.html#SP10" class="internal">test_case</a>, plus
 a work area in the file system &mdash; each worker thread has its own work area,
 since otherwise interference between them would create havoc; but successive
 tests run by the same worker use the same work area, which is cleaned after
-each use by <a href="4-tt.html#SP3" class="internal">Tester::purge_work_area</a>.
+each use by <a href="4-tt2.html#SP3" class="internal">Tester::purge_work_area</a>.
 </p>
 
-<p class="commentary">The bulk of <a href="4-tt.html#SP1" class="internal">Tester::test</a>, though, is an interpreter for the "recipe"
+<p class="commentary">The bulk of <a href="4-tt2.html#SP1" class="internal">Tester::test</a>, though, is an interpreter for the "recipe"
 program &mdash; that is, the Delia program assigned to the test case in question,
 which has been precompiled into a quick-to-interpret form by <a href="4-tdc.html" class="internal">The Delia Compiler</a>,
 something which was done back when the recipe file was read in.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>The most complex algorithm in Intest is probably the one performing token
-expansion, at <a href="4-tt.html#SP5" class="internal">Tester::expand</a>. This expands a token like <span class="extract"><span class="ConsoleText-extract-syntax">$WORK/Example.inform</span></span>
+expansion, at <a href="4-tt2.html#SP5" class="internal">Tester::expand</a>. This expands a token like <span class="extract"><span class="ConsoleText-extract-syntax">$WORK/Example.inform</span></span>
 by substituting in the current value of the variable <span class="extract"><span class="ConsoleText-extract-syntax">$WORK</span></span> &mdash; note that these
 are single-dollar, i.e. local to the current recipe, variables, as distinct from
 the double-dollar, global, ones. That expansion process isn't so simple because
 if <span class="extract"><span class="ConsoleText-extract-syntax">$WORK</span></span> expands to a filename with spaces in, then we may need to end up with
 something which still ends up as a single shell command token &mdash; see
-<a href="4-tt.html#SP6" class="internal">Tester::quote_expand</a> for how this is done.
+<a href="4-tt2.html#SP6" class="internal">Tester::quote_expand</a> for how this is done.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>When tests fail, it is usually because some output text doesn't match the
@@ -299,7 +297,7 @@ use of <span class="extract"><span class="ConsoleText-extract-syntax">-set</span
 
 <p class="commentary">2. But if that isn't good enough, try to do it with a minimal extension to the
 Delia language. You'll need to make matching changes to <a href="4-tdc.html#SP6" class="internal">Delia::compile</a>
-and <a href="4-tt.html#SP1" class="internal">Tester::test</a>, and to add documentation to <a href="M-wir.html" class="internal">Writing Intest Recipes</a>.
+and <a href="4-tt2.html#SP1" class="internal">Tester::test</a>, and to add documentation to <a href="M-wir.html" class="internal">Writing Intest Recipes</a>.
 </p>
 
 <p class="commentary">3. If that still isn't good enough, and what you really need is a different
