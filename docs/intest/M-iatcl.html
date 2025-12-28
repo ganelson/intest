@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -20,6 +25,7 @@
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">intest</span></a></li>
+<li><a href="../inprint/index.html">inprint</a></li>
 <li><a href="../arch-module/index.html">arch</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
@@ -36,84 +42,76 @@
 
 <ul class="toc"><li><a href="M-iatcl.html#SP1">&#167;1. Specifying what to test</a></li><li><a href="M-iatcl.html#SP3">&#167;3. History and substitution</a></li><li><a href="M-iatcl.html#SP4">&#167;4. Command line arguments</a></li><li><a href="M-iatcl.html#SP5">&#167;5. The options</a></li><li><a href="M-iatcl.html#SP6">&#167;6. Using</a></li><li><a href="M-iatcl.html#SP7">&#167;7. Doing</a></li><li><a href="M-iatcl.html#SP9">&#167;9. Output redirection</a></li><li><a href="M-iatcl.html#SP10">&#167;10. Reporting on test outcomes in the Inform app</a></li><li><a href="M-iatcl.html#SP11">&#167;11. Skein file testing</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Specifying what to test.</b>Intest tests just one project at a time, and the first thing to do is
-specify which. The general form is:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Specifying what to test.</b>  Intest tests just one project at a time, and the first thing to do is
+specify which. The general form is:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> PROJECT COMMAND</span>
 </pre>
-<p class="commentary">or, in case the <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> directory happens to begin with a hyphen and could
-be confused with the name of a command-line switch,
-</p>
-
+<div class="lsmarkdown">
+<p>or, in case the <code>PROJECT</code> directory happens to begin with a hyphen and could
+be confused with the name of a command-line switch,</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> PROJECT COMMAND</span>
 </pre>
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> is optional if the <span class="extract"><span class="ConsoleText-extract-syntax">COMMAND</span></span> is simply <span class="extract"><span class="ConsoleText-extract-syntax">-help</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">-version</span></span>,
-when of course no actual testing will happen.
-</p>
-
-<p class="commentary">The rest of this section is entirely about how to write a <span class="extract"><span class="ConsoleText-extract-syntax">COMMAND</span></span>.
-</p>
-
-<p class="commentary">Intest expects that <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> will be a directory, and that it will further
-contain a subdirectory called <span class="extract"><span class="ConsoleText-extract-syntax">Tests</span></span>. But that is really the only assumption
+<div class="lsmarkdown">
+<p><code>PROJECT</code> is optional if the <code>COMMAND</code> is simply <code>-help</code> or <code>-version</code>,
+when of course no actual testing will happen.</p>
+<p>The rest of this section is entirely about how to write a <code>COMMAND</code>.</p>
+<p>Intest expects that <code>PROJECT</code> will be a directory, and that it will further
+contain a subdirectory called <code>Tests</code>. But that is really the only assumption
 it makes: there is no requirement for the project to be a web in the sense of
 Inweb, or to be one of the Inform tools. As we will see, though, the project
-must provide detailed instructions on how the tests are to be performed.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>But for the benefit of Inform users, Intest can also be used in a simplified
-way in which <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span> is an Inform extension (if stored in directory form) or kit. For example:
-</p>
-
+must provide detailed instructions on how the tests are to be performed.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  But for the benefit of Inform users, Intest can also be used in a simplified
+way in which <code>PROJECT</code> is an Inform extension (if stored in directory form) or kit. For example:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> 'Extensions/Emily Short/Locksmith-v15.i7xd' all</span>
 </pre>
-<p class="commentary">What makes this simpler is that the user need not write any instructions
+<div class="lsmarkdown">
+<p>What makes this simpler is that the user need not write any instructions
 specifying what to test and how to test it: Intest knows how to test an Inform
 extension or kit, and handles it all automatically. That does come with a
 minor restriction: history (see below) is not available for these simple
 projects, but on the other hand, it is also not really needed since they
-typically have fewer than ten test cases.
-</p>
-
-<p class="commentary">Intest can only work in this simplified, Inform-specific way if it has access
-to the Inform "internals" directory, part of the core distribution for the
+typically have fewer than ten test cases.</p>
+<p>Intest can only work in this simplified, Inform-specific way if it has access
+to the Inform &quot;internals&quot; directory, part of the core distribution for the
 programming language, which contains resources it will need in order to conduct
 these tests. That's no real restriction since, of course, if the user does not
 have Inform installed then there would be no way to test such extensions or
 kits anyway. But Intest needs to know where in the filing system the internals
-directory can be found. By default it assumes the path <span class="extract"><span class="ConsoleText-extract-syntax">inform7/Internal</span></span>,
-but this can be overridden with the <span class="extract"><span class="ConsoleText-extract-syntax">-internal</span></span> switch:
-</p>
-
+directory can be found. By default it assumes the path <code>inform7/Internal</code>,
+but this can be overridden with the <code>-internal</code> switch:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> '/Volumes/Experimental HD/unstable-inform/inform7/Internal'</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> 'Extensions/Emily Short/Locksmith-v15.i7xd' all</span>
 </pre>
-<p class="commentary">Note that this exactly follows the conventions used by the <span class="extract"><span class="ConsoleText-extract-syntax">inform7</span></span> and
-<span class="extract"><span class="ConsoleText-extract-syntax">inbuild</span></span> command-line tools, which also have an optional <span class="extract"><span class="ConsoleText-extract-syntax">-internal</span></span>
-command-line switch and the same default.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. History and substitution.</b>For each different project <span class="extract"><span class="ConsoleText-extract-syntax">PROJECT</span></span>, Intest maintains a history of recent
-commands in a file stored at:
-</p>
-
+<div class="lsmarkdown">
+<p>Note that this exactly follows the conventions used by the <code>inform7</code> and
+<code>inbuild</code> command-line tools, which also have an optional <code>-internal</code>
+command-line switch and the same default.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. History and substitution.</b>  For each different project <code>PROJECT</code>, Intest maintains a history of recent
+commands in a file stored at:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">/</span><span class="identifier-syntax">Tests</span><span class="plain-syntax">/</span><span class="identifier-syntax">intest</span><span class="plain-syntax">-</span><span class="identifier-syntax">history</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
 </pre>
-<p class="commentary">If Intest can't find this file, it silently continues; it will rewrite, or
-create, this file when it exits, unless the <span class="extract"><span class="extract-syntax">-no-history</span></span> setting is used.
-(When Intest is being used less interactively &mdash; for example, inside the
-Inform user interface app &mdash; this setting avoids clutter.)
-</p>
-
-<p class="commentary">The first thing Intest does with a <span class="extract"><span class="extract-syntax">COMMAND</span></span> is to make substitutions.
-A <span class="extract"><span class="extract-syntax">COMMAND</span></span> consisting of just "?" lists the project's current history, like so:
-</p>
-
+<div class="lsmarkdown">
+<p>If Intest can't find this file, it silently continues; it will rewrite, or
+create, this file when it exits, unless the <code>-no-history</code> setting is used.
+(When Intest is being used less interactively -- for example, inside the
+Inform user interface app -- this setting avoids clutter.)</p>
+<p>The first thing Intest does with a <code>COMMAND</code> is to make substitutions.
+A <code>COMMAND</code> consisting of just &quot;?&quot; lists the project's current history, like so:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7 ?</span>
 <span class="ConsoleText-plain-syntax">    ?1. cases</span>
@@ -122,185 +120,158 @@ A <span class="extract"><span class="extract-syntax">COMMAND</span></span> consi
 <span class="ConsoleText-plain-syntax">    ?4. problems</span>
 <span class="ConsoleText-plain-syntax">    1 = PM_ActivityOf; 2 = PM_AdjectiveIsValue</span>
 </pre>
-<p class="commentary">(If there's no recorded history, output is empty.) What this means is that
-there have been four previous commands, called <span class="extract"><span class="ConsoleText-extract-syntax">?1</span></span> to <span class="extract"><span class="ConsoleText-extract-syntax">?4</span></span>. There are also
-two test cases recently found to be troublesome, called <span class="extract"><span class="ConsoleText-extract-syntax">1</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">2</span></span>. History
-is maintained for the previous 20 commands.
-</p>
-
-<p class="commentary">Intest uses both of these notations to save typing. The command <span class="extract"><span class="ConsoleText-extract-syntax">?3</span></span>, for
-example, abbreviates <span class="extract"><span class="ConsoleText-extract-syntax">Beatles Sackcloth Gelato</span></span>. Thus:
-</p>
-
+<div class="lsmarkdown">
+<p>(If there's no recorded history, output is empty.) What this means is that
+there have been four previous commands, called <code>?1</code> to <code>?4</code>. There are also
+two test cases recently found to be troublesome, called <code>1</code> and <code>2</code>. History
+is maintained for the previous 20 commands.</p>
+<p>Intest uses both of these notations to save typing. The command <code>?3</code>, for
+example, abbreviates <code>Beatles Sackcloth Gelato</code>. Thus:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7 ?3</span>
 <span class="ConsoleText-plain-syntax">    Repeating: ?3. Beatles Sackcloth Gelato</span>
 <span class="ConsoleText-plain-syntax">    ...</span>
 </pre>
-<p class="commentary">is equivalent to typing:
-</p>
-
+<div class="lsmarkdown">
+<p>is equivalent to typing:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7 Beatles Sackcloth Gelato</span>
 </pre>
-<p class="commentary">except that it doesn't add a new line to the history file, since this is a repeat of an old command, not a new one.
-</p>
-
-<p class="commentary">Calling intest with an empty command repeats its most recent new command:
-</p>
-
+<div class="lsmarkdown">
+<p>except that it doesn't add a new line to the history file, since this is a repeat of an old command, not a new one.</p>
+<p>Calling intest with an empty command repeats its most recent new command:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span>
 <span class="ConsoleText-plain-syntax">    Repeating: ?4. problems</span>
 <span class="ConsoleText-plain-syntax">    ...</span>
 </pre>
-<p class="commentary">Finally, intest automatically expands any command line arguments consisting
-only of positive decimal numbers into the names recorded in the history. Thus
-</p>
-
+<div class="lsmarkdown">
+<p>Finally, intest automatically expands any command line arguments consisting
+only of positive decimal numbers into the names recorded in the history. Thus</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7 1 2</span>
 <span class="ConsoleText-plain-syntax">    Expanded to: ?5. PM_ActivityOf PM_AdjectiveIsValue</span>
 <span class="ConsoleText-plain-syntax">    ...</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Command line arguments.</b>At this point, then, the command no longer has any <span class="extract"><span class="ConsoleText-extract-syntax">?</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">?n</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">n</span></span> tokens
-in it, because those have all been taken care of. What remains is a "raw
-command". This takes the form:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Command line arguments.</b>  At this point, then, the command no longer has any <code>?</code>, <code>?n</code> or <code>n</code> tokens
+in it, because those have all been taken care of. What remains is a &quot;raw
+command&quot;. This takes the form:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">OPTIONS</span><span class="plain-syntax"> -</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">USING</span><span class="plain-syntax"> -</span><span class="reserved-syntax">do</span><span class="plain-syntax"> </span><span class="identifier-syntax">DO</span>
 </pre>
-<p class="commentary"><span class="extract"><span class="extract-syntax">OPTIONS</span></span>, which can be nothing at all, sets overall switches such as
-<span class="extract"><span class="extract-syntax">-no-history</span></span>. See below. <span class="extract"><span class="extract-syntax">-using</span></span> tells Intest where to find test cases;
-that too is optional. <span class="extract"><span class="extract-syntax">-do</span></span> tells Intest which test cases to run. If there
-isn't a <span class="extract"><span class="extract-syntax">-using</span></span> block, there's no need to say <span class="extract"><span class="extract-syntax">-do</span></span>, so simply
-</p>
-
+<div class="lsmarkdown">
+<p><code>OPTIONS</code>, which can be nothing at all, sets overall switches such as
+<code>-no-history</code>. See below. <code>-using</code> tells Intest where to find test cases;
+that too is optional. <code>-do</code> tells Intest which test cases to run. If there
+isn't a <code>-using</code> block, there's no need to say <code>-do</code>, so simply</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">OPTIONS</span><span class="plain-syntax"> </span><span class="identifier-syntax">DO</span>
 </pre>
-<p class="commentary">will work. For example,
-</p>
-
+<div class="lsmarkdown">
+<p>will work. For example,</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="identifier-syntax">no</span><span class="plain-syntax">-</span><span class="identifier-syntax">history</span><span class="plain-syntax"> </span><span class="identifier-syntax">bigarrays</span><span class="plain-syntax"> </span><span class="identifier-syntax">badvariables</span>
 </pre>
-<p class="commentary">would set the option <span class="extract"><span class="extract-syntax">-no-history</span></span> and then perform a "do" on the two test
-cases named.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The options.</b>Are as follows:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-history</span></span> and <span class="extract"><span class="extract-syntax">-no-history</span></span> turn the writing of command history on or off.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-colours</span></span> and <span class="extract"><span class="extract-syntax">-no-colours</span></span> turn on or off the use of red and green terminal
-text to show deletions and insertions when displaying differences.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-verbose</span></span> and <span class="extract"><span class="extract-syntax">-no-verbose</span></span> turn on or off the echoing of shell commands to
-the standard output. (Unlike make, Intest is by default silent.)
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-set VAR=VALUE</span></span> creates the global variable <span class="extract"><span class="extract-syntax">$$VAR</span></span> and sets it to <span class="extract"><span class="extract-syntax">VALUE</span></span>.
-The variable name <span class="extract"><span class="extract-syntax">VAR</span></span> must contain only upper-case letters, digits or
-underscores.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-threads=N</span></span> tells Intest to use up to <span class="extract"><span class="extract-syntax">N</span></span> independent threads, with one test
-at a time running on each thread. Experience shows that setting <span class="extract"><span class="extract-syntax">N</span></span> to be
+<div class="lsmarkdown">
+<p>would set the option <code>-no-history</code> and then perform a &quot;do&quot; on the two test
+cases named.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The options.</b>  Are as follows:</p>
+<p><code>-history</code> and <code>-no-history</code> turn the writing of command history on or off.</p>
+<p><code>-colours</code> and <code>-no-colours</code> turn on or off the use of red and green terminal
+text to show deletions and insertions when displaying differences.</p>
+<p><code>-verbose</code> and <code>-no-verbose</code> turn on or off the echoing of shell commands to
+the standard output. (Unlike make, Intest is by default silent.)</p>
+<p><code>-set VAR=VALUE</code> creates the global variable <code>$$VAR</code> and sets it to <code>VALUE</code>.
+The variable name <code>VAR</code> must contain only upper-case letters, digits or
+underscores.</p>
+<p><code>-threads=N</code> tells Intest to use up to <code>N</code> independent threads, with one test
+at a time running on each thread. Experience shows that setting <code>N</code> to be
 the number of processor cores you have, doubling if you have hyperthreading,
-gives the fastest performance. <span class="extract"><span class="extract-syntax">-threads=1</span></span> makes Intest run in a single
-thread, which may be necessary on some platforms.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-purge</span></span> is an option used only when testing Inform 7; it's a convenience for
-removing the many temporary files created in the course of testing.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Using.</b>Before it can do any testing, Intest has to discover the universe of possible
-named test cases available, and work out which recipe to use with each.
-</p>
-
-<p class="commentary">It normally does that by reading a recipe file stored at:
-</p>
-
+gives the fastest performance. <code>-threads=1</code> makes Intest run in a single
+thread, which may be necessary on some platforms.</p>
+<p><code>-purge</code> is an option used only when testing Inform 7; it's a convenience for
+removing the many temporary files created in the course of testing.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Using.</b>  Before it can do any testing, Intest has to discover the universe of possible
+named test cases available, and work out which recipe to use with each.</p>
+<p>It normally does that by reading a recipe file stored at:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">/</span><span class="identifier-syntax">Tests</span><span class="plain-syntax">/</span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">.</span><span class="identifier-syntax">intest</span>
 </pre>
-<p class="commentary">This is because the default <span class="extract"><span class="extract-syntax">-using</span></span> setting is
-</p>
-
+<div class="lsmarkdown">
+<p>This is because the default <code>-using</code> setting is</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">/</span><span class="identifier-syntax">Tests</span><span class="plain-syntax">/</span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">.</span><span class="identifier-syntax">intest</span>
 </pre>
-<p class="commentary">You can alternatively say <span class="extract"><span class="extract-syntax">-using R</span></span> for any intest file <span class="extract"><span class="extract-syntax">R</span></span>, which need not
-be in the project folder.
-</p>
-
-<p class="commentary">It is also possible, though seldom useful, to give your recipe instructions
+<div class="lsmarkdown">
+<p>You can alternatively say <code>-using R</code> for any intest file <code>R</code>, which need not
+be in the project folder.</p>
+<p>It is also possible, though seldom useful, to give your recipe instructions
 at the command line and not in an intest file at all. Newcomers to Intest
-should simply skip the following discussion, but:
-</p>
-
+should simply skip the following discussion, but:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">USE1</span><span class="plain-syntax"> </span><span class="identifier-syntax">USE2</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">USEn</span>
 </pre>
-<p class="commentary">can instead be a list of use commands, some of a single token, some of
-two or more. In effect, those are lines in an intest file.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Doing.</b>The "doing" part of an Intest command is usually a list of test cases to
-be tried. For example,
-</p>
-
+<div class="lsmarkdown">
+<p>can instead be a list of use commands, some of a single token, some of
+two or more. In effect, those are lines in an intest file.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Doing.</b>  The &quot;doing&quot; part of an Intest command is usually a list of test cases to
+be tried. For example,</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">alpha</span><span class="plain-syntax"> </span><span class="identifier-syntax">beta</span><span class="plain-syntax"> </span><span class="identifier-syntax">gamma</span>
 </pre>
-<p class="commentary">is implicitly read as
-</p>
-
+<div class="lsmarkdown">
+<p>is implicitly read as</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="reserved-syntax">test</span><span class="plain-syntax"> </span><span class="identifier-syntax">alpha</span><span class="plain-syntax"> </span><span class="identifier-syntax">beta</span><span class="plain-syntax"> </span><span class="identifier-syntax">gamma</span>
 </pre>
-<p class="commentary">since <span class="extract"><span class="extract-syntax">-test</span></span> is understood if no other do command is given.
-</p>
-
-<p class="commentary">Any number of names can be supplied, each of which must be one of the
-following:
-</p>
-
-<ul class="items"><li>(i) <span class="extract"><span class="extract-syntax">all</span></span> means all known tests;
-</li><li>(ii) <span class="extract"><span class="extract-syntax">examples</span></span>, <span class="extract"><span class="extract-syntax">extensions</span></span>, <span class="extract"><span class="extract-syntax">problems</span></span>, <span class="extract"><span class="extract-syntax">cases</span></span> each mean all known
+<div class="lsmarkdown">
+<p>since <code>-test</code> is understood if no other do command is given.</p>
+<p>Any number of names can be supplied, each of which must be one of the
+following:</p>
+<p>(i) <code>all</code> means all known tests;
+(ii) <code>examples</code>, <code>extensions</code>, <code>problems</code>, <code>cases</code> each mean all known
 tests of the given type of origin;
-</li><li>(iii) <span class="extract"><span class="extract-syntax">A</span></span>, <span class="extract"><span class="extract-syntax">B</span></span>, <span class="extract"><span class="extract-syntax">C</span></span>, ..., mean "the example with this letter in the (first)
-extension case";
-</li><li>(iv) <span class="extract"><span class="extract-syntax">^1</span></span>, <span class="extract"><span class="extract-syntax">^2</span></span>, <span class="extract"><span class="extract-syntax">^3</span></span>, ..., mean "the 1st (2nd, 3rd, ...) test case known",
-&mdash; this is not to be confused with the <span class="extract"><span class="extract-syntax">1</span></span>, <span class="extract"><span class="extract-syntax">2</span></span>, <span class="extract"><span class="extract-syntax">3</span></span>, ... notation used
-to call back previously failed cases: typically <span class="extract"><span class="extract-syntax">^1</span></span> will be the first
+(iii) <code>A</code>, <code>B</code>, <code>C</code>, ..., mean &quot;the example with this letter in the (first)
+extension case&quot;;
+(iv) <code>^1</code>, <code>^2</code>, <code>^3</code>, ..., mean &quot;the 1st (2nd, 3rd, ...) test case known&quot;,
+-- this is not to be confused with the <code>1</code>, <code>2</code>, <code>3</code>, ... notation used
+to call back previously failed cases: typically <code>^1</code> will be the first
 test case alphabetically;
-</li><li>(v) a name containing a <span class="extract"><span class="extract-syntax">%</span></span> character will be treated as a regular expression,
-in the same notation as for <span class="extract"><span class="extract-syntax">-find</span></span> (see below) - for example, <span class="extract"><span class="extract-syntax">BIP-%c+</span></span>
-will mean "any test case whose name or title begins with <span class="extract"><span class="extract-syntax">BIP-</span></span>";
-</li><li>(vi) a name beginning with a <span class="extract"><span class="extract-syntax">:</span></span> will be treated as a "group", and will
-run all tests in that group &mdash; which is to say, the ones listed in the
-group's file: <span class="extract"><span class="extract-syntax">:wrangly</span></span> will run all tests listed in <span class="extract"><span class="extract-syntax">wrangly.testgroup</span></span>,
-multithreaded, whereas a double colon <span class="extract"><span class="extract-syntax">::wrangly</span></span> runs them one at a time;
-</li><li>(vii) and finally, of course, an explicit test case name refers to that test case.
-</li></ul>
-<p class="commentary">For more on test types and groups, see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>But other do commands are also available:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-catalogue</span></span>: List all the known test cases. For large projects this might
-produce an enormous list, but <span class="extract"><span class="extract-syntax">-using</span></span> can cut that down. To give an example
-from Inform,
-</p>
-
+(v) a name containing a <code>%</code> character will be treated as a regular expression,
+in the same notation as for <code>-find</code> (see below) - for example, <code>BIP-%c+</code>
+will mean &quot;any test case whose name or title begins with <code>BIP-</code>&quot;;
+(vi) a name beginning with a <code>:</code> will be treated as a &quot;group&quot;, and will
+run all tests in that group -- which is to say, the ones listed in the
+group's file: <code>:wrangly</code> will run all tests listed in <code>wrangly.testgroup</code>,
+multithreaded, whereas a double colon <code>::wrangly</code> runs them one at a time;
+(vii) and finally, of course, an explicit test case name refers to that test case.</p>
+<p>For more on test types and groups, see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  But other do commands are also available:</p>
+<p><code>-catalogue</code>: List all the known test cases. For large projects this might
+produce an enormous list, but <code>-using</code> can cut that down. To give an example
+from Inform,</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -using -extension</span><span class="ConsoleText-plain-syntax"> 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'</span><span class="ConsoleText-identifier-syntax"> -do -catalogue</span>
 <span class="ConsoleText-plain-syntax">    Locksmith Example A = John Malkovich's Toilet</span>
@@ -308,17 +279,15 @@ from Inform,
 <span class="ConsoleText-plain-syntax">    Locksmith Example C = Rekeying</span>
 <span class="ConsoleText-plain-syntax">    Locksmith Example D = Watchtower</span>
 </pre>
-<p class="commentary">Here the universe of possible tests is reduced to just those which are given
-in the documentation for this specific Inform extension. The <span class="extract"><span class="ConsoleText-extract-syntax">-catalogue</span></span>
-then gives a full list of those four.
-</p>
-
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">-find &lt;text&gt;</span></span>: List all the known test cases whose case names or story
-titles match <span class="extract"><span class="ConsoleText-extract-syntax">&lt;text&gt;</span></span>. This can in fact be a regular expression, using
-<span class="extract"><span class="ConsoleText-extract-syntax">[...]</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">%c</span></span> for any character (not <span class="extract"><span class="ConsoleText-extract-syntax">.</span></span>), <span class="extract"><span class="ConsoleText-extract-syntax">%C</span></span> for any non-white-space, <span class="extract"><span class="ConsoleText-extract-syntax">%d</span></span>
-for a digit, and so on. For example:
-</p>
-
+<div class="lsmarkdown">
+<p>Here the universe of possible tests is reduced to just those which are given
+in the documentation for this specific Inform extension. The <code>-catalogue</code>
+then gives a full list of those four.</p>
+<p><code>-find &lt;text&gt;</code>: List all the known test cases whose case names or story
+titles match <code>&lt;text&gt;</code>. This can in fact be a regular expression, using
+<code>[...]</code>, <code>%c</code> for any character (not <code>.</code>), <code>%C</code> for any non-white-space, <code>%d</code>
+for a digit, and so on. For example:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -find</span><span class="ConsoleText-plain-syntax"> %d%d%d%d</span>
 <span class="ConsoleText-plain-syntax">    Test cases matching '%d%d%d%d':</span>
@@ -330,33 +299,29 @@ for a digit, and so on. For example:
 <span class="ConsoleText-plain-syntax">    SP = Space Patrol #57 - 1953-10-31 - Stranded on Jupiter!</span>
 <span class="ConsoleText-plain-syntax">    Stoppers = Trachypachidae Maturin 1803</span>
 </pre>
-<p class="commentary">(The reason for the equals signs here, and in the above example too, is that
-an individual test case can have both a "name" &mdash; such as <span class="extract"><span class="ConsoleText-extract-syntax">Stoppers</span></span> &mdash; and also
-a "title" &mdash; such as "Trachypachidae Maturin 1803". The name is derived from
-its filename. The title will only exist for cases extracted from Inform
-example or extension files, and then it's the title of the story making up
-the test case.)
-</p>
-
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">-source &lt;cases&gt;</span></span>: Output the contents of the test cases. This sounds
-as if it does no more than printing out their source files, but it's a
-non-trivial operation for some Inform test cases (those occurring as examples
-or in extensions).
-</p>
-
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">-script &lt;cases&gt;</span></span>: This is relevant only for testing Inform. Output the
-script of player inputs to be used when running the story file produced
-by compiling this test case; the script being drawn from the
-</p>
-
 <blockquote>
     <p>Test me with "...".</p>
 </blockquote>
 
-<p class="commentary">line inside the source, if one is present. If no script is there, this
-produces empty output, but does not throw an error. For example:
-</p>
-
+<div class="lsmarkdown">
+<p>(The reason for the equals signs here, and in the above example too, is that
+an individual test case can have both a &quot;name&quot; -- such as <code>Stoppers</code> -- and also
+a &quot;title&quot; -- such as &quot;Trachypachidae Maturin 1803&quot;. The name is derived from
+its filename. The title will only exist for cases extracted from Inform
+example or extension files, and then it's the title of the story making up
+the test case.)</p>
+<p><code>-source &lt;cases&gt;</code>: Output the contents of the test cases. This sounds
+as if it does no more than printing out their source files, but it's a
+non-trivial operation for some Inform test cases (those occurring as examples
+or in extensions).</p>
+<p><code>-script &lt;cases&gt;</code>: This is relevant only for testing Inform. Output the
+script of player inputs to be used when running the story file produced
+by compiling this test case; the script being drawn from the</p>
+</div>
+<div class="lsmarkdown">
+<p>line inside the source, if one is present. If no script is there, this
+produces empty output, but does not throw an error. For example:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest</span><span class="ConsoleText-identifier-syntax"> -using -extension</span><span class="ConsoleText-plain-syntax"> 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'</span><span class="ConsoleText-identifier-syntax"> -do -script</span><span class="ConsoleText-plain-syntax"> C</span>
 <span class="ConsoleText-plain-syntax">    i</span>
@@ -365,203 +330,171 @@ produces empty output, but does not throw an error. For example:
 <span class="ConsoleText-plain-syntax">    i</span>
 <span class="ConsoleText-plain-syntax">    x key</span>
 </pre>
-<p class="commentary">which is the command script for Example C of Locksmith:
-</p>
-
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">-concordance &lt;cases&gt;</span></span>: Output a concordance table for comparing line numbers
+<div class="lsmarkdown">
+<p>which is the command script for Example C of Locksmith:</p>
+<p><code>-concordance &lt;cases&gt;</code>: Output a concordance table for comparing line numbers
 between the source text extracted by Intest vs. the original file they came
-from. This is a sequence of lines of the form:
-</p>
-
+from. This is a sequence of lines of the form:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="constant-syntax">1</span><span class="plain-syntax"> +404</span>
 </pre>
-<p class="commentary">which means "from line 1 of the extracted output onwards, you have to add
-404 to get the corresponding line of the original from which it came". There can
+<div class="lsmarkdown">
+<p>which means &quot;from line 1 of the extracted output onwards, you have to add
+404 to get the corresponding line of the original from which it came&quot;. There can
 be any number of such lines, including none at all (which means: the line
-numbers match); e.g.
-</p>
-
+numbers match); e.g.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="constant-syntax">1</span><span class="plain-syntax"> +404</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">21</span><span class="plain-syntax"> +409</span>
 </pre>
-<p class="commentary">means add 404 to lines 1 to 20, then add 409 from then on, presumably because
+<div class="lsmarkdown">
+<p>means add 404 to lines 1 to 20, then add 409 from then on, presumably because
 5 lines have been skipped. The list is always of minimal length and any offsets
-quoted are always positive, so <span class="extract"><span class="extract-syntax">+0</span></span> or <span class="extract"><span class="extract-syntax">+-7</span></span> can't occur.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-bless &lt;cases&gt;</span></span>: Test and then, if the case is cursed, bless the transcript
-as correct. (If the case is already blessed, nothing changes.)
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-rebless &lt;cases&gt;</span></span>: Test and then bless the transcript as correct, replacing
-any existing blessed transcript: equivalent to <span class="extract"><span class="extract-syntax">-curse</span></span> followed by <span class="extract"><span class="extract-syntax">-bless</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-curse &lt;cases&gt;</span></span>: Delete the blessed transcript for these cases. (Alas,
-there's no such thing as <span class="extract"><span class="extract-syntax">-recurse</span></span>.)
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-show &lt;cases&gt;</span></span> or <span class="extract"><span class="extract-syntax">-show-TARGET</span></span>: Run a test just as far as the first <span class="extract"><span class="extract-syntax">show</span></span>
-step in its recipe which reveals a file marked as this target (<span class="extract"><span class="extract-syntax">-show</span></span> by itself
+quoted are always positive, so <code>+0</code> or <code>+-7</code> can't occur.</p>
+<p><code>-bless &lt;cases&gt;</code>: Test and then, if the case is cursed, bless the transcript
+as correct. (If the case is already blessed, nothing changes.)</p>
+<p><code>-rebless &lt;cases&gt;</code>: Test and then bless the transcript as correct, replacing
+any existing blessed transcript: equivalent to <code>-curse</code> followed by <code>-bless</code>.</p>
+<p><code>-curse &lt;cases&gt;</code>: Delete the blessed transcript for these cases. (Alas,
+there's no such thing as <code>-recurse</code>.)</p>
+<p><code>-show &lt;cases&gt;</code> or <code>-show-TARGET</code>: Run a test just as far as the first <code>show</code>
+step in its recipe which reveals a file marked as this target (<code>-show</code> by itself
 showing the most important of these). What targets are available depends on
 the recipe for the test, and an error is thrown if the target can never be
-shown by that recipe, or if it can be but, as things turn out, isn't.
-</p>
-
-<p class="commentary">When testing Inform 7 test cases or examples, this can produce a variety of
+shown by that recipe, or if it can be but, as things turn out, isn't.</p>
+<p>When testing Inform 7 test cases or examples, this can produce a variety of
 useful variations:
-</p>
-
-<ul class="items"><li>(1) <span class="extract"><span class="extract-syntax">-show-transcript</span></span> shows the transcript of the compiled story file as it
+(1) <code>-show-transcript</code> shows the transcript of the compiled story file as it
 plays out.
-</li><li>(2) <span class="extract"><span class="extract-syntax">-show-i7</span></span> shows the console output of the Inform 7 compiler when it
+(2) <code>-show-i7</code> shows the console output of the Inform 7 compiler when it
 compiles the given source text.
-</li><li>(3) <span class="extract"><span class="extract-syntax">-show-i6</span></span> shows the console output of the Inform 6 compiler when it
+(3) <code>-show-i6</code> shows the console output of the Inform 6 compiler when it
 compiles the result of (2), if this happens.
-</li><li>(4) <span class="extract"><span class="extract-syntax">-show-cc</span></span> shows the console output of the C compiler when it compiles
+(4) <code>-show-cc</code> shows the console output of the C compiler when it compiles
 the result of (2), if that happens.
-</li><li>(5) <span class="extract"><span class="extract-syntax">-show-link</span></span> shows the console output of the C linker when it links
+(5) <code>-show-link</code> shows the console output of the C linker when it links
 the result of (4), if that happens.
-</li><li>(6) <span class="extract"><span class="extract-syntax">-show-blurb</span></span> shows the blurb instructions for a release test.
-</li><li>(7) <span class="extract"><span class="extract-syntax">-show-ifiction</span></span> shows the iFiction file output in a release test.
-</li><li>(8) <span class="extract"><span class="extract-syntax">-show-ideal</span></span> shows the ideal output a test is looking for.
-</li><li>(9) <span class="extract"><span class="extract-syntax">-show</span></span> on its own shows what it thinks is the most likely thing you
+(6) <code>-show-blurb</code> shows the blurb instructions for a release test.
+(7) <code>-show-ifiction</code> shows the iFiction file output in a release test.
+(8) <code>-show-ideal</code> shows the ideal output a test is looking for.
+(9) <code>-show</code> on its own shows what it thinks is the most likely thing you
 want: for a problem case or a case making an internal compiler unit test,
-it's <span class="extract"><span class="extract-syntax">-show-i7</span></span>; otherwise it's usually <span class="extract"><span class="extract-syntax">-show-transcript</span></span>.
-</li></ul>
-<p class="commentary"><span class="extract"><span class="extract-syntax">-debug &lt;cases&gt;</span></span>: Run a test, but when you get to the Inform 7 compiler stage, run it in the <span class="extract"><span class="extract-syntax">lldb</span></span> debugger and do not redirect <span class="extract"><span class="extract-syntax">stdout</span></span> or <span class="extract"><span class="extract-syntax">stderr</span></span>. (This is for Inform only.)
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-open &lt;cases&gt;</span></span>: Call the shell command <span class="extract"><span class="extract-syntax">open</span></span> on the file(s) from which the source text of these case(s) are drawn. On MacOS, for example, this is equivalent to double-clicking them in the Finder, and likely means they will open in the default text editor.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-diff &lt;cases&gt;</span></span>: Test and then, if a <span class="extract"><span class="extract-syntax">match</span></span> step fails in its recipe, run
-the shell command <span class="extract"><span class="extract-syntax">diff</span></span> on the actual versus ideal versions of the output
-being matched.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-bbdiff &lt;cases&gt;</span></span>: Like <span class="extract"><span class="extract-syntax">-diff</span></span>, but using the <span class="extract"><span class="extract-syntax">bbdiff</span></span> tool instead. You will only have this if you're running the BBEdit text editor on MacOS.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Output redirection.</b>Do commands producing textual output, such as <span class="extract"><span class="extract-syntax">-source</span></span>, normally send that to
-the standard output stdout. (If you're using Intest in a <span class="extract"><span class="extract-syntax">bash</span></span> or similar
+it's <code>-show-i7</code>; otherwise it's usually <code>-show-transcript</code>.</p>
+<p><code>-debug &lt;cases&gt;</code>: Run a test, but when you get to the Inform 7 compiler stage, run it in the <code>lldb</code> debugger and do not redirect <code>stdout</code> or <code>stderr</code>. (This is for Inform only.)</p>
+<p><code>-open &lt;cases&gt;</code>: Call the shell command <code>open</code> on the file(s) from which the source text of these case(s) are drawn. On MacOS, for example, this is equivalent to double-clicking them in the Finder, and likely means they will open in the default text editor.</p>
+<p><code>-diff &lt;cases&gt;</code>: Test and then, if a <code>match</code> step fails in its recipe, run
+the shell command <code>diff</code> on the actual versus ideal versions of the output
+being matched.</p>
+<p><code>-bbdiff &lt;cases&gt;</code>: Like <code>-diff</code>, but using the <code>bbdiff</code> tool instead. You will only have this if you're running the BBEdit text editor on MacOS.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Output redirection.</b>  Do commands producing textual output, such as <code>-source</code>, normally send that to
+the standard output stdout. (If you're using Intest in a <code>bash</code> or similar
 shell on a Unix-based operating system, this means it can be piped to an
 application or redirected to a file.) But you can also ask Intest itself to
 redirect the output, since any action can optionally be followed by
-<span class="extract"><span class="extract-syntax">-to &lt;filename&gt;</span></span>.
-</p>
-
-<p class="commentary">This redirects output to the given file, which is created (and overwrites any
-file already existing with that name). In a <span class="extract"><span class="extract-syntax">-to</span></span> destination, any usage in
-the filename of the text <span class="extract"><span class="extract-syntax">[NAME]</span></span> expands to the name of the test case; any
-usage of <span class="extract"><span class="extract-syntax">[NUMBER]</span></span> expands to a unique integer, counting upwards from 1, for
-each test case being applied to by this action. Thus, for example:
-</p>
-
+<code>-to &lt;filename&gt;</code>.</p>
+<p>This redirects output to the given file, which is created (and overwrites any
+file already existing with that name). In a <code>-to</code> destination, any usage in
+the filename of the text <code>[NAME]</code> expands to the name of the test case; any
+usage of <code>[NUMBER]</code> expands to a unique integer, counting upwards from 1, for
+each test case being applied to by this action. Thus, for example:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="identifier-syntax">source</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">D</span><span class="plain-syntax"> -</span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">source_</span><span class="plain-syntax">[</span><span class="identifier-syntax">NAME</span><span class="plain-syntax">].</span><span class="identifier-syntax">txt</span>
 </pre>
-<p class="commentary">might write four files, called, say,
-</p>
-
+<div class="lsmarkdown">
+<p>might write four files, called, say,</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">source_Locksmith</span><span class="plain-syntax"> </span><span class="identifier-syntax">Example</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">source_Locksmith</span><span class="plain-syntax"> </span><span class="identifier-syntax">Example</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">source_Locksmith</span><span class="plain-syntax"> </span><span class="identifier-syntax">Example</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">source_Locksmith</span><span class="plain-syntax"> </span><span class="identifier-syntax">Example</span><span class="plain-syntax"> </span><span class="identifier-syntax">D</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
 </pre>
-<p class="commentary">Note that if you write multiple do commands, they can each have independent
-<span class="extract"><span class="extract-syntax">-to</span></span> destinations.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Reporting on test outcomes in the Inform app.</b>Two special do commands are provided for use of the Inform app only (well,
+<div class="lsmarkdown">
+<p>Note that if you write multiple do commands, they can each have independent
+<code>-to</code> destinations.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Reporting on test outcomes in the Inform app.</b>  Two special do commands are provided for use of the Inform app only (well,
 it's hard to think of anyone else who would need them). The idea here is that
 after the Inform app has conducted a test, it asks intest to produce an HTML
 page to describe the results of the test, passing over the information needed
-to do this:
-</p>
-
+to do this:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;case&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;code&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;problems-file&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;skein-file&gt;</span>
 </pre>
-<p class="commentary">Here <span class="extract"><span class="extract-syntax">&lt;case&gt;</span></span> is a single case, not a list, and <span class="extract"><span class="extract-syntax">&lt;code&gt;</span></span> is one of:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">i7</span></span>: meaning, failed i7, i.e., <span class="extract"><span class="extract-syntax">inform7</span></span> produced problem messages
-</li><li>(b) <span class="extract"><span class="extract-syntax">i6</span></span>: meaning, failed to compile in i6
-</li><li>(c) <span class="extract"><span class="extract-syntax">wrong</span></span>: meaning, the story file compiled and started, but the transcript didn't match its blessed version
-</li><li>(d) <span class="extract"><span class="extract-syntax">right</span></span>: meaning, a success: story file compiled and started, and matched transcript
-</li></ul>
-<p class="commentary"><span class="extract"><span class="extract-syntax">&lt;problems-file&gt;</span></span> is the file generated by <span class="extract"><span class="extract-syntax">inform7</span></span>, in the event of either success or failure, which is usually stored in the project's <span class="extract"><span class="extract-syntax">Build/Problems.html</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">&lt;skein-file&gt;</span></span> is only looked at (potentially) in case (c), and is the skein file for the example in question; at present it's ignored.
-</p>
-
-<p class="commentary">For example:
-</p>
-
+<div class="lsmarkdown">
+<p>Here <code>&lt;case&gt;</code> is a single case, not a list, and <code>&lt;code&gt;</code> is one of:</p>
+<p>(a) <code>i7</code>: meaning, failed i7, i.e., <code>inform7</code> produced problem messages
+(b) <code>i6</code>: meaning, failed to compile in i6
+(c) <code>wrong</code>: meaning, the story file compiled and started, but the transcript didn't match its blessed version
+(d) <code>right</code>: meaning, a success: story file compiled and started, and matched transcript</p>
+<p><code>&lt;problems-file&gt;</code> is the file generated by <code>inform7</code>, in the event of either success or failure, which is usually stored in the project's <code>Build/Problems.html</code>.</p>
+<p><code>&lt;skein-file&gt;</code> is only looked at (potentially) in case (c), and is the skein file for the example in question; at present it's ignored.</p>
+<p>For example:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span>
 <span class="ConsoleText-plain-syntax">        -using -extension Locksmith.i7xp/Source/extension.i7x</span>
 <span class="ConsoleText-plain-syntax">        -do -report C i7 Locksmith.i7xp/Build/Problems.html Locksmith.i7xp/Skein.skein</span>
 </pre>
-<p class="commentary">reports on the failure of example C from the <span class="extract"><span class="ConsoleText-extract-syntax">Locksmith.i7xp</span></span> project. The
-output is HTML, but sent to stdout by default; use something like
-</p>
-
+<div class="lsmarkdown">
+<p>reports on the failure of example C from the <code>Locksmith.i7xp</code> project. The
+output is HTML, but sent to stdout by default; use something like</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    -to Locksmith.i7xp/Build/Problems-3.html</span>
 </pre>
-<p class="commentary">to redirect this to a particular file.
-</p>
-
-<p class="commentary">The second special action is <span class="extract"><span class="ConsoleText-extract-syntax">-combine</span></span>. This assumes that the Inform app has
-already performed <span class="extract"><span class="ConsoleText-extract-syntax">N</span></span> such tests, where <span class="extract"><span class="ConsoleText-extract-syntax">N &gt;= 1</span></span>, and has called Intest with
-the <span class="extract"><span class="ConsoleText-extract-syntax">-report</span></span> action on each in turn, redirecting the output to a series of
-files. What <span class="extract"><span class="ConsoleText-extract-syntax">-combine</span></span> does is to read all of those files in and merge them
+<div class="lsmarkdown">
+<p>to redirect this to a particular file.</p>
+<p>The second special action is <code>-combine</code>. This assumes that the Inform app has
+already performed <code>N</code> such tests, where <code>N &gt;= 1</code>, and has called Intest with
+the <code>-report</code> action on each in turn, redirecting the output to a series of
+files. What <code>-combine</code> does is to read all of those files in and merge them
 into a consolidated report, which, once again, it writes as HTML. The format
-here is:
-</p>
-
+here is:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="identifier-syntax">combine</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;base-filename&gt;</span><span class="plain-syntax"> -</span><span class="function-syntax">&lt;N&gt;</span>
 </pre>
-<p class="commentary">The filenames of the individual reports are assumed to be <span class="extract"><span class="extract-syntax">&lt;base-filename&gt;</span></span>
-but with "-1", "-2", ..., tacked on before the file extension. Thus:
-</p>
-
+<div class="lsmarkdown">
+<p>The filenames of the individual reports are assumed to be <code>&lt;base-filename&gt;</code>
+but with &quot;-1&quot;, &quot;-2&quot;, ..., tacked on before the file extension. Thus:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest</span><span class="ConsoleText-identifier-syntax"> -using -extension</span><span class="ConsoleText-plain-syntax"> Locksmith.i7xp/Source/extension.i7x</span>
 <span class="ConsoleText-plain-syntax">        -do -combine Locksmith.i7xp/Build/Problems.html -4</span>
 <span class="ConsoleText-plain-syntax">        -to Locksmith.i7xp/Build/Consolidated.html</span>
 </pre>
-<p class="commentary">reads in
-</p>
-
+<div class="lsmarkdown">
+<p>reads in</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Locksmith</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7xp</span><span class="plain-syntax">/</span><span class="identifier-syntax">Build</span><span class="plain-syntax">/</span><span class="identifier-syntax">Problems</span><span class="plain-syntax">-1.</span><span class="identifier-syntax">html</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Locksmith</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7xp</span><span class="plain-syntax">/</span><span class="identifier-syntax">Build</span><span class="plain-syntax">/</span><span class="identifier-syntax">Problems</span><span class="plain-syntax">-2.</span><span class="identifier-syntax">html</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Locksmith</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7xp</span><span class="plain-syntax">/</span><span class="identifier-syntax">Build</span><span class="plain-syntax">/</span><span class="identifier-syntax">Problems</span><span class="plain-syntax">-3.</span><span class="identifier-syntax">html</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Locksmith</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7xp</span><span class="plain-syntax">/</span><span class="identifier-syntax">Build</span><span class="plain-syntax">/</span><span class="identifier-syntax">Problems</span><span class="plain-syntax">-4.</span><span class="identifier-syntax">html</span>
 </pre>
-<p class="commentary">and writes out a consolidated report into
-</p>
-
+<div class="lsmarkdown">
+<p>and writes out a consolidated report into</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Locksmith</span><span class="plain-syntax">.</span><span class="identifier-syntax">i7xp</span><span class="plain-syntax">/</span><span class="identifier-syntax">Build</span><span class="plain-syntax">/</span><span class="identifier-syntax">Consolidated</span><span class="plain-syntax">.</span><span class="identifier-syntax">html</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Skein file testing.</b>In order to be used by the Testing panel in the Inform app, intest also supports the following:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Skein file testing.</b>  In order to be used by the Testing panel in the Inform app, intest also supports the following:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="reserved-syntax">test</span><span class="plain-syntax">-</span><span class="reserved-syntax">skein</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;file&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;node-id&gt;</span>
 </pre>
-<p class="commentary">This reads the specified <span class="extract"><span class="extract-syntax">.skein</span></span> file, looks for the node in it with the given ID, and runs intest's diff algorithm on the actual versus blessed transcript at that node. The output is in simple HTML format.
-</p>
-
+<div class="lsmarkdown">
+<p>This reads the specified <code>.skein</code> file, looks for the node in it with the given ID, and runs intest's diff algorithm on the actual versus blessed transcript at that node. The output is in simple HTML format.</p>
+</div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-iti.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresscurrent">iatcl</li><li class="progresssection"><a href="M-tuoc.html">tuoc</a></li><li class="progresssection"><a href="M-wir.html">wir</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="M-tuoc.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

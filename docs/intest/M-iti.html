@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -20,6 +25,7 @@
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">intest</span></a></li>
+<li><a href="../inprint/index.html">inprint</a></li>
 <li><a href="../arch-module/index.html">arch</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
@@ -36,22 +42,20 @@
 
 <ul class="toc"><li><a href="M-iti.html#SP1">&#167;1. Introduction</a></li><li><a href="M-iti.html#SP2">&#167;2. Recipes</a></li><li><a href="M-iti.html#SP3">&#167;3. Installation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>Intest is a command line tool for testing command line tools. It was
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  Intest is a command line tool for testing command line tools. It was
 originally written for testing the Inform 7 compiler, and has been used
 heavily and continuously for that purpose since 2004. But it can in fact
 test any command-line tool with broadly textual output. While it's a natural
 sidekick for the literate programming tool Inweb, it can work just as easily
-on programs written by other means.
-</p>
-
-<p class="commentary">Intest is at its best when running a batch of tests, each of which can follow
+on programs written by other means.</p>
+<p>Intest is at its best when running a batch of tests, each of which can follow
 a complex multi-stage sequence if necessary. Tests are automatically spread
 across multiple threads so that the batch can be finished as soon as
 possible, and results are tidily collated. Intest has a command-line syntax
 which makes a sort of conversation possible: start by testing a batch, then
-retest those which fail, fixing them one by one, and so on. For example,
-</p>
-
+retest those which fail, fixing them one by one, and so on. For example,</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject all</span>
 <span class="ConsoleText-plain-syntax">    myproject -&gt; cases: [1] [2] [3] [4]</span>
@@ -62,43 +66,41 @@ retest those which fail, fixing them one by one, and so on. For example,
 <span class="ConsoleText-plain-syntax">      8 tests succeeded but 1 failed (time taken 0:02, 9 simultaneous threads)</span>
 <span class="ConsoleText-plain-syntax">    Failed: 1=planets</span>
 </pre>
-<p class="commentary">Suppose we go fix that bug, and then retest:
-</p>
-
+<div class="lsmarkdown">
+<p>Suppose we go fix that bug, and then retest:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject 1</span>
 <span class="ConsoleText-plain-syntax">    Expanded to: ?322. planets</span>
 <span class="ConsoleText-plain-syntax">    [1] planets passed</span>
 </pre>
-<p class="commentary">Note that <span class="extract"><span class="ConsoleText-extract-syntax">1</span></span> was understood by Intest here as referring to the test case
-<span class="extract"><span class="ConsoleText-extract-syntax">planets</span></span> which failed earlier. Intest is recording a history of recent
-tests run, too: this one was test run <span class="extract"><span class="ConsoleText-extract-syntax">?322</span></span>. We could have listed those by
-</p>
-
+<div class="lsmarkdown">
+<p>Note that <code>1</code> was understood by Intest here as referring to the test case
+<code>planets</code> which failed earlier. Intest is recording a history of recent
+tests run, too: this one was test run <code>?322</code>. We could have listed those by</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject ?</span>
 </pre>
-<p class="commentary">and recalled any of them by number:
-</p>
-
+<div class="lsmarkdown">
+<p>and recalled any of them by number:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject ?315</span>
 <span class="ConsoleText-plain-syntax">    Repeating: ?315. rockets moons</span>
 <span class="ConsoleText-plain-syntax">    [1] rockets passed</span>
 <span class="ConsoleText-plain-syntax">    [2] moons passed</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Recipes.</b>Intest assumes that each project will have its own universe of tests.
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Recipes.</b>  Intest assumes that each project will have its own universe of tests.
 These can take many forms, but the commonest are to give valid input and
 check to see some expected output, or else to give invalid input and check
-to see that some expected error message is produced.
-</p>
-
-<p class="commentary">Each individual test is performed by following a "recipe". Recipes are simple
+to see that some expected error message is produced.</p>
+<p>Each individual test is performed by following a &quot;recipe&quot;. Recipes are simple
 mini-language called Delia, which sits on top of the host operating system's
 command-line shell. For example, here is Delia code for testing what ought to
-be a valid input to a tool called <span class="extract"><span class="ConsoleText-extract-syntax">zap</span></span> inside the <span class="extract"><span class="ConsoleText-extract-syntax">myproject</span></span> folder:
-</p>
-
+be a valid input to a tool called <code>zap</code> inside the <code>myproject</code> folder:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
 <span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
@@ -109,204 +111,189 @@ be a valid input to a tool called <span class="extract"><span class="ConsoleText
 <span class="reserved-syntax">    or</span><span class="plain-syntax">: 'produced the wrong output'</span>
 <span class="reserved-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
 </pre>
-<p class="commentary">This looks more forbidding than it is. Variables start with a dollar, as in
-most Unix mini-languages: they usually hold filenames. <span class="extract"><span class="extract-syntax">$CASE</span></span> is the name
-of the current test case: perhaps "planets". <span class="extract"><span class="extract-syntax">$PATH</span></span> is the pathname to its
-folder, which might be, for example, "myproject/tests". What happens is:
-</p>
-
+<div class="lsmarkdown">
+<p>This looks more forbidding than it is. Variables start with a dollar, as in
+most Unix mini-languages: they usually hold filenames. <code>$CASE</code> is the name
+of the current test case: perhaps &quot;planets&quot;. <code>$PATH</code> is the pathname to its
+folder, which might be, for example, &quot;myproject/tests&quot;. What happens is:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
 <span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
 </pre>
-<p class="commentary">This sets two filenames &mdash; it doesn't create these files, simply creates
-two names. <span class="extract"><span class="extract-syntax">$A</span></span> is going to be the actual output printed out by the program
-being tested, while <span class="extract"><span class="extract-syntax">$I</span></span> is the ideal output, that is, what it should have
-printed. Next:
-</p>
-
+<div class="lsmarkdown">
+<p>This sets two filenames -- it doesn't create these files, simply creates
+two names. <code>$A</code> is going to be the actual output printed out by the program
+being tested, while <code>$I</code> is the ideal output, that is, what it should have
+printed. Next:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
 </pre>
-<p class="commentary">A "step" is a stage in a test which involves issuing a shell command, and
+<div class="lsmarkdown">
+<p>A &quot;step&quot; is a stage in a test which involves issuing a shell command, and
 which passes or fails according to the exit code from that command, exactly
-as it would in a tool like <span class="extract"><span class="extract-syntax">make</span></span>. We're going to assume <span class="extract"><span class="extract-syntax">zap</span></span> is a simple
-sort of program, which takes one command-line argument &mdash; a filename &mdash;
-does something with that file, and prints out something interesting about it.
-</p>
-
-<p class="commentary">Intest substitutes in values for the variables, so the actual shell command
-might be:
-</p>
-
+as it would in a tool like <code>make</code>. We're going to assume <code>zap</code> is a simple
+sort of program, which takes one command-line argument -- a filename --
+does something with that file, and prints out something interesting about it.</p>
+<p>Intest substitutes in values for the variables, so the actual shell command
+might be:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">myproject/zap</span><span class="ConsoleText-plain-syntax"> myproject/tests/planets.txt &gt;myproject/tests/_actual/planets.txt 2&gt;&amp;1</span>
 </pre>
-<p class="commentary">which uses bash shell notation to redirect both printed output, and error
-messages, to the <span class="extract"><span class="ConsoleText-extract-syntax">$A</span></span> file. That, as promised, is the "actual output".
-</p>
-
-<p class="commentary">The next line in the recipe is then:
-</p>
-
+<div class="lsmarkdown">
+<p>which uses bash shell notation to redirect both printed output, and error
+messages, to the <code>$A</code> file. That, as promised, is the &quot;actual output&quot;.</p>
+<p>The next line in the recipe is then:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span>
 </pre>
-<p class="commentary">This tells Intest to halt the test if the shell command failed (i.e., if
-<span class="extract"><span class="extract-syntax">zap</span></span> exited with a non-zero exit value). Intest uses the brief epitaph
-"failed zap" when summarising what happened, and prints out <span class="extract"><span class="extract-syntax">$A</span></span>,
+<div class="lsmarkdown">
+<p>This tells Intest to halt the test if the shell command failed (i.e., if
+<code>zap</code> exited with a non-zero exit value). Intest uses the brief epitaph
+&quot;failed zap&quot; when summarising what happened, and prints out <code>$A</code>,
 because presumably it ends with some error messages which the tester will
-want to see.
-</p>
-
-<p class="commentary">So the recipe is only continued if, in fact, <span class="extract"><span class="extract-syntax">zap</span></span> did not produce error
-messages. The next line is not quite what it seems:
-</p>
-
+want to see.</p>
+<p>So the recipe is only continued if, in fact, <code>zap</code> did not produce error
+messages. The next line is not quite what it seems:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
 </pre>
-<p class="commentary">This tells Intest that if the tester ran the test specifying <span class="extract"><span class="extract-syntax">-show</span></span> on
-the command line then <span class="extract"><span class="extract-syntax">$A</span></span> is the right file to print out. If the tester
-didn't say <span class="extract"><span class="extract-syntax">-show</span></span>, we print nothing here, and continue. The next steps
-in the recipe are more consequential:
-</p>
-
+<div class="lsmarkdown">
+<p>This tells Intest that if the tester ran the test specifying <code>-show</code> on
+the command line then <code>$A</code> is the right file to print out. If the tester
+didn't say <code>-show</code>, we print nothing here, and continue. The next steps
+in the recipe are more consequential:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
 <span class="reserved-syntax">    or</span><span class="plain-syntax">: 'produced the wrong output'</span>
 </pre>
-<p class="commentary">This does what it looks as if it should, but it has hidden powers. If the
+<div class="lsmarkdown">
+<p>This does what it looks as if it should, but it has hidden powers. If the
 tester hasn't yet created a file of ideal output, then there's nothing to
 compare against. In that case Intest doesn't fail the stage, but it does
-mark it in the summary:
-</p>
-
+mark it in the summary:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject planets</span>
 <span class="ConsoleText-plain-syntax">    -1- planets passed</span>
 </pre>
-<p class="commentary">The notation <span class="extract"><span class="ConsoleText-extract-syntax">-1-</span></span>, rather than the more usual <span class="extract"><span class="ConsoleText-extract-syntax">[1]</span></span>, conveys that the
+<div class="lsmarkdown">
+<p>The notation <code>-1-</code>, rather than the more usual <code>[1]</code>, conveys that the
 test was incompletely passed in this way. This is easy to fix. If we're
-happy with the actual output, we "bless" it:
-</p>
-
+happy with the actual output, we &quot;bless&quot; it:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject</span><span class="ConsoleText-identifier-syntax"> -bless</span><span class="ConsoleText-plain-syntax"> planets</span>
 <span class="ConsoleText-plain-syntax">    [1] planets passed</span>
 </pre>
-<p class="commentary">With <span class="extract"><span class="ConsoleText-extract-syntax">-bless</span></span> specified, when the recipe hits:
-</p>
-
+<div class="lsmarkdown">
+<p>With <code>-bless</code> specified, when the recipe hits:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
 </pre>
-<p class="commentary">Intest sets the ideal output to the actual output: the two then necessarily
-match, so the stage passes. (It's also possible to <span class="extract"><span class="extract-syntax">-curse</span></span> a test, which deletes its ideal
-output, or to <span class="extract"><span class="extract-syntax">-rebless</span></span> it, which replaces the current ideal output
-in favour of the current actual output &mdash; in effect, it performs a curse
-immediately followed by a blessing.)
-</p>
-
-<p class="commentary">Either way, if the recipe is still running at this point, all is good:
-<span class="extract"><span class="extract-syntax">zap</span></span> produced no error messages, and we have output which is not known
-to be incorrect. So we conclude with a triumphant:
-</p>
-
+<div class="lsmarkdown">
+<p>Intest sets the ideal output to the actual output: the two then necessarily
+match, so the stage passes. (It's also possible to <code>-curse</code> a test, which deletes its ideal
+output, or to <code>-rebless</code> it, which replaces the current ideal output
+in favour of the current actual output -- in effect, it performs a curse
+immediately followed by a blessing.)</p>
+<p>Either way, if the recipe is still running at this point, all is good:
+<code>zap</code> produced no error messages, and we have output which is not known
+to be incorrect. So we conclude with a triumphant:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
 </pre>
-<p class="commentary">Recipes can be substantially longer and more elaborate, running through
+<div class="lsmarkdown">
+<p>Recipes can be substantially longer and more elaborate, running through
 a sequence of tools, or running the same test material in a sequence of
 different ways. The recipes used by the main Inform compiler occupy about
 400 lines like the above, though always with the same basic manoeuvres
 over and over again. A typical test batch for that project involves
 over 2000 cases. Intest is a simple tool at heart, but it was written
-with an eye to speed and flexibility.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Installation.</b>Intest is a "literate program", and to compile it from source you should
+with an eye to speed and flexibility.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Installation.</b>  Intest is a &quot;literate program&quot;, and to compile it from source you should
 first obtain the literate programming tool Inweb. (Both are available from
-Github.)
-</p>
-
-<p class="commentary">To begin, place the distribution directories <span class="extract"><span class="extract-syntax">intest</span></span> and <span class="extract"><span class="extract-syntax">inweb</span></span> in the
+Github.)</p>
+<p>To begin, place the distribution directories <code>intest</code> and <code>inweb</code> in the
 same parent directory, and then change working directory to that. Thus, you
-should reach:
-</p>
-
+should reach:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
 <span class="ConsoleText-plain-syntax">    intest   inweb</span>
 </pre>
-<p class="commentary">(and perhaps lots of other stuff too). Be sure to make Inweb first: see
-its own documentation for that. Then:
-</p>
-
+<div class="lsmarkdown">
+<p>(and perhaps lots of other stuff too). Be sure to make Inweb first: see
+its own documentation for that. Then:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> intest</span><span class="ConsoleText-identifier-syntax"> -makefile</span><span class="ConsoleText-plain-syntax"> intest/intest.mk</span>
 </pre>
-<p class="commentary">This makes the makefile we will use. It will automatically be configured
+<div class="lsmarkdown">
+<p>This makes the makefile we will use. It will automatically be configured
 suitably for the operating system we're using: the MacOS version of Inweb
-will make us a MacOS version of this makefile, and so on. Now we can make:
-</p>
-
+will make us a MacOS version of this makefile, and so on. Now we can make:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> intest/intest.mk</span>
 </pre>
-<p class="commentary">All being well, you now have a working Intest. The executable is in
-<span class="extract"><span class="ConsoleText-extract-syntax">intest/Tangled/intest</span></span>, so:
-</p>
-
+<div class="lsmarkdown">
+<p>All being well, you now have a working Intest. The executable is in
+<code>intest/Tangled/intest</code>, so:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -help</span>
 </pre>
-<p class="commentary">should verify that it's in working order. A more interesting test is:
-</p>
-
+<div class="lsmarkdown">
+<p>should verify that it's in working order. A more interesting test is:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> inweb all</span>
 </pre>
-<p class="commentary">which runs the Inweb test suite (a very modest one, as it happens).
-</p>
-
-<p class="commentary">Users of, for example, the <span class="extract"><span class="ConsoleText-extract-syntax">bash</span></span> shell may want to
-</p>
-
+<div class="lsmarkdown">
+<p>which runs the Inweb test suite (a very modest one, as it happens).</p>
+<p>Users of, for example, the <code>bash</code> shell may want to</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">alias</span><span class="ConsoleText-plain-syntax"> intest='intest/Tangled/intest'</span>
 </pre>
-<p class="commentary">to save a little typing, but in this documentation we always spell it out.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>When it runs, Intest needs to know where it is installed in the file
+<div class="lsmarkdown">
+<p>to save a little typing, but in this documentation we always spell it out.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  When it runs, Intest needs to know where it is installed in the file
 system. There is no completely foolproof, cross-platform way to know this
 (on some Unixes, a program cannot determine its own location), so Intest
-decides by the following set of rules:
-</p>
-
-<ul class="items"><li>(a) If the user, at the command line, specified <span class="extract"><span class="ConsoleText-extract-syntax">-at P</span></span>, for some path
-<span class="extract"><span class="ConsoleText-extract-syntax">P</span></span>, then we use that.
-</li><li>(b) Otherwise, if the host operating system can indeed tell us where the
+decides by the following set of rules:</p>
+<p>(a) If the user, at the command line, specified <code>-at P</code>, for some path
+<code>P</code>, then we use that.
+(b) Otherwise, if the host operating system can indeed tell us where the
 executable is, we use that. This is currently implemented only on MacOS,
 Windows and Linux.
-</li><li>(c) Otherwise, if the environment variable <span class="extract"><span class="ConsoleText-extract-syntax">$INTEST_PATH</span></span> exists and is
+(c) Otherwise, if the environment variable <code>$INTEST_PATH</code> exists and is
 non-empty, we use that.
-</li><li>(d) And if all else fails, we assume that the location is <span class="extract"><span class="ConsoleText-extract-syntax">intest</span></span>, with
-respect to the current working directory.
-</li></ul>
-<p class="commentary">If you're not sure what Intest has decided and suspect it may be wrong,
-running Intest with the <span class="extract"><span class="ConsoleText-extract-syntax">-verbose</span></span> switch will cause it to print its belief
-about its location as it starts up.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>Intest returns an exit code of 0 if successful, or else it throws errors
-to <span class="extract"><span class="ConsoleText-extract-syntax">stderr</span></span> and returns 1 if unsuccessful. Successful means that it did what it
+(d) And if all else fails, we assume that the location is <code>intest</code>, with
+respect to the current working directory.</p>
+<p>If you're not sure what Intest has decided and suspect it may be wrong,
+running Intest with the <code>-verbose</code> switch will cause it to print its belief
+about its location as it starts up.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Intest returns an exit code of 0 if successful, or else it throws errors
+to <code>stderr</code> and returns 1 if unsuccessful. Successful means that it did what it
 was asked to do: if it was asked to conduct a test and the test failed,
 Intest was still successful (the test was after all conducted), so it
-returns 0.
-</p>
-
+returns 0.</p>
+</div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">M</li><li class="progresscurrent">iti</li><li class="progresssection"><a href="M-iatcl.html">iatcl</a></li><li class="progresssection"><a href="M-tuoc.html">tuoc</a></li><li class="progresssection"><a href="M-wir.html">wir</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="M-iatcl.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -27,6 +32,7 @@ function togglePopup(material_id) {
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="../intest/index.html">intest</a></li>
+<li><a href="../inprint/index.html">inprint</a></li>
 <li><a href="index.html"><span class="selectedlink">arch</span></a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
@@ -43,27 +49,25 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-arc.html#SP1">&#167;1. Architectures</a></li><li><a href="2-arc.html#SP3">&#167;3. Standard set</a></li><li><a href="2-arc.html#SP4">&#167;4. Canonical filenames</a></li><li><a href="2-arc.html#SP5">&#167;5. Shorthand</a></li><li><a href="2-arc.html#SP6">&#167;6. What an architecture offers</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Architectures.</b>An "architecture" is a choice of how to use Inter code: for example, with the
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Architectures.</b>  An &quot;architecture&quot; is a choice of how to use Inter code: for example, with the
 expectation that it will have 32-bit rather than 16-bit integers. These are
 not different Inter formats: two Inter files could, in fact, be identical
 and yet one could be intended to be code-generated to a 32-bit program
-and another to 16-bit. In effect, an "architecture" holds the settings which
-Inform uses when turning source text into Inter code.
-</p>
-
-<p class="commentary">Each different architecture is represented by one of these:
-</p>
-
+and another to 16-bit. In effect, an &quot;architecture&quot; holds the settings which
+Inform uses when turning source text into Inter code.</p>
+<p>Each different architecture is represented by one of these:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">inter_architecture</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">shorthand</span><span class="plain-syntax">; </span><span class="comment-syntax"> such as </span><span class="extract"><span class="extract-syntax">32d</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">shorthand</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( such as |32d| )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sixteen_bit</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_enabled</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">inter_architecture</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_architecture is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inter_architecture</span><span class="plain-syntax"> *</span><span class="function-syntax">Architectures::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Architectures::new</span></span>:<br/><a href="2-arc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">code</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">) {</span>
@@ -74,10 +78,10 @@ Inform uses when turning source text into Inter code.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Standard set.</b>This is called when the <a href="index.html" class="internal">arch</a> module starts up; no other architectures
-are ever made.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Standard set.</b>  This is called when the <a href="index.html" class="internal">arch</a> module starts up; no other architectures
+are ever made.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Architectures::create</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Architectures::create</span></span>:<br/>Arch Module - <a href="1-am.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-arc.html#SP2" class="function-link"><span class="function-syntax">Architectures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"16"</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
@@ -86,9 +90,9 @@ are ever made.
 <span class="plain-syntax">    </span><a href="2-arc.html#SP2" class="function-link"><span class="function-syntax">Architectures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"32d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Canonical filenames.</b>When a kit is built, its Inter code is stored in files with these leafnames:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Canonical filenames.</b>  When a kit is built, its Inter code is stored in files with these leafnames:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Architectures::canonical_binary</span><span class="plain-syntax">(</span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_architecture</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no arch"</span><span class="plain-syntax">);</span>
@@ -108,9 +112,9 @@ are ever made.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Shorthand.</b>These functions turn an architecture into a text like <span class="extract"><span class="extract-syntax">16d</span></span> and back again:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Shorthand.</b>  These functions turn an architecture into a text like <code>16d</code> and back again:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Architectures::to_codename</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Architectures::to_codename</span></span>:<br/>Target Virtual Machines - <a href="2-tvm.html#SP3">&#167;3</a>, <a href="2-tvm.html#SP6_4">&#167;6.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_architecture</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -136,9 +140,9 @@ are ever made.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. What an architecture offers.</b>At present, this all there is, so in a sense all possible architectures exist:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. What an architecture offers.</b>  At present, this all there is, so in a sense all possible architectures exist:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Architectures::is_16_bit</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Architectures::is_16_bit</span></span>:<br/>Target Virtual Machines - <a href="2-tvm.html#SP3">&#167;3</a>, <a href="2-tvm.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_architecture</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no arch"</span><span class="plain-syntax">);</span>

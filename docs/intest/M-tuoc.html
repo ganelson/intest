@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -20,6 +25,7 @@
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">intest</span></a></li>
+<li><a href="../inprint/index.html">inprint</a></li>
 <li><a href="../arch-module/index.html">arch</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
@@ -36,42 +42,36 @@
 
 <ul class="toc"><li><a href="M-tuoc.html#SP1">&#167;1. The intest file</a></li><li><a href="M-tuoc.html#SP3">&#167;3. Names of test cases</a></li><li><a href="M-tuoc.html#SP5">&#167;5. Types of test case</a></li><li><a href="M-tuoc.html#SP8">&#167;8. Declaring the test cases</a></li><li><a href="M-tuoc.html#SP14">&#167;14. Test groups</a></li><li><a href="M-tuoc.html#SP15">&#167;15. Specifying the recipes</a></li><li><a href="M-tuoc.html#SP16">&#167;16. The annotations in a test case</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The intest file.</b>Each project tested by Intest needs to provide a file which says what
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The intest file.</b>  Each project tested by Intest needs to provide a file which says what
 test cases exist and how to test them. This range of test cases is called
-the "universe", and may contain thousands of possible tests, though Intest
-is likely to act on only a few in any given run.
-</p>
-
-<p class="commentary">As previously noted, Intest needs a recipe file in order to run in any
-useful fashion; by default, Intest expects to find this file at
-</p>
-
+the &quot;universe&quot;, and may contain thousands of possible tests, though Intest
+is likely to act on only a few in any given run.</p>
+<p>As previously noted, Intest needs a recipe file in order to run in any
+useful fashion; by default, Intest expects to find this file at</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">/</span><span class="identifier-syntax">Tests</span><span class="plain-syntax">/</span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">.</span><span class="identifier-syntax">intest</span>
 </pre>
-<p class="commentary">where <span class="extract"><span class="extract-syntax">PROJECT</span></span> is the name of the tested project's home directory. But
-with the <span class="extract"><span class="extract-syntax">-using</span></span> switch at the command line, an alternative file can be
-used somewhere else.
-</p>
-
-<p class="commentary">(Note that if Intest is being used in its simplified mode for testing Inform
+<div class="lsmarkdown">
+<p>where <code>PROJECT</code> is the name of the tested project's home directory. But
+with the <code>-using</code> switch at the command line, an alternative file can be
+used somewhere else.</p>
+<p>(Note that if Intest is being used in its simplified mode for testing Inform
 extensions or kits, then there is no need to write an intest file or to
 write recipes, so that this section can be ignored. But if you're curious,
-it does this by running the generic file <span class="extract"><span class="extract-syntax">inform7/Internal/Delia/extension.intest</span></span>,
-a generic intest file which can be used with any directory extension or kit.)
-</p>
-
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>The intest file is a UTF-8 encoded text file. It is a list of commands
+it does this by running the generic file <code>inform7/Internal/Delia/extension.intest</code>,
+a generic intest file which can be used with any directory extension or kit.)</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The intest file is a UTF-8 encoded text file. It is a list of commands
 which, for the most part, tell Intest where to find test cases, and then
-definitions of recipes, which Intest can then use to test them.
-</p>
-
-<p class="commentary">Here is a typical simple recipe file. It begins with a command, telling Intest
-the location of a directory of test cases which will have type <span class="extract"><span class="extract-syntax">case</span></span>, and
+definitions of recipes, which Intest can then use to test them.</p>
+<p>Here is a typical simple recipe file. It begins with a command, telling Intest
+the location of a directory of test cases which will have type <code>case</code>, and
 then gives a single recipe, which Intest will use on whatever cases it
-discovered in that directory.
-</p>
-
+discovered in that directory.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">! This is my first try at testing the launcher program</span>
 
@@ -95,88 +95,77 @@ discovered in that directory.
 
 <span class="identifier-syntax">-end</span>
 </pre>
-<p class="commentary">The details of a recipe (written between <span class="extract"><span class="extract-syntax">-recipe</span></span> and <span class="extract"><span class="extract-syntax">-end</span></span> above) are
+<div class="lsmarkdown">
+<p>The details of a recipe (written between <code>-recipe</code> and <code>-end</code> above) are
 in a special language called Delia, which is described in <a href="M-wir.html" class="internal">Writing Intest Recipes</a>.
 Otherwise, each line in this file is a command, and each command begins
-with a dash <span class="extract"><span class="extract-syntax">-</span></span>, except that blank lines are ignored. So are comment lines,
-beginning with exclamation marks <span class="extract"><span class="extract-syntax">!</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Names of test cases.</b>Each test has a name, which has to be not too long and can contain only
+with a dash <code>-</code>, except that blank lines are ignored. So are comment lines,
+beginning with exclamation marks <code>!</code>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Names of test cases.</b>  Each test has a name, which has to be not too long and can contain only
 certain characters (see below for details). A test may also have a title,
 which can be different and longer. For example, a test might have the name
-<span class="extract"><span class="extract-syntax">DanDaresSpaceship</span></span> but the title "Dan Dare's Spaceship". Titles are not
-very important to Intest, but names are.
-</p>
-
-<p class="commentary">Names typically come from the filenames of the files in which tests are
-written. In the above example:
-</p>
-
+<code>DanDaresSpaceship</code> but the title &quot;Dan Dare's Spaceship&quot;. Titles are not
+very important to Intest, but names are.</p>
+<p>Names typically come from the filenames of the files in which tests are
+written. In the above example:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">-cases</span><span class="plain-syntax"> 'inform7/kinds-test/Tests/Test Cases'</span>
 </pre>
-<p class="commentary">if the directory given contained three files, <span class="extract"><span class="extract-syntax">numerical.txt</span></span>, <span class="extract"><span class="extract-syntax">text.txt</span></span>
-and <span class="extract"><span class="extract-syntax">lists.txt</span></span>, then the universe would consist of three tests with
-the names <span class="extract"><span class="extract-syntax">numerical</span></span>, <span class="extract"><span class="extract-syntax">text</span></span> and <span class="extract"><span class="extract-syntax">lists</span></span>.
-</p>
-
-<p class="commentary">There are a number of restrictions on test names:
-</p>
-
-<ul class="items"><li>(a) They are case-sensitive, so "Frogs" is different from "frogs". This
+<div class="lsmarkdown">
+<p>if the directory given contained three files, <code>numerical.txt</code>, <code>text.txt</code>
+and <code>lists.txt</code>, then the universe would consist of three tests with
+the names <code>numerical</code>, <code>text</code> and <code>lists</code>.</p>
+<p>There are a number of restrictions on test names:</p>
+<p>(a) They are case-sensitive, so &quot;Frogs&quot; is different from &quot;frogs&quot;. This
 is true even if your file system is case-insensitive, as it probably is.
-Your computer may regard <span class="extract"><span class="extract-syntax">Frogs.txt</span></span> and <span class="extract"><span class="extract-syntax">frogs.txt</span></span> as the same file,
+Your computer may regard <code>Frogs.txt</code> and <code>frogs.txt</code> as the same file,
 but to Intest those names would refer to different cases. It follows
 that you can't practicably have two case names which are the same except
-for casing.
-</li><li>(b) The names <span class="extract"><span class="extract-syntax">all</span></span>, <span class="extract"><span class="extract-syntax">examples</span></span>, <span class="extract"><span class="extract-syntax">extensions</span></span>, <span class="extract"><span class="extract-syntax">problems</span></span> and <span class="extract"><span class="extract-syntax">cases</span></span>
-are reserved for Intest wildcards, and can't be used.
-</li><li>(c) A name cannot begin with a dash <span class="extract"><span class="extract-syntax">-</span></span>, a caret <span class="extract"><span class="extract-syntax">^</span></span>, a question mark <span class="extract"><span class="extract-syntax">?</span></span>,
-an exclamation mark <span class="extract"><span class="extract-syntax">!</span></span>, an open bracket <span class="extract"><span class="extract-syntax">(</span></span>, a square bracket <span class="extract"><span class="extract-syntax">[</span></span>,
-a full stop <span class="extract"><span class="extract-syntax">.</span></span>, an underscore <span class="extract"><span class="extract-syntax">_</span></span>, or a digit. It's probably best to
-start with a letter.
-</li><li>(d) A name cannot consist only of digits and cannot be just a single letter.
-</li><li>(e) A name cannot contain a colon or a slash, forwards or backwards, and
+for casing.</p>
+<p>(b) The names <code>all</code>, <code>examples</code>, <code>extensions</code>, <code>problems</code> and <code>cases</code>
+are reserved for Intest wildcards, and can't be used.</p>
+<p>(c) A name cannot begin with a dash <code>-</code>, a caret <code>^</code>, a question mark <code>?</code>,
+an exclamation mark <code>!</code>, an open bracket <code>(</code>, a square bracket <code>[</code>,
+a full stop <code>.</code>, an underscore <code>_</code>, or a digit. It's probably best to
+start with a letter.</p>
+<p>(d) A name cannot consist only of digits and cannot be just a single letter.</p>
+<p>(e) A name cannot contain a colon or a slash, forwards or backwards, and
 must contain only filename-safe characters. It can contain white space, but
 your life will be easier if it doesn't. Similarly, best to avoid accented
-letters or emoji.
-</li><li>(f) A name cannot contain a double dash <span class="extract"><span class="extract-syntax">--</span></span>.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>The reason that names cannot contain double dashes is that many tests need
+letters or emoji.</p>
+<p>(f) A name cannot contain a double dash <code>--</code>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The reason that names cannot contain double dashes is that many tests need
 associated files in order to work. A typical arrangement is that the test
-<span class="extract"><span class="extract-syntax">DanDaresSpaceship</span></span> might produce the "actual" output <span class="extract"><span class="extract-syntax">DanDaresSpaceship--A.txt</span></span>,
+<code>DanDaresSpaceship</code> might produce the &quot;actual&quot; output <code>DanDaresSpaceship--A.txt</code>,
 which needs to be stored somewhere, and then this needs to be compared with
-an "ideal" or "blessed" version, kept in <span class="extract"><span class="extract-syntax">DanDaresSpaceship--I.txt</span></span>.
-</p>
-
-<p class="commentary">Because these filenames have double dashes in them, Intest does not interpret
+an &quot;ideal&quot; or &quot;blessed&quot; version, kept in <code>DanDaresSpaceship--I.txt</code>.</p>
+<p>Because these filenames have double dashes in them, Intest does not interpret
 them as being tests in their own right: when scanning a directory for test
-cases, it ignores them.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Types of test case.</b>There are four of these, though two are used only for testing Inform 7,
-and can be ignored by everybody else. The general ones are:
-</p>
-
-<ul class="items"><li>(a) "case" &mdash; where the expectation is that the program being tested will
-accept this test case and not produce errors, and
-</li><li>(b) "problem" &mdash; where the expectation is that the program will reject it
-with error messages.
-</li></ul>
-<p class="commentary">The Inform-specific ones are:
-</p>
-
-<ul class="items"><li>(c) "example" &mdash; like a "case", but written into an Inform documentation file,
-a format which takes a bit of decoding.
-</li><li>(d) "extension" &mdash; like a "case", but one of the examples from an Inform extension
-file, a format which takes even more decoding.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>In addition, some tests are "annotated", meaning that details about them
+cases, it ignores them.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Types of test case.</b>  There are four of these, though two are used only for testing Inform 7,
+and can be ignored by everybody else. The general ones are:</p>
+<p>(a) &quot;case&quot; -- where the expectation is that the program being tested will
+accept this test case and not produce errors, and</p>
+<p>(b) &quot;problem&quot; -- where the expectation is that the program will reject it
+with error messages.</p>
+<p>The Inform-specific ones are:</p>
+<p>(c) &quot;example&quot; -- like a &quot;case&quot;, but written into an Inform documentation file,
+a format which takes a bit of decoding.</p>
+<p>(d) &quot;extension&quot; -- like a &quot;case&quot;, but one of the examples from an Inform extension
+file, a format which takes even more decoding.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  In addition, some tests are &quot;annotated&quot;, meaning that details about them
 are given at the top of the file in question. For example, here is an
-unannotated test case file:
-</p>
-
+unannotated test case file:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Tall</span><span class="plain-syntax"> </span><span class="identifier-syntax">Nettles</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="string-syntax">"Nettles.txt"</span><span class="plain-syntax">.</span>
 
@@ -187,9 +176,9 @@ unannotated test case file:
 <span class="plain-syntax">            </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[line count]  [T][line break]"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">increase</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary">And here is the same thing as an annotated file:
-</p>
-
+<div class="lsmarkdown">
+<p>And here is the same thing as an annotated file:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Test:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Nettles</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Language:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Basic</span>
@@ -205,147 +194,131 @@ unannotated test case file:
 <span class="plain-syntax">            </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[line count]  [T][line break]"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">increase</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary">The difference, of course, is that the file begins with a run of header
-lines, each of which sets one detail. These take the form "Key: Value",
+<div class="lsmarkdown">
+<p>The difference, of course, is that the file begins with a run of header
+lines, each of which sets one detail. These take the form &quot;Key: Value&quot;,
 where Key must be a single word. In a test case file, the first line must
-be "Test: TITLE", that is, the key must be "Test" and the value must be the
+be &quot;Test: TITLE&quot;, that is, the key must be &quot;Test&quot; and the value must be the
 title of the test. In an annotated problem case file, the same, but the
-key must be "Problem" rather than "Test".
-</p>
-
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>All Inform example files are annotated. There, the opening line is a little
-more elaborate:
-</p>
-
+key must be &quot;Problem&quot; rather than &quot;Test&quot;.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  All Inform example files are annotated. There, the opening line is a little
+more elaborate:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Example:</span><span class="plain-syntax"> ** </span><span class="identifier-syntax">Alpaca</span><span class="plain-syntax"> </span><span class="identifier-syntax">Farm</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 </pre>
-<p class="commentary">Here the opening line must have the key "Example" and the value is a row
+<div class="lsmarkdown">
+<p>Here the opening line must have the key &quot;Example&quot; and the value is a row
 of one to four asterisks, rating the example by difficulty, and then a title.
-(This exactly follows the format used by the "indoc" tool for Inform:
-examples come from Inform documentation.)
-</p>
-
-<p class="commentary">Similarly, all cases arising from extensions are "annotated".
-</p>
-
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Declaring the test cases.</b>A recipe file normally begins by declaring where all the cases live:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-case F</span></span>, where <span class="extract"><span class="extract-syntax">F</span></span> is a filename. Make this a test case of type "case".
-Similarly for <span class="extract"><span class="extract-syntax">-problem</span></span>, <span class="extract"><span class="extract-syntax">-example</span></span>, <span class="extract"><span class="extract-syntax">-extension</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-cases D</span></span>, where <span class="extract"><span class="extract-syntax">D</span></span> is a directory name. Make every validly named text file
-in this directory a test case of type "case". Similarly for <span class="extract"><span class="extract-syntax">-problems</span></span>,
-<span class="extract"><span class="extract-syntax">-examples</span></span>, <span class="extract"><span class="extract-syntax">-extensions</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">-case</span></span> and <span class="extract"><span class="extract-syntax">-problem</span></span> create unannotated cases and problems: to make
-annotated ones, use <span class="extract"><span class="extract-syntax">-annotated-case</span></span> and <span class="extract"><span class="extract-syntax">-annotated-problem</span></span>. Similarly
-for their plurals. Intest also recognises <span class="extract"><span class="extract-syntax">-annotated-example</span></span> and <span class="extract"><span class="extract-syntax">-annotated-extension</span></span>,
+(This exactly follows the format used by the &quot;indoc&quot; tool for Inform:
+examples come from Inform documentation.)</p>
+<p>Similarly, all cases arising from extensions are &quot;annotated&quot;.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Declaring the test cases.</b>  A recipe file normally begins by declaring where all the cases live:</p>
+<p><code>-case F</code>, where <code>F</code> is a filename. Make this a test case of type &quot;case&quot;.
+Similarly for <code>-problem</code>, <code>-example</code>, <code>-extension</code>.</p>
+<p><code>-cases D</code>, where <code>D</code> is a directory name. Make every validly named text file
+in this directory a test case of type &quot;case&quot;. Similarly for <code>-problems</code>,
+<code>-examples</code>, <code>-extensions</code>.</p>
+<p><code>-case</code> and <code>-problem</code> create unannotated cases and problems: to make
+annotated ones, use <code>-annotated-case</code> and <code>-annotated-problem</code>. Similarly
+for their plurals. Intest also recognises <code>-annotated-example</code> and <code>-annotated-extension</code>,
 but since tests from examples or extensions are always annotated anyway, this
-doesn't change matters.
-</p>
-
-<p class="commentary">As a final variation, note that Intest will ordinarily throw an error if
+doesn't change matters.</p>
+<p>As a final variation, note that Intest will ordinarily throw an error if
 it cannot find cases at the places named. If you don't want that, use the
-prefix "-possible". For example, <span class="extract"><span class="extract-syntax">-possible-annotated-case</span></span>, <span class="extract"><span class="extract-syntax">-possible-problems</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>Each case has a "recipe" assigned to it, a method for performing the test.
-Often the same recipe will be assigned to every case, but not all always.
-</p>
-
-<p class="commentary">Recipes are named, with names put in square brackets. The default one is
-called just <span class="extract"><span class="extract-syntax">[Recipe]</span></span>, but any test case declaration can override that.
-For example:
-</p>
-
+prefix &quot;-possible&quot;. For example, <code>-possible-annotated-case</code>, <code>-possible-problems</code>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Each case has a &quot;recipe&quot; assigned to it, a method for performing the test.
+Often the same recipe will be assigned to every case, but not all always.</p>
+<p>Recipes are named, with names put in square brackets. The default one is
+called just <code>[Recipe]</code>, but any test case declaration can override that.
+For example:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -cases [KindRecipe] 'inform7/kinds-test/Tests/Test Cases'</span>
 <span class="plain-syntax">    -possible-annotated-case [SpecialHack] 'inform7/kinds-test/Tests/debugging.txt'</span>
 </pre>
-<p class="commentary">Here any cases found in <span class="extract"><span class="extract-syntax">inform7/kinds-test/Tests/Test Cases</span></span> are given the
-recipe <span class="extract"><span class="extract-syntax">[KindRecipe]</span></span>, and if the file <span class="extract"><span class="extract-syntax">inform7/kinds-test/Tests/debugging.txt</span></span>
-is present, then it gets the recipe <span class="extract"><span class="extract-syntax">[SpecialHack]</span></span>.
-</p>
-
-<p class="commentary">Whatever happens, the recipe(s) you need will have to be written: see below
-for how to do that.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>If, for whatever reason, you would like a given test not to be included
-in Intest's wildcard names such as <span class="extract"><span class="extract-syntax">all</span></span>, then you can write, say,
-<span class="extract"><span class="extract-syntax">-singular NAME</span></span>, where <span class="extract"><span class="extract-syntax">NAME</span></span> is the test's name. For example, you might say:
-</p>
-
+<div class="lsmarkdown">
+<p>Here any cases found in <code>inform7/kinds-test/Tests/Test Cases</code> are given the
+recipe <code>[KindRecipe]</code>, and if the file <code>inform7/kinds-test/Tests/debugging.txt</code>
+is present, then it gets the recipe <code>[SpecialHack]</code>.</p>
+<p>Whatever happens, the recipe(s) you need will have to be written: see below
+for how to do that.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  If, for whatever reason, you would like a given test not to be included
+in Intest's wildcard names such as <code>all</code>, then you can write, say,
+<code>-singular NAME</code>, where <code>NAME</code> is the test's name. For example, you might say:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -possible-annotated-case [SpecialHack] 'inform7/kinds-test/Tests/debugging.txt'</span>
 <span class="plain-syntax">    -singular debugging</span>
 </pre>
-<p class="commentary">to mark the test <span class="extract"><span class="extract-syntax">debugging</span></span>, which arises from the declaration, to be
-excluded from <span class="extract"><span class="extract-syntax">all</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>With a large project to test, you will probably have a lot of tests which,
+<div class="lsmarkdown">
+<p>to mark the test <code>debugging</code>, which arises from the declaration, to be
+excluded from <code>all</code>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  With a large project to test, you will probably have a lot of tests which,
 though similar to each other, involve subtle variations in how they should be
 carried out. One answer to that would be to have numerous recipes which are
-all variations on a theme:
-</p>
-
+all variations on a theme:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -cases [Reactor1] 'fusionreactor/Tests/HotCases'</span>
 <span class="plain-syntax">    -cases [Reactor2] 'fusionreactor/Tests/ColdCases'</span>
 <span class="plain-syntax">    -cases [Reactor3] 'fusionreactor/Tests/UnsafeCases'</span>
 </pre>
-<p class="commentary">But that is likely to result in having to write multiple, repetitive recipes.
-A neater solution is to use "stipulations", like so:
-</p>
-
+<div class="lsmarkdown">
+<p>But that is likely to result in having to write multiple, repetitive recipes.
+A neater solution is to use &quot;stipulations&quot;, like so:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'</span>
 <span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Cold:STATUS=Safe] 'fusionreactor/Tests/ColdCases'</span>
 <span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'</span>
 </pre>
-<p class="commentary">Here the recipe <span class="extract"><span class="extract-syntax">[Reactor]</span></span> will be used for all of these cases, but it will
-start with the variables <span class="extract"><span class="extract-syntax">$TEMP</span></span> and <span class="extract"><span class="extract-syntax">$STATUS</span></span> set to values depending on
+<div class="lsmarkdown">
+<p>Here the recipe <code>[Reactor]</code> will be used for all of these cases, but it will
+start with the variables <code>$TEMP</code> and <code>$STATUS</code> set to values depending on
 which bucket the tests came from. Note that those are local variables (i.e.,
-different for each individual test), not global ones (the same for all).
-</p>
-
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>It is also possible to set global variables which will apply to all recipes:
-</p>
-
+different for each individual test), not global ones (the same for all).</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  It is also possible to set global variables which will apply to all recipes:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -set MAXTEMPERATURE 4000</span>
 </pre>
-<p class="commentary">This would create the variable <span class="extract"><span class="extract-syntax">$$MAXTEMPERATURE</span></span>, which can be used by
+<div class="lsmarkdown">
+<p>This would create the variable <code>$$MAXTEMPERATURE</code>, which can be used by
 every recipe. See below for more on Delia variables: the doubled dollar sign
-means global, single means local.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>Finally, test cases can be made available and globals can be set on a
-platform-specific basis:
-</p>
-
+means global, single means local.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Finally, test cases can be made available and globals can be set on a
+platform-specific basis:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -if Windows -set EXESUFFIX '.exe'</span>
 <span class="reserved-syntax">    -if MacOS -annotated-cases [Main</span><span class="plain-syntax">:EXTERNAL=inform7/Tests] 'inform7/Tests/Test Releases'</span>
 </pre>
-<p class="commentary">A line beginning <span class="extract"><span class="extract-syntax">-if PLATFORM</span></span> will be obeyed only if <span class="extract"><span class="extract-syntax">$$platform</span></span> matches the
-value <span class="extract"><span class="extract-syntax">PLATFORM</span></span>, case insensitively.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Test groups.</b><span class="extract"><span class="extract-syntax">-groups PATH</span></span> sets the groups directory to the given pathname. Any files
-with the filename extension <span class="extract"><span class="extract-syntax">.testgroup</span></span> are then taken to be lists of useful
-test cases for some particular aspect of testing.
-</p>
-
-<p class="commentary">A typical test group file is just a list of lines, each of which specifies
-some tests drawn from the Universe. Most often these are literal test names:
-</p>
-
+<div class="lsmarkdown">
+<p>A line beginning <code>-if PLATFORM</code> will be obeyed only if <code>$$platform</code> matches the
+value <code>PLATFORM</code>, case insensitively.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Test groups.</b>  <code>-groups PATH</code> sets the groups directory to the given pathname. Any files
+with the filename extension <code>.testgroup</code> are then taken to be lists of useful
+test cases for some particular aspect of testing.</p>
+<p>A typical test group file is just a list of lines, each of which specifies
+some tests drawn from the Universe. Most often these are literal test names:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">PM_RelationOtoVContradiction</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PM_BadRelationCondition</span>
@@ -354,99 +327,85 @@ some tests drawn from the Universe. Most often these are literal test names:
 <span class="plain-syntax">    </span><span class="identifier-syntax">KOVEquivRelation</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">OToORouteFinding</span>
 </pre>
-<p class="commentary">Blank lines are skipped, as are lines beginning with the comment character <span class="extract"><span class="extract-syntax">!</span></span>.
-</p>
-
-<p class="commentary">More ambitiously, lines can give regular expressions for tests to match. This
-group consists of the test <span class="extract"><span class="extract-syntax">Soyuz</span></span> and anything whose name begins <span class="extract"><span class="extract-syntax">Ariane-</span></span>.
-</p>
-
+<div class="lsmarkdown">
+<p>Blank lines are skipped, as are lines beginning with the comment character <code>!</code>.</p>
+<p>More ambitiously, lines can give regular expressions for tests to match. This
+group consists of the test <code>Soyuz</code> and anything whose name begins <code>Ariane-</code>.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Soyuz</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Ariane</span><span class="plain-syntax">-%</span><span class="identifier-syntax">C</span><span class="plain-syntax">+</span>
 </pre>
-<p class="commentary">By default, these are matched against either the name or the title of a case:
+<div class="lsmarkdown">
+<p>By default, these are matched against either the name or the title of a case:
 a successful match against either gets the test included in the group. But
 we can say exactly what we want to match against by writing the line
-<span class="extract"><span class="extract-syntax">KEY includes PATTERN</span></span> or <span class="extract"><span class="extract-syntax">KEY is PATTERN</span></span>:
-</p>
-
+<code>KEY includes PATTERN</code> or <code>KEY is PATTERN</code>:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Title</span><span class="plain-syntax"> </span><span class="identifier-syntax">includes</span><span class="plain-syntax"> %</span><span class="identifier-syntax">d</span><span class="plain-syntax">%</span><span class="identifier-syntax">d</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Name</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pine2</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Language</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">Basic</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Description</span><span class="plain-syntax"> </span><span class="identifier-syntax">includes</span><span class="plain-syntax"> </span><span class="identifier-syntax">quick</span>
 </pre>
-<p class="commentary">This improbable group includes any test whose title has two consecutive digits
-somewhere in it, or whose name is <span class="extract"><span class="extract-syntax">Pine2</span></span>, or which sets the key <span class="extract"><span class="extract-syntax">Language</span></span>
-to the value <span class="extract"><span class="extract-syntax">Basic</span></span> in its annotations (see below), or which sets the
-key <span class="extract"><span class="extract-syntax">Description</span></span> to something with the word "quick" in it.
-</p>
-
-<p class="commentary">It can sometimes be useful to see what tests this sort of thing actually implies:
-</p>
-
+<div class="lsmarkdown">
+<p>This improbable group includes any test whose title has two consecutive digits
+somewhere in it, or whose name is <code>Pine2</code>, or which sets the key <code>Language</code>
+to the value <code>Basic</code> in its annotations (see below), or which sets the
+key <code>Description</code> to something with the word &quot;quick&quot; in it.</p>
+<p>It can sometimes be useful to see what tests this sort of thing actually implies:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> launcher</span><span class="ConsoleText-identifier-syntax"> -list</span><span class="ConsoleText-plain-syntax"> :rockets</span>
 <span class="ConsoleText-plain-syntax">    Soyuz</span>
 <span class="ConsoleText-plain-syntax">    Ariane-5</span>
 <span class="ConsoleText-plain-syntax">    Ariane-6</span>
 </pre>
-<p class="commentary">which lists all tests in the universe for <span class="extract"><span class="ConsoleText-extract-syntax">launcher</span></span> which match one of the
-lines from the <span class="extract"><span class="ConsoleText-extract-syntax">rockets.testgroup</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Specifying the recipes.</b>A recipe file must also define at least one recipe. There are two ways
-to do this:
-</p>
-
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">-recipe [NAME] FILE</span></span> says that the recipe <span class="extract"><span class="ConsoleText-extract-syntax">[NAME]</span></span> is defined in the given
-text file.
-</p>
-
-<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">-recipe [NAME]</span></span> followed by a definition written in the intest file itself:
-</p>
-
+<div class="lsmarkdown">
+<p>which lists all tests in the universe for <code>launcher</code> which match one of the
+lines from the <code>rockets.testgroup</code>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Specifying the recipes.</b>  A recipe file must also define at least one recipe. There are two ways
+to do this:</p>
+<p><code>-recipe [NAME] FILE</code> says that the recipe <code>[NAME]</code> is defined in the given
+text file.</p>
+<p><code>-recipe [NAME]</code> followed by a definition written in the intest file itself:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -recipe [NAME]</span>
 <span class="plain-syntax">        ...</span>
 <span class="plain-syntax">        ...</span>
 <span class="plain-syntax">    -end</span>
 </pre>
-<p class="commentary">where the definition occupies the lines in between the <span class="extract"><span class="extract-syntax">-recipe</span></span> line and the
-<span class="extract"><span class="extract-syntax">-end</span></span> line. (Those lines in between are not commands and don't start with
-dashes.) If no <span class="extract"><span class="extract-syntax">[NAME]</span></span> is given, the name is assumed to be just <span class="extract"><span class="extract-syntax">[Recipe]</span></span>.
-</p>
-
-<p class="commentary">For how to write recipes, see//Writing Intest Recipes//.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. The annotations in a test case.</b>As noted above, an annotated case opens with key-value pairs specifying
+<div class="lsmarkdown">
+<p>where the definition occupies the lines in between the <code>-recipe</code> line and the
+<code>-end</code> line. (Those lines in between are not commands and don't start with
+dashes.) If no <code>[NAME]</code> is given, the name is assumed to be just <code>[Recipe]</code>.</p>
+<p>For how to write recipes, see<a href="M-wir.html" class="internal">Writing Intest Recipes</a>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. The annotations in a test case.</b>  As noted above, an annotated case opens with key-value pairs specifying
 details about it: this run ends with a blank line, and then the actual
-test material begins.
-</p>
-
-<p class="commentary">For example, this might be the block of annotations at the top of a test case:
-</p>
-
+test material begins.</p>
+<p>For example, this might be the block of annotations at the top of a test case:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Test:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Nettles</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Language:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Basic</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">For:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Glulx</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">IntOptions:</span><span class="plain-syntax"> -</span><span class="identifier-syntax">u</span><span class="plain-syntax"> -</span><span class="identifier-syntax">q</span><span class="plain-syntax"> -</span><span class="identifier-syntax">dataresourcetext</span><span class="plain-syntax"> </span><span class="character-syntax">'3:$PATH/Nettles--X.txt'</span>
 </pre>
-<p class="commentary">What does Intest do with this information? The answer is not much. The opening
+<div class="lsmarkdown">
+<p>What does Intest do with this information? The answer is not much. The opening
 line is significant, in that it tells Intest that this file is indeed a
 test case, and supplies a title for the test. (Without such an annotation,
-the title would be set equal to the name.)
-</p>
-
-<p class="commentary">The other key-value pairs here are for the benefit of other programs. Examples,
+the title would be set equal to the name.)</p>
+<p>The other key-value pairs here are for the benefit of other programs. Examples,
 which are intended as documentation for Inform, use some of these to say where
 they should appear in the manual (or in an extension's documentation), how
-they should be indexed, and so on:
-</p>
-
+they should be indexed, and so on:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Example:</span><span class="plain-syntax"> ** </span><span class="identifier-syntax">Alpha</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Location:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Regular</span><span class="plain-syntax"> </span><span class="identifier-syntax">expression</span><span class="plain-syntax"> </span><span class="identifier-syntax">matching</span>
@@ -455,26 +414,22 @@ they should be indexed, and so on:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Description:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Creating</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">beta</span><span class="plain-syntax">-</span><span class="identifier-syntax">testing</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">matches</span><span class="plain-syntax"> </span><span class="identifier-syntax">any</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="identifier-syntax">starting</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">punctuation</span><span class="plain-syntax">.</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">For:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Z</span><span class="plain-syntax">-</span><span class="identifier-syntax">Machine</span>
 </pre>
-<p class="commentary">So here, the keys <span class="extract"><span class="extract-syntax">Location</span></span>, <span class="extract"><span class="extract-syntax">RecipeLocation</span></span>, <span class="extract"><span class="extract-syntax">Index</span></span>, and <span class="extract"><span class="extract-syntax">Description</span></span> are
+<div class="lsmarkdown">
+<p>So here, the keys <code>Location</code>, <code>RecipeLocation</code>, <code>Index</code>, and <code>Description</code> are
 all for use by Indoc, and are not likely to matter to how the test is conducted.
-There's actually a hidden key-value pair in this case: <span class="extract"><span class="extract-syntax">Stars</span></span>, which is set
-here to <span class="extract"><span class="extract-syntax">**</span></span>.
-</p>
-
-<p class="commentary">What Intest does with all key-value pairs in these annotations, though, is to
+There's actually a hidden key-value pair in this case: <code>Stars</code>, which is set
+here to <code>**</code>.</p>
+<p>What Intest does with all key-value pairs in these annotations, though, is to
 pass them to the test recipe as variables. So, for example, when the example
-<span class="extract"><span class="extract-syntax">Alpha</span></span> is tested, the recipe would begin with the variable <span class="extract"><span class="extract-syntax">$FOR</span></span> set to the
-value <span class="extract"><span class="extract-syntax">Z-Machine</span></span>. (Note that key names are fully capitalized when used as
-variable names in this way.)
-</p>
-
-<p class="commentary">The practical effect is that individual test cases can specify variations
+<code>Alpha</code> is tested, the recipe would begin with the variable <code>$FOR</code> set to the
+value <code>Z-Machine</code>. (Note that key names are fully capitalized when used as
+variable names in this way.)</p>
+<p>The practical effect is that individual test cases can specify variations
 in how they should be tested, in a way which the test recipe can make use of.
 When there are thousands of cases and some of them intentionally abuse the
 program under test, quite a lot of flexibility is needed, and these annotations
-make it much easier to write a recipe to handle every need.
-</p>
-
+make it much easier to write a recipe to handle every need.</p>
+</div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-iatcl.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresssection"><a href="M-iatcl.html">iatcl</a></li><li class="progresscurrent">tuoc</li><li class="progresssection"><a href="M-wir.html">wir</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="M-wir.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

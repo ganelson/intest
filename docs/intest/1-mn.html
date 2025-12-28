@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -27,6 +32,7 @@ function togglePopup(material_id) {
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">intest</span></a></li>
+<li><a href="../inprint/index.html">inprint</a></li>
 <li><a href="../arch-module/index.html">arch</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
@@ -43,18 +49,16 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-mn.html#SP1">&#167;1. Main routine</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Main routine.</b>This is basically simple. We work out what project the user wants us to
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Main routine.</b>  This is basically simple. We work out what project the user wants us to
 test; we look through the command line to configure things and read some
-testing commands, and then we carry them out.
-</p>
-
-<p class="commentary">What makes it a little more elaborate is that Intest does unusual things
+testing commands, and then we carry them out.</p>
+<p>What makes it a little more elaborate is that Intest does unusual things
 with its command line, preserving a command history, allowing substitution
 of parameters and so on. It's almost a little shell language of its own.
 This work of rewriting the command line is mostly done by a part of Intest
-called the "historian", which manages the command history.
-</p>
-
+called the &quot;historian&quot;, which manages the command history.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home_project</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">installation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -65,15 +69,15 @@ called the "historian", which manages the command history.
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ts_argc</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">extension_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> **</span><span class="identifier-syntax">ts_argv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Soak up the command line contents</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Work out what the home project is</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Soak up the command line contents</span></span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Work out what the home project is</span></span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home</span><span class="plain-syntax"> = </span><span class="identifier-syntax">home_project</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">extension_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">home</span><span class="plain-syntax"> = </span><a href="../foundation/3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">home</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Tests"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/3-drc.html#SP3" class="function-link"><span class="function-syntax">Directories::exists</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">home</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><a href="../foundation/3-pth.html#SP7" class="function-link"><span class="function-syntax">Pathnames::directory_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">home_project</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::includes_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">)-3, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Kit"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::includes_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">)-3, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Kit"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">extension_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="identifier-syntax">home</span><span class="plain-syntax"> = </span><a href="../foundation/3-pth.html#SP7" class="function-link"><span class="function-syntax">Pathnames::up</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">home</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
@@ -84,7 +88,7 @@ called the "historian", which manages the command history.
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">write_up</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Read the now-final command line and act upon it</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="1-mn.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Read the now-final command line and act upon it</span></span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">write_up</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">extension_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)) </span><a href="2-th.html#SP6" class="function-link"><span class="function-syntax">Historian::write_up</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">history</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
@@ -92,17 +96,14 @@ called the "historian", which manages the command history.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)?0:1;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. </b>We will need to modify the command-line tokens, so we have to get them out
-of their locale-encoded null-terminated C strings, in <span class="extract"><span class="extract-syntax">argv[]</span></span>, and into
-proper Unicode <span class="extract"><span class="extract-syntax">text_stream</span></span> strings, in <span class="extract"><span class="extract-syntax">ts_argv[]</span></span>.
-</p>
-
-<p class="commentary">Note that if the tester specifies nothing at all at the command line, we
-invent <span class="extract"><span class="extract-syntax">-help</span></span>. It follows that <span class="extract"><span class="extract-syntax">ts_argc</span></span> will always be at least 2.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Soak up the command line contents</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. </b>  We will need to modify the command-line tokens, so we have to get them out
+of their locale-encoded null-terminated C strings, in <code>argv[]</code>, and into
+proper Unicode <code>text_stream</code> strings, in <code>ts_argv[]</code>.</p>
+<p>Note that if the tester specifies nothing at all at the command line, we
+invent <code>-help</code>. It follows that <code>ts_argc</code> will always be at least 2.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Soak up the command line contents</span><span class="named-paragraph-number">1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">ts_argc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">argc</span><span class="plain-syntax">;</span>
@@ -110,29 +111,24 @@ invent <span class="extract"><span class="extract-syntax">-help</span></span>. I
 <span class="plain-syntax">    </span><span class="identifier-syntax">ts_argv</span><span class="plain-syntax"> = </span><a href="../foundation/2-mmr.html#SP24" class="function-link"><span class="function-syntax">Memory::calloc</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *), </span><span class="constant-syntax">COMMAND_HISTORY_MREASON</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">argc</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">p</span><span class="plain-syntax">[0] == </span><span class="character-syntax">'-'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">[1] == </span><span class="character-syntax">'-'</span><span class="plain-syntax">)) </span><span class="identifier-syntax">p</span><span class="plain-syntax">++; </span><span class="comment-syntax"> allow a doubled-dash as equivalent to a single</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">p</span><span class="plain-syntax">[0] == </span><span class="character-syntax">'-'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">p</span><span class="plain-syntax">[1] == </span><span class="character-syntax">'-'</span><span class="plain-syntax">)) </span><span class="identifier-syntax">p</span><span class="plain-syntax">++; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( allow a doubled-dash as equivalent to a single )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ts_argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><a href="../foundation/4-sm.html#SP4" class="function-link"><span class="function-syntax">Str::new_from_locale_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">argc</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">ts_argv</span><span class="plain-syntax">[1] = </span><span class="identifier-syntax">I</span><span class="string-syntax">"-help"</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b>Intest was originally designed for testing Inform 7, so it defaults to
-that as the project under test. Everybody else has to specify <span class="extract"><span class="extract-syntax">-from P</span></span>,
-where <span class="extract"><span class="extract-syntax">P</span></span> is the project location, at the front of the command line. Note
-that we remove those two tokens if we do find them.
-</p>
-
-<p class="commentary">(They are token numbers 1 and 2, not 0 and 1, because token 0 will be the
-shell command used to invoke Intest. We simply ignore token 0.)
-</p>
-
-<p class="commentary">We enter extension mode only if the directory name for the project ends
-in <span class="extract"><span class="extract-syntax">.i7xd</span></span>, meaning that our "project" is in fact an Inform extension
-stored in directory format.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out what the home project is</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b>  Intest was originally designed for testing Inform 7, so it defaults to
+that as the project under test. Everybody else has to specify <code>-from P</code>,
+where <code>P</code> is the project location, at the front of the command line. Note
+that we remove those two tokens if we do find them.</p>
+<p>(They are token numbers 1 and 2, not 0 and 1, because token 0 will be the
+shell command used to invoke Intest. We simply ignore token 0.)</p>
+<p>We enter extension mode only if the directory name for the project ends
+in <code>.i7xd</code>, meaning that our &quot;project&quot; is in fact an Inform extension
+stored in directory format.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out what the home project is</span><span class="named-paragraph-number">1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ts_argv</span><span class="plain-syntax">[1], </span><span class="identifier-syntax">I</span><span class="string-syntax">"-from"</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">ts_argc</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">3</span><span class="plain-syntax">)) {</span>
@@ -143,11 +139,10 @@ stored in directory format.
 <span class="plain-syntax">        </span><span class="identifier-syntax">ts_argc</span><span class="plain-syntax">--; </span><span class="identifier-syntax">ts_argv</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><a href="../foundation/3-pth.html#SP7" class="function-link"><span class="function-syntax">Pathnames::directory_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">home_project</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::includes_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">)-5, </span><span class="identifier-syntax">I</span><span class="string-syntax">".i7xd"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">extension_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::includes_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">)-5, </span><span class="identifier-syntax">I</span><span class="string-syntax">".i7xd"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">extension_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the now-final command line and act upon it</span><span class="named-paragraph-number">1.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the now-final command line and act upon it</span><span class="named-paragraph-number">1.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="2-gv.html#SP7" class="function-link"><span class="function-syntax">Globals::create_platform</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">home</span><span class="plain-syntax">);</span>
@@ -197,14 +192,14 @@ stored in directory format.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>This utility has been borrowed from Inform's <span class="extract"><span class="extract-syntax">html</span></span> module:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  This utility has been borrowed from Inform's <code>html</code> module:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Main::filename_by_platform</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Main::filename_by_platform</span></span>:<br/><a href="1-mn.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">models</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="string-syntax">"%s-%S"</span><span class="plain-syntax">, </span><span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="comment-syntax"> NB: PLATFORM_STRING is a C string, so that %s is correct</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( NB: PLATFORM_STRING is a C string, so that %s is correct )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">models</span><span class="plain-syntax">, </span><span class="identifier-syntax">variation</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-tf.html#SP1" class="function-link"><span class="function-syntax">TextFiles::exists</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">models</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">)</span>

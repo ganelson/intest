@@ -25,21 +25,36 @@
 # The colony file for this collection of webs contains information about their
 # paths, where they are woven to, and so on
 
+ME = intest
 COLONY = $(ME)/colony.inweb
+INPRINT = $(ME)/inprint
 
 # Making the program:
 
-$(ME)/Tangled/$(MYNAME): {dependent-files}
+.PHONY: all
+
+all: $(ME)/Tangled/$(ME) $(INPRINT)/Tangled/inprint
+
+$(ME)/Tangled/$(ME): {dependent-files}
 	$(call make-me)
+
+$(INPRINT)/Tangled/inprint: $(INPRINT)/Contents.w $(INPRINT)/Chapter*/*.w
+	$(call make-inprint)
 
 .PHONY: force
 force:
 	$(call make-me)
+	$(call make-inprint)
 
 define make-me
-	$(INWEB) tangle $(ME) -import-from modules
-	{compile from: $(ME)/Tangled/$(MYNAME).c   to:   $(ME)/Tangled/$(MYNAME).o}
-	{link    from: $(ME)/Tangled/$(MYNAME).o   to:   $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION)}
+	$(INWEB) tangle $(ME)
+	{compile from: $(ME)/Tangled/$(ME).c   to:   $(ME)/Tangled/$(ME).o}
+	{link    from: $(ME)/Tangled/$(ME).o   to:   $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
+endef
+
+define make-inprint
+	$(INWEB) make-makefile $(INPRINT) -to $(INPRINT)/inprint.mk
+	make -f $(INPRINT)/inprint.mk force
 endef
 
 # Testing the program:
@@ -62,8 +77,8 @@ commit:
 .PHONY: pages
 pages:
 	$(INWEB) advance-build $(ME)
-	mkdir -p $(ME)/docs/$(MYNAME)
-	$(ME)/Tangled/$(MYNAME) -help > $(ME)/Figures/help.txt
+	mkdir -p $(ME)/docs/$(ME)
+	$(ME)/Tangled/$(ME) -help > $(ME)/Figures/help.txt
 	$(INWEB) make-readme $(ME)
 	rm -f $(ME)/docs/*.html
 	rm -f $(ME)/docs/intest/*.html
@@ -80,7 +95,7 @@ clean:
 .PHONY: purge
 purge:
 	$(call clean-up)
-	rm -f $(ME)/Tangled/$(MYNAME)
+	rm -f $(ME)/Tangled/$(ME)
 
 define clean-up
 	rm -f $(ME)/Tangled/*.o

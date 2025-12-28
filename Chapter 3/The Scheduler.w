@@ -393,13 +393,13 @@ The "bottom line" text here is "All 27 tests succeeded".
 	if (N > successes + failures) N = successes + failures;
 
 	TEMPORARY_TEXT(bottom_line)
-	@<And the bottom line is...@>;
+	@<The bottom line@>;
 	if (failures > 0) @<Recite our failures@>;
 	if (successes + failures >= 10)
 		Platform::notification(bottom_line, (failures == 0)?TRUE:FALSE);
 	DISCARD_TEXT(bottom_line)
 
-@<And the bottom line is...@> =
+@<The bottom line@> =
 	switch (successes + failures) {
 		case 1:
 			if (successes == 0) WRITE_TO(bottom_line, "Failed");

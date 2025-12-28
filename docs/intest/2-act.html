@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -28,6 +33,7 @@ function togglePopup(material_id) {
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">intest</span></a></li>
+<li><a href="../inprint/index.html">inprint</a></li>
 <li><a href="../arch-module/index.html">arch</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
@@ -44,43 +50,42 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-act.html#SP1">&#167;1. Reading the command line</a></li><li><a href="2-act.html#SP6">&#167;6. Wildcards</a></li><li><a href="2-act.html#SP7">&#167;7. Performance</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Reading the command line.</b>Suppose the tester invoked Intest as
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Reading the command line.</b>  Suppose the tester invoked Intest as</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inweb</span><span class="ConsoleText-identifier-syntax"> -bless</span><span class="ConsoleText-plain-syntax"> plain twinprimes</span>
 </pre>
-<p class="commentary">The following routine will be called to take care of the actual command:
-</p>
-
+<div class="lsmarkdown">
+<p>The following routine will be called to take care of the actual command:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -</span><span class="identifier-syntax">bless</span><span class="plain-syntax"> </span><span class="identifier-syntax">plain</span><span class="plain-syntax"> </span><span class="identifier-syntax">twinprimes</span>
 </pre>
-<p class="commentary">The tokens <span class="extract"><span class="extract-syntax">-bless</span></span>, <span class="extract"><span class="extract-syntax">plain</span></span> and <span class="extract"><span class="extract-syntax">twinprimes</span></span> will be in the array <span class="extract"><span class="extract-syntax">argv</span></span>,
-at indexes <span class="extract"><span class="extract-syntax">from_arg_n</span></span> onwards. <span class="extract"><span class="extract-syntax">to_arg_n</span></span> is the index after the last one.
-The token list can contain multiple actions, one after the other.
-</p>
-
+<div class="lsmarkdown">
+<p>The tokens <code>-bless</code>, <code>plain</code> and <code>twinprimes</code> will be in the array <code>argv</code>,
+at indexes <code>from_arg_n</code> onwards. <code>to_arg_n</code> is the index after the last one.
+The token list can contain multiple actions, one after the other.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Actions::read_do_instructions</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Actions::read_do_instructions</span></span>:<br/>Command Line Arguments - <a href="1-cla.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">intest_instructions</span><span class="plain-syntax"> *</span><span class="identifier-syntax">args</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_arg_n</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_arg_n</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Log the do instructions</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Log the do instructions</span></span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">index</span><span class="plain-syntax">=</span><span class="identifier-syntax">from_arg_n</span><span class="plain-syntax">; </span><span class="identifier-syntax">index</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">to_arg_n</span><span class="plain-syntax">; </span><span class="identifier-syntax">index</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">index</span><span class="plain-syntax">];</span>
 
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> = </span><span class="constant-syntax">TEST_ACTION</span><span class="plain-syntax">; </span><span class="comment-syntax"> which command is used</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> = </span><span class="constant-syntax">TEST_ACTION</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( which command is used )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">action_details</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ops_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">ops_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">; </span><span class="comment-syntax"> operands run from </span><span class="extract"><span class="extract-syntax">ops_from</span></span><span class="comment-syntax"> to </span><span class="extract"><span class="extract-syntax">ops_to</span></span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirect_output</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> optional file to redirect output to</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ops_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">ops_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( operands run from |ops_from| to |ops_to| )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirect_output</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( optional file to redirect output to )</span><span class="comment-syntax">*/</span>
 
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Scan the command and advance index to the end of it</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Translate the command into action item structures</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Scan the command and advance index to the end of it</span></span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Translate the command into action item structures</span></span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log the do instructions</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log the do instructions</span><span class="named-paragraph-number">1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">INSTRUCTIONS_DA</span><span class="plain-syntax">)) {</span>
@@ -90,52 +95,48 @@ The token list can contain multiple actions, one after the other.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b>The <span class="extract"><span class="extract-syntax">arity</span></span> is the expected number of operands which will follow the
-command, or is <span class="extract"><span class="extract-syntax">-1</span></span> to mean "any positive number of operands".
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Scan the command and advance index to the end of it</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2. </b>  The <code>arity</code> is the expected number of operands which will follow the
+command, or is <code>-1</code> to mean &quot;any positive number of operands&quot;.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Scan the command and advance index to the end of it</span><span class="named-paragraph-number">1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">arity</span><span class="plain-syntax"> = -1;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2_1" class="named-paragraph-link"><span class="named-paragraph">Parse the command name</span><span class="named-paragraph-number">1.2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2_2" class="named-paragraph-link"><span class="named-paragraph">Scan for the operands</span><span class="named-paragraph-number">1.2.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2_3" class="named-paragraph-link"><span class="named-paragraph">Parse an optional redirection filename</span><span class="named-paragraph-number">1.2.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Parse the command name</span></span><span class="named-paragraph-number">1.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Scan for the operands</span></span><span class="named-paragraph-number">1.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Parse an optional redirection filename</span></span><span class="named-paragraph-number">1.2.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">index</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> - </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_1" class="paragraph-anchor"></a><b>&#167;1.2.1. </b>A command begins with one of the following tokens: or, if it doesn't, we
-pretend that it begins with <span class="extract"><span class="extract-syntax">test</span></span>.
-</p>
-
-<p class="commentary">The following enumerates the "do commands", or as we'll call them in this
-section, "actions":
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">BBDIFF_ACTION</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">BLESS_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">CATALOGUE_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">CENSUS_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">COMBINE_REPORTS_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">CONCORDANCE_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">CURSE_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">DEBUGGER_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">DIFF_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SOURCE_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">FIND_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">OPEN_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">REBLESS_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">REPORT_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SCRIPT_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SHOW_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SKEIN_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_ACTION</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">LIST_ACTION</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SCHEDULED_TEST_ACTION</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="plain-syntax"> </span><span class="comment-syntax"> must be more than all of the above</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1_2_1" class="paragraph-anchor"></a><b>&#167;1.2.1. </b>  A command begins with one of the following tokens: or, if it doesn't, we
+pretend that it begins with <code>test</code>.</p>
+<p>The following enumerates the &quot;do commands&quot;, or as we'll call them in this
+section, &quot;actions&quot;:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">BBDIFF_ACTION</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">BLESS_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CATALOGUE_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CENSUS_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">COMBINE_REPORTS_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CONCORDANCE_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CURSE_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">DEBUGGER_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">DIFF_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">SOURCE_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FIND_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">OPEN_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">REBLESS_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">REPORT_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">SCRIPT_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">SHOW_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">SKEIN_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LIST_ACTION</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SCHEDULED_TEST_ACTION</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="comment-syntax"> must be more than all of the above</span>
 </pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the command name</span><span class="named-paragraph-number">1.2.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the command name</span><span class="named-paragraph-number">1.2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"-catalogue"</span><span class="plain-syntax">)) { </span><span class="identifier-syntax">action</span><span class="plain-syntax"> = </span><span class="constant-syntax">CATALOGUE_ACTION</span><span class="plain-syntax">; </span><span class="identifier-syntax">arity</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; }</span>
@@ -152,7 +153,7 @@ section, "actions":
 <span class="plain-syntax">        </span><a href="../foundation/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">action_details</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::prefix_eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"-show-"</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">action</span><span class="plain-syntax"> = </span><span class="constant-syntax">SHOW_ACTION</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><a href="../foundation/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">action_details</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">), </span><a href="../foundation/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><a href="../foundation/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">action_details</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">), </span><a href="../foundation/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"-bbdiff"</span><span class="plain-syntax">)) { </span><span class="identifier-syntax">action</span><span class="plain-syntax"> = </span><span class="constant-syntax">BBDIFF_ACTION</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"-diff"</span><span class="plain-syntax">)) { </span><span class="identifier-syntax">action</span><span class="plain-syntax"> = </span><span class="constant-syntax">DIFF_ACTION</span><span class="plain-syntax">; }</span>
@@ -166,18 +167,15 @@ section, "actions":
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="identifier-syntax">opt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"-test"</span><span class="plain-syntax">; </span><span class="identifier-syntax">action</span><span class="plain-syntax"> = </span><span class="constant-syntax">TEST_ACTION</span><span class="plain-syntax">; </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">; }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_2">&#167;1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_2" class="paragraph-anchor"></a><b>&#167;1.2.2. </b>After the command, operands: e.g., in the token list <span class="extract"><span class="extract-syntax">-bless A B -catalogue</span></span>,
-the command <span class="extract"><span class="extract-syntax">-bless</span></span> has two operands <span class="extract"><span class="extract-syntax">A</span></span> and <span class="extract"><span class="extract-syntax">B</span></span>. We know that <span class="extract"><span class="extract-syntax">-catalogue</span></span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1_2_2" class="paragraph-anchor"></a><b>&#167;1.2.2. </b>  After the command, operands: e.g., in the token list <code>-bless A B -catalogue</code>,
+the command <code>-bless</code> has two operands <code>A</code> and <code>B</code>. We know that <code>-catalogue</code>
 is not an operand because it starts with a dash but is not a negative number.
-(Thus, <span class="extract"><span class="extract-syntax">-12</span></span> would be allowed as an operand, but <span class="extract"><span class="extract-syntax">-minustwelve</span></span> would not.)
-</p>
-
-<p class="commentary">At this point <span class="extract"><span class="extract-syntax">pos</span></span> is the index of the first operand. We must find the range
-<span class="extract"><span class="extract-syntax">ops_from</span></span> to <span class="extract"><span class="extract-syntax">ops_to</span></span>.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Scan for the operands</span><span class="named-paragraph-number">1.2.2</span></span><span class="comment-syntax"> =</span>
-</p>
+(Thus, <code>-12</code> would be allowed as an operand, but <code>-minustwelve</code> would not.)</p>
+<p>At this point <code>pos</code> is the index of the first operand. We must find the range
+<code>ops_from</code> to <code>ops_to</code>.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Scan for the operands</span><span class="named-paragraph-number">1.2.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">ops_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pos</span><span class="plain-syntax">;</span>
@@ -205,11 +203,10 @@ is not an operand because it starts with a dash but is not a negative number.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_2">&#167;1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_3" class="paragraph-anchor"></a><b>&#167;1.2.3. </b>After the operands, there can optionally be <span class="extract"><span class="extract-syntax">-to F</span></span>, where <span class="extract"><span class="extract-syntax">F</span></span> is a filename.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse an optional redirection filename</span><span class="named-paragraph-number">1.2.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1_2_3" class="paragraph-anchor"></a><b>&#167;1.2.3. </b>  After the operands, there can optionally be <code>-to F</code>, where <code>F</code> is a filename.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse an optional redirection filename</span><span class="named-paragraph-number">1.2.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pos</span><span class="plain-syntax">+1 &lt; </span><span class="identifier-syntax">to_arg_n</span><span class="plain-syntax">) &amp;&amp; (</span><a href="../foundation/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">pos</span><span class="plain-syntax">], </span><span class="identifier-syntax">I</span><span class="string-syntax">"-to"</span><span class="plain-syntax">))) {</span>
@@ -218,26 +215,24 @@ is not an operand because it starts with a dash but is not a negative number.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_2">&#167;1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Translate the command into action item structures</span><span class="named-paragraph-number">1.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Translate the command into action item structures</span><span class="named-paragraph-number">1.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">assoc_file2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">action</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">REPORT_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_1" class="named-paragraph-link"><span class="named-paragraph">Create action item for REPORT</span><span class="named-paragraph-number">1.3.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMBINE_REPORTS_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_2" class="named-paragraph-link"><span class="named-paragraph">Create action item for COMBINE REPORTS</span><span class="named-paragraph-number">1.3.2</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">FIND_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_3" class="named-paragraph-link"><span class="named-paragraph">Create action item for FIND</span><span class="named-paragraph-number">1.3.3</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SKEIN_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_4" class="named-paragraph-link"><span class="named-paragraph">Create action item for SKEIN</span><span class="named-paragraph-number">1.3.4</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SHOW_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_5" class="named-paragraph-link"><span class="named-paragraph">Create action item for SHOW</span><span class="named-paragraph-number">1.3.5</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">default:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_6" class="named-paragraph-link"><span class="named-paragraph">Create more typical action items</span><span class="named-paragraph-number">1.3.6</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">REPORT_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create action item for REPORT</span></span><span class="named-paragraph-number">1.3.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMBINE_REPORTS_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create action item for COMBINE REPORTS</span></span><span class="named-paragraph-number">1.3.2</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">FIND_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create action item for FIND</span></span><span class="named-paragraph-number">1.3.3</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SKEIN_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create action item for SKEIN</span></span><span class="named-paragraph-number">1.3.4</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SHOW_ACTION:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create action item for SHOW</span></span><span class="named-paragraph-number">1.3.5</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">default:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_3_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create more typical action items</span></span><span class="named-paragraph-number">1.3.6</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_1" class="paragraph-anchor"></a><b>&#167;1.3.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for REPORT</span><span class="named-paragraph-number">1.3.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_3_1" class="paragraph-anchor"></a><b>&#167;1.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for REPORT</span><span class="named-paragraph-number">1.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">+1], </span><span class="identifier-syntax">I</span><span class="string-syntax">"i7"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">I7_FAILED_OUTCOME</span><span class="plain-syntax">;</span>
@@ -250,15 +245,14 @@ is not an operand because it starts with a dash but is not a negative number.
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">+2]);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">+3];</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">) == </span><span class="character-syntax">'n'</span><span class="plain-syntax">) </span><a href="../foundation/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">) == </span><span class="character-syntax">'n'</span><span class="plain-syntax">) </span><a href="../foundation/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">+4];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">) == </span><span class="character-syntax">'t'</span><span class="plain-syntax">) </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP7" class="function-link"><span class="function-syntax">Str::atoi</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-act.html#SP3" class="function-link"><span class="function-syntax">Actions::create</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">action</span><span class="plain-syntax">, </span><span class="identifier-syntax">redirect_output</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">], </span><span class="identifier-syntax">args</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_3">&#167;1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_2" class="paragraph-anchor"></a><b>&#167;1.3.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for COMBINE REPORTS</span><span class="named-paragraph-number">1.3.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_3_2" class="paragraph-anchor"></a><b>&#167;1.3.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for COMBINE REPORTS</span><span class="named-paragraph-number">1.3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">]);</span>
@@ -271,8 +265,7 @@ is not an operand because it starts with a dash but is not a negative number.
 <span class="plain-syntax">        </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_3">&#167;1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_3" class="paragraph-anchor"></a><b>&#167;1.3.3. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for FIND</span><span class="named-paragraph-number">1.3.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_3_3" class="paragraph-anchor"></a><b>&#167;1.3.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for FIND</span><span class="named-paragraph-number">1.3.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">];</span>
@@ -280,8 +273,7 @@ is not an operand because it starts with a dash but is not a negative number.
 <span class="plain-syntax">        </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_3">&#167;1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_4" class="paragraph-anchor"></a><b>&#167;1.3.4. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for SKEIN</span><span class="named-paragraph-number">1.3.4</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_3_4" class="paragraph-anchor"></a><b>&#167;1.3.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for SKEIN</span><span class="named-paragraph-number">1.3.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">]);</span>
@@ -290,8 +282,7 @@ is not an operand because it starts with a dash but is not a negative number.
 <span class="plain-syntax">        </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_3">&#167;1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_5" class="paragraph-anchor"></a><b>&#167;1.3.5. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for SHOW</span><span class="named-paragraph-number">1.3.5</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_3_5" class="paragraph-anchor"></a><b>&#167;1.3.5. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create action item for SHOW</span><span class="named-paragraph-number">1.3.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">]);</span>
@@ -302,8 +293,7 @@ is not an operand because it starts with a dash but is not a negative number.
 <span class="plain-syntax">                </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_3">&#167;1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_6" class="paragraph-anchor"></a><b>&#167;1.3.6. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create more typical action items</span><span class="named-paragraph-number">1.3.6</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP1_3_6" class="paragraph-anchor"></a><b>&#167;1.3.6. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create more typical action items</span><span class="named-paragraph-number">1.3.6</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ops_to</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">ops_from</span><span class="plain-syntax">)</span>
@@ -315,14 +305,14 @@ is not an operand because it starts with a dash but is not a negative number.
 <span class="plain-syntax">            </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_file2</span><span class="plain-syntax">, </span><span class="identifier-syntax">assoc_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP1_3">&#167;1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>So, then, a command such as <span class="extract"><span class="extract-syntax">-test alpha beta gamma</span></span> will cause three
-instances of the "action item" structure to be created, of type <span class="extract"><span class="extract-syntax">TEST_ACTION</span></span>
-on <span class="extract"><span class="extract-syntax">alpha</span></span>, <span class="extract"><span class="extract-syntax">beta</span></span> and <span class="extract"><span class="extract-syntax">gamma</span></span> respectively.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  So, then, a command such as <code>-test alpha beta gamma</code> will cause three
+instances of the &quot;action item&quot; structure to be created, of type <code>TEST_ACTION</code>
+on <code>alpha</code>, <code>beta</code> and <code>gamma</code> respectively.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">action_item</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_type</span><span class="plain-syntax">; </span><span class="comment-syntax"> one of the </span><span class="extract"><span class="extract-syntax">_ACTION</span></span><span class="comment-syntax"> cases above</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( one of the |_ACTION| cases above )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">test_form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">case_specifier</span><span class="plain-syntax"> </span><span class="identifier-syntax">operand</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirection_filename</span><span class="plain-syntax">;</span>
@@ -335,10 +325,10 @@ on <span class="extract"><span class="extract-syntax">alpha</span></span>, <span
 <span class="plain-syntax">} </span><span class="reserved-syntax">action_item</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure action_item is accessed in 3/ts, 3/tr and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>As each action item is created, it is added to the "to-do list" for this
-run of Intest. (There is just one global to-do list.)
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  As each action item is created, it is added to the &quot;to-do list&quot; for this
+run of Intest. (There is just one global to-do list.)</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Actions::create</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Actions::create</span></span>:<br/><a href="2-act.html#SP1_3_1">&#167;1.3.1</a>, <a href="2-act.html#SP1_3_2">&#167;1.3.2</a>, <a href="2-act.html#SP1_3_3">&#167;1.3.3</a>, <a href="2-act.html#SP1_3_4">&#167;1.3.4</a>, <a href="2-act.html#SP1_3_5">&#167;1.3.5</a>, <a href="2-act.html#SP1_3_6">&#167;1.3.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirect_output</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">op</span><span class="plain-syntax">, </span><span class="reserved-syntax">intest_instructions</span><span class="plain-syntax"> *</span><span class="identifier-syntax">args</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">assoc_number</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">assoc_number2</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">assoc_file1</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">assoc_file2</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
@@ -355,19 +345,19 @@ run of Intest. (There is just one global to-do list.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="reserved-syntax">action_item</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">to_do_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>A "case specifier" says what case(s) an action should apply to, and this
-can involve a wildcard such as <span class="extract"><span class="extract-syntax">all</span></span>:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  A &quot;case specifier&quot; says what case(s) an action should apply to, and this
+can involve a wildcard such as <code>all</code>:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">case_specifier</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">specific_case</span><span class="plain-syntax">; </span><span class="comment-syntax"> a specific test to apply to...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wild_card</span><span class="plain-syntax">; </span><span class="comment-syntax"> ...or a wildcard</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">specific_case</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( a specific test to apply to... )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wild_card</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( ...or a wildcard )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">regexp_wild_card</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">case_specifier</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure case_specifier is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">case_specifier</span><span class="plain-syntax"> </span><span class="function-syntax">Actions::parse_specifier</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Actions::parse_specifier</span></span>:<br/><a href="2-act.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">token</span><span class="plain-syntax">, </span><span class="reserved-syntax">intest_instructions</span><span class="plain-syntax"> *</span><span class="identifier-syntax">args</span><span class="plain-syntax">) {</span>
@@ -387,10 +377,10 @@ can involve a wildcard such as <span class="extract"><span class="extract-syntax
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Wildcards.</b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Wildcards.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">COUNT_WILDCARD_BASE</span><span class="plain-syntax"> </span><span class="constant-syntax">1001</span><span class="plain-syntax"> </span><span class="comment-syntax"> 1001 is </span><span class="extract"><span class="extract-syntax">^1</span></span><span class="comment-syntax">, 1002 is </span><span class="extract"><span class="extract-syntax">^2</span></span><span class="comment-syntax">, ...</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">EXTENSION_WILDCARD_BASE</span><span class="plain-syntax"> </span><span class="constant-syntax">101</span><span class="plain-syntax"> </span><span class="comment-syntax"> 101 is </span><span class="extract"><span class="extract-syntax">A</span></span><span class="comment-syntax">, 102 is </span><span class="extract"><span class="extract-syntax">B</span></span><span class="comment-syntax">, ...</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">COUNT_WILDCARD_BASE</span><span class="plain-syntax"> </span><span class="constant-syntax">1001</span><span class="comment-syntax"> 1001 is </span><span class="extract"><span class="extract-syntax">^1</span></span><span class="comment-syntax">, 1002 is </span><span class="extract"><span class="extract-syntax">^2</span></span><span class="comment-syntax">, ...</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">EXTENSION_WILDCARD_BASE</span><span class="plain-syntax"> </span><span class="constant-syntax">101</span><span class="comment-syntax"> 101 is </span><span class="extract"><span class="extract-syntax">A</span></span><span class="comment-syntax">, 102 is </span><span class="extract"><span class="extract-syntax">B</span></span><span class="comment-syntax">, ...</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">GROUP_WILDCARD</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">REGEXP_WILDCARD</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">TAMECARD</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
@@ -448,10 +438,10 @@ can involve a wildcard such as <span class="extract"><span class="extract-syntax
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="string-syntax">"?"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Performance.</b>At this point, parsing is long over. We have to perform the actions in the
-to-do list:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Performance.</b>  At this point, parsing is long over. We have to perform the actions in the
+to-do list:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Actions::perform</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Actions::perform</span></span>:<br/>Main - <a href="1-mn.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">intest_instructions</span><span class="plain-syntax"> *</span><span class="identifier-syntax">args</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-th.html#SP4" class="function-link"><span class="function-syntax">Hasher::read_hashes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">args</span><span class="plain-syntax">);</span>
@@ -461,7 +451,7 @@ to-do list:
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">report_on</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">test_case</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">action_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ai</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="reserved-syntax">action_item</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">to_do_list</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph">Perform this action item</span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform this action item</span></span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><a href="3-ts.html#SP9" class="function-link"><span class="function-syntax">Scheduler::test</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-th.html#SP5" class="function-link"><span class="function-syntax">Hasher::write_hashes</span></a><span class="plain-syntax">();</span>
@@ -469,12 +459,11 @@ to-do list:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">results_stream</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">action_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ai</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="reserved-syntax">action_item</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">to_do_list</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_2" class="named-paragraph-link"><span class="named-paragraph">Report back on this action item</span><span class="named-paragraph-number">7.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Report back on this action item</span></span><span class="named-paragraph-number">7.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1_1" class="paragraph-anchor"></a><b>&#167;7.1.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Close friends get to call him tc</span><span class="named-paragraph-number">7.1.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1_1" class="paragraph-anchor"></a><b>&#167;7.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Close friends get to call him tc</span><span class="named-paragraph-number">7.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">results_stream</span><span class="plain-syntax">) {</span>
@@ -483,24 +472,22 @@ to-do list:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP7_1">&#167;7.1</a>, <a href="2-act.html#SP7_1_2">&#167;7.1.2</a>, <a href="2-act.html#SP7_1_3">&#167;7.1.3</a>, <a href="2-act.html#SP7_1_4">&#167;7.1.4</a>, <a href="2-act.html#SP7_1_5">&#167;7.1.5</a> and <a href="2-act.html#SP7_1_6">&#167;7.1.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this action item</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this action item</span><span class="named-paragraph-number">7.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">COUNT_WILDCARD_BASE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_2" class="named-paragraph-link"><span class="named-paragraph">Perform this counted case</span><span class="named-paragraph-number">7.1.2</span></a></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">EXTENSION_WILDCARD_BASE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_3" class="named-paragraph-link"><span class="named-paragraph">Perform this lettered case</span><span class="named-paragraph-number">7.1.3</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">COUNT_WILDCARD_BASE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform this counted case</span></span><span class="named-paragraph-number">7.1.2</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">EXTENSION_WILDCARD_BASE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform this lettered case</span></span><span class="named-paragraph-number">7.1.3</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> == </span><span class="constant-syntax">TAMECARD</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">specific_case</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph">Close friends get to call him tc</span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Close friends get to call him tc</span></span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><a href="2-act.html#SP9" class="function-link"><span class="function-syntax">Actions::perform_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">, </span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="identifier-syntax">count</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> == </span><span class="constant-syntax">REGEXP_WILDCARD</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_4" class="named-paragraph-link"><span class="named-paragraph">Perform this regular expressed case</span><span class="named-paragraph-number">7.1.4</span></a></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> == </span><span class="constant-syntax">GROUP_WILDCARD</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_5" class="named-paragraph-link"><span class="named-paragraph">Perform this grouped case</span><span class="named-paragraph-number">7.1.5</span></a></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_6" class="named-paragraph-link"><span class="named-paragraph">Perform this matched case</span><span class="named-paragraph-number">7.1.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> == </span><span class="constant-syntax">REGEXP_WILDCARD</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform this regular expressed case</span></span><span class="named-paragraph-number">7.1.4</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> == </span><span class="constant-syntax">GROUP_WILDCARD</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform this grouped case</span></span><span class="named-paragraph-number">7.1.5</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Perform this matched case</span></span><span class="named-paragraph-number">7.1.6</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report back on this action item</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report back on this action item</span><span class="named-paragraph-number">7.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">results_stream</span><span class="plain-syntax">;</span>
@@ -533,8 +520,7 @@ to-do list:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_2" class="paragraph-anchor"></a><b>&#167;7.1.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this counted case</span><span class="named-paragraph-number">7.1.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1_2" class="paragraph-anchor"></a><b>&#167;7.1.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this counted case</span><span class="named-paragraph-number">7.1.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">find_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -543,7 +529,7 @@ to-do list:
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">spi</span><span class="plain-syntax">, </span><span class="reserved-syntax">test_source</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">search_path</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="reserved-syntax">test_case</span><span class="plain-syntax">, </span><span class="identifier-syntax">spi</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">contents</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">find_count</span><span class="plain-syntax">++ == </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> - </span><span class="constant-syntax">COUNT_WILDCARD_BASE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph">Close friends get to call him tc</span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Close friends get to call him tc</span></span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><a href="2-act.html#SP9" class="function-link"><span class="function-syntax">Actions::perform_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">, </span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="identifier-syntax">count</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">ExitCountSearch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
@@ -557,8 +543,7 @@ to-do list:
 <span class="plain-syntax">    </span><span class="identifier-syntax">ExitCountSearch:</span><span class="plain-syntax"> ;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP7_1">&#167;7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_3" class="paragraph-anchor"></a><b>&#167;7.1.3. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this lettered case</span><span class="named-paragraph-number">7.1.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1_3" class="paragraph-anchor"></a><b>&#167;7.1.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this lettered case</span><span class="named-paragraph-number">7.1.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">test_source</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spi</span><span class="plain-syntax">;</span>
@@ -568,7 +553,7 @@ to-do list:
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">tc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">format_reference</span><span class="plain-syntax"> == </span><span class="constant-syntax">EXTENSION_FORMAT</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">tc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">letter_reference</span><span class="plain-syntax"> ==</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">wild_card</span><span class="plain-syntax"> - </span><span class="constant-syntax">EXTENSION_WILDCARD_BASE</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph">Close friends get to call him tc</span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Close friends get to call him tc</span></span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><a href="2-act.html#SP9" class="function-link"><span class="function-syntax">Actions::perform_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">, </span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="identifier-syntax">count</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">ExitLetterSearch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
@@ -576,8 +561,7 @@ to-do list:
 <span class="plain-syntax">    </span><span class="identifier-syntax">ExitLetterSearch:</span><span class="plain-syntax"> ;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP7_1">&#167;7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_4" class="paragraph-anchor"></a><b>&#167;7.1.4. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this regular expressed case</span><span class="named-paragraph-number">7.1.4</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1_4" class="paragraph-anchor"></a><b>&#167;7.1.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this regular expressed case</span><span class="named-paragraph-number">7.1.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matches</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">test_case</span><span class="plain-syntax">);</span>
@@ -585,21 +569,20 @@ to-do list:
 <span class="plain-syntax">        </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">regexp_wild_card</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="reserved-syntax">test_case</span><span class="plain-syntax">, </span><span class="identifier-syntax">matches</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph">Close friends get to call him tc</span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Close friends get to call him tc</span></span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><a href="2-act.html#SP9" class="function-link"><span class="function-syntax">Actions::perform_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">, </span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="identifier-syntax">count</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP7_1">&#167;7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_5" class="paragraph-anchor"></a><b>&#167;7.1.5. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this grouped case</span><span class="named-paragraph-number">7.1.5</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1_5" class="paragraph-anchor"></a><b>&#167;7.1.5. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this grouped case</span><span class="named-paragraph-number">7.1.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scheduled</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="string-syntax">"%S.testgroup"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax">.</span><span class="element-syntax">regexp_wild_card</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../foundation/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_first_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) == </span><span class="character-syntax">':'</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><a href="../foundation/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="../foundation/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">scheduled</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">groups_folder</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
@@ -626,15 +609,14 @@ to-do list:
 <span class="plain-syntax">        </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">test_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax"> != </span><span class="constant-syntax">LIST_ACTION</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">scheduled</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax"> += </span><span class="constant-syntax">SCHEDULED_TEST_ACTION</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph">Close friends get to call him tc</span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Close friends get to call him tc</span></span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><a href="2-act.html#SP9" class="function-link"><span class="function-syntax">Actions::perform_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">, </span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="identifier-syntax">count</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax"> != </span><span class="constant-syntax">LIST_ACTION</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">scheduled</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax"> -= </span><span class="constant-syntax">SCHEDULED_TEST_ACTION</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP7_1">&#167;7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_6" class="paragraph-anchor"></a><b>&#167;7.1.6. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this matched case</span><span class="named-paragraph-number">7.1.6</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1_6" class="paragraph-anchor"></a><b>&#167;7.1.6. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform this matched case</span><span class="named-paragraph-number">7.1.6</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">test_source</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spi</span><span class="plain-syntax">;</span>
@@ -645,27 +627,27 @@ to-do list:
 <span class="plain-syntax">                </span><span class="identifier-syntax">args</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">singular_case_names</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">test_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax"> += </span><span class="constant-syntax">SCHEDULED_TEST_ACTION</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph">Close friends get to call him tc</span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP7_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Close friends get to call him tc</span></span><span class="named-paragraph-number">7.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><a href="2-act.html#SP9" class="function-link"><span class="function-syntax">Actions::perform_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">, </span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="identifier-syntax">count</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax"> -= </span><span class="constant-syntax">SCHEDULED_TEST_ACTION</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP7_1">&#167;7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Actions::read_group</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Actions::read_group</span></span>:<br/><a href="2-act.html#SP7_1_5">&#167;7.1.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vm</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matches</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vm</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="../foundation/4-sm.html#SP24" class="function-link"><span class="function-syntax">Str::trim_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::trim_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_first_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'#'</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'!'</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><a href="../foundation/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">), </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">matches</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>And now we can forget everything about wild cards: we know for definite
-which test case to work on.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  And now we can forget everything about wild cards: we know for definite
+which test case to work on.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Actions::perform_inner</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Actions::perform_inner</span></span>:<br/><a href="2-act.html#SP7_1">&#167;7.1</a>, <a href="2-act.html#SP7_1_2">&#167;7.1.2</a>, <a href="2-act.html#SP7_1_3">&#167;7.1.3</a>, <a href="2-act.html#SP7_1_4">&#167;7.1.4</a>, <a href="2-act.html#SP7_1_5">&#167;7.1.5</a>, <a href="2-act.html#SP7_1_6">&#167;7.1.6</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">intest_instructions</span><span class="plain-syntax"> *</span><span class="identifier-syntax">args</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">action_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ai</span><span class="plain-syntax">, </span><span class="reserved-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">itc</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">) {</span>
@@ -674,22 +656,21 @@ which test case to work on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">file_opened</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">SCHEDULED_TEST_ACTION</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">redirection_filename</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">redirection_filename</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">itc</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Expand NAME and NUMBER in the redirection filename</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">itc</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Expand NAME and NUMBER in the redirection filename</span></span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TO</span><span class="plain-syntax"> = &amp;</span><span class="identifier-syntax">TO_struct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">TO</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">UTF8_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><a href="../foundation/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"unable to write file"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">file_opened</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Finally do something, or at leask ask somebody else to</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Finally do something, or at leask ask somebody else to</span></span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">file_opened</span><span class="plain-syntax">) </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">TO</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1. </b>If the leafname of the redirection file is <span class="extract"><span class="extract-syntax">something_[NUMBER]</span></span> then we
-substitute in the case number for <span class="extract"><span class="extract-syntax">[NUMBER]</span></span>, and similarly for <span class="extract"><span class="extract-syntax">[NAME]</span></span>.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand NAME and NUMBER in the redirection filename</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1. </b>  If the leafname of the redirection file is <code>something_[NUMBER]</code> then we
+substitute in the case number for <code>[NUMBER]</code>, and similarly for <code>[NAME]</code>.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand NAME and NUMBER in the redirection filename</span><span class="named-paragraph-number">9.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leaf</span><span class="plain-syntax">)</span>
@@ -708,8 +689,7 @@ substitute in the case number for <span class="extract"><span class="extract-syn
 <span class="plain-syntax">    </span><a href="../foundation/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-act.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Finally do something, or at leask ask somebody else to</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Finally do something, or at leask ask somebody else to</span><span class="named-paragraph-number">9.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ai</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">action_type</span><span class="plain-syntax">) {</span>

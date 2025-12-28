@@ -3,6 +3,7 @@ Colony {
 
 	member: "overview" to "index.html" breadcrumbs ""
 	member: "intest" at "" to "intest"
+	member: "inprint" at "inprint" to "inprint"
 	member: "arch" at "arch-module" to "arch-module"
 	external: "inweb" at "../inweb"
 	external: "foundation" at "../inweb/foundation-module"
@@ -27,8 +28,9 @@ Colony {
 	}
 
 	Navigation {
-		[[Home "<Intest.png@72>" -> overview]]
+		[[Home "<Intest.png@72>" -> //overview//]]
 		[[Item "intest"]]
+		[[Item "inprint"]]
 		[[Item "arch"]]
 		[[Menu "Repository"]]
 		[[Item "<github.png> github" -> https://github.com/ganelson/intest]]

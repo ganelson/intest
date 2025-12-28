@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -27,6 +32,7 @@ function togglePopup(material_id) {
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Intest.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">intest</span></a></li>
+<li><a href="../inprint/index.html">inprint</a></li>
 <li><a href="../arch-module/index.html">arch</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> github</a></li>
@@ -43,40 +49,36 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-td.html#SP3">&#167;3. Edit lists</a></li><li><a href="3-td.html#SP6">&#167;6. The diff algorithm</a></li><li><a href="3-td.html#SP10">&#167;10. Printing results</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>Our task is to take two strings, "ideal" and "actual", and return a
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Our task is to take two strings, &quot;ideal&quot; and &quot;actual&quot;, and return a
 fairly minimal, fairly legible sequence of edits which would turn ideal
 into actual. We won't use Myers's algorithm because it's overkill for the
 text sizes we have here, and because we want to pay more attention to
 word boundaries so as to produce human-readable results; the running
 time below is worst-case quadratic in the number of words scanned, but
-plenty fast enough for IF transcript use in practice.
-</p>
-
-<p class="commentary">We represent the series of edits as a linked list of <span class="extract"><span class="extract-syntax">edit</span></span> structures,
+plenty fast enough for IF transcript use in practice.</p>
+<p>We represent the series of edits as a linked list of <code>edit</code> structures,
 and although these are not uniquely defined (the same comparison can
 be represented in more than one way as a linked list of edits), we
 do guarantee that the returned list will be empty if and only if the
 ideal string has safely matched the actual one. As we'll see, this
 is not quite as simple as saying that they hold the same text, because
-some minor discrepancies are allowed.
-</p>
-
-<p class="commentary">Our main routine, then, will return (a pointer to) the following structure.
-</p>
-
+some minor discrepancies are allowed.</p>
+<p>Our main routine, then, will return (a pointer to) the following structure.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">diff_results</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ideal</span><span class="plain-syntax">; </span><span class="comment-syntax"> record a copy of the question as well as the answer</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ideal</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( record a copy of the question as well as the answer )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">actual</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">edits</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">edit</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">edits</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( of |edit| )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">diff_results</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure diff_results is accessed in 3/skn and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>Each edit consists of a nonempty chunk of text to be deleted, preserved
-or inserted:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Each edit consists of a nonempty chunk of text to be deleted, preserved
+or inserted:</p>
+</div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">DELETE_EDIT</span><span class="plain-syntax"> -1</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PRESERVE_EDIT</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">INSERT_EDIT</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
@@ -84,30 +86,30 @@ or inserted:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">edit</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fragment</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form_of_edit</span><span class="plain-syntax">; </span><span class="comment-syntax"> one of the </span><span class="extract"><span class="extract-syntax">*_EDIT</span></span><span class="comment-syntax"> values</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form_of_edit</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( one of the |*_EDIT| values )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">edit</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure edit is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Edit lists.</b>We start with some boring routines to handle linked lists of edits in general.
-First, creating a single new edit:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Edit lists.</b>  We start with some boring routines to handle linked lists of edits in general.
+First, creating a single new edit:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">edit</span><span class="plain-syntax"> *</span><span class="function-syntax">Differ::new_edit</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Differ::new_edit</span></span>:<br/><a href="3-td.html#SP7_1">&#167;7.1</a>, <a href="3-td.html#SP8_1">&#167;8.1</a>, <a href="3-td.html#SP8_2">&#167;8.2</a>, <a href="3-td.html#SP8_3">&#167;8.3</a>, <a href="3-td.html#SP8_4">&#167;8.4</a>, <a href="3-td.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">edit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">edit</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">fragment</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../foundation/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">fragment</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">fragment</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">form_of_edit</span><span class="plain-syntax"> = </span><span class="identifier-syntax">form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>Since we're not going to do any patching, the only thing we do with edit
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Since we're not going to do any patching, the only thing we do with edit
 lists is to print them out. The octal character values here represent ASCII
 escape (27) followed by standard terminal emulation codes on Unix shells for
-coloured text: deletions are in red, insertions in green.
-</p>
-
+coloured text: deletions are in red, insertions in green.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">results_colouring</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Differ::set_colour_usage</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Differ::set_colour_usage</span></span>:<br/>Main - <a href="1-mn.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
@@ -141,10 +143,10 @@ coloured text: deletions are in red, insertions in green.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>Now for basically the same thing in HTML, using CSS spans instead of terminal
-colours:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Now for basically the same thing in HTML, using CSS spans instead of terminal
+colours:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Differ::print_edit_list_as_HTML</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Differ::print_edit_list_as_HTML</span></span>:<br/><a href="3-td.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">original</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;html&gt;\n&lt;body&gt;\n&lt;p class=\"node\"&gt;\n"</span><span class="plain-syntax">);</span>
@@ -184,14 +186,12 @@ colours:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. The diff algorithm.</b>We do this in the simplest way possible. This outer routine, which is not
-recursively called, sets up the returned structure and sends it back.
-</p>
-
-<p class="commentary">Note that a sequence of edits with no insertions or deletions means the
-match was in fact perfect, and is converted to the null edit list.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. The diff algorithm.</b>  We do this in the simplest way possible. This outer routine, which is not
+recursively called, sets up the returned structure and sends it back.</p>
+<p>Note that a sequence of edits with no insertions or deletions means the
+match was in fact perfect, and is converted to the null edit list.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">diff_results</span><span class="plain-syntax"> *</span><span class="function-syntax">Differ::diff</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Differ::diff</span></span>:<br/>Skeins - <a href="3-skn.html#SP11_1_1">&#167;11.1.1</a>, <a href="3-skn.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ideal</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">actual</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">) {</span>
@@ -210,10 +210,10 @@ match was in fact perfect, and is converted to the null edit list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">DR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>The first level down simply starts the recursion, though it checks for
-version lines first.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  The first level down simply starts the recursion, though it checks for
+version lines first.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="function-syntax">Differ::diff_outer</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Differ::diff_outer</span></span>:<br/><a href="3-td.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">) {</span>
@@ -223,32 +223,29 @@ version lines first.
 <span class="plain-syntax">    </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">B_from</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::start</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">B_to</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph">If both texts contain the Inform banner version line, diff around that</span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">If both texts contain the Inform banner version line, diff around that</span></span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><a href="3-td.html#SP8" class="function-link"><span class="function-syntax">Differ::diff_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">edits</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_to</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_to</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">edits</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b>Any correctly formed I7 banner matches any other; this ensures that
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b>  Any correctly formed I7 banner matches any other; this ensures that
 transcripts of the same interaction, taken from builds on different days or
-with different compiler versions, continue to match.
-</p>
-
-<p class="commentary">If text A (as we call the ideal version) and text B (the actual) both contain
+with different compiler versions, continue to match.</p>
+<p>If text A (as we call the ideal version) and text B (the actual) both contain
 I7 banners, we split them into before, then the banner, then after. The result
 then consists of a diff of the before-texts, followed by preserving the actual
-banner, followed by a diff of the after-texts.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If both texts contain the Inform banner version line, diff around that</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
-</p>
+banner, followed by a diff of the after-texts.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If both texts contain the Inform banner version line, diff around that</span><span class="named-paragraph-number">7.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">template</span><span class="plain-syntax"> = </span><span class="identifier-syntax">U</span><span class="string-syntax">"(%c*?)(Release %d+ / Serial number %d+ / Inform %c+?\n)%c*"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">template</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">A_ver</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::plus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0])); </span><span class="comment-syntax"> at the R in "Release"</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">A_post</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::plus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_ver</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1])); </span><span class="comment-syntax"> after version line ends</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">A_ver</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::plus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0])); </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( at the R in "Release" )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">A_post</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::plus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_ver</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1])); </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( after version line ends )</span><span class="comment-syntax">*/</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">template</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">B_ver</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::plus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B_from</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]));</span>
@@ -266,9 +263,9 @@ banner, followed by a diff of the after-texts.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>The second level is at last recursive.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The second level is at last recursive.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Differ::diff_inner</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Differ::diff_inner</span></span>:<br/><a href="3-td.html#SP7">&#167;7</a>, <a href="3-td.html#SP7_1">&#167;7.1</a>, <a href="3-td.html#SP8_2">&#167;8.2</a>, <a href="3-td.html#SP8_3">&#167;8.3</a>, <a href="3-td.html#SP8_4">&#167;8.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">edits</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">A_to</span><span class="plain-syntax">,</span>
@@ -280,19 +277,18 @@ banner, followed by a diff of the after-texts.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A_len</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"A text negative"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B_len</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"B text negative"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">DIFFER</span><span class="plain-syntax">, </span><span class="string-syntax">"Differ (recursion):\nA (%d chars) = "</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_len</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DIFFER_DA</span><span class="plain-syntax">)) </span><a href="../foundation/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_to</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DIFFER_DA</span><span class="plain-syntax">)) </span><a href="../foundation/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">DIFFER</span><span class="plain-syntax">, </span><span class="string-syntax">"\nB (%d chars) = "</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_len</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DIFFER_DA</span><span class="plain-syntax">)) </span><a href="../foundation/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_to</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DIFFER_DA</span><span class="plain-syntax">)) </span><a href="../foundation/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">DIFFER</span><span class="plain-syntax">, </span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">If A is empty B must be inserted, if B is empty A must be deleted</span><span class="named-paragraph-number">8.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph">Any common prefix can be preserved</span><span class="named-paragraph-number">8.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_3" class="named-paragraph-link"><span class="named-paragraph">Any common suffix can be preserved</span><span class="named-paragraph-number">8.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_4" class="named-paragraph-link"><span class="named-paragraph">Splice around the longest common substring</span><span class="named-paragraph-number">8.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_5" class="named-paragraph-link"><span class="named-paragraph">If all else fails we can always just delete A and insert B</span><span class="named-paragraph-number">8.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">If A is empty B must be inserted, if B is empty A must be deleted</span></span><span class="named-paragraph-number">8.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Any common prefix can be preserved</span></span><span class="named-paragraph-number">8.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Any common suffix can be preserved</span></span><span class="named-paragraph-number">8.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Splice around the longest common substring</span></span><span class="named-paragraph-number">8.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">If all else fails we can always just delete A and insert B</span></span><span class="named-paragraph-number">8.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If A is empty B must be inserted, if B is empty A must be deleted</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If A is empty B must be inserted, if B is empty A must be deleted</span><span class="named-paragraph-number">8.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A_len</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -307,22 +303,21 @@ banner, followed by a diff of the after-texts.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2. </b>We look for the longest common prefix consisting of a sequence of entire
-words, or at any rate, ending at a word boundary (in both texts).
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Any common prefix can be preserved</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2. </b>  We look for the longest common prefix consisting of a sequence of entire
+words, or at any rate, ending at a word boundary (in both texts).</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Any common prefix can be preserved</span><span class="named-paragraph-number">8.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax"> = </span><span class="identifier-syntax">A_from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">B_after_prefix</span><span class="plain-syntax"> = </span><span class="identifier-syntax">B_from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_2_2" class="named-paragraph-link"><span class="named-paragraph">Advance through platform-variant common prefix</span><span class="named-paragraph-number">8.2.2</span></a></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_2_1" class="named-paragraph-link"><span class="named-paragraph">Advance through identical common prefix</span><span class="named-paragraph-number">8.2.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Advance through platform-variant common prefix</span></span><span class="named-paragraph-number">8.2.2</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Advance through identical common prefix</span></span><span class="named-paragraph-number">8.2.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">DIFFER</span><span class="plain-syntax">, </span><span class="string-syntax">"Common prefix size %d\n"</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::width_between</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">));</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> roll backwards until we're at a word boundary between the prefix and the rest</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( roll backwards until we're at a word boundary between the prefix and the rest )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::width_between</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (!</span><a href="3-td.html#SP9" class="function-link"><span class="function-syntax">Differ::boundary</span></a><span class="plain-syntax">(</span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::back</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">)), </span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">)))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::back</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">);</span>
@@ -330,7 +325,7 @@ words, or at any rate, ending at a word boundary (in both texts).
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">DIFFER</span><span class="plain-syntax">, </span><span class="string-syntax">"After rollback, prefix size %d\n"</span><span class="plain-syntax">, </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::width_between</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">));</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> if there's anything left, mark it as common text and recurse to move past it</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( if there's anything left, mark it as common text and recurse to move past it )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::width_between</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">edit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><a href="3-td.html#SP3" class="function-link"><span class="function-syntax">Differ::new_edit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">, </span><span class="constant-syntax">PRESERVE_EDIT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="reserved-syntax">edit</span><span class="plain-syntax">, </span><span class="identifier-syntax">edits</span><span class="plain-syntax">);</span>
@@ -340,8 +335,7 @@ words, or at any rate, ending at a word boundary (in both texts).
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2_1" class="paragraph-anchor"></a><b>&#167;8.2.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Advance through identical common prefix</span><span class="named-paragraph-number">8.2.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP8_2_1" class="paragraph-anchor"></a><b>&#167;8.2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Advance through identical common prefix</span><span class="named-paragraph-number">8.2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; (</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">) &lt; </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_to</span><span class="plain-syntax">)) &amp;&amp;</span>
@@ -352,19 +346,18 @@ words, or at any rate, ending at a word boundary (in both texts).
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8_2">&#167;8.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2_2" class="paragraph-anchor"></a><b>&#167;8.2.2. </b>Ordinarily, two characters are distinct if they are different Unicode values.
-But with <span class="extract"><span class="extract-syntax">allow_platform_variance</span></span> set, forward and backslashes are counted
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8_2_2" class="paragraph-anchor"></a><b>&#167;8.2.2. </b>  Ordinarily, two characters are distinct if they are different Unicode values.
+But with <code>allow_platform_variance</code> set, forward and backslashes are counted
 as being the same. This allows files containing Windows filenames to be
 compared with those containing MacOS ones. A further complication is that when
 a backslash does occur, it may for other reasons be escaped by appearing as a
 doubled backslash. (Or, it may not.) We thus adopt the forgiving rule that once
 a slash-discrepancy is found, we will match any run of slashes against any other
-run of slashes from that point. As a result, <span class="extract"><span class="extract-syntax">///</span></span> does not match <span class="extract"><span class="extract-syntax">////</span></span>, but
-<span class="extract"><span class="extract-syntax">"a/b"</span></span> matches <span class="extract"><span class="extract-syntax">"a\\b"</span></span>.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Advance through platform-variant common prefix</span><span class="named-paragraph-number">8.2.2</span></span><span class="comment-syntax"> =</span>
-</p>
+run of slashes from that point. As a result, <code>///</code> does not match <code>////</code>, but
+<code>&quot;a/b&quot;</code> matches <code>&quot;a\\b&quot;</code>.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Advance through platform-variant common prefix</span><span class="named-paragraph-number">8.2.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; (</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_after_prefix</span><span class="plain-syntax">) &lt; </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_to</span><span class="plain-syntax">)) &amp;&amp;</span>
@@ -384,27 +377,26 @@ run of slashes from that point. As a result, <span class="extract"><span class="
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8_2">&#167;8.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_3" class="paragraph-anchor"></a><b>&#167;8.3. </b>Similarly, we're only interested in a common suffix going back to the start
-of a whole word.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Any common suffix can be preserved</span><span class="named-paragraph-number">8.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8_3" class="paragraph-anchor"></a><b>&#167;8.3. </b>  Similarly, we're only interested in a common suffix going back to the start
+of a whole word.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Any common suffix can be preserved</span><span class="named-paragraph-number">8.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax"> = </span><span class="identifier-syntax">A_to</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">string_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">B_suffix</span><span class="plain-syntax"> = </span><span class="identifier-syntax">B_to</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_3_2" class="named-paragraph-link"><span class="named-paragraph">Retreat through platform-variant common suffix</span><span class="named-paragraph-number">8.3.2</span></a></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_3_1" class="named-paragraph-link"><span class="named-paragraph">Retreat through identical common suffix</span><span class="named-paragraph-number">8.3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Retreat through platform-variant common suffix</span></span><span class="named-paragraph-number">8.3.2</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-td.html#SP8_3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Retreat through identical common suffix</span></span><span class="named-paragraph-number">8.3.1</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> roll forwards until we're at a word boundary between the front and the suffix</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( roll forwards until we're at a word boundary between the front and the suffix )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::width_between</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_to</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        (!</span><a href="3-td.html#SP9" class="function-link"><span class="function-syntax">Differ::boundary</span></a><span class="plain-syntax">(</span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::back</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax">)), </span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax">)))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::forward</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">B_suffix</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::forward</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B_suffix</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> if there's anything left, mark it as common text and recurse to move back past it</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( if there's anything left, mark it as common text and recurse to move back past it )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::width_between</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_to</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="3-td.html#SP8" class="function-link"><span class="function-syntax">Differ::diff_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">edits</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">B_suffix</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">allow_platform_variance</span><span class="plain-syntax">);</span>
@@ -414,8 +406,7 @@ of a whole word.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_3_1" class="paragraph-anchor"></a><b>&#167;8.3.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Retreat through identical common suffix</span><span class="named-paragraph-number">8.3.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP8_3_1" class="paragraph-anchor"></a><b>&#167;8.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Retreat through identical common suffix</span><span class="named-paragraph-number">8.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; (</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax">) &gt; </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">)) &amp;&amp;</span>
@@ -426,8 +417,7 @@ of a whole word.
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8_3">&#167;8.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_3_2" class="paragraph-anchor"></a><b>&#167;8.3.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Retreat through platform-variant common suffix</span><span class="named-paragraph-number">8.3.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP8_3_2" class="paragraph-anchor"></a><b>&#167;8.3.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Retreat through platform-variant common suffix</span><span class="named-paragraph-number">8.3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; (</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_suffix</span><span class="plain-syntax">) &gt; </span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">)) &amp;&amp;</span>
@@ -447,19 +437,18 @@ of a whole word.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8_3">&#167;8.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_4" class="paragraph-anchor"></a><b>&#167;8.4. </b>In the typical use case most of the strings will now be gone, and this is
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8_4" class="paragraph-anchor"></a><b>&#167;8.4. </b>  In the typical use case most of the strings will now be gone, and this is
 where the algorithm goes quadratic. We're going to look for the longest
 common substring between A and B, provided it occurs at word boundaries,
 and is not trivially short. If we find this, we'll recurse to diff the
 text before the substring, then preserve the substring, then recurse to
-diff the text afterwards.
-</p>
-
+diff the text afterwards.</p>
+</div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MINIMUM_SPLICE_WORTH_BOTHERING_WITH</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
 <span class="definition-keyword">define</span> <span class="identifier-syntax">SPCHAR</span><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">) </span><a href="../foundation/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><a href="../foundation/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::plus</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">##</span><span class="identifier-syntax">_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">))</span>
 </pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Splice around the longest common substring</span><span class="named-paragraph-number">8.4</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Splice around the longest common substring</span><span class="named-paragraph-number">8.4</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_i</span><span class="plain-syntax"> = -1, </span><span class="identifier-syntax">max_j</span><span class="plain-syntax"> = -1, </span><span class="identifier-syntax">max_len</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -501,12 +490,11 @@ diff the text afterwards.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_5" class="paragraph-anchor"></a><b>&#167;8.5. </b>If we can't find any good substring, all we can usefully do is say that
-the text has entirely changed, and we display this as cleanly as possible:
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If all else fails we can always just delete A and insert B</span><span class="named-paragraph-number">8.5</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8_5" class="paragraph-anchor"></a><b>&#167;8.5. </b>  If we can't find any good substring, all we can usefully do is say that
+the text has entirely changed, and we display this as cleanly as possible:</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If all else fails we can always just delete A and insert B</span><span class="named-paragraph-number">8.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">edit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><a href="3-td.html#SP3" class="function-link"><span class="function-syntax">Differ::new_edit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">A_to</span><span class="plain-syntax">, </span><span class="constant-syntax">DELETE_EDIT</span><span class="plain-syntax">);</span>
@@ -516,21 +504,21 @@ the text has entirely changed, and we display this as cleanly as possible:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-td.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>This was the definition of "word boundary" used, where these are expected
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  This was the definition of &quot;word boundary&quot; used, where these are expected
 to be adjacent characters (in either direction). For best results, we want
-a version of <span class="extract"><span class="extract-syntax">isalpha</span></span> which respects Unicode, or else the above algorithm
-will sometimes show edits mid-word at accented letters.
-</p>
-
+a version of <code>isalpha</code> which respects Unicode, or else the above algorithm
+will sometimes show edits mid-word at accented letters.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Differ::boundary</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Differ::boundary</span></span>:<br/><a href="3-td.html#SP8_2">&#167;8.2</a>, <a href="3-td.html#SP8_3">&#167;8.3</a>, <a href="3-td.html#SP8_4">&#167;8.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation/4-chr.html#SP1" class="function-link"><span class="function-syntax">Characters::isalpha</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="../foundation/4-chr.html#SP1" class="function-link"><span class="function-syntax">Characters::isalpha</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">d</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Printing results.</b>That's all except to provide some routines for printing out what we found:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Printing results.</b>  That's all except to provide some routines for printing out what we found:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Differ::print_results</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Differ::print_results</span></span>:<br/>Skeins - <a href="3-skn.html#SP11_1_1">&#167;11.1.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">diff_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DR</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">original</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-td.html#SP4" class="function-link"><span class="function-syntax">Differ::print_edit_list</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">DR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edits</span><span class="plain-syntax">, </span><span class="identifier-syntax">original</span><span class="plain-syntax">);</span>

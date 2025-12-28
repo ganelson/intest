@@ -478,7 +478,7 @@ to be zero (for |step|) or non-zero (for |fail step|).
 				Str::clear(verdict);
 				WRITE_TO(verdict, "step %d should have failed but didn't", no_step_commands);
 				passed = FALSE; still_going = FALSE;
-				@<Or...@>;
+				@<Or@>;
 				if (last_step_passed == FALSE) last_step_passed = TRUE;
 			}
 		} else {
@@ -486,7 +486,7 @@ to be zero (for |step|) or non-zero (for |fail step|).
 				Str::clear(verdict);
 				WRITE_TO(verdict, "step %d failed to run", no_step_commands);
 				passed = FALSE; still_going = FALSE;
-				@<Or...@>;
+				@<Or@>;
 			}
 		}
 		DISCARD_TEXT(COMMAND)
@@ -495,7 +495,7 @@ to be zero (for |step|) or non-zero (for |fail step|).
 @ If the next command is an |or|, then use its text rather than our bland
 one in the event of failure.
 
-@<Or...@> =
+@<Or@> =
 	linked_list_item *next_item = NEXT_ITEM_IN_LINKED_LIST(L_item, recipe_line);
 	recipe_line *next_line = CONTENT_IN_ITEM(next_item, recipe_line);
 	if ((next_line) &&
@@ -618,7 +618,7 @@ for these, three of which are highly specific to Inform 7.
 			if (tc->HTML_report == NULL) Extractor::cat(OUT, DO);
 			mismatched_file = DO;
 		}
-		@<Or...@>;
+		@<Or@>;
 	}
 
 @<Perform a plain text test match@> =
@@ -776,7 +776,7 @@ The |extract| command only makes sense for Inform 7 test cases.
 		if (TextFiles::exists(putative) == FALSE) {
 			Str::clear(verdict); WRITE_TO(verdict, "file doesn't exist: %f", putative);
 			still_going = FALSE; passed = FALSE;
-			@<Or...@>;
+			@<Or@>;
 		}
 	}
 
@@ -803,7 +803,7 @@ The |extract| command only makes sense for Inform 7 test cases.
 			Str::clear(verdict);
 			WRITE_TO(verdict, "can't show file, as it doesn't exist: %f", putative);
 			still_going = FALSE;
-			@<Or...@>;
+			@<Or@>;
 		}
 	} else {
 		if (Tester::running_verbosely()) {
@@ -828,7 +828,7 @@ checksum to the second-named file, and also remembering its value.
 			passed = TRUE;
 			Str::clear(verdict);
 			WRITE_TO(verdict, "passed (ending test early on hash value grounds)");
-			@<Or...@>;
+			@<Or@>;
 			left_bracket = '(';
 			right_bracket = ')';
 		}
@@ -994,6 +994,8 @@ lexical token.
 =
 void Tester::quote_expand(OUTPUT_STREAM, recipe_token *T, dictionary *D, int raw) {
 	if (T == NULL) return;
+	
+	if (Str::eq(T->token_text, I";")) { WRITE(";"); return; }
 	
 	TEMPORARY_TEXT(unquoted)
 	if (raw) WRITE_TO(unquoted, "%S", T->token_text);
