@@ -5,13 +5,14 @@ An overview of how Intest works, with links to all of its important functions.
 @h Prerequisites.
 This page is to help readers to get their bearings in the source code for
 Intest, which is a literate program or "web". Before diving in:
-(a) It helps to have some experience of reading webs: see //inweb// for more.
-(b) Intest is written in C, in fact ANSI C99, but this is disguised by the
+
+- It helps to have some experience of reading webs: see //inweb// for more.
+- Intest is written in C, in fact ANSI C99, but this is disguised by the
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
 and where functions have names like |Tags::add_by_name| rather than just |add_by_name|.
-(c) Intest makes use of a "module" of utility functions called //foundation//.
+- Intest makes use of a "module" of utility functions called //foundation//.
 This is a web in its own right. There's no need to read it in full, but if
 you haven't seen a Foundation-based program before, you may want to take a
 quick look at //foundation: A Brief Guide to Foundation//.
@@ -61,11 +62,11 @@ like |-verbose|, |Sackcloth|, |Beatles|, |Gelato| into an //intest_instructions/
 object. It divides the array into contiguous runs called "blocks", each of which
 is either:
 
-(a) an OPTIONS block, like |-verbose|, |-colours| or |-threads=N|, handled by the
+- an OPTIONS block, like |-verbose|, |-colours| or |-threads=N|, handled by the
 command-line-reading functions in the //foundation// library;
-(b) a DO block, introduced by |-do|, or by following directly on from the
+- a DO block, introduced by |-do|, or by following directly on from the
 conventional switches (a);
-(c) a USING block, introduced by |-using|.
+- a USING block, introduced by |-using|.
 
 In the case of our example, there are just two blocks:
 = (text)

@@ -80,29 +80,29 @@ the names |numerical|, |text| and |lists|.
 
 There are a number of restrictions on test names:
 
-(a) They are case-sensitive, so "Frogs" is different from "frogs". This
+- They are case-sensitive, so "Frogs" is different from "frogs". This
 is true even if your file system is case-insensitive, as it probably is.
 Your computer may regard |Frogs.txt| and |frogs.txt| as the same file,
 but to Intest those names would refer to different cases. It follows
 that you can't practicably have two case names which are the same except
 for casing.
 
-(b) The names |all|, |examples|, |extensions|, |problems| and |cases|
+- The names |all|, |examples|, |extensions|, |problems| and |cases|
 are reserved for Intest wildcards, and can't be used.
 
-(c) A name cannot begin with a dash |-|, a caret |^|, a question mark |?|,
+- A name cannot begin with a dash |-|, a caret |^|, a question mark |?|,
 an exclamation mark |!|, an open bracket |(|, a square bracket |[|,
 a full stop |.|, an underscore |_|, or a digit. It's probably best to
 start with a letter.
 
-(d) A name cannot consist only of digits and cannot be just a single letter.
+- A name cannot consist only of digits and cannot be just a single letter.
 
-(e) A name cannot contain a colon or a slash, forwards or backwards, and
+- A name cannot contain a colon or a slash, forwards or backwards, and
 must contain only filename-safe characters. It can contain white space, but
 your life will be easier if it doesn't. Similarly, best to avoid accented
 letters or emoji.
 
-(f) A name cannot contain a double dash |--|.
+- A name cannot contain a double dash |--|.
 
 @ The reason that names cannot contain double dashes is that many tests need
 associated files in order to work. A typical arrangement is that the test
@@ -118,18 +118,18 @@ cases, it ignores them.
 There are four of these, though two are used only for testing Inform 7,
 and can be ignored by everybody else. The general ones are:
 
-(a) "case" -- where the expectation is that the program being tested will
+- "case" -- where the expectation is that the program being tested will
 accept this test case and not produce errors, and
 
-(b) "problem" -- where the expectation is that the program will reject it
+- "problem" -- where the expectation is that the program will reject it
 with error messages.
 
 The Inform-specific ones are:
 
-(c) "example" -- like a "case", but written into an Inform documentation file,
+- "example" -- like a "case", but written into an Inform documentation file,
 a format which takes a bit of decoding.
 
-(d) "extension" -- like a "case", but one of the examples from an Inform extension
+- "extension" -- like a "case", but one of the examples from an Inform extension
 file, a format which takes even more decoding.
 
 @ In addition, some tests are "annotated", meaning that details about them

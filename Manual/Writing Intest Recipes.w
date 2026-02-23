@@ -69,22 +69,22 @@ They are therefore constant throughout the life of a test which is running, and
 they have the same value for all tests being conducted in the same run of
 Intest. The following globals are automatically defined:
 
-(1) |$$platform|, as mentioned above, which is a string such as |osx| or |windows|.
+- |$$platform|, as mentioned above, which is a string such as |osx| or |windows|.
 Avoid using this where possible. All other global variables are created
 by the |-set| command at the top of the recipe file: see above.
 
-(2) |$$project| is the path to the project being tested.
+- |$$project| is the path to the project being tested.
 
-(3) |$$internal| is the path to the Inform internals directory, assumed to be
+- |$$internal| is the path to the Inform internals directory, assumed to be
 |inform7/Internal| unless the |-internal| switch has said otherwise. This will
 only be useful for testing Inform-related programs, of course, and not always then.
 
-(4) |$$workspace| is the path to a directory where Intest can write temporary
+- |$$workspace| is the path to a directory where Intest can write temporary
 files as it pleases. Do not use this for throwaway files in the course of a
 test unless you are quite sure multiple tests running at once will not interfere
 with each other: if you are not sure, use |$WORK| instead (see below).
 
-(5) |$$nest| is used only internally, and on automatic tests of extensions or
+- |$$nest| is used only internally, and on automatic tests of extensions or
 kits for Inform: it then holds the path to the directory or "nest" of resources
 from which the extension or kit seems to be drawn.
 
@@ -99,16 +99,16 @@ runs the tests for |inform7| with the global variable |$$WORD| set to |plugh|.
 @ For the most part, a Delia recipe can create its own local variables quite
 freely, but it doesn't begin with a completely blank slate. As it starts:
 
-(1) |$CASE| is the name (not the title, if that differs) of the test case.
+- |$CASE| is the name (not the title, if that differs) of the test case.
 
-(2) |$TITLE| is the title (not the name, if that differs) of the test case.
+- |$TITLE| is the title (not the name, if that differs) of the test case.
 
-(3) |$PATH| is the pathname to the directory which the test case is in.
+- |$PATH| is the pathname to the directory which the test case is in.
 
-(4) |$TYPE| is the type of test case this is: |case|, |problem|, |example|,
+- |$TYPE| is the type of test case this is: |case|, |problem|, |example|,
 |extension|.
 
-(5) |$WORK| is the pathname of a directory set aside by Intest for any intermediate
+- |$WORK| is the pathname of a directory set aside by Intest for any intermediate
 files we might need to produce during the test process -- these must all be
 temporary files we can happily lose when the test is completed. The real
 usefulness of this comes when Intest is running a batch of tests across
@@ -116,7 +116,7 @@ multiple threads, because those threads each need their own independent work
 area to avoid stepping on each other's feet. Provided the recipe uses |$WORK|,
 it never needs to think about this complication.
 
-(6) If the Intest file specifies "stipulations" on the test case, those set
+- If the Intest file specifies "stipulations" on the test case, those set
 local variables for it: see //The Universe of Cases//. In this example,
 the recipe |[Reactor]| starts with the given settings of |$TEMP| and |$STATUS|.
 = (text as Delia)
@@ -125,7 +125,7 @@ the recipe |[Reactor]| starts with the given settings of |$TEMP| and |$STATUS|.
 	-cases [Reactor:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'
 =
 
-(7) If the test case itself contains annotations, those are also used to
+- If the test case itself contains annotations, those are also used to
 create local variables which the test starts with. In the following example,
 any test of |Nettles| would begin with the recipe having appropriate values
 of |$LANGUAGE|, |$FOR| and |$INTOPTIONS|.
@@ -141,12 +141,12 @@ of |$LANGUAGE|, |$FOR| and |$INTOPTIONS|.
 (see below), and is only useful for testing Inform. It is created if one
 of two things happens:
 
-(a) A text file exists in the same directory as the test case, and with the
+- A text file exists in the same directory as the test case, and with the
 |--S| filename suffix. For example, if the test is in |zap/Tests/Cases/DeathRay.txt|,
 then Intest will look for the file |zap/Tests/Cases/DeathRay--S.txt|. If that
 file exists, |$SCRIPT| will be set to its filename.
 
-(b) The test case contains a sentence of source text in the form
+- The test case contains a sentence of source text in the form
 "Test me with "Command 1 / Command 2 / ..."." If it does, Intest will
 use a generic script which types TEST ME, then QUIT, then Y (to confirm
 quitting), and will set |$SCRIPT| to that filename.

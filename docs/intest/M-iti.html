@@ -102,14 +102,14 @@ command-line shell. For example, here is Delia code for testing what ought to
 be a valid input to a tool called <code>zap</code> inside the <code>myproject</code> folder:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="reserved-syntax">    step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span>
-<span class="reserved-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
-<span class="reserved-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'produced the wrong output'</span>
-<span class="reserved-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
+<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
+<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
+<span class="type-syntax">    step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
+<span class="type-syntax">    or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span>
+<span class="type-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
+<span class="type-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
+<span class="type-syntax">    or</span><span class="plain-syntax">: 'produced the wrong output'</span>
+<span class="type-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
 </pre>
 <div class="lsmarkdown">
 <p>This looks more forbidding than it is. Variables start with a dollar, as in
@@ -118,8 +118,8 @@ of the current test case: perhaps &quot;planets&quot;. <code>$PATH</code> is the
 folder, which might be, for example, &quot;myproject/tests&quot;. What happens is:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
+<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
+<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
 </pre>
 <div class="lsmarkdown">
 <p>This sets two filenames -- it doesn't create these files, simply creates
@@ -128,7 +128,7 @@ being tested, while <code>$I</code> is the ideal output, that is, what it should
 printed. Next:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
+<span class="type-syntax">    step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
 </pre>
 <div class="lsmarkdown">
 <p>A &quot;step&quot; is a stage in a test which involves issuing a shell command, and
@@ -148,7 +148,7 @@ messages, to the <code>$A</code> file. That, as promised, is the &quot;actual ou
 <p>The next line in the recipe is then:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span>
+<span class="type-syntax">    or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span>
 </pre>
 <div class="lsmarkdown">
 <p>This tells Intest to halt the test if the shell command failed (i.e., if
@@ -160,7 +160,7 @@ want to see.</p>
 messages. The next line is not quite what it seems:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
+<span class="type-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
 </pre>
 <div class="lsmarkdown">
 <p>This tells Intest that if the tester ran the test specifying <code>-show</code> on
@@ -169,8 +169,8 @@ didn't say <code>-show</code>, we print nothing here, and continue. The next ste
 in the recipe are more consequential:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'produced the wrong output'</span>
+<span class="type-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
+<span class="type-syntax">    or</span><span class="plain-syntax">: 'produced the wrong output'</span>
 </pre>
 <div class="lsmarkdown">
 <p>This does what it looks as if it should, but it has hidden powers. If the
@@ -195,7 +195,7 @@ happy with the actual output, we &quot;bless&quot; it:</p>
 <p>With <code>-bless</code> specified, when the recipe hits:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
+<span class="type-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
 </pre>
 <div class="lsmarkdown">
 <p>Intest sets the ideal output to the actual output: the two then necessarily
@@ -208,7 +208,7 @@ immediately followed by a blessing.)</p>
 to be incorrect. So we conclude with a triumphant:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
+<span class="type-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
 </pre>
 <div class="lsmarkdown">
 <p>Recipes can be substantially longer and more elaborate, running through
@@ -274,15 +274,17 @@ will make us a MacOS version of this makefile, and so on. Now we can make:</p>
 system. There is no completely foolproof, cross-platform way to know this
 (on some Unixes, a program cannot determine its own location), so Intest
 decides by the following set of rules:</p>
-<p>(a) If the user, at the command line, specified <code>-at P</code>, for some path
-<code>P</code>, then we use that.
-(b) Otherwise, if the host operating system can indeed tell us where the
+<ul>
+<li>If the user, at the command line, specified <code>-at P</code>, for some path
+<code>P</code>, then we use that.</li>
+<li>Otherwise, if the host operating system can indeed tell us where the
 executable is, we use that. This is currently implemented only on MacOS,
-Windows and Linux.
-(c) Otherwise, if the environment variable <code>$INTEST_PATH</code> exists and is
-non-empty, we use that.
-(d) And if all else fails, we assume that the location is <code>intest</code>, with
-respect to the current working directory.</p>
+Windows and Linux.</li>
+<li>Otherwise, if the environment variable <code>$INTEST_PATH</code> exists and is
+non-empty, we use that.</li>
+<li>And if all else fails, we assume that the location is <code>intest</code>, with
+respect to the current working directory.</li>
+</ul>
 <p>If you're not sure what Intest has decided and suspect it may be wrong,
 running Intest with the <code>-verbose</code> switch will cause it to print its belief
 about its location as it starts up.</p>

@@ -1,6 +1,6 @@
 # Intest 2.2.0
 
-[Version](notes/versioning.md): 2.2.0-beta+1A66 'The Remembering' (28 December 2025)
+[Version](notes/versioning.md): 2.2.0-beta+1A67 'The Remembering' (23 February 2026)
 
 ## About Intest
 

@@ -78,20 +78,20 @@ discovered in that directory.</p>
 <span class="identifier-syntax">-cases</span><span class="plain-syntax"> 'inform7/kinds-test/Tests/Test Cases'</span>
 
 <span class="identifier-syntax">-recipe</span>
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--A.txt</span>
-<span class="reserved-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--I.txt</span>
+<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
+<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--A.txt</span>
+<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--I.txt</span>
 
-<span class="reserved-syntax">    step</span><span class="plain-syntax">: launcher </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'launcher produced error messages' </span><span class="function-syntax">$A</span>
+<span class="type-syntax">    step</span><span class="plain-syntax">: launcher </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
+<span class="type-syntax">    or</span><span class="plain-syntax">: 'launcher produced error messages' </span><span class="function-syntax">$A</span>
 
-<span class="reserved-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
+<span class="type-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
 
-<span class="reserved-syntax">    exists</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'passed without errors but no blessed output existed'</span>
+<span class="type-syntax">    exists</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span>
+<span class="type-syntax">    or</span><span class="plain-syntax">: 'passed without errors but no blessed output existed'</span>
 
-<span class="reserved-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
-<span class="reserved-syntax">    or</span><span class="plain-syntax">: 'produced incorrect output'</span>
+<span class="type-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
+<span class="type-syntax">    or</span><span class="plain-syntax">: 'produced incorrect output'</span>
 
 <span class="identifier-syntax">-end</span>
 </pre>
@@ -119,24 +119,38 @@ written. In the above example:</p>
 and <code>lists.txt</code>, then the universe would consist of three tests with
 the names <code>numerical</code>, <code>text</code> and <code>lists</code>.</p>
 <p>There are a number of restrictions on test names:</p>
-<p>(a) They are case-sensitive, so &quot;Frogs&quot; is different from &quot;frogs&quot;. This
+<ul>
+<li>
+<p>They are case-sensitive, so &quot;Frogs&quot; is different from &quot;frogs&quot;. This
 is true even if your file system is case-insensitive, as it probably is.
 Your computer may regard <code>Frogs.txt</code> and <code>frogs.txt</code> as the same file,
 but to Intest those names would refer to different cases. It follows
 that you can't practicably have two case names which are the same except
 for casing.</p>
-<p>(b) The names <code>all</code>, <code>examples</code>, <code>extensions</code>, <code>problems</code> and <code>cases</code>
+</li>
+<li>
+<p>The names <code>all</code>, <code>examples</code>, <code>extensions</code>, <code>problems</code> and <code>cases</code>
 are reserved for Intest wildcards, and can't be used.</p>
-<p>(c) A name cannot begin with a dash <code>-</code>, a caret <code>^</code>, a question mark <code>?</code>,
+</li>
+<li>
+<p>A name cannot begin with a dash <code>-</code>, a caret <code>^</code>, a question mark <code>?</code>,
 an exclamation mark <code>!</code>, an open bracket <code>(</code>, a square bracket <code>[</code>,
 a full stop <code>.</code>, an underscore <code>_</code>, or a digit. It's probably best to
 start with a letter.</p>
-<p>(d) A name cannot consist only of digits and cannot be just a single letter.</p>
-<p>(e) A name cannot contain a colon or a slash, forwards or backwards, and
+</li>
+<li>
+<p>A name cannot consist only of digits and cannot be just a single letter.</p>
+</li>
+<li>
+<p>A name cannot contain a colon or a slash, forwards or backwards, and
 must contain only filename-safe characters. It can contain white space, but
 your life will be easier if it doesn't. Similarly, best to avoid accented
 letters or emoji.</p>
-<p>(f) A name cannot contain a double dash <code>--</code>.</p>
+</li>
+<li>
+<p>A name cannot contain a double dash <code>--</code>.</p>
+</li>
+</ul>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The reason that names cannot contain double dashes is that many tests need
@@ -151,15 +165,27 @@ cases, it ignores them.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Types of test case.</b>  There are four of these, though two are used only for testing Inform 7,
 and can be ignored by everybody else. The general ones are:</p>
-<p>(a) &quot;case&quot; -- where the expectation is that the program being tested will
+<ul>
+<li>
+<p>&quot;case&quot; -- where the expectation is that the program being tested will
 accept this test case and not produce errors, and</p>
-<p>(b) &quot;problem&quot; -- where the expectation is that the program will reject it
+</li>
+<li>
+<p>&quot;problem&quot; -- where the expectation is that the program will reject it
 with error messages.</p>
+</li>
+</ul>
 <p>The Inform-specific ones are:</p>
-<p>(c) &quot;example&quot; -- like a &quot;case&quot;, but written into an Inform documentation file,
+<ul>
+<li>
+<p>&quot;example&quot; -- like a &quot;case&quot;, but written into an Inform documentation file,
 a format which takes a bit of decoding.</p>
-<p>(d) &quot;extension&quot; -- like a &quot;case&quot;, but one of the examples from an Inform extension
+</li>
+<li>
+<p>&quot;extension&quot; -- like a &quot;case&quot;, but one of the examples from an Inform extension
 file, a format which takes even more decoding.</p>
+</li>
+</ul>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  In addition, some tests are &quot;annotated&quot;, meaning that details about them
@@ -183,7 +209,7 @@ unannotated test case file:</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Test:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Nettles</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Language:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Basic</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">For:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Glulx</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">IntOptions:</span><span class="plain-syntax"> -</span><span class="identifier-syntax">u</span><span class="plain-syntax"> -</span><span class="identifier-syntax">q</span><span class="plain-syntax"> -</span><span class="identifier-syntax">dataresourcetext</span><span class="plain-syntax"> </span><span class="character-syntax">'3:$PATH/Nettles--X.txt'</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">IntOptions:</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">u</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">q</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">dataresourcetext</span><span class="plain-syntax"> </span><span class="character-syntax">'3:$PATH/Nettles--X.txt'</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Tall</span><span class="plain-syntax"> </span><span class="identifier-syntax">Nettles</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="string-syntax">"Nettles.txt"</span><span class="plain-syntax">.</span>
 
@@ -279,9 +305,9 @@ all variations on a theme:</p>
 A neater solution is to use &quot;stipulations&quot;, like so:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'</span>
-<span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Cold:STATUS=Safe] 'fusionreactor/Tests/ColdCases'</span>
-<span class="reserved-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'</span>
+<span class="type-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'</span>
+<span class="type-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Cold:STATUS=Safe] 'fusionreactor/Tests/ColdCases'</span>
+<span class="type-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'</span>
 </pre>
 <div class="lsmarkdown">
 <p>Here the recipe <code>[Reactor]</code> will be used for all of these cases, but it will
@@ -306,7 +332,7 @@ platform-specific basis:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -if Windows -set EXESUFFIX '.exe'</span>
-<span class="reserved-syntax">    -if MacOS -annotated-cases [Main</span><span class="plain-syntax">:EXTERNAL=inform7/Tests] 'inform7/Tests/Test Releases'</span>
+<span class="type-syntax">    -if MacOS -annotated-cases [Main</span><span class="plain-syntax">:EXTERNAL=inform7/Tests] 'inform7/Tests/Test Releases'</span>
 </pre>
 <div class="lsmarkdown">
 <p>A line beginning <code>-if PLATFORM</code> will be obeyed only if <code>$$platform</code> matches the
@@ -394,7 +420,7 @@ test material begins.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Test:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Nettles</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Language:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Basic</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">For:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Glulx</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">IntOptions:</span><span class="plain-syntax"> -</span><span class="identifier-syntax">u</span><span class="plain-syntax"> -</span><span class="identifier-syntax">q</span><span class="plain-syntax"> -</span><span class="identifier-syntax">dataresourcetext</span><span class="plain-syntax"> </span><span class="character-syntax">'3:$PATH/Nettles--X.txt'</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">IntOptions:</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">u</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">q</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">dataresourcetext</span><span class="plain-syntax"> </span><span class="character-syntax">'3:$PATH/Nettles--X.txt'</span>
 </pre>
 <div class="lsmarkdown">
 <p>What does Intest do with this information? The answer is not much. The opening

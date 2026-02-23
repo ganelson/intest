@@ -163,7 +163,7 @@ in it, because those have all been taken care of. What remains is a &quot;raw
 command&quot;. This takes the form:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">OPTIONS</span><span class="plain-syntax"> -</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">USING</span><span class="plain-syntax"> -</span><span class="reserved-syntax">do</span><span class="plain-syntax"> </span><span class="identifier-syntax">DO</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">OPTIONS</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">USING</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="reserved-syntax">do</span><span class="plain-syntax"> </span><span class="identifier-syntax">DO</span>
 </pre>
 <div class="lsmarkdown">
 <p><code>OPTIONS</code>, which can be nothing at all, sets overall switches such as
@@ -178,7 +178,7 @@ isn't a <code>-using</code> block, there's no need to say <code>-do</code>, so s
 <p>will work. For example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -</span><span class="identifier-syntax">no</span><span class="plain-syntax">-</span><span class="identifier-syntax">history</span><span class="plain-syntax"> </span><span class="identifier-syntax">bigarrays</span><span class="plain-syntax"> </span><span class="identifier-syntax">badvariables</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">no</span><span class="plain-syntax">-</span><span class="identifier-syntax">history</span><span class="plain-syntax"> </span><span class="identifier-syntax">bigarrays</span><span class="plain-syntax"> </span><span class="identifier-syntax">badvariables</span>
 </pre>
 <div class="lsmarkdown">
 <p>would set the option <code>-no-history</code> and then perform a &quot;do&quot; on the two test
@@ -214,7 +214,7 @@ named test cases available, and work out which recipe to use with each.</p>
 <p>This is because the default <code>-using</code> setting is</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">/</span><span class="identifier-syntax">Tests</span><span class="plain-syntax">/</span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">.</span><span class="identifier-syntax">intest</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">/</span><span class="identifier-syntax">Tests</span><span class="plain-syntax">/</span><span class="identifier-syntax">PROJECT</span><span class="plain-syntax">.</span><span class="identifier-syntax">intest</span>
 </pre>
 <div class="lsmarkdown">
 <p>You can alternatively say <code>-using R</code> for any intest file <code>R</code>, which need not
@@ -224,7 +224,7 @@ at the command line and not in an intest file at all. Newcomers to Intest
 should simply skip the following discussion, but:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">USE1</span><span class="plain-syntax"> </span><span class="identifier-syntax">USE2</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">USEn</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">using</span><span class="plain-syntax"> </span><span class="identifier-syntax">USE1</span><span class="plain-syntax"> </span><span class="identifier-syntax">USE2</span><span class="plain-syntax"> ... </span><span class="identifier-syntax">USEn</span>
 </pre>
 <div class="lsmarkdown">
 <p>can instead be a list of use commands, some of a single token, some of
@@ -241,29 +241,45 @@ be tried. For example,</p>
 <p>is implicitly read as</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -</span><span class="reserved-syntax">test</span><span class="plain-syntax"> </span><span class="identifier-syntax">alpha</span><span class="plain-syntax"> </span><span class="identifier-syntax">beta</span><span class="plain-syntax"> </span><span class="identifier-syntax">gamma</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="type-syntax">test</span><span class="plain-syntax"> </span><span class="identifier-syntax">alpha</span><span class="plain-syntax"> </span><span class="identifier-syntax">beta</span><span class="plain-syntax"> </span><span class="identifier-syntax">gamma</span>
 </pre>
 <div class="lsmarkdown">
 <p>since <code>-test</code> is understood if no other do command is given.</p>
 <p>Any number of names can be supplied, each of which must be one of the
 following:</p>
-<p>(i) <code>all</code> means all known tests;
-(ii) <code>examples</code>, <code>extensions</code>, <code>problems</code>, <code>cases</code> each mean all known
-tests of the given type of origin;
-(iii) <code>A</code>, <code>B</code>, <code>C</code>, ..., mean &quot;the example with this letter in the (first)
-extension case&quot;;
-(iv) <code>^1</code>, <code>^2</code>, <code>^3</code>, ..., mean &quot;the 1st (2nd, 3rd, ...) test case known&quot;,
+<ul>
+<li>
+<p><code>all</code> means all known tests;</p>
+</li>
+<li>
+<p><code>examples</code>, <code>extensions</code>, <code>problems</code>, <code>cases</code> each mean all known
+tests of the given type of origin;</p>
+</li>
+<li>
+<p><code>A</code>, <code>B</code>, <code>C</code>, ..., mean &quot;the example with this letter in the (first)
+extension case&quot;;</p>
+</li>
+<li>
+<p><code>^1</code>, <code>^2</code>, <code>^3</code>, ..., mean &quot;the 1st (2nd, 3rd, ...) test case known&quot;,
 -- this is not to be confused with the <code>1</code>, <code>2</code>, <code>3</code>, ... notation used
 to call back previously failed cases: typically <code>^1</code> will be the first
-test case alphabetically;
-(v) a name containing a <code>%</code> character will be treated as a regular expression,
+test case alphabetically;</p>
+</li>
+<li>
+<p>a name containing a <code>%</code> character will be treated as a regular expression,
 in the same notation as for <code>-find</code> (see below) - for example, <code>BIP-%c+</code>
-will mean &quot;any test case whose name or title begins with <code>BIP-</code>&quot;;
-(vi) a name beginning with a <code>:</code> will be treated as a &quot;group&quot;, and will
+will mean &quot;any test case whose name or title begins with <code>BIP-</code>&quot;;</p>
+</li>
+<li>
+<p>a name beginning with a <code>:</code> will be treated as a &quot;group&quot;, and will
 run all tests in that group -- which is to say, the ones listed in the
 group's file: <code>:wrangly</code> will run all tests listed in <code>wrangly.testgroup</code>,
-multithreaded, whereas a double colon <code>::wrangly</code> runs them one at a time;
-(vii) and finally, of course, an explicit test case name refers to that test case.</p>
+multithreaded, whereas a double colon <code>::wrangly</code> runs them one at a time;</p>
+</li>
+<li>
+<p>and finally, of course, an explicit test case name refers to that test case.</p>
+</li>
+</ul>
 <p>For more on test types and groups, see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>.</p>
 </div>
 <div class="lsmarkdown">
@@ -365,23 +381,25 @@ showing the most important of these). What targets are available depends on
 the recipe for the test, and an error is thrown if the target can never be
 shown by that recipe, or if it can be but, as things turn out, isn't.</p>
 <p>When testing Inform 7 test cases or examples, this can produce a variety of
-useful variations:
-(1) <code>-show-transcript</code> shows the transcript of the compiled story file as it
-plays out.
-(2) <code>-show-i7</code> shows the console output of the Inform 7 compiler when it
-compiles the given source text.
-(3) <code>-show-i6</code> shows the console output of the Inform 6 compiler when it
-compiles the result of (2), if this happens.
-(4) <code>-show-cc</code> shows the console output of the C compiler when it compiles
-the result of (2), if that happens.
-(5) <code>-show-link</code> shows the console output of the C linker when it links
-the result of (4), if that happens.
-(6) <code>-show-blurb</code> shows the blurb instructions for a release test.
-(7) <code>-show-ifiction</code> shows the iFiction file output in a release test.
-(8) <code>-show-ideal</code> shows the ideal output a test is looking for.
-(9) <code>-show</code> on its own shows what it thinks is the most likely thing you
+useful variations:</p>
+<ul>
+<li><code>-show-transcript</code> shows the transcript of the compiled story file as it
+plays out.</li>
+<li><code>-show-i7</code> shows the console output of the Inform 7 compiler when it
+compiles the given source text.</li>
+<li><code>-show-i6</code> shows the console output of the Inform 6 compiler when it
+compiles the result of (2), if this happens.</li>
+<li><code>-show-cc</code> shows the console output of the C compiler when it compiles
+the result of (2), if that happens.</li>
+<li><code>-show-link</code> shows the console output of the C linker when it links
+the result of (4), if that happens.</li>
+<li><code>-show-blurb</code> shows the blurb instructions for a release test.</li>
+<li><code>-show-ifiction</code> shows the iFiction file output in a release test.</li>
+<li><code>-show-ideal</code> shows the ideal output a test is looking for.</li>
+<li><code>-show</code> on its own shows what it thinks is the most likely thing you
 want: for a problem case or a case making an internal compiler unit test,
-it's <code>-show-i7</code>; otherwise it's usually <code>-show-transcript</code>.</p>
+it's <code>-show-i7</code>; otherwise it's usually <code>-show-transcript</code>.</li>
+</ul>
 <p><code>-debug &lt;cases&gt;</code>: Run a test, but when you get to the Inform 7 compiler stage, run it in the <code>lldb</code> debugger and do not redirect <code>stdout</code> or <code>stderr</code>. (This is for Inform only.)</p>
 <p><code>-open &lt;cases&gt;</code>: Call the shell command <code>open</code> on the file(s) from which the source text of these case(s) are drawn. On MacOS, for example, this is equivalent to double-clicking them in the Finder, and likely means they will open in the default text editor.</p>
 <p><code>-diff &lt;cases&gt;</code>: Test and then, if a <code>match</code> step fails in its recipe, run
@@ -403,7 +421,7 @@ usage of <code>[NUMBER]</code> expands to a unique integer, counting upwards fro
 each test case being applied to by this action. Thus, for example:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -</span><span class="identifier-syntax">source</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">D</span><span class="plain-syntax"> -</span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">source_</span><span class="plain-syntax">[</span><span class="identifier-syntax">NAME</span><span class="plain-syntax">].</span><span class="identifier-syntax">txt</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">source</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> </span><span class="identifier-syntax">D</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">source_</span><span class="plain-syntax">[</span><span class="identifier-syntax">NAME</span><span class="plain-syntax">].</span><span class="identifier-syntax">txt</span>
 </pre>
 <div class="lsmarkdown">
 <p>might write four files, called, say,</p>
@@ -426,14 +444,16 @@ page to describe the results of the test, passing over the information needed
 to do this:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -</span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;case&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;code&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;problems-file&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;skein-file&gt;</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">report</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;case&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;code&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;problems-file&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;skein-file&gt;</span>
 </pre>
 <div class="lsmarkdown">
 <p>Here <code>&lt;case&gt;</code> is a single case, not a list, and <code>&lt;code&gt;</code> is one of:</p>
-<p>(a) <code>i7</code>: meaning, failed i7, i.e., <code>inform7</code> produced problem messages
-(b) <code>i6</code>: meaning, failed to compile in i6
-(c) <code>wrong</code>: meaning, the story file compiled and started, but the transcript didn't match its blessed version
-(d) <code>right</code>: meaning, a success: story file compiled and started, and matched transcript</p>
+<ul>
+<li><code>i7</code>: meaning, failed i7, i.e., <code>inform7</code> produced problem messages</li>
+<li><code>i6</code>: meaning, failed to compile in i6</li>
+<li><code>wrong</code>: meaning, the story file compiled and started, but the transcript didn't match its blessed version</li>
+<li><code>right</code>: meaning, a success: story file compiled and started, and matched transcript</li>
+</ul>
 <p><code>&lt;problems-file&gt;</code> is the file generated by <code>inform7</code>, in the event of either success or failure, which is usually stored in the project's <code>Build/Problems.html</code>.</p>
 <p><code>&lt;skein-file&gt;</code> is only looked at (potentially) in case (c), and is the skein file for the example in question; at present it's ignored.</p>
 <p>For example:</p>
@@ -460,7 +480,7 @@ into a consolidated report, which, once again, it writes as HTML. The format
 here is:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -</span><span class="identifier-syntax">combine</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;base-filename&gt;</span><span class="plain-syntax"> -</span><span class="function-syntax">&lt;N&gt;</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">combine</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;base-filename&gt;</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="function-syntax">&lt;N&gt;</span>
 </pre>
 <div class="lsmarkdown">
 <p>The filenames of the individual reports are assumed to be <code>&lt;base-filename&gt;</code>
@@ -490,7 +510,7 @@ but with &quot;-1&quot;, &quot;-2&quot;, ..., tacked on before the file extensio
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Skein file testing.</b>  In order to be used by the Testing panel in the Inform app, intest also supports the following:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -</span><span class="reserved-syntax">test</span><span class="plain-syntax">-</span><span class="reserved-syntax">skein</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;file&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;node-id&gt;</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="type-syntax">test</span><span class="plain-syntax">-</span><span class="type-syntax">skein</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;file&gt;</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;node-id&gt;</span>
 </pre>
 <div class="lsmarkdown">
 <p>This reads the specified <code>.skein</code> file, looks for the node in it with the given ID, and runs intest's diff algorithm on the actual versus blessed transcript at that node. The output is in simple HTML format.</p>

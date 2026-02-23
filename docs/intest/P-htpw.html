@@ -63,17 +63,19 @@ MathJax = {
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites.</b>  This page is to help readers to get their bearings in the source code for
-Intest, which is a literate program or &quot;web&quot;. Before diving in:
-(a) It helps to have some experience of reading webs: see <a href="../inweb/index.html" class="internal">inweb</a> for more.
-(b) Intest is written in C, in fact ANSI C99, but this is disguised by the
+Intest, which is a literate program or &quot;web&quot;. Before diving in:</p>
+<ul>
+<li>It helps to have some experience of reading webs: see <a href="../inweb/index.html" class="internal">inweb</a> for more.</li>
+<li>Intest is written in C, in fact ANSI C99, but this is disguised by the
 fact that it uses some extension syntaxes provided by the <a href="../inweb/index.html" class="internal">inweb</a> literate
 programming tool, making it a dialect of C called InC. See <a href="../inweb/index.html" class="internal">inweb</a> for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like <code>Tags::add_by_name</code> rather than just <code>add_by_name</code>.
-(c) Intest makes use of a &quot;module&quot; of utility functions called <a href="../foundation/index.html" class="internal">foundation</a>.
+and where functions have names like <code>Tags::add_by_name</code> rather than just <code>add_by_name</code>.</li>
+<li>Intest makes use of a &quot;module&quot; of utility functions called <a href="../foundation/index.html" class="internal">foundation</a>.
 This is a web in its own right. There's no need to read it in full, but if
 you haven't seen a Foundation-based program before, you may want to take a
-quick look at <a href="../foundation/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.</p>
+quick look at <a href="../foundation/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.</li>
+</ul>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Instructions and their blocks.</b>  Intest is a C program, so it begins at <a href="1-mn.html" class="internal">Main</a>. This works out where Intest
@@ -118,16 +120,18 @@ if you ask to test <code>Gelato</code> and it fails, the return code is 0.</p>
 like <code>-verbose</code>, <code>Sackcloth</code>, <code>Beatles</code>, <code>Gelato</code> into an <a href="1-cla.html#SP2" class="internal">intest_instructions</a>
 object. It divides the array into contiguous runs called &quot;blocks&quot;, each of which
 is either:</p>
-<p>(a) an OPTIONS block, like <code>-verbose</code>, <code>-colours</code> or <code>-threads=N</code>, handled by the
-command-line-reading functions in the <a href="../foundation/index.html" class="internal">foundation</a> library;
-(b) a DO block, introduced by <code>-do</code>, or by following directly on from the
-conventional switches (a);
-(c) a USING block, introduced by <code>-using</code>.</p>
+<ul>
+<li>an OPTIONS block, like <code>-verbose</code>, <code>-colours</code> or <code>-threads=N</code>, handled by the
+command-line-reading functions in the <a href="../foundation/index.html" class="internal">foundation</a> library;</li>
+<li>a DO block, introduced by <code>-do</code>, or by following directly on from the
+conventional switches (a);</li>
+<li>a USING block, introduced by <code>-using</code>.</li>
+</ul>
 <p>In the case of our example, there are just two blocks:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">OPTIONS</span><span class="plain-syntax">    </span><span class="identifier-syntax">DO</span>
-<span class="plain-syntax">    -</span><span class="identifier-syntax">verbose</span><span class="plain-syntax">   </span><span class="identifier-syntax">Sackcloth</span><span class="plain-syntax"> </span><span class="identifier-syntax">Beatles</span><span class="plain-syntax"> </span><span class="identifier-syntax">Gelato</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">verbose</span><span class="plain-syntax">   </span><span class="identifier-syntax">Sackcloth</span><span class="plain-syntax"> </span><span class="identifier-syntax">Beatles</span><span class="plain-syntax"> </span><span class="identifier-syntax">Gelato</span>
 </pre>
 <div class="lsmarkdown">
 <p>USING blocks are passed to <a href="2-rf.html#SP2" class="internal">RecipeFiles::read_using_instructions</a>. DO blocks
@@ -270,26 +274,40 @@ line. See <a href="3-tr.html" class="internal">The Reporter</a> for how this is 
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Adding to Intest.</b>  Here's some miscellaneous advice for those who would like to add to Intest:</p>
-<p>1. If what you want is to have a form of test which runs differently, see
+<ol>
+<li>
+<p>If what you want is to have a form of test which runs differently, see
 first if this can be accomplished with a Delia recipe combined, perhaps, with
 use of <code>-set</code> to create new global variables. The combination is quite potent.</p>
-<p>2. But if that isn't good enough, try to do it with a minimal extension to the
+</li>
+<li>
+<p>But if that isn't good enough, try to do it with a minimal extension to the
 Delia language. You'll need to make matching changes to <a href="4-tdc.html#SP6" class="internal">Delia::compile</a>
 and <a href="4-tt2.html#SP1" class="internal">Tester::test</a>, and to add documentation to <a href="M-wir.html" class="internal">Writing Intest Recipes</a>.</p>
-<p>3. If that still isn't good enough, and what you really need is a different
+</li>
+<li>
+<p>If that still isn't good enough, and what you really need is a different
 way to process existing recipes, see if a new action -- such as <code>-test</code>,
 <code>-bless</code>, <code>-rebless</code> and so on -- would meet your needs. If so, add this to
 <a href="2-act.html#SP1" class="internal">Actions::read_do_instructions</a> and <a href="2-act.html#SP7" class="internal">Actions::perform</a>, and document it
 at <a href="M-iatcl.html" class="internal">Intest at the Command Line</a>.</p>
-<p>4. Only if that really can't cope should you add a new OPTION block option,
+</li>
+<li>
+<p>Only if that really can't cope should you add a new OPTION block option,
 but if so, see <a href="1-cla.html#SP1" class="internal">Instructions::read</a> and <a href="1-cla.html#SP5" class="internal">Instructions::respond</a>, and
 again, document at <a href="M-iatcl.html" class="internal">Intest at the Command Line</a>.</p>
-<p>5. If what you want is to expand the universe of test cases in a new way --
+</li>
+<li>
+<p>If what you want is to expand the universe of test cases in a new way --
 say, to pull them down from some Internet-based repository rather than read
 them from local files -- create a new category of <a href="2-rf.html#SP3" class="internal">test_source</a>, and
 add this to <a href="2-rf.html#SP2" class="internal">RecipeFiles::read_using_instructions</a>.</p>
-<p>6. As with any program built on Foundation, if you are creating a new class of
+</li>
+<li>
+<p>As with any program built on Foundation, if you are creating a new class of
 object, don't forget to declare it in <a href="1-bsc.html" class="internal">Basics</a>.</p>
+</li>
+</ol>
 </div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-rc.html">&#10094;</a></li><li class="progresschapter"><a href="M-iti.html">M</a></li><li class="progresscurrentchapter">P</li><li class="progresscurrent">htpw</li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-rf.html">2</a></li><li class="progresschapter"><a href="3-ts.html">3</a></li><li class="progresschapter"><a href="4-tdc.html">4</a></li><li class="progressnext"><a href="1-bsc.html">&#10095;</a></li></ul></div>
