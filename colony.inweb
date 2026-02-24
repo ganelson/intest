@@ -25,6 +25,10 @@ Colony {
 		
 		Intest is presented as a "web", or "literate program", powered by //inweb//.
 		Those new to literate programming can find much more information about it there.
+		
+		Conventions {
+			paragraph numbers are invisible
+		}
 	}
 
 	Navigation {
