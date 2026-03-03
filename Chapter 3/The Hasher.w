@@ -3,7 +3,7 @@
 To optimise by storing MD5 hashes of known-to-be-correct output.
 
 @h Hash values for cases.
-In order to support Delia's |hash:| command, we need to be able to assign
+In order to support Delia's `hash:` command, we need to be able to assign
 each test case a hash value. This will typically be a short hexadecimal string
 such as:
 = (text)

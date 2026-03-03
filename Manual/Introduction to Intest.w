@@ -32,9 +32,9 @@ Suppose we go fix that bug, and then retest:
 	Expanded to: ?322. planets
 	[1] planets passed
 =
-Note that |1| was understood by Intest here as referring to the test case
-|planets| which failed earlier. Intest is recording a history of recent
-tests run, too: this one was test run |?322|. We could have listed those by
+Note that `1` was understood by Intest here as referring to the test case
+`planets` which failed earlier. Intest is recording a history of recent
+tests run, too: this one was test run `?322`. We could have listed those by
 = (text as ConsoleText)
 	$ intest/Tangled/intest -from myproject ?
 =
@@ -54,7 +54,7 @@ to see that some expected error message is produced.
 Each individual test is performed by following a "recipe". Recipes are simple
 mini-language called Delia, which sits on top of the host operating system's
 command-line shell. For example, here is Delia code for testing what ought to
-be a valid input to a tool called |zap| inside the |myproject| folder:
+be a valid input to a tool called `zap` inside the `myproject` folder:
 = (text as Delia)
 	set: $A = $PATH/_actual/$CASE.txt
 	set: $I = $PATH/_ideal/$CASE.txt
@@ -66,24 +66,24 @@ be a valid input to a tool called |zap| inside the |myproject| folder:
 	pass: 'passed'
 =
 This looks more forbidding than it is. Variables start with a dollar, as in
-most Unix mini-languages: they usually hold filenames. |$CASE| is the name
-of the current test case: perhaps "planets". |$PATH| is the pathname to its
+most Unix mini-languages: they usually hold filenames. `$CASE` is the name
+of the current test case: perhaps "planets". `$PATH` is the pathname to its
 folder, which might be, for example, "myproject/tests". What happens is:
 = (text as Delia)
 	set: $A = $PATH/_actual/$CASE.txt
 	set: $I = $PATH/_ideal/$CASE.txt
 =
-This sets two filenames -- it doesn't create these files, simply creates
-two names. |$A| is going to be the actual output printed out by the program
-being tested, while |$I| is the ideal output, that is, what it should have
+This sets two filenames — it doesn't create these files, simply creates
+two names. `$A` is going to be the actual output printed out by the program
+being tested, while `$I` is the ideal output, that is, what it should have
 printed. Next:
 = (text as Delia)
 	step: myproject/zap $PATH/$CASE.txt >$A 2>&1
 =
 A "step" is a stage in a test which involves issuing a shell command, and
 which passes or fails according to the exit code from that command, exactly
-as it would in a tool like |make|. We're going to assume |zap| is a simple
-sort of program, which takes one command-line argument -- a filename --
+as it would in a tool like `make`. We're going to assume `zap` is a simple
+sort of program, which takes one command-line argument — a filename —
 does something with that file, and prints out something interesting about it.
 
 Intest substitutes in values for the variables, so the actual shell command
@@ -92,26 +92,26 @@ might be:
 	$ myproject/zap myproject/tests/planets.txt >myproject/tests/_actual/planets.txt 2>&1
 =
 which uses bash shell notation to redirect both printed output, and error
-messages, to the |$A| file. That, as promised, is the "actual output".
+messages, to the `$A` file. That, as promised, is the "actual output".
 
 The next line in the recipe is then:
 = (text as Delia)
 	or: 'failed zap' $A
 =
 This tells Intest to halt the test if the shell command failed (i.e., if
-|zap| exited with a non-zero exit value). Intest uses the brief epitaph
-"failed zap" when summarising what happened, and prints out |$A|,
+`zap` exited with a non-zero exit value). Intest uses the brief epitaph
+"failed zap" when summarising what happened, and prints out `$A`,
 because presumably it ends with some error messages which the tester will
 want to see.
 
-So the recipe is only continued if, in fact, |zap| did not produce error
+So the recipe is only continued if, in fact, `zap` did not produce error
 messages. The next line is not quite what it seems:
 = (text as Delia)
 	show: $A
 =
-This tells Intest that if the tester ran the test specifying |-show| on
-the command line then |$A| is the right file to print out. If the tester
-didn't say |-show|, we print nothing here, and continue. The next steps
+This tells Intest that if the tester ran the test specifying `-show` on
+the command line then `$A` is the right file to print out. If the tester
+didn't say `-show`, we print nothing here, and continue. The next steps
 in the recipe are more consequential:
 = (text as Delia)
 	match text: $A $I
@@ -125,25 +125,25 @@ mark it in the summary:
 	$ intest/Tangled/intest -from myproject planets
 	-1- planets passed
 =
-The notation |-1-|, rather than the more usual |[1]|, conveys that the
+The notation `-1-`, rather than the more usual `[1]`, conveys that the
 test was incompletely passed in this way. This is easy to fix. If we're
 happy with the actual output, we "bless" it:
 = (text as ConsoleText)
 	$ intest/Tangled/intest -from myproject -bless planets
 	[1] planets passed
 =
-With |-bless| specified, when the recipe hits:
+With `-bless` specified, when the recipe hits:
 = (text as Delia)
 	match text: $A $I
 =
 Intest sets the ideal output to the actual output: the two then necessarily
-match, so the stage passes. (It's also possible to |-curse| a test, which deletes its ideal
-output, or to |-rebless| it, which replaces the current ideal output
-in favour of the current actual output -- in effect, it performs a curse
+match, so the stage passes. (It's also possible to `-curse` a test, which deletes its ideal
+output, or to `-rebless` it, which replaces the current ideal output
+in favour of the current actual output — in effect, it performs a curse
 immediately followed by a blessing.)
 
 Either way, if the recipe is still running at this point, all is good:
-|zap| produced no error messages, and we have output which is not known
+`zap` produced no error messages, and we have output which is not known
 to be incorrect. So we conclude with a triumphant:
 = (text as Delia)
 	pass: 'passed'
@@ -161,7 +161,7 @@ Intest is a "literate program", and to compile it from source you should
 first obtain the literate programming tool Inweb. (Both are available from
 Github.)
 
-To begin, place the distribution directories |intest| and |inweb| in the
+To begin, place the distribution directories `intest` and `inweb` in the
 same parent directory, and then change working directory to that. Thus, you
 should reach:
 = (text as ConsoleText)
@@ -180,7 +180,7 @@ will make us a MacOS version of this makefile, and so on. Now we can make:
 	$ make -f intest/intest.mk
 =
 All being well, you now have a working Intest. The executable is in
-|intest/Tangled/intest|, so:
+`intest/Tangled/intest`, so:
 = (text as ConsoleText)
 	$ intest/Tangled/intest -help
 =
@@ -190,7 +190,7 @@ should verify that it's in working order. A more interesting test is:
 =
 which runs the Inweb test suite (a very modest one, as it happens).
 
-Users of, for example, the |bash| shell may want to
+Users of, for example, the `bash` shell may want to
 = (text as ConsoleText)
 	$ alias intest='intest/Tangled/intest'
 =
@@ -201,22 +201,22 @@ system. There is no completely foolproof, cross-platform way to know this
 (on some Unixes, a program cannot determine its own location), so Intest
 decides by the following set of rules:
 
-- If the user, at the command line, specified |-at P|, for some path
-|P|, then we use that.
+- If the user, at the command line, specified `-at P`, for some path
+`P`, then we use that.
 - Otherwise, if the host operating system can indeed tell us where the
 executable is, we use that. This is currently implemented only on MacOS,
 Windows and Linux.
-- Otherwise, if the environment variable |$INTEST_PATH| exists and is
+- Otherwise, if the environment variable `$INTEST_PATH` exists and is
 non-empty, we use that.
-- And if all else fails, we assume that the location is |intest|, with
+- And if all else fails, we assume that the location is `intest`, with
 respect to the current working directory.
 
 If you're not sure what Intest has decided and suspect it may be wrong,
-running Intest with the |-verbose| switch will cause it to print its belief
+running Intest with the `-verbose` switch will cause it to print its belief
 about its location as it starts up.
 
 @ Intest returns an exit code of 0 if successful, or else it throws errors
-to |stderr| and returns 1 if unsuccessful. Successful means that it did what it
+to `stderr` and returns 1 if unsuccessful. Successful means that it did what it
 was asked to do: if it was asked to conduct a test and the test failed,
 Intest was still successful (the test was after all conducted), so it
 returns 0.

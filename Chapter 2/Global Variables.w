@@ -6,10 +6,10 @@ To manage a set of text variables held in common among all test cases.
 = (text)
 	-set hash_utility 'md5'
 =
-In Delia code it would then be referred to as |$$hash_utility|. This section
+In Delia code it would then be referred to as `$$hash_utility`. This section
 manages the global variables, but has nothing to do with Delia's local
 variables, which have single-dollar names conventionally written in
-capitals |$THUS|.
+capitals `$THUS`.
 
 =
 dictionary *globals_dictionary = NULL; /* until first variable is created */
@@ -61,7 +61,7 @@ text_stream *Globals::get(text_stream *name) {
 }
 
 @ Set is more interesting because we perform expansions of any uses of the
-notation |$$varname| into the current value of |varname| en route.
+notation `$$varname` into the current value of `varname` en route.
 
 =
 void Globals::set(text_stream *name, text_stream *original) {
@@ -91,7 +91,7 @@ void Globals::set(text_stream *name, text_stream *original) {
 
 @h As filenames.
 It turns out to be convenient to be able to read them as filenames, where
-we interpret |/| as a file separator even on Windows, so that common settings
+we interpret `/` as a file separator even on Windows, so that common settings
 files can be used across all platforms.
 
 =

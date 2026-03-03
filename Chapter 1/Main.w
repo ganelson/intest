@@ -52,11 +52,11 @@ int main(int argc, char **argv) {
 }
 
 @ We will need to modify the command-line tokens, so we have to get them out
-of their locale-encoded null-terminated C strings, in |argv[]|, and into
-proper Unicode |text_stream| strings, in |ts_argv[]|.
+of their locale-encoded null-terminated C strings, in `argv[]`, and into
+proper Unicode `text_stream` strings, in `ts_argv[]`.
 
 Note that if the tester specifies nothing at all at the command line, we
-invent |-help|. It follows that |ts_argc| will always be at least 2.
+invent `-help`. It follows that `ts_argc` will always be at least 2.
 
 @<Soak up the command line contents@> =
 	ts_argc = argc;
@@ -70,15 +70,15 @@ invent |-help|. It follows that |ts_argc| will always be at least 2.
 	if (argc == 1) ts_argv[1] = I"-help";
 
 @ Intest was originally designed for testing Inform 7, so it defaults to
-that as the project under test. Everybody else has to specify |-from P|,
-where |P| is the project location, at the front of the command line. Note
+that as the project under test. Everybody else has to specify `-from P`,
+where `P` is the project location, at the front of the command line. Note
 that we remove those two tokens if we do find them.
 
 (They are token numbers 1 and 2, not 0 and 1, because token 0 will be the
 shell command used to invoke Intest. We simply ignore token 0.)
 
 We enter extension mode only if the directory name for the project ends
-in |.i7xd|, meaning that our "project" is in fact an Inform extension
+in `.i7xd`, meaning that our "project" is in fact an Inform extension
 stored in directory format.
 
 @<Work out what the home project is@> =
@@ -139,7 +139,7 @@ stored in directory format.
 		}
 	}
 
-@ This utility has been borrowed from Inform's |html| module:
+@ This utility has been borrowed from Inform's `html` module:
 
 =
 filename *Main::filename_by_platform(pathname *models, text_stream *leafname) {

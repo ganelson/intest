@@ -9,9 +9,9 @@ command line: there will only ever be one of these.
 
 =
 typedef struct inprint_instructions {
-	int subcommand; /* our main mode of operation: one of the |*_CLSUB| constants */
-	int verbose_switch; /* |-verbose|: print a narrative of what's happening */
-	int silent_switch; /* |-silent|: print nothing if all is well */
+	int subcommand; /* our main mode of operation: one of the `*_CLSUB` constants */
+	int verbose_switch; /* `-verbose`: print a narrative of what's happening */
+	int silent_switch; /* `-silent`: print nothing if all is well */
 
 	struct inprint_build_settings build_settings;
 	struct inprint_draw_settings draw_settings;
@@ -45,7 +45,7 @@ inprint_instructions Configuration::read(int argc, char **argv) {
 	InprintDraw::initialise(&(args.draw_settings));
 
 @ The CommandLine section of Foundation needs to be told what command-line
-switches we want, other than the standard set (such as |-help|) which it
+switches we want, other than the standard set (such as `-help`) which it
 provides automatically.
 
 @e VERBOSE_CLSW
@@ -69,7 +69,7 @@ provides automatically.
 	InprintBuild::cli();
 	InprintDraw::cli();
 
-@ Foundation calls this on any |-switch| argument read:
+@ Foundation calls this on any `-switch` argument read:
 
 =
 void Configuration::switch(int id, int val, text_stream *arg, void *state) {

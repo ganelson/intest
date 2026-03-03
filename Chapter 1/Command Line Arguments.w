@@ -78,8 +78,8 @@ typedef struct intest_instructions {
 	int crash_switch;
 	int threads_available;
 	struct recipe *compiling_recipe; /* not a user setting, but convenient for parsing */
-	struct linked_list *search_path; /* of |test_source| */
-	struct linked_list *to_do_list; /* of |action_item| */
+	struct linked_list *search_path; /* of `test_source` */
+	struct linked_list *to_do_list; /* of `action_item` */
 	int implied_recipe_file;
 	int extension_mode;
 	struct pathname *home;
@@ -115,14 +115,14 @@ typedef struct intest_instructions {
 @h Actually reading the command line.
 What will do is to divide the sequence of tokens on the command line into
 "blocks". There are two sorts: "using" and "do" blocks. By default, the
-parameters form a do block, unless |-using| is found, in which case
-everything after that until a |-do| is found (if it is) counts as a
+parameters form a do block, unless `-using` is found, in which case
+everything after that until a `-do` is found (if it is) counts as a
 using block. For example,
 = (text)
 	alpha beta -using gamma -do delta epsilon
 =
-would be divided into the do block |alpha beta|, then the using block |gamma|,
-then the do block |delta epsilon|.
+would be divided into the do block `alpha beta`, then the using block `gamma`,
+then the do block `delta epsilon`.
 
 @e NO_BLOCK_MODE from 0
 @e USING_BLOCK_MODE
@@ -151,9 +151,9 @@ authorities. The front end (only) of a do block is allowed to contain the
 Foundation-defined switches, so we clear those out of the way first.
 
 Every program to be tested has to provide a "script". It can be chosen at
-the command line, in which case |args->implied_recipe_file| will be |FALSE|,
+the command line, in which case `args->implied_recipe_file` will be `FALSE`,
 but the default is to take the tested program's directory leafname and add
-|.intest|. For example, if we're testing |magiczap|, then the default is |magiczap.intest|.
+`.intest`. For example, if we're testing `magiczap`, then the default is `magiczap.intest`.
 
 @<Complete block just finished, if any@> =
 	switch (block_mode) {
@@ -191,9 +191,9 @@ routine picks up any that are. If a do block contains:
 = (text)
 	-threads=4 -no-colours -help alpha beta
 =
-then this code will read and act on |-threads=4 -no-colours -help|, returning
+then this code will read and act on `-threads=4 -no-colours -help`, returning
 an advanced start position for the do block, i.e., cutting it down to
-just |alpha beta|.
+just `alpha beta`.
 
 =
 int Instructions::read_switches(intest_instructions *args,
@@ -218,8 +218,8 @@ int Instructions::read_switches(intest_instructions *args,
 }
 
 @ This routine handles the configuration switches registered with Foundation
-back at the start of the section. (The built-in set, such as |-help|, is
-automatically handled by Foundation's |CommandLine::read_pair| routine.)
+back at the start of the section. (The built-in set, such as `-help`, is
+automatically handled by Foundation's `CommandLine::read_pair` routine.)
 
 =
 void Instructions::respond(int id, int val, text_stream *arg, void *state) {

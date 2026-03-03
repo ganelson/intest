@@ -75,7 +75,7 @@ happened since last time.</p>
 get on with it. This however is inefficient in practice because some tests
 take longer than others, so that towards the end of the test run some work
 threads would be standing idle, having completed their assignments, while
-others -- perhaps even just one -- were still working. That means many of
+others — perhaps even just one — were still working. That means many of
 the processor cores idling towards the end of the run, which is wasteful.</p>
 <p>Instead, then, we keep track of <code>MAX_THREADS</code> &quot;thread slots&quot;. Intest's main
 thread will give each slot a small pile of cases to work on, starting a work
@@ -86,7 +86,7 @@ thread stops the original work thread and starts another in the same slot.)</p>
 <p>It is not obvious what the best <code>QUANTUM</code> value is. A lower <code>QUANTUM</code> increases
 the likelihood that all processor cores will be fully occupied right to the
 end of the testing run, which minimises the time taken. But it also increases
-the amount of time lost due to latency on the main thread -- that is, the
+the amount of time lost due to latency on the main thread — that is, the
 fact that the main thread, which wakes only every second, can never react
 more quickly than that. If the <code>QUANTUM</code> is just 1 and a single test takes
 a single core 0.1s to run, then every core will be idle for 0.9s out of
@@ -113,10 +113,10 @@ finishes, and 8 threads run on each core over the test time.)</p>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">thread_slot</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">availability</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the three |*_THREAD| values above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">availability</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the three <code>*_THREAD</code> values above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">slot_log_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* local-to-this-slot debugging log name */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">split_log</span><span class="plain-syntax">; </span><span class="comment-syntax">/* local-to-this-slot debugging log */</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">foundation_thread</span><span class="plain-syntax"> </span><span class="identifier-syntax">work_thread</span><span class="plain-syntax">; </span><span class="comment-syntax">/* has no valid contents if |NO_THREAD| */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">foundation_thread</span><span class="plain-syntax"> </span><span class="identifier-syntax">work_thread</span><span class="plain-syntax">; </span><span class="comment-syntax">/* has no valid contents if <code>NO_THREAD</code> */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">foundation_thread_attributes</span><span class="plain-syntax"> </span><span class="identifier-syntax">attributes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* similarly */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sandbox</span><span class="plain-syntax">; </span><span class="comment-syntax">/* a safe area for threads in this slot to create files */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">counter</span><span class="plain-syntax">;</span>
@@ -273,10 +273,10 @@ blank.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">test</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_be_tested</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for example, |TEST_ACTION| or |BLESS_ACTION| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for example, <code>TEST_ACTION</code> or <code>BLESS_ACTION</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirect</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where to redirect console output */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allocated_to</span><span class="plain-syntax">; </span><span class="comment-syntax">/* an index into |thread_slots|, or else one of the values above */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">passed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or |NOT_APPLICABLE| if not yet run */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allocated_to</span><span class="plain-syntax">; </span><span class="comment-syntax">/* an index into <code>thread_slots</code>, or else one of the values above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">passed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or <code>NOT_APPLICABLE</code> if not yet run */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">full_results</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">test</span><span class="plain-syntax"> *</span><span class="identifier-syntax">previous_completed_test</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
@@ -298,7 +298,7 @@ blank.</p>
 <ul class="endnotetexts"><li>The structure test is accessed in 2/act and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Distributing.</b>  We will maintain a reverse linked list which holds the tests in the sequence
-in which they completed -- almost certainly out of their original scheduling
+in which they completed — almost certainly out of their original scheduling
 order, and sometimes drastically so. <code>last_completed_test</code> is always the
 most recent.</p>
 </div>

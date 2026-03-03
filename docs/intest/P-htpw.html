@@ -97,14 +97,14 @@ the example above, the instructions might now be <code>-verbose</code>, <code>Sa
 <p>Once <a href="2-th.html" class="internal">The Historian</a> is done, the instructions are passed to
 <a href="1-cla.html#SP1" class="internal">Instructions::read</a>, which parses them much more fully (see below) and
 returns an <a href="1-cla.html#SP2" class="internal">intest_instructions</a> object.</p>
-<p><a href="1-mn.html" class="internal">Main</a> then deals with a few incidental configuration switches -- for
-example, turning on or off coloured terminal text output -- and then calls
+<p><a href="1-mn.html" class="internal">Main</a> then deals with a few incidental configuration switches — for
+example, turning on or off coloured terminal text output — and then calls
 <a href="2-gv.html#SP7" class="internal">Globals::create_platform</a>. This creates the first global variable available to
 testing scripts: <code>$$platform</code>, which might be, say, <code>&quot;windows&quot;</code>. A little later,
 <code>$$workspace</code> follows, the path to the temporary filing system space used by
 Intest. Globals always have these double-dollar-signed names, and are
 also created by USING blocks (see below): see the functions <a href="2-gv.html#SP4" class="internal">Globals::set</a>
-and <a href="2-gv.html#SP3" class="internal">Globals::get</a>. Globals have only one data type -- they all hold text;
+and <a href="2-gv.html#SP3" class="internal">Globals::get</a>. Globals have only one data type — they all hold text;
 but they are often just file system locations written out longhand. See
 <a href="2-gv.html#SP5" class="internal">Globals::to_pathname</a> and <a href="2-gv.html#SP6" class="internal">Globals::to_filename</a>.</p>
 <p>All is now prepared, and <a href="1-mn.html" class="internal">Main</a> simply hands over the <a href="1-cla.html#SP2" class="internal">intest_instructions</a>
@@ -226,7 +226,7 @@ processor cores, then there will be \INWEBMATH(N\INWEBMATH) simultaneous testing
 and it's <a href="3-ts.html" class="internal">The Scheduler</a> which spreads the tests out, rather as if it were
 dealing out a pack of cards to \INWEBMATH(N\INWEBMATH) players sitting around a table.</p>
 <p>Each thread runs from <a href="3-ts.html#SP10" class="internal">Scheduler::perform_work</a>, a function which runs
-through its tests -- its hand of cards, as it were -- and then marks itself
+through its tests — its hand of cards, as it were — and then marks itself
 idle so that <a href="3-ts.html#SP10" class="internal">Scheduler::perform_work</a>, which is asleep on the main thread
 but wakes once per second to check on the workers, can then close it.
 Once all threads have finished, and Intest is back to being a single-threaded
@@ -235,28 +235,28 @@ program, <a href="3-ts.html#SP10" class="internal">Scheduler::perform_work</a> s
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Individual tests.</b>  What the workers do is to call <a href="4-tt2.html#SP1" class="internal">Tester::test</a> on each <a href="3-ts.html#SP8" class="internal">test</a> it is given.
 A <a href="3-ts.html#SP8" class="internal">test</a> object is essentially an action code, plus a <a href="2-rf.html#SP10" class="internal">test_case</a>, plus
-a work area in the file system -- each worker thread has its own work area,
+a work area in the file system — each worker thread has its own work area,
 since otherwise interference between them would create havoc; but successive
 tests run by the same worker use the same work area, which is cleaned after
 each use by <a href="4-tt2.html#SP3" class="internal">Tester::purge_work_area</a>.</p>
 <p>The bulk of <a href="4-tt2.html#SP1" class="internal">Tester::test</a>, though, is an interpreter for the &quot;recipe&quot;
-program -- that is, the Delia program assigned to the test case in question,
+program — that is, the Delia program assigned to the test case in question,
 which has been precompiled into a quick-to-interpret form by <a href="4-tdc.html" class="internal">The Delia Compiler</a>,
 something which was done back when the recipe file was read in.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The most complex algorithm in Intest is probably the one performing token
 expansion, at <a href="4-tt2.html#SP5" class="internal">Tester::expand</a>. This expands a token like <code>$WORK/Example.inform</code>
-by substituting in the current value of the variable <code>$WORK</code> -- note that these
+by substituting in the current value of the variable <code>$WORK</code> — note that these
 are single-dollar, i.e. local to the current recipe, variables, as distinct from
 the double-dollar, global, ones. That expansion process isn't so simple because
 if <code>$WORK</code> expands to a filename with spaces in, then we may need to end up with
-something which still ends up as a single shell command token -- see
+something which still ends up as a single shell command token — see
 <a href="4-tt2.html#SP6" class="internal">Tester::quote_expand</a> for how this is done.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  When tests fail, it is usually because some output text doesn't match the
-&quot;blessed&quot; text which had been expected -- only usually, because Delia recipes can
+&quot;blessed&quot; text which had been expected — only usually, because Delia recipes can
 fail tests for quite a number of reasons. Still, this is the commonest case,
 and then <a href="3-td.html" class="internal">The Differ</a> performs a Unix-style <code>diff</code> (i.e., summary of
 differences) which can be reported back at the command line. <a href="3-td.html" class="internal">The Differ</a>
@@ -287,8 +287,8 @@ and <a href="4-tt2.html#SP1" class="internal">Tester::test</a>, and to add docum
 </li>
 <li>
 <p>If that still isn't good enough, and what you really need is a different
-way to process existing recipes, see if a new action -- such as <code>-test</code>,
-<code>-bless</code>, <code>-rebless</code> and so on -- would meet your needs. If so, add this to
+way to process existing recipes, see if a new action — such as <code>-test</code>,
+<code>-bless</code>, <code>-rebless</code> and so on — would meet your needs. If so, add this to
 <a href="2-act.html#SP1" class="internal">Actions::read_do_instructions</a> and <a href="2-act.html#SP7" class="internal">Actions::perform</a>, and document it
 at <a href="M-iatcl.html" class="internal">Intest at the Command Line</a>.</p>
 </li>
@@ -298,9 +298,9 @@ but if so, see <a href="1-cla.html#SP1" class="internal">Instructions::read</a> 
 again, document at <a href="M-iatcl.html" class="internal">Intest at the Command Line</a>.</p>
 </li>
 <li>
-<p>If what you want is to expand the universe of test cases in a new way --
+<p>If what you want is to expand the universe of test cases in a new way —
 say, to pull them down from some Internet-based repository rather than read
-them from local files -- create a new category of <a href="2-rf.html#SP3" class="internal">test_source</a>, and
+them from local files — create a new category of <a href="2-rf.html#SP3" class="internal">test_source</a>, and
 add this to <a href="2-rf.html#SP2" class="internal">RecipeFiles::read_using_instructions</a>.</p>
 </li>
 <li>

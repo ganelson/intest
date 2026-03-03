@@ -5,14 +5,14 @@ To extract the text of a test case from its file on disc.
 @ Recall that each test case lives somewhere in a file.
 
 Our main task in this section if to extract that test case, which is a
-trivial operation for |PLAIN_FORMAT| -- the entire file is the test case --
+trivial operation for `PLAIN_FORMAT` — the entire file is the test case —
 but non-trivial for the other cases, and requires some exhausting parsing.
 
 =
 typedef struct extraction_state {
 	text_stream *DEST;
 	struct test_case *tc;
-	struct linked_list *case_list; /* of |test_case| */
+	struct linked_list *case_list; /* of `test_case` */
 	int documentation_found;
 	int file_format;
 	int seek_ref;
@@ -34,10 +34,10 @@ typedef struct extraction_state {
 } extraction_state;
 
 @ The Extractor can be called with four commands, all (not coincidentally)
-action commands: |SOURCE_ACTION|, |SCRIPT_ACTION|, |CONCORDANCE_ACTION| and
-|CENSUS_ACTION|. The first three indeed implement |-source|, |-script| and
-|-concordance|, but the Extractor is used for other purposes too. In
-|CENSUS_ACTION|, it is used simply to identify the test cases in a file.
+action commands: `SOURCE_ACTION`, `SCRIPT_ACTION`, `CONCORDANCE_ACTION` and
+`CENSUS_ACTION`. The first three indeed implement `-source`, `-script` and
+`-concordance`, but the Extractor is used for other purposes too. In
+`CENSUS_ACTION`, it is used simply to identify the test cases in a file.
 The Extractor can also be called from Delia code. So it's a more
 general-purpose function than it looks.
 
@@ -180,7 +180,7 @@ this is a typical start of an EXAMPLE file:
 	    The Hut and the Tropical Beach are rooms.
 =
 The test case can only begin after the header, lines of which can never open
-with the paste markers |{*}| or |{**}|, so the following safely ignores
+with the paste markers `{*}` or `{**}`, so the following safely ignores
 the header:
 
 @<Consider entering extraction mode for EXAMPLE@> =
@@ -245,7 +245,7 @@ the header:
 	}
 	DISCARD_TEXT(line_content)
 
-@ Examples are found after the |---- Documentation ----| divider in an
+@ Examples are found after the `---- Documentation ----` divider in an
 extension file. There can be more than one.
 
 @<Consider entering extraction mode for EXTENSION@> =
@@ -335,7 +335,7 @@ void Extractor::line_out(text_stream *text, text_file_position *tfp, extraction_
 	Regexp::dispose_of(&mr);
 }
 
-@ When we SOURCE, we write the line to the text stream |es->DEST|, but
+@ When we SOURCE, we write the line to the text stream `es->DEST`, but
 we also note in passing whether it contains an Inform 7 "Test me with..."
 or "Use command line echoing" sentence.
 
@@ -367,7 +367,7 @@ sentence. Again, useful only for Inform 7.
 		}
 	}
 
-@ This unpacks a script like |yes / no / maybe| into a column with one
+@ This unpacks a script like `yes / no / maybe` into a column with one
 command per line:
 = (text)
 	yes
@@ -391,7 +391,7 @@ void Extractor::script_out(OUTPUT_STREAM, text_stream *from) {
 	DISCARD_TEXT(script)
 }
 
-@ A CONCORDANCE implements the |-concordance| command-line feature of Inform.
+@ A CONCORDANCE implements the `-concordance` command-line feature of Inform.
 It essentially shows how to reconcile line numbers in the original file with
 line numbers in the test case.
 
@@ -404,7 +404,7 @@ line numbers in the test case.
 
 @ Slightly cheekily, the Extractor with almost all features turned off can
 be used as a way to copy a file into a text stream verbatim, like the Unix
-|cat| utility:
+`cat` utility:
 
 =
 void Extractor::cat(OUTPUT_STREAM, filename *F) {

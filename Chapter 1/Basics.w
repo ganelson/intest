@@ -29,7 +29,7 @@ void Basics::end(void) {
 
 @h Simple allocations.
 Not all of our memory will be claimed in the form of structures: now and then
-we need to use the equivalent of traditional |malloc| and |calloc| routines.
+we need to use the equivalent of traditional `malloc` and `calloc` routines.
 
 @e TURN_STORAGE_MREASON
 @e COMMAND_HISTORY_MREASON
@@ -54,7 +54,7 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Log::declare_aspect(TESTER_DA, U"tester", FALSE, FALSE);
 
 @h Writers and loggers.
-This enables the |%k| and |$L| format notations in |WRITE| and |LOG|
+This enables the `%k` and `$L` format notations in `WRITE` and `LOG`
 respectively.
 
 @<Declare new writers and loggers@> =

@@ -11,8 +11,8 @@ The following routine will be called to take care of the actual command:
 = (text)
 	-bless plain twinprimes
 =
-The tokens |-bless|, |plain| and |twinprimes| will be in the array |argv|,
-at indexes |from_arg_n| onwards. |to_arg_n| is the index after the last one.
+The tokens `-bless`, `plain` and `twinprimes` will be in the array `argv`,
+at indexes `from_arg_n` onwards. `to_arg_n` is the index after the last one.
 The token list can contain multiple actions, one after the other.
 
 =
@@ -25,7 +25,7 @@ void Actions::read_do_instructions(intest_instructions *args,
 
 		int action = TEST_ACTION; /* which command is used */
 		text_stream *action_details = Str::new();
-		int ops_from = index+1, ops_to = index; /* operands run from |ops_from| to |ops_to| */
+		int ops_from = index+1, ops_to = index; /* operands run from `ops_from` to `ops_to` */
 		filename *redirect_output = NULL; /* optional file to redirect output to */
 
 		@<Scan the command and advance index to the end of it@>;
@@ -40,8 +40,8 @@ void Actions::read_do_instructions(intest_instructions *args,
 		LOG("\n");
 	}
 	
-@ The |arity| is the expected number of operands which will follow the
-command, or is |-1| to mean "any positive number of operands".
+@ The `arity` is the expected number of operands which will follow the
+command, or is `-1` to mean "any positive number of operands".
 
 @<Scan the command and advance index to the end of it@> =		
 	int pos = index + 1, arity = -1;
@@ -51,7 +51,7 @@ command, or is |-1| to mean "any positive number of operands".
 	index = pos - 1;
 
 @ A command begins with one of the following tokens: or, if it doesn't, we
-pretend that it begins with |test|.
+pretend that it begins with `test`.
 
 The following enumerates the "do commands", or as we'll call them in this
 section, "actions":
@@ -106,13 +106,13 @@ section, "actions":
 	else if (Str::get_at(opt, 0) == '-') Errors::fatal_with_text("no such action as: %S", opt);
 	else { opt = I"-test"; action = TEST_ACTION; pos = index; }
 
-@ After the command, operands: e.g., in the token list |-bless A B -catalogue|,
-the command |-bless| has two operands |A| and |B|. We know that |-catalogue|
+@ After the command, operands: e.g., in the token list `-bless A B -catalogue`,
+the command `-bless` has two operands `A` and `B`. We know that `-catalogue`
 is not an operand because it starts with a dash but is not a negative number.
-(Thus, |-12| would be allowed as an operand, but |-minustwelve| would not.)
+(Thus, `-12` would be allowed as an operand, but `-minustwelve` would not.)
 
-At this point |pos| is the index of the first operand. We must find the range
-|ops_from| to |ops_to|.
+At this point `pos` is the index of the first operand. We must find the range
+`ops_from` to `ops_to`.
 
 @<Scan for the operands@> =
 	ops_from = pos;
@@ -139,7 +139,7 @@ At this point |pos| is the index of the first operand. We must find the range
 			Errors::fatal_with_text("this action must be followed by case name(s): %S", opt);
 	}
 
-@ After the operands, there can optionally be |-to F|, where |F| is a filename.
+@ After the operands, there can optionally be `-to F`, where `F` is a filename.
 
 @<Parse an optional redirection filename@> =
 	if ((pos+1 < to_arg_n) && (Str::eq(argv[pos], I"-to"))) {
@@ -216,13 +216,13 @@ At this point |pos| is the index of the first operand. We must find the range
 		Actions::create(action, redirect_output, NULL, args,
 			assoc_number, assoc_number2, assoc_file1, assoc_file2, assoc_text);
 
-@ So, then, a command such as |-test alpha beta gamma| will cause three
-instances of the "action item" structure to be created, of type |TEST_ACTION|
-on |alpha|, |beta| and |gamma| respectively.
+@ So, then, a command such as `-test alpha beta gamma` will cause three
+instances of the "action item" structure to be created, of type `TEST_ACTION`
+on `alpha`, `beta` and `gamma` respectively.
 
 =
 typedef struct action_item {
-	int action_type; /* one of the |_ACTION| cases above */
+	int action_type; /* one of the `_ACTION` cases above */
 	int test_form;
 	struct case_specifier operand;
 	struct filename *redirection_filename;
@@ -254,7 +254,7 @@ void Actions::create(int action, filename *redirect_output, text_stream *op, int
 }
 
 @ A "case specifier" says what case(s) an action should apply to, and this
-can involve a wildcard such as |all|:
+can involve a wildcard such as `all`:
 
 =
 typedef struct case_specifier {
@@ -283,8 +283,8 @@ case_specifier Actions::parse_specifier(text_stream *token, intest_instructions 
 
 @h Wildcards.
 
-@d COUNT_WILDCARD_BASE 1001 /* 1001 is |^1|, 1002 is |^2|, ... */
-@d EXTENSION_WILDCARD_BASE 101 /* 101 is |A|, 102 is |B|, ... */
+@d COUNT_WILDCARD_BASE 1001 /* 1001 is `^1`, 1002 is `^2`, ... */
+@d EXTENSION_WILDCARD_BASE 101 /* 101 is `A`, 102 is `B`, ... */
 @d GROUP_WILDCARD 2
 @d REGEXP_WILDCARD 1
 @d TAMECARD 0
@@ -545,8 +545,8 @@ void Actions::perform_inner(OUTPUT_STREAM, intest_instructions *args,
 	if (file_opened) STREAM_CLOSE(TO);
 }
 
-@ If the leafname of the redirection file is |something_[NUMBER]| then we
-substitute in the case number for |[NUMBER]|, and similarly for |[NAME]|.
+@ If the leafname of the redirection file is `something_[NUMBER]` then we
+substitute in the case number for `[NUMBER]`, and similarly for `[NAME]`.
 
 @<Expand NAME and NUMBER in the redirection filename@> =
 	TEMPORARY_TEXT(leaf)

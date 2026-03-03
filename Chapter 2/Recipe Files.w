@@ -123,9 +123,9 @@ the prototype of the function looks like something which only parses a
 chunk of the command line, in fact it also parses lines of tokens from
 recipe files (see above).
 
-At any rate, we have a line to tokens |USE1 USE2 ...USEn|, somewhere in
-the array |argv|. |from_arg_n| is the index of |USE1|, and |to_arg_n| is
-the index after |USEn|.
+At any rate, we have a line to tokens `USE1 USE2 ...USEn`, somewhere in
+the array `argv`. `from_arg_n` is the index of `USE1`, and `to_arg_n` is
+the index after `USEn`.
 
 =
 void RecipeFiles::read_using_instructions(intest_instructions *args,
@@ -270,11 +270,11 @@ There are five basic search path types:
 
 =
 typedef struct test_source {
-	int search_path_type; /* one of the |_SPT| cases above */
+	int search_path_type; /* one of the `_SPT` cases above */
 	int multiple; /* is this a pathname to a folder? */
 	struct filename *exactly_this;
 	struct pathname *within_this;
-	struct linked_list *contents; /* of |test_case| */
+	struct linked_list *contents; /* of `test_case` */
 	CLASS_DEFINITION
 } test_source;
 
@@ -325,7 +325,7 @@ void RecipeFiles::expand(OUTPUT_STREAM, text_stream *from) {
 }
 
 @h Scanning and extracting.
-The following looks for all the test cases it can find in a directory |P|.
+The following looks for all the test cases it can find in a directory `P`.
 
 =
 void RecipeFiles::scan_directory_for_cases(linked_list *L,
@@ -441,13 +441,13 @@ arise only for Inform 7.
 =
 typedef struct test_case {
 	struct filename *test_location;
-	int format_reference; /* one of the |_FORMAT| constants above */
+	int format_reference; /* one of the `_FORMAT` constants above */
 	int letter_reference; /* 1 for A, 2 for B, ..., or 0 for none */
 
 	struct text_stream *test_case_name;
 	struct text_stream *test_case_title;
-	struct text_stream *test_recipe_name; /* such as |[Recipe]| */
-	int test_type; /* one of the |_SPT| constants above */
+	struct text_stream *test_recipe_name; /* such as `[Recipe]` */
+	int test_type; /* one of the `_SPT` constants above */
 	int cursed; /* currently has no ideal output to test against */
 	struct text_stream *known_hash; /* md5 hash of known-correct code */
 	int no_kv_pairs;
@@ -523,9 +523,9 @@ void RecipeFiles::AddKVPair(test_case *tc, text_stream *key, text_stream *value)
 	}
 }
 
-@ The following is the back end for the |-find| do action, and lists all
+@ The following is the back end for the `-find` do action, and lists all
 test cases whose names or titles match a given regular expression. If the
-|match| expression is empty, it lists everything in the search list.
+`match` expression is empty, it lists everything in the search list.
 
 @d MAX_NAME_MATCH_LENGTH 1024
 

@@ -59,32 +59,45 @@ void InprintBuild::run(inprint_instructions *ins) {
 		ins->temp_file_setting = Filenames::in(bs->archives, Filenames::get_leafname(ins->temp_file_setting));
 	}
 	build_reader br;
-	br.report = STDOUT;
-	if (silent_mode) br.report = NULL;
-	br.file_being_written = NULL;
-	br.lines_written = 0;
-	br.begin_found = FALSE; br.end_found = FALSE;
-	br.lc = 0;
-	br.to = bs->in;
+	@<Initialise the build reader state (except for file_out)@>;
 	TextFiles::read(ins->temp_file_setting, TRUE, "unable to open blueprint", TRUE,
 		InprintBuild::reader, NULL, (void *) &br);
-	if (br.file_being_written)
-		Errors::at_position("ended in mid-file", ins->temp_file_setting, br.lc);
-	else if (br.end_found == FALSE)
-		Errors::at_position("ended without 'end'", ins->temp_file_setting, br.lc);
+	@<Check sanity of the final state@>;
 }
 
+@ We will walk through the blueprint one line at a time, constructing contents
+in our directory to match. That means we need to keep track of what we're doing:
+this is the state preserved between lines.
+
+=
 typedef struct build_reader {
 	int begin_found;
 	int end_found;
 	struct text_stream *report;
 	struct filename *file_being_written;
 	int lines_written;
-	struct text_stream file_out;
+	struct text_stream file_out; /* note: not a pointer */
 	int lc;
 	struct pathname *to;
 } build_reader;
 
+@<Initialise the build reader state (except for file_out)@> =
+	br.begin_found = FALSE; br.end_found = FALSE;
+	br.report = STDOUT; if (silent_mode) br.report = NULL;
+	br.file_being_written = NULL;
+	br.lines_written = 0;
+	br.lc = 0;
+	br.to = bs->in;
+
+@<Check sanity of the final state@> =
+	if (br.file_being_written)
+		Errors::at_position("ended in mid-file", ins->temp_file_setting, br.lc);
+	else if (br.end_found == FALSE)
+		Errors::at_position("ended without 'end'", ins->temp_file_setting, br.lc);
+
+@ So, then, here is the function called for each blueprint line.
+
+=
 void InprintBuild::reader(text_stream *line, text_file_position *tfp, void *void_br) {
 	build_reader *br = (build_reader *) void_br;
 	text_stream *OUT = br->report;
@@ -93,69 +106,18 @@ void InprintBuild::reader(text_stream *line, text_file_position *tfp, void *void
 	if (Str::get_at(line, 0) == '\t') from = 1;
 	else if (Str::begins_with(line, I"    ")) from = 4;
 	else if ((Str::is_whitespace(line)) && (br->file_being_written)) from = 0;
-	if (from >= 0) {
-		if (br->file_being_written) {
-			if (br->lines_written > 0) PUT_TO(&(br->file_out), '\n');
-			for (int i=from; i<Str::len(line); i++)
-				PUT_TO(&(br->file_out), Str::get_at(line, i));
-			br->lines_written++;
-		} else {
-			Errors::in_text_file("file content occurs outside of file", tfp);
-			return;
-		}
-	} else {
-		if (br->file_being_written) {
-			STREAM_CLOSE(&(br->file_out));
-			WRITE("%d line(s) written to %f\n", br->lines_written, br->file_being_written);
-			br->file_being_written = NULL;
-			br->lines_written = 0;
-		}
+	if (from >= 0) @<This is a tab-indented line and must be textual file contents@>
+	else {
 		Str::trim_all_white_space_at_end(line);
-		if (br->end_found) {
-			if (Str::len(line) == 0) return;
-			Errors::in_text_file("material after end", tfp);
-			return;
-		}
-		if (Str::eq(line, I"begin")) {
-			if (br->begin_found) {
-				Errors::in_text_file("begin occurs twice", tfp);
-				return;
-			}
-			br->begin_found = TRUE;
-			return;
-		}
-		if (Str::eq(line, I"end")) {
-			if (br->end_found) {
-				Errors::in_text_file("end occurs twice", tfp);
-				return;
-			}
-			br->end_found = TRUE;
-			return;
-		}
-		if (br->begin_found == FALSE) {
-			Errors::in_text_file("material without begin", tfp);
-			return;
-		}
+		if (br->file_being_written) @<Close the current textual file being written@>;
+		@<Manage the begin and end markers@>;
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, line, U"directory: *(%c+)")) {
-			pathname *P = Pathnames::from_text_relative(br->to, mr.exp[0]);
-			if (Pathnames::create_in_file_system(P))
-				WRITE("created directory %p\n", P);
-			else
-				Errors::fatal_with_path("unable to create directory", P);
+			@<Create a subdirectory@>;
 		} else if (Regexp::match(&mr, line, U"opaque file: *(%c+)")) {
-			filename *F = Filenames::from_text_relative(br->to, mr.exp[0]);
-			text_stream *TO = &(br->file_out);
-			if (STREAM_OPEN_TO_FILE(TO, F, UTF8_ENC) == FALSE)
-				Errors::fatal_with_file("unable to write opaque file", F);
-			WRITE_TO(TO, "This is a dummy file '%S' created by inprint.\n", mr.exp[0]);
-			STREAM_CLOSE(&(br->file_out));
-			WRITE("wrote opaque file with dummy contents %f\n", F);
+			@<Create a dummy file to represent something opaque@>;
 		} else if (Regexp::match(&mr, line, U"file: *(%c+)")) {
-			br->file_being_written = Filenames::from_text_relative(br->to, mr.exp[0]);
-			text_stream *TO = &(br->file_out);
-			if (STREAM_OPEN_TO_FILE(TO, br->file_being_written, UTF8_ENC) == FALSE)
-				Errors::fatal_with_file("unable to write file", br->file_being_written);
+			@<Open a new textual file to be written@>;
 		} else {
 			Errors::in_text_file("unknown command in blueprint file", tfp);
 			return;
@@ -163,3 +125,75 @@ void InprintBuild::reader(text_stream *line, text_file_position *tfp, void *void
 		Regexp::dispose_of(&mr);		
 	}
 }
+
+@<This is a tab-indented line and must be textual file contents@> =
+	if (br->file_being_written) {
+		if (br->lines_written > 0) PUT_TO(&(br->file_out), '\n');
+		for (int i=from; i<Str::len(line); i++)
+			PUT_TO(&(br->file_out), Str::get_at(line, i));
+		br->lines_written++;
+	} else {
+		Errors::in_text_file("file content occurs outside of file", tfp);
+		return;
+	}
+
+@<Close the current textual file being written@> =
+	STREAM_CLOSE(&(br->file_out));
+	WRITE("%d line(s) written to %f\n", br->lines_written, br->file_being_written);
+	br->file_being_written = NULL;
+	br->lines_written = 0;
+
+@<Manage the begin and end markers@> =
+	if (br->end_found) {
+		if (Str::len(line) == 0) return;
+		Errors::in_text_file("material after end", tfp);
+		return;
+	}
+	if (Str::eq(line, I"begin")) {
+		if (br->begin_found) {
+			Errors::in_text_file("begin occurs twice", tfp);
+			return;
+		}
+		br->begin_found = TRUE;
+		return;
+	}
+	if (Str::eq(line, I"end")) {
+		if (br->end_found) {
+			Errors::in_text_file("end occurs twice", tfp);
+			return;
+		}
+		br->end_found = TRUE;
+		return;
+	}
+	if (br->begin_found == FALSE) {
+		Errors::in_text_file("material without begin", tfp);
+		return;
+	}
+
+@<Create a subdirectory@> =
+	pathname *P = Pathnames::from_text_relative(br->to, mr.exp[0]);
+	if (Pathnames::create_in_file_system(P))
+		WRITE("created directory %p\n", P);
+	else
+		Errors::fatal_with_path("unable to create directory", P);
+
+@ Obviously, if the blueprint tells us only that there should be a file
+called `icon.jpg`, say, then we can't know what to put in it. So we create
+a small bogus file of the right name. This at least means that `inprint build`
+is a one-sided inverse to `inprint draw`: building from a blueprint and
+then drawing a new blueprint from the result recreates the original blueprint.
+
+@<Create a dummy file to represent something opaque@> =
+	filename *F = Filenames::from_text_relative(br->to, mr.exp[0]);
+	text_stream *TO = &(br->file_out);
+	if (STREAM_OPEN_TO_FILE(TO, F, UTF8_ENC) == FALSE)
+		Errors::fatal_with_file("unable to write opaque file", F);
+	WRITE_TO(TO, "This is a dummy file '%S' created by inprint.\n", mr.exp[0]);
+	STREAM_CLOSE(&(br->file_out));
+	WRITE("wrote opaque file with dummy contents %f\n", F);
+
+@<Open a new textual file to be written@> =
+	br->file_being_written = Filenames::from_text_relative(br->to, mr.exp[0]);
+	text_stream *TO = &(br->file_out);
+	if (STREAM_OPEN_TO_FILE(TO, br->file_being_written, UTF8_ENC) == FALSE)
+		Errors::fatal_with_file("unable to write file", br->file_being_written);

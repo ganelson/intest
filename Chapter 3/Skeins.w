@@ -9,12 +9,12 @@ of which command to give. Such branches are useful when considering what
 lines of play are possible, but Intest is only interested in the past, not
 the future, and there is only one linear past. So Intest will only consider
 skeins which are not so much trees as trunks: a skein for us is going to be
-a linked list where each node is a |skein| structure, not a tree of them.
+a linked list where each node is a `skein` structure, not a tree of them.
 
 All this may seem as if it applies only to testing interactive fiction
 projects created by Inform, and certainly the full power of the code below is
-only really useful to implement the Delia commands |match glulxe transcript|
-and |match frotz transcript|. But it is actually used for every sort of match.
+only really useful to implement the Delia commands `match glulxe transcript`
+and `match frotz transcript`. But it is actually used for every sort of match.
 When Intest needs to match two plain text files, it creates skeins for them
 with one node per line of text. It follows that virtually all Intest runs do
 use the code below, even if only minimally.
@@ -31,12 +31,12 @@ Skein text can be supplied in a variety of formats:
 
 =
 typedef struct skein {
-	int from_format; /* one of the |*_SKF| constants above */
+	int from_format; /* one of the `*_SKF` constants above */
 	struct text_stream *text; /* the real content, the text of what happened */
 	struct text_stream *label;
 	int line_count_label;
 	int disposed_of;
-	struct skein *down; /* thus making this a linked list of |skein| */
+	struct skein *down; /* thus making this a linked list of `skein` */
 	CLASS_DEFINITION
 } skein;
 
@@ -58,7 +58,7 @@ void Skeins::write_node_label(OUTPUT_STREAM, char *format, void *vS) {
 }
 
 @h Stringing skeins together.
-The Tester, when trying to match two files |A| and |B|, calls one of the
+The Tester, when trying to match two files `A` and `B`, calls one of the
 following on each to turn it into a skein.
 
 =
@@ -198,8 +198,8 @@ document that format.
 		@<We want this node@>;
 	Regexp::dispose_of(&mr);
 
-@ Given the line |hello, <it>you|, split into two lines |hello, | and
-|<it>you|, by calling this line-reading routine again on each. (That's
+@ Given the line `hello, <it>you`, split into two lines `hello, ` and
+`<it>you`, by calling this line-reading routine again on each. (That's
 what's nefarious.)
 
 @<Nefariously force a line break before any tag opener@> =
@@ -218,9 +218,9 @@ what's nefarious.)
 		}
 	}
 
-@ If we're here, the only place a |<| can be is at the start of a line.
-If we can also see a matching |>| then again split, so that |<it>you|
-would split into two lines |<it>| and |you|.
+@ If we're here, the only place a `<` can be is at the start of a line.
+If we can also see a matching `>` then again split, so that `<it>you`
+would split into two lines `<it>` and `you`.
 
 @<Nefariously make a short tag its own line@> =
 	if (Str::get_first_char(line_text) == '<') {
@@ -241,7 +241,7 @@ would split into two lines |<it>| and |you|.
 	}
 
 @ So now a line is either an entire tag, or entirely not a tag. In a Skein
-file, |<item nodeId="...">| is what declares a node ID, and it's now easy
+file, `<item nodeId="...">` is what declares a node ID, and it's now easy
 to match for that:
 
 @<Extract the node ID, if this line declares one@> =
@@ -277,7 +277,7 @@ we are at a node whose contents we care about:
 	}
 
 @ This code is used only for matching problem message output from the I7
-compiler. We ignore |Offending filename| lines for much the reason above --
+compiler. We ignore `Offending filename` lines for much the reason above —
 they exist only in fatal file-system problem messages in any case. A line
 in the form
 = (text)
@@ -412,7 +412,7 @@ Otherwise, we simply add the new line to the current turn buffer.
 		Str::concatenate(sks->turn_buffer, line_text);
 	PUT_TO(sks->turn_buffer, '\n');
 
-@ This "utility" simply removes the XML escapes for |<|, |>| and |&|.
+@ This "utility" simply removes the XML escapes for `<`, `>` and `&`.
 
 =
 void Skeins::remove_XML_escapes(OUTPUT_STREAM, text_stream *F) {
@@ -453,8 +453,8 @@ void Skeins::new_node(skein_state *sks, int ln, text_stream *label, int format) 
 	new_node->disposed_of = FALSE;
 }
 
-@ While this routine brings the existing node -- that is, the one currently
-being written to -- to an end:
+@ While this routine brings the existing node — that is, the one currently
+being written to — to an end:
 
 =
 void Skeins::flush(skein_state *sks) {
@@ -464,7 +464,7 @@ void Skeins::flush(skein_state *sks) {
 }
 
 @h Disposing of skeins.
-On a long run of many tests, Intest creates an enormous number of |skein|
+On a long run of many tests, Intest creates an enormous number of `skein`
 structures, so this is the one data structure it takes the trouble to
 deallocate when it's done with them. We need to do this depth-first, i.e.,
 from the bottom upwards, because if you start at the top then you destroy
@@ -487,7 +487,7 @@ So, this was what it was all about. Given two skeins, do they hold the same
 sequence of pieces of text? And if not, find a clean way to express the
 differences between them.
 
-To match perfectly, the skeins |A| (actual) and |I| (ideal) must have the
+To match perfectly, the skeins `A` (actual) and `I` (ideal) must have the
 same number of nodes, and each corresponding pair of nodes must have the
 same "label" and the same "text".
 
@@ -612,9 +612,9 @@ void Skeins::show_fragment(OUTPUT_STREAM, text_stream *what, int as_HTML) {
 	}
 }
 
-@ This powers |-test-skein|, which specifies an exact node ID and wants to
-compare only the text at that one node. We therefore make mimimal |skein|
-structures -- each a singleton -- and then just call the Differ directly
+@ This powers `-test-skein`, which specifies an exact node ID and wants to
+compare only the text at that one node. We therefore make minimal `skein`
+structures — each a singleton — and then just call the Differ directly
 to compare the two.
 
 =

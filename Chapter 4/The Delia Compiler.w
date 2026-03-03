@@ -45,10 +45,10 @@ set of commands, enumerated as follows.
 
 =
 typedef struct recipe_command {
-	int rc_code; /* one of the |*_RCOM| codes below */
+	int rc_code; /* one of the `*_RCOM` codes below */
 	inchar32_t *keyword;
 	int tokens_required; /* or negative for "any number, including none" */
-	int supports_or; /* an |or:| command can follow */
+	int supports_or; /* an `or:` command can follow */
 	int changes_nesting;
 } recipe_command;
 
@@ -97,7 +97,7 @@ linked list of lines, and a line being essentially a linked list of tokens.
 =
 typedef struct recipe {
 	struct filename *compiled_from;
-	struct linked_list *lines; /* of |recipe_line| */
+	struct linked_list *lines; /* of `recipe_line` */
 	struct text_stream *recipe_name;
 	int compilation_errors;
 	int conditional_nesting;
@@ -108,7 +108,7 @@ typedef struct recipe {
 
 typedef struct recipe_line {
 	struct recipe_command *command_used;
-	struct linked_list *recipe_tokens; /* of |recipe_token| */
+	struct linked_list *recipe_tokens; /* of `recipe_token` */
 	struct text_stream *from_text;
 	CLASS_DEFINITION
 } recipe_line;
@@ -424,7 +424,7 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 	DISCARD_TEXT(tail)
 }
 
-@ A token written |$[filename$]| is expanded into the contents of that file.
+@ A token written `$[filename$]` is expanded into the contents of that file.
 
 @<Tokenise from a file@> =
 	P = Str::forward(Str::forward(P));
@@ -434,7 +434,7 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 			Q = Str::forward(Q);
 	T->token_indirects_to_file = TRUE;
 
-@ More concisely, |${filename$}| expands to the MD5 hash of that file.
+@ More concisely, `${filename$}` expands to the MD5 hash of that file.
 
 @<Tokenise from a hash@> =
 	P = Str::forward(Str::forward(P));
@@ -444,7 +444,7 @@ void Delia::tokenise(linked_list *L, text_stream *txt) {
 			Q = Str::forward(Q);
 	T->token_indirects_to_hash = TRUE;
 
-@ A token backticked, like |`this|, is retokenised before being expanded,
+@ A token backticked, like `` `this``, is retokenised before being expanded,
 and then each individual resulting token is expanded.
 
 @<Mark to retokenise at expansion time@> =
@@ -453,7 +453,7 @@ and then each individual resulting token is expanded.
 	while ((Str::in_range(Q)) &&
 		(!Characters::is_space_or_tab(Str::get(Q)))) Q = Str::forward(Q);
 
-@ A token in quotes can include spaces, |'like so'|.
+@ A token in quotes can include spaces, `'like so'`.
 
 @<Take this quoted segment as the token@> =
 	T->token_quoted = TRUE;

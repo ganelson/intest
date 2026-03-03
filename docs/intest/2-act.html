@@ -77,7 +77,7 @@ The token list can contain multiple actions, one after the other.</p>
 
 <span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> = </span><span class="constant-syntax">TEST_ACTION</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which command is used */</span>
 <span class="plain-syntax">        </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">action_details</span><span class="plain-syntax"> = </span><a href="../foundation/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ops_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">ops_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">; </span><span class="comment-syntax">/* operands run from |ops_from| to |ops_to| */</span>
+<span class="plain-syntax">        </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ops_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">ops_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">index</span><span class="plain-syntax">; </span><span class="comment-syntax">/* operands run from <code>ops_from</code> to <code>ops_to</code> */</span>
 <span class="plain-syntax">        </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirect_output</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* optional file to redirect output to */</span>
 
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-act.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Scan the command and advance index to the end of it</span></span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
@@ -331,7 +331,7 @@ on <code>alpha</code>, <code>beta</code> and <code>gamma</code> respectively.</p
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">action_item</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |_ACTION| cases above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>_ACTION</code> cases above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">test_form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">case_specifier</span><span class="plain-syntax"> </span><span class="identifier-syntax">operand</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirection_filename</span><span class="plain-syntax">;</span>
@@ -398,9 +398,9 @@ can involve a wildcard such as <code>all</code>:</p>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Wildcards.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">COUNT_WILDCARD_BASE</span> <span class="constant-syntax">1001</span><span class="plain-syntax"> </span><span class="comment-syntax">/* 1001 is |^1|, 1002 is |^2|, ... */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">COUNT_WILDCARD_BASE</span> <span class="constant-syntax">1001</span><span class="plain-syntax"> </span><span class="comment-syntax">/* 1001 is <code>^1</code>, 1002 is <code>^2</code>, ... */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EXTENSION_WILDCARD_BASE</span> <span class="constant-syntax">101</span><span class="plain-syntax"> </span><span class="comment-syntax">/* 101 is |A|, 102 is |B|, ... */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EXTENSION_WILDCARD_BASE</span> <span class="constant-syntax">101</span><span class="plain-syntax"> </span><span class="comment-syntax">/* 101 is <code>A</code>, 102 is <code>B</code>, ... */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">GROUP_WILDCARD</span> <span class="constant-syntax">2</span>
 </pre>

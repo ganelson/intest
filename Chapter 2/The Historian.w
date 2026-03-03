@@ -3,14 +3,14 @@
 To preserve a recent command history on disc.
 
 @h History storage.
-Recall that the history file records two things: past commands, such as |?2|,
+Recall that the history file records two things: past commands, such as `?2`,
 stored in memory thus. The "epoch" is a number representing when this was;
-for |?2|, it would be 2.
+for `?2`, it would be 2.
 
 =
 typedef struct historic_moment {
 	int epoch;
-	struct linked_list *token_list; /* of |text_stream| */
+	struct linked_list *token_list; /* of `text_stream` */
 	CLASS_DEFINITION
 } historic_moment;
 
@@ -31,7 +31,7 @@ void Historian::create_present_moment(int argc, text_stream **argv) {
 	}
 }
 
-@ ...and preset cases, such as |1|, stored as follows. The Historian is
+@ ...and preset cases, such as `1`, stored as follows. The Historian is
 notified of any failed tests by the Tester.
 
 @d MAX_PRESET_CASES 99

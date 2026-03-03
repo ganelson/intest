@@ -10,7 +10,7 @@ word boundaries so as to produce human-readable results; the running
 time below is worst-case quadratic in the number of words scanned, but
 plenty fast enough for IF transcript use in practice.
 
-We represent the series of edits as a linked list of |edit| structures,
+We represent the series of edits as a linked list of `edit` structures,
 and although these are not uniquely defined (the same comparison can
 be represented in more than one way as a linked list of edits), we
 do guarantee that the returned list will be empty if and only if the
@@ -24,7 +24,7 @@ Our main routine, then, will return (a pointer to) the following structure.
 typedef struct diff_results {
 	struct text_stream *ideal; /* record a copy of the question as well as the answer */
 	struct text_stream *actual;
-	struct linked_list *edits; /* of |edit| */
+	struct linked_list *edits; /* of `edit` */
 	CLASS_DEFINITION
 } diff_results;
 
@@ -38,7 +38,7 @@ or inserted:
 =
 typedef struct edit {
 	struct text_stream *fragment;
-	int form_of_edit; /* one of the |*_EDIT| values */
+	int form_of_edit; /* one of the `*_EDIT` values */
 	CLASS_DEFINITION
 } edit;
 
@@ -282,14 +282,14 @@ words, or at any rate, ending at a word boundary (in both texts).
 			break;
 
 @ Ordinarily, two characters are distinct if they are different Unicode values.
-But with |allow_platform_variance| set, forward and backslashes are counted
+But with `allow_platform_variance` set, forward and backslashes are counted
 as being the same. This allows files containing Windows filenames to be
 compared with those containing MacOS ones. A further complication is that when
 a backslash does occur, it may for other reasons be escaped by appearing as a
 doubled backslash. (Or, it may not.) We thus adopt the forgiving rule that once
 a slash-discrepancy is found, we will match any run of slashes against any other
-run of slashes from that point. As a result, |///| does not match |////|, but
-|"a/b"| matches |"a\\b"|.
+run of slashes from that point. As a result, `///` does not match `////`, but
+`"a/b"` matches `"a\\b"`.
 
 @<Advance through platform-variant common prefix@> =
 	for (; (Str::index(A_after_prefix) < Str::index(A_to)) &&
@@ -420,7 +420,7 @@ the text has entirely changed, and we display this as cleanly as possible:
 
 @ This was the definition of "word boundary" used, where these are expected
 to be adjacent characters (in either direction). For best results, we want
-a version of |isalpha| which respects Unicode, or else the above algorithm
+a version of `isalpha` which respects Unicode, or else the above algorithm
 will sometimes show edits mid-word at accented letters.
 
 =

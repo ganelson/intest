@@ -51,7 +51,9 @@ int InprintDraw::switch(inprint_instructions *ins, int id, int val, text_stream 
 	return FALSE;
 }
 
-@ In operation:
+@ Okay, so off we go. We are going to print a textual description of the contents
+of a directory, and we are going to print it into a file, between a pair of
+`begin` and `end` lines:
 
 =
 void InprintDraw::run(inprint_instructions *ins) {
@@ -78,44 +80,58 @@ void InprintDraw::run(inprint_instructions *ins) {
 	if (ds->to) STREAM_CLOSE(TO);
 }
 
+@ So this is the recursive function for describing a given directory:
+
+=
 void InprintDraw::draw(OUTPUT_STREAM, pathname *home, pathname *scan) {
 	linked_list *L = Directories::listing(scan);
 	text_stream *entry;
 	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
-			TEMPORARY_TEXT(subdir)
-			WRITE_TO(subdir, "%S", entry);
-			Str::delete_last_character(subdir);
-			WRITE("directory: ");
-			Pathnames::relative_URL(OUT, home, scan);
-			WRITE("%S\n", subdir);
-			DISCARD_TEXT(subdir)
-			InprintDraw::draw(OUT, home, Pathnames::down(scan, subdir));
+			@<Describe a subdirectory in the blueprint@>;
 		} else {
-			filename *F = Filenames::in(scan, entry);
-			TEMPORARY_TEXT(extension)
-			Filenames::write_extension(extension, F);
-			int opaque = FALSE;
-			if (Str::eq_insensitive(extension, I".css")) opaque = TRUE;
-			if (Str::eq_insensitive(extension, I".js")) opaque = TRUE;
-			if (Str::eq_insensitive(extension, I".gif")) opaque = TRUE;
-			if (Str::eq_insensitive(extension, I".jpg")) opaque = TRUE;
-			if (Str::eq_insensitive(extension, I".jpeg")) opaque = TRUE;
-			if (Str::eq_insensitive(extension, I".png")) opaque = TRUE;
-			DISCARD_TEXT(extension)
-			if (opaque) WRITE("opaque ");
-			WRITE("file");
-			WRITE(": ");
-			Pathnames::relative_URL(OUT, home, scan);
-			WRITE("%S\n", entry);
-			if (opaque == FALSE) {
-				INDENT
-				TEMPORARY_TEXT(contents)
-				TextFiles::write_file_contents(contents, F);
-				WRITE("%S", contents);
-				DISCARD_TEXT(contents)
-				OUTDENT
-			}
+			@<Describe a file in the blueprint@>;
 		}
 	}
 }
+
+@<Describe a subdirectory in the blueprint@> =
+	TEMPORARY_TEXT(subdir)
+	WRITE_TO(subdir, "%S", entry);
+	Str::delete_last_character(subdir);
+	WRITE("directory: ");
+	Pathnames::relative_URL(OUT, home, scan);
+	WRITE("%S\n", subdir);
+	DISCARD_TEXT(subdir)
+	InprintDraw::draw(OUT, home, Pathnames::down(scan, subdir));
+
+@ If a file is "opaque", we treat it as a binary blob, whose contents go
+unrecorded: all we record is the filename. Otherwise, we treat it as plain
+text, and spool the contents into the blueprint. Note the use of indentation
+to make it possible to isolate the file contents from the rest of the description.
+
+@<Describe a file in the blueprint@> =
+	filename *F = Filenames::in(scan, entry);
+	TEMPORARY_TEXT(extension)
+	Filenames::write_extension(extension, F);
+	int opaque = FALSE;
+	if (Str::eq_insensitive(extension, I".css")) opaque = TRUE;
+	if (Str::eq_insensitive(extension, I".js")) opaque = TRUE;
+	if (Str::eq_insensitive(extension, I".gif")) opaque = TRUE;
+	if (Str::eq_insensitive(extension, I".jpg")) opaque = TRUE;
+	if (Str::eq_insensitive(extension, I".jpeg")) opaque = TRUE;
+	if (Str::eq_insensitive(extension, I".png")) opaque = TRUE;
+	DISCARD_TEXT(extension)
+	if (opaque) WRITE("opaque ");
+	WRITE("file");
+	WRITE(": ");
+	Pathnames::relative_URL(OUT, home, scan);
+	WRITE("%S\n", entry);
+	if (opaque == FALSE) {
+		INDENT
+		TEMPORARY_TEXT(contents)
+		TextFiles::write_file_contents(contents, F);
+		WRITE("%S", contents);
+		DISCARD_TEXT(contents)
+		OUTDENT
+	}

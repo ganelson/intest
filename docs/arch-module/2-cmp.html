@@ -99,7 +99,7 @@ it's a fully general way to express which VMs some piece of software works with:
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Converting to text.</b>  This often produces something verbose; the <code>parsed_from</code> text probably reads
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Converting to text.</b>  This often produces something verbose; the |parsed_from| text probably reads
 better, if available.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -126,11 +126,11 @@ better, if available.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Converting from text.</b>  This is quite a tricky little parser, which has to read, for example,
 text like &quot;for Glulx only&quot; used in Inform extension headings. A syntactically
-invalid description returns <code>NULL</code> but prints no error message; an empty
+invalid description returns |NULL| but prints no error message; an empty
 description returns the universally valid specification.</p>
 <p>A question we might return to is whether an unrecognisable description --
 say, &quot;for Marzipan version 28.1 only&quot; -- should return a universally-false
-specification rather than returning <code>NULL</code>: this would enable current Inform
+specification rather than returning |NULL|: this would enable current Inform
 tools to work with future resources which use VMs currently unthought of.
 But for now, it seems best to generate errors, because the more likely thing
 is that an extension author is botching the wording of something, or
@@ -139,7 +139,7 @@ writing &quot;Z machine&quot; instead of &quot;Z-machine&quot;, or something lik
 hand. But we want to make it work in tools which don't have Preform available,
 and we want it to run quickly.</p>
 <p>Unless the text is empty, we start with the &quot;works with nothing&quot; specification
-and then add each VM with which <code>C</code> does work as an exception.</p>
+and then add each VM with which |C| does work as an exception.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">compatibility_specification</span><span class="plain-syntax"> *</span><span class="function-syntax">Compatibility::from_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
@@ -181,10 +181,10 @@ and then add each VM with which <code>C</code> does work as an exception.</p>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-cmp.html#SP6_2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Remove the meaningless word for</span></span><span class="named-paragraph-number">6.2.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-cmp.html#SP6_2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Parse out the suffix only</span></span><span class="named-paragraph-number">6.2.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"all"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">negated</span><span class="plain-syntax">) </span><span class="identifier-syntax">error_in_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* "not for all" */</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">negated</span><span class="plain-syntax">) </span><span class="identifier-syntax">error_in_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* &quot;not for all&quot; */</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">default_allows</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"none"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">negated</span><span class="plain-syntax">) </span><span class="identifier-syntax">error_in_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* "not for none" */</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">negated</span><span class="plain-syntax">) </span><span class="identifier-syntax">error_in_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* &quot;not for none&quot; */</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">default_allows</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-cmp.html#SP8" class="function-link"><span class="function-syntax">Compatibility::parse_specifics</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">error_in_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -219,7 +219,7 @@ and then add each VM with which <code>C</code> does work as an exception.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Str::clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="identifier-syntax">exp</span><span class="plain-syntax">[0]);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Str::trim_white_space</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">negated</span><span class="plain-syntax">) </span><span class="identifier-syntax">error_in_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* "not for 32d only" */</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">negated</span><span class="plain-syntax">) </span><span class="identifier-syntax">error_in_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax">/* &quot;not for 32d only&quot; */</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-cmp.html#SP6_2">&#167;6.2</a>.</li></ul>
@@ -247,8 +247,8 @@ though it may be more complicated.</p>
 </pre>
 <ul class="endnotetexts"><li>The structure compat_parser_state is private to this section.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  So here's the specific details parser, then. We return <code>TRUE</code> if no syntax
-errors occurred, and we change <code>C</code> according to what <code>text</code> says.</p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  So here's the specific details parser, then. We return |TRUE| if no syntax
+errors occurred, and we change |C| according to what |text| says.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Compatibility::parse_specifics</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Compatibility::parse_specifics</span></span>:<br/><a href="2-cmp.html#SP6_2">&#167;6.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">compatibility_specification</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
@@ -265,10 +265,10 @@ errors occurred, and we change <code>C</code> according to what <code>text</code
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1. </b>  This is essentially simple -- it splits up text like &quot;Z-machine versions 5 or 8&quot;
 into tokens, sending them one at a time to <a href="2-cmp.html#SP10" class="internal">Compatibility::parse_token</a>.
-Note that commas are converted to the token <code>or</code>: e.g., &quot;Z-machine versions 5, 6
+Note that commas are converted to the token |or|: e.g., &quot;Z-machine versions 5, 6
 or 8&quot; would be treated as &quot;Z-machine versions 5 or 6 or 8&quot;; and note also that
 &quot;with debugging&quot; and &quot;without debugging&quot; are handled specially.</p>
-<p>We end the sequence of tokens with a <code>NULL</code>, telling the token-parser that
+<p>We end the sequence of tokens with a |NULL|, telling the token-parser that
 it has reached the end.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reduce the text to a sequence of tokens</span><span class="named-paragraph-number">8.1</span></span> =</p>
@@ -292,9 +292,9 @@ it has reached the end.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-cmp.html#SP8">&#167;8</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Returns <code>TRUE</code> if the text <code>T</code> begins &quot;with debugging&quot;, and trims that text
-away from <code>T</code>; returns <code>FALSE</code> if it begins &quot;without debugging&quot;, and similarly
-trims; and otherwise returns <code>NOT_APPLICABLE</code> and leaves <code>T</code> unaltered.</p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Returns |TRUE| if the text |T| begins &quot;with debugging&quot;, and trims that text
+away from |T|; returns |FALSE| if it begins &quot;without debugging&quot;, and similarly
+trims; and otherwise returns |NOT_APPLICABLE| and leaves |T| unaltered.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Compatibility::parse_debugging</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Compatibility::parse_debugging</span></span>:<br/><a href="2-cmp.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
@@ -314,8 +314,8 @@ trims; and otherwise returns <code>NOT_APPLICABLE</code> and leaves <code>T</cod
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  Once again we return <code>TRUE</code> if no syntax errors occurred, and we change <code>C</code>
-according to what the <code>token</code> says.</p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  Once again we return |TRUE| if no syntax errors occurred, and we change |C|
+according to what the |token| says.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Compatibility::parse_token</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Compatibility::parse_token</span></span>:<br/><a href="2-cmp.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">compat_parser_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cps</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">token</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax">) {</span>

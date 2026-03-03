@@ -165,7 +165,7 @@ freely, but it doesn't begin with a completely blank slate. As it starts:</p>
 </li>
 <li>
 <p><code>$WORK</code> is the pathname of a directory set aside by Intest for any intermediate
-files we might need to produce during the test process -- these must all be
+files we might need to produce during the test process — these must all be
 temporary files we can happily lose when the test is completed. The real
 usefulness of this comes when Intest is running a batch of tests across
 multiple threads, because those threads each need their own independent work
@@ -302,7 +302,7 @@ For example:</p>
 </pre>
 <div class="lsmarkdown">
 <p>This precaution is in case, as happened in this example, expansion of one of
-the tokens, <code>$FILE.txt</code>, brought in new white space -- here, the space between
+the tokens, <code>$FILE.txt</code>, brought in new white space — here, the space between
 &quot;My&quot; and &quot;File&quot;.</p>
 </div>
 <div class="lsmarkdown">
@@ -571,7 +571,7 @@ is that number. For example, these two lines match:</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Opened</span><span class="plain-syntax"> </span><span class="identifier-syntax">intest</span><span class="plain-syntax">/</span><span class="identifier-syntax">Workspace</span><span class="plain-syntax">/</span><span class="identifier-syntax">T11</span><span class="plain-syntax">/</span><span class="identifier-syntax">intermediate</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
 </pre>
 <div class="lsmarkdown">
-<p>This example should suggest why -- when Intest is spreading tests across
+<p>This example should suggest why — when Intest is spreading tests across
 multiple processors, we cannot predict which thread number a test will run
 on; and as a result, we cannot say which sandbox area of the file system
 it is allowed to use. That may cause the program under test to print
@@ -701,7 +701,7 @@ there is something to check against, for example.</p>
 Note that this will pass if <code>$NAME</code> has the empty text has its value, i.e.,
 is currently blank: it will only fail if the variable has never been created.
 Note also that some variables are automatically created before the recipe
-even begins -- see above.</p>
+even begins — see above.</p>
 <p><code>ifndef: $NAME</code> is the usual opposite of this, i.e., it is true if and only
 if <code>$NAME</code> has never been created.</p>
 </div>

@@ -50,14 +50,14 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Recall that each test case lives somewhere in a file.</p>
 <p>Our main task in this section if to extract that test case, which is a
-trivial operation for <code>PLAIN_FORMAT</code> -- the entire file is the test case --
+trivial operation for <code>PLAIN_FORMAT</code> — the entire file is the test case —
 but non-trivial for the other cases, and requires some exhausting parsing.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">extraction_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DEST</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tc</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">case_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |test_case| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">case_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>test_case</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">documentation_found</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">file_format</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">seek_ref</span><span class="plain-syntax">;</span>

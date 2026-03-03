@@ -18,7 +18,7 @@ number of ways:
 @d PERFECT_OUTCOME 5
 
 @h Report feature.
-The following implements the |-report| command line feature.
+The following implements the `-report` command line feature.
 
 =
 void Reporter::report_single(OUTPUT_STREAM, test_case *tc, action_item *ai) {
@@ -32,7 +32,7 @@ void Reporter::report_single(OUTPUT_STREAM, test_case *tc, action_item *ai) {
 typedef struct report_state {
 	text_stream *REPORT_TO;
 	struct test_case *test;
-	int success_code; /* one of the |*_OUTCOME| constants above */
+	int success_code; /* one of the `*_OUTCOME` constants above */
 	int turns_keyed; /* number of commands auto-entered from a TEST ME */
 	struct filename *prototype_HTML_file; /* ultimately from the app */
 	struct text_stream *relevant_node_ID; /* to provide in-app links to the Skein */
@@ -193,8 +193,8 @@ void Reporter::filter(text_stream *line_text, text_file_position *tfp, void *vrs
 	WRITE("%S\n", line_text);
 
 @h Combine feature.
-The following implements the |-combine| command line feature. Essentially it
-takes a batch of reports made by |-report| and merges them together.
+The following implements the `-combine` command line feature. Essentially it
+takes a batch of reports made by `-report` and merges them together.
 
 =
 void Reporter::combine(OUTPUT_STREAM, int count, filename *base_filename) {

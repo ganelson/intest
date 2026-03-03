@@ -114,7 +114,7 @@ or, say, &quot;32-bit to be generated to ANSI C code&quot;.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The <a href="2-tvm.html#SP2" class="internal">target_vm</a> structure contains two arguably architectural doohickies:
 potential limits on the use of floating-point arithmetic or on local variables.
-These are indeed currently derived only from the choice of <code>architecture</code>, but
+These are indeed currently derived only from the choice of |architecture|, but
 we're keeping them here in case there is some day a need for a 32-bit format
 with integer-only arithmetic, say.</p>
 </div>
@@ -126,10 +126,10 @@ with integer-only arithmetic, say.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VM_unblorbed_extension</span><span class="plain-syntax">; </span><span class="comment-syntax">/* such as |z8| */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VM_blorbed_extension</span><span class="plain-syntax">; </span><span class="comment-syntax">/* when blorbed up */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VM_image</span><span class="plain-syntax">; </span><span class="comment-syntax">/* filename of image for icon used in the index */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">default_browser_interpreter</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., "Parchment" */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iFiction_format_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., "zcode": see the Treaty of Babel */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transpiler_family</span><span class="plain-syntax">; </span><span class="comment-syntax">/* transpiler format, e.g., "Inform6" or "C" */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">full_format</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., "Inform6/32d/v3.1.2" */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">default_browser_interpreter</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., &quot;Parchment&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iFiction_format_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., &quot;zcode&quot;: see the Treaty of Babel */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transpiler_family</span><span class="plain-syntax">; </span><span class="comment-syntax">/* transpiler format, e.g., &quot;Inform6&quot; or &quot;C&quot; */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">full_format</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., &quot;Inform6/32d/v3.1.2&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">supports_floating_point</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_locals</span><span class="plain-syntax">; </span><span class="comment-syntax">/* upper limit on local variables per stack frame */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_options</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |text_stream| */</span>
@@ -188,11 +188,11 @@ with integer-only arithmetic, say.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Plumbing is included here to add &quot;options&quot; to a VM's textual description. The
 idea is that these allow for the user to specify additional and VM-specific
-command-line options (using <code>-format</code>) which are then picked up in final
+command-line options (using |-format|) which are then picked up in final
 code generation.</p>
-<p>Thus, a request for <code>-format=C/32d/no-halt/stack=240</code> would cause a new variant of
-<code>C/32d</code> to be created which would have the (purely hypothetical) list of
-options <code>I&quot;no-halt&quot;, I&quot;stack=240&quot;</code>. It is then up to the C final code generator
+<p>Thus, a request for |-format=C/32d/no-halt/stack=240| would cause a new variant of
+|C/32d| to be created which would have the (purely hypothetical) list of
+options |I&quot;no-halt&quot;, I&quot;stack=240&quot;|. It is then up to the C final code generator
 to understand what these mean, if indeed they mean anything.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -218,13 +218,13 @@ to understand what these mean, if indeed they mean anything.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  And now for reading. The following is used by Inbuild when reading the
-command-line option <code>-format=T</code>: the text <code>T</code> is supplied as a parameter here.</p>
-<p>Note however that it actually calls <a href="2-tvm.html#SP6" class="internal">TargetVMs::find_with_hint</a>. The <code>debug</code>
+command-line option |-format=T|: the text |T| is supplied as a parameter here.</p>
+<p>Note however that it actually calls <a href="2-tvm.html#SP6" class="internal">TargetVMs::find_with_hint</a>. The |debug|
 hint, if set, says to make the architecture have debugging enabled or not according
-to this hint: thus <code>&quot;C&quot;</code> plus the hint <code>FALSE</code> will return the VM <code>C/32</code>, while
-<code>&quot;C&quot;</code> plus the hint <code>TRUE</code> will return the VM <code>C/32d</code>. The hint <code>NOT_APPLICABLE</code>
+to this hint: thus |&quot;C&quot;| plus the hint |FALSE| will return the VM |C/32|, while
+|&quot;C&quot;| plus the hint |TRUE| will return the VM |C/32d|. The hint |NOT_APPLICABLE|
 is ignored; and the hint is also ignored if the supplied text already definitely
-specifies debugging. Thus <code>&quot;C/32d&quot;</code> plus hint <code>FALSE</code> will return <code>C/32d</code>.</p>
+specifies debugging. Thus |&quot;C/32d&quot;| plus hint |FALSE| will return |C/32d|.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">target_vm</span><span class="plain-syntax"> *</span><span class="function-syntax">TargetVMs::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format</span><span class="plain-syntax">) {</span>
@@ -266,8 +266,8 @@ specifies debugging. Thus <code>&quot;C/32d&quot;</code> plus hint <code>FALSE</
 <ul class="endnotetexts"><li>This code is used in <a href="2-tvm.html#SP6">&#167;6</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_1_1" class="paragraph-anchor"></a><b>&#167;6.1.1. </b>  The first criterion is the only compulsory one, and must be something like
-<code>Inform6</code> or <code>C</code>. After that, any criterion in the form of an architecture code,
-like <code>32d</code>, is interpreted as such; and any criterion opening with <code>v</code> plus a
+|Inform6| or |C|. After that, any criterion in the form of an architecture code,
+like |32d|, is interpreted as such; and any criterion opening with |v| plus a
 digit is read as a semantic version number. If any criteria are left after all
 that, they are considered options (see above).</p>
 </div>
@@ -306,9 +306,9 @@ that, they are considered options (see above).</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tvm.html#SP6">&#167;6</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6_3" class="paragraph-anchor"></a><b>&#167;6.3. </b>  If we're given, say, <code>C/32d/no-pointer-nonsense</code> and we can't find that exact
-thing, but can find <code>C/32d</code>, then we construct a variant of it which does have
-the option <code>no-pointer-nonsense</code> and return that.</p>
+<p class="commentary firstcommentary"><a id="SP6_3" class="paragraph-anchor"></a><b>&#167;6.3. </b>  If we're given, say, |C/32d/no-pointer-nonsense| and we can't find that exact
+thing, but can find |C/32d|, then we construct a variant of it which does have
+the option |no-pointer-nonsense| and return that.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Try to find a VM which would be a match except for the options</span><span class="named-paragraph-number">6.3</span></span> =</p>
 
@@ -328,8 +328,8 @@ the option <code>no-pointer-nonsense</code> and return that.</p>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  If we get here, we've failed to make any match using the modern notation.</p>
 <p>So next we try to deduce a VM from the given filename extension, which is the
 clumsy way that VMs used to be referred to on the Inform 7 command line. For
-example, <code>-format=ulx</code> produces <code>Inform6/32</code> or <code>Inform6/32d</code> (depending on
-the <code>debug</code> hint).</p>
+example, |-format=ulx| produces |Inform6/32| or |Inform6/32d| (depending on
+the |debug| hint).</p>
 </div>
 <p class="commentary firstcommentary"><a id="SP6_4" class="paragraph-anchor"></a><b>&#167;6.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Try to find a VM in the now-deprecated old notation</span><span class="named-paragraph-number">6.4</span></span> =</p>
 
@@ -357,8 +357,8 @@ the <code>debug</code> hint).</p>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tvm.html#SP6">&#167;6</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Semantic version rules apply if the user supplies a format text with a given
-version requirement. If the user asks for <code>v3.1.0</code> and we've got <code>v3.1.2</code>,
-no problem: there's a match. But <code>v2.9.3</code> or <code>3.2.1</code> would not match.</p>
+version requirement. If the user asks for |v3.1.0| and we've got |v3.1.2|,
+no problem: there's a match. But |v2.9.3| or |3.2.1| would not match.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TargetVMs::versions_match</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">TargetVMs::versions_match</span></span>:<br/><a href="2-tvm.html#SP6_2">&#167;6.2</a>, <a href="2-tvm.html#SP6_3">&#167;6.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">target_vm</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VM</span><span class="plain-syntax">, </span><span class="identifier-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">wanted</span><span class="plain-syntax">) {</span>
@@ -450,7 +450,7 @@ is going to end up as either the Z-machine or Glulx.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. File extension provisions.</b>  The normal or unblorbed file extension is just a hint for what would make a
-natural filename for our output: for example, <code>py</code> would be a natural choice
+natural filename for our output: for example, |py| would be a natural choice
 for a Python VN, if there were one.</p>
 <p>When releasing a blorbed story file, the file extension used depends on the
 story file wrapped inside. (This is a dubious idea, in the opinion of
@@ -481,7 +481,7 @@ where it's not meaningful to talk about debugging features or the number
 of bits, and where it's currently not possible to express a VM version number.</p>
 <p>It's also unclear what to write to this if we're compiling, say, an Inform 7
 source text into C: the Treaty of Babel is unclear on that. For now, we write
-<code>Inform7+C</code>.</p>
+|Inform7+C|.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">TargetVMs::get_iFiction_format</span><span class="plain-syntax">(</span><span class="type-syntax">target_vm</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VM</span><span class="plain-syntax">) {</span>

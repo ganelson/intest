@@ -82,12 +82,12 @@ use the code below, even if only minimally.</p>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">skein</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_format</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_SKF| constants above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_format</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_SKF</code> constants above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the real content, the text of what happened */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">label</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line_count_label</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">disposed_of</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">skein</span><span class="plain-syntax"> *</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="comment-syntax">/* thus making this a linked list of |skein| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">skein</span><span class="plain-syntax"> *</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="comment-syntax">/* thus making this a linked list of <code>skein</code> */</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">skein</span><span class="plain-syntax">;</span>
 </pre>
@@ -372,7 +372,7 @@ we are at a node whose contents we care about:</p>
 <ul class="endnotetexts"><li>This code is used in <a href="3-skn.html#SP6_4">&#167;6.4</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6_5" class="paragraph-anchor"></a><b>&#167;6.5. </b>  This code is used only for matching problem message output from the I7
-compiler. We ignore <code>Offending filename</code> lines for much the reason above --
+compiler. We ignore <code>Offending filename</code> lines for much the reason above —
 they exist only in fatal file-system problem messages in any case. A line
 in the form</p>
 </div>
@@ -569,8 +569,8 @@ Otherwise, we simply add the new line to the current turn buffer.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  While this routine brings the existing node -- that is, the one currently
-being written to -- to an end:</p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  While this routine brings the existing node — that is, the one currently
+being written to — to an end:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Skeins::flush</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Skeins::flush</span></span>:<br/><a href="3-skn.html#SP4">&#167;4</a>, <a href="3-skn.html#SP6_4_4">&#167;6.4.4</a>, <a href="3-skn.html#SP6_5">&#167;6.5</a>, <a href="3-skn.html#SP6_6">&#167;6.6</a>, <a href="3-skn.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">skein_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sks</span><span class="plain-syntax">) {</span>
@@ -725,17 +725,19 @@ same &quot;label&quot; and the same &quot;text&quot;.</p>
 <span class="plain-syntax">        </span><a href="3-td.html#SP5" class="function-link"><span class="function-syntax">Differ::print_fragment_as_HTML</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">chunk</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">chunk</span><span class="plain-syntax">);</span>
-<span class="comment-syntax">/* </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">HTML_OPEN("pre");
- </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">int from=0, to=Str::len(what)-1;
- </span><span class="plain-syntax">  </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">if (Str::get_last_char(what) == '\n') to--;
- </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">for (int i=from; i&lt;=to; i++) {
-  </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">inchar32_t c = Str::get_at(what, i);
- </span><span class="plain-syntax">  </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">if (c == '\"') WRITE("&amp;quot;");
- </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">else if (c == '&lt;') WRITE("&amp;lt;");
- </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">else if (c == '&gt;') WRITE("&amp;gt;");
- </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">else PUT(c);
- </span><span class="plain-syntax">  </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">}
- </span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="plain-syntax">   </span><span class="comment-syntax">HTML_CLOSE("pre");
+<span class="comment-syntax">/*		<pre><code>	HTML_OPEN(&quot;pre&quot;);
+	int from=0, to=Str::len(what)-1;
+	if (Str::get_last_char(what) == '\n') to--;
+	for (int i=from; i&lt;=to; i++) {
+		inchar32_t c = Str::get_at(what, i);
+		if (c == '\&quot;') WRITE(&quot;&amp;quot;&quot;);
+		else if (c == '&lt;') WRITE(&quot;&amp;lt;&quot;);
+		else if (c == '&gt;') WRITE(&quot;&amp;gt;&quot;);
+		else PUT(c);
+	}
+	HTML_CLOSE(&quot;pre&quot;);
+</code></pre>
+
 */</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">what</span><span class="plain-syntax">);</span>
@@ -744,8 +746,8 @@ same &quot;label&quot; and the same &quot;text&quot;.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  This powers <code>-test-skein</code>, which specifies an exact node ID and wants to
-compare only the text at that one node. We therefore make mimimal <code>skein</code>
-structures -- each a singleton -- and then just call the Differ directly
+compare only the text at that one node. We therefore make minimal <code>skein</code>
+structures — each a singleton — and then just call the Differ directly
 to compare the two.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

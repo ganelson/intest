@@ -122,7 +122,7 @@ folder, which might be, for example, &quot;myproject/tests&quot;. What happens i
 <span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
 </pre>
 <div class="lsmarkdown">
-<p>This sets two filenames -- it doesn't create these files, simply creates
+<p>This sets two filenames — it doesn't create these files, simply creates
 two names. <code>$A</code> is going to be the actual output printed out by the program
 being tested, while <code>$I</code> is the ideal output, that is, what it should have
 printed. Next:</p>
@@ -134,7 +134,7 @@ printed. Next:</p>
 <p>A &quot;step&quot; is a stage in a test which involves issuing a shell command, and
 which passes or fails according to the exit code from that command, exactly
 as it would in a tool like <code>make</code>. We're going to assume <code>zap</code> is a simple
-sort of program, which takes one command-line argument -- a filename --
+sort of program, which takes one command-line argument — a filename —
 does something with that file, and prints out something interesting about it.</p>
 <p>Intest substitutes in values for the variables, so the actual shell command
 might be:</p>
@@ -201,7 +201,7 @@ happy with the actual output, we &quot;bless&quot; it:</p>
 <p>Intest sets the ideal output to the actual output: the two then necessarily
 match, so the stage passes. (It's also possible to <code>-curse</code> a test, which deletes its ideal
 output, or to <code>-rebless</code> it, which replaces the current ideal output
-in favour of the current actual output -- in effect, it performs a curse
+in favour of the current actual output — in effect, it performs a curse
 immediately followed by a blessing.)</p>
 <p>Either way, if the recipe is still running at this point, all is good:
 <code>zap</code> produced no error messages, and we have output which is not known

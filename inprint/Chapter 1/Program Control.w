@@ -44,7 +44,7 @@ int verbose_mode = FALSE, silent_mode = FALSE;
 	switch (args.subcommand) {
 		case NO_CLSUB:
 			if (argc <= 1)
-				PRINT("inprint: a tool for blueprints of file trees. See 'inprint help' for more.\n");
+				PRINT("inprint: a tool for blueprints of file trees. See 'inprint help'.\n");
 			break;
 		case BUILD_CLSUB: InprintBuild::run(&args); break;
 		case DRAW_CLSUB:  InprintDraw::run(&args); break;

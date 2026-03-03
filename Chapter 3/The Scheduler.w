@@ -17,37 +17,37 @@ void Scheduler::start(int threads_available) {
 }
 
 @h Threads and their slots.
-There are going to be up to |MAX_THREADS| "work threads" at any one time,
+There are going to be up to `MAX_THREADS` "work threads" at any one time,
 performing the actual tests; together with Intest's main thread, which will
 allocate test cases to them and collate the results. The main thread will
 usually be asleep while they work, waking every second to see what has
 happened since last time.
 
 The simplest option would simply be to divide the tests up equally into
-|MAX_THREADS| piles, then start that many work threads, and tell them to
+`MAX_THREADS` piles, then start that many work threads, and tell them to
 get on with it. This however is inefficient in practice because some tests
 take longer than others, so that towards the end of the test run some work
 threads would be standing idle, having completed their assignments, while
-others -- perhaps even just one -- were still working. That means many of
+others — perhaps even just one — were still working. That means many of
 the processor cores idling towards the end of the run, which is wasteful.
 
-Instead, then, we keep track of |MAX_THREADS| "thread slots". Intest's main
+Instead, then, we keep track of `MAX_THREADS` "thread slots". Intest's main
 thread will give each slot a small pile of cases to work on, starting a work
 thread for each slot to perform those cases. The size of this small pile of
-cases is called the |QUANTUM|. When a work thread runs out of things to do,
+cases is called the `QUANTUM`. When a work thread runs out of things to do,
 Intest notices this and gives it some more. (To be more precise, the main
 thread stops the original work thread and starts another in the same slot.)
 
-It is not obvious what the best |QUANTUM| value is. A lower |QUANTUM| increases
+It is not obvious what the best `QUANTUM` value is. A lower `QUANTUM` increases
 the likelihood that all processor cores will be fully occupied right to the
 end of the testing run, which minimises the time taken. But it also increases
-the amount of time lost due to latency on the main thread -- that is, the
+the amount of time lost due to latency on the main thread — that is, the
 fact that the main thread, which wakes only every second, can never react
-more quickly than that. If the |QUANTUM| is just 1 and a single test takes
+more quickly than that. If the `QUANTUM` is just 1 and a single test takes
 a single core 0.1s to run, then every core will be idle for 0.9s out of
 every second.
 
-Experience suggests 16 is a good |QUANTUM| for typical Inform test runs, and
+Experience suggests 16 is a good `QUANTUM` for typical Inform test runs, and
 since Inform is our main customer, we'll choose that. If there are 2000 cases
 to get through, and 16 thread slots, each thread slot will get through an
 average of 125 cases, but it will do it with a succession of about 8 threads
@@ -67,10 +67,10 @@ finishes, and 8 threads run on each core over the test time.)
 
 =
 typedef struct thread_slot {
-	int availability; /* one of the three |*_THREAD| values above */
+	int availability; /* one of the three `*_THREAD` values above */
 	struct filename *slot_log_name; /* local-to-this-slot debugging log name */
 	struct text_stream split_log; /* local-to-this-slot debugging log */
-	foundation_thread work_thread; /* has no valid contents if |NO_THREAD| */
+	foundation_thread work_thread; /* has no valid contents if `NO_THREAD` */
 	foundation_thread_attributes attributes; /* similarly */
 	struct pathname *sandbox; /* a safe area for threads in this slot to create files */
 	int counter;
@@ -80,8 +80,8 @@ thread_slot thread_slots[MAX_THREADS];
 
 @ Each thread slot is provided with its own sandbox directory in the file
 system, where it can if it wishes create files. These are subdirectories
-called |T0|, |T1|, ... in the directory pointed to by the global variable
-|$$workspace|. (Note: if you change this, be sure to make a matching change
+called `T0`, `T1`, ... in the directory pointed to by the global variable
+`$$workspace`. (Note: if you change this, be sure to make a matching change
 to the Skein-reading code.)
 
 =
@@ -141,17 +141,17 @@ pathname *Scheduler::work_area(int s) {
 }
 
 @ This is the only place in Intest where we invoke the dark magic of pthread
-library calls. The main Intest thread will call |pthread_create| to
-call a function, always |Scheduler::perform_work|, on a new thread.
+library calls. The main Intest thread will call `pthread_create` to
+call a function, always `Scheduler::perform_work`, on a new thread.
 When that function "returns", however, its thread does not cease to exist.
-That happens only when the main Intest thread calls |pthread_join| on it.
+That happens only when the main Intest thread calls `pthread_join` on it.
 "Create" and "join" are, in effect, pthread jargon for "start" and "stop".
 
 We clearly need some way for a work thread to signal back when it is
 finished, as otherwise there will be no way for the main thread to know when
-it is safe to join it. We do that with the |availability| field in the slot
+it is safe to join it. We do that with the `availability` field in the slot
 structure: when the working thread has done all its work, that thread sets
-|availability| to |IDLE_THREAD|. It then becomes quiescent. Once every second
+`availability` to `IDLE_THREAD`. It then becomes quiescent. Once every second
 the main thread looks to see if any slots have become idle, and if so, it
 then joins their threads.
 
@@ -221,10 +221,10 @@ blank.
 @ =
 typedef struct test {
 	struct test_case *to_be_tested;
-	int action_type; /* for example, |TEST_ACTION| or |BLESS_ACTION| */
+	int action_type; /* for example, `TEST_ACTION` or `BLESS_ACTION` */
 	struct filename *redirect; /* where to redirect console output */
-	int allocated_to; /* an index into |thread_slots|, or else one of the values above */
-	int passed; /* or |NOT_APPLICABLE| if not yet run */
+	int allocated_to; /* an index into `thread_slots`, or else one of the values above */
+	int passed; /* or `NOT_APPLICABLE` if not yet run */
 	struct text_stream *full_results;
 	struct test *previous_completed_test;
 	CLASS_DEFINITION
@@ -245,8 +245,8 @@ void Scheduler::schedule(test_case *tc, filename *redirect, int test_action) {
 
 @h Distributing.
 We will maintain a reverse linked list which holds the tests in the sequence
-in which they completed -- almost certainly out of their original scheduling
-order, and sometimes drastically so. |last_completed_test| is always the
+in which they completed — almost certainly out of their original scheduling
+order, and sometimes drastically so. `last_completed_test` is always the
 most recent.
 
 =
@@ -304,7 +304,7 @@ with each iteration.
 
 @ We make a list of all thread slots currently standing idle, and then
 allocate them each a roughly equal number of the test cases not yet
-allocated to any slot; but we stop when they have |QUANTUM| number of
+allocated to any slot; but we stop when they have `QUANTUM` number of
 cases to look at.
 
 @<Allocate next few tests@> =
@@ -462,7 +462,7 @@ void *Scheduler::perform_work(void *argument) {
 
 @ The mutex here is needed because there is just one global reverse linked
 list of completed texts: if two threads were simultaneously changing the
-value of |last_completed_test|, disaster would befall us. This is so
+value of `last_completed_test`, disaster would befall us. This is so
 unlikely to happen that the mutex here is about like taking insurance out
 against asteroid impacts, but still, one likes to be safe.
 

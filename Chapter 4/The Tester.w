@@ -6,14 +6,14 @@ To run a compiled recipe on a single test case.
 To test is to interpret a recipe already compiled from Delia code into a
 parse tree in memory.
 
-Note that there are several different action types which can bring us here --
-|-test|, |-show|, |-bless|, and so on -- and that the meaning of commands
+Note that there are several different action types which can bring us here —
+`-test`, `-show`, `-bless`, and so on — and that the meaning of commands
 in the recipe may depend on what we're trying to do with it.
 
 The "work area" is a folder inside the Intest distribution containing files
 we may need: we can read but not write it. The "thread work area", on the
 other hand, is a private folder which no other thread has access to, so that
-we can both read and write. In Delia code, the text |$WORK| expands to the
+we can both read and write. In Delia code, the text `$WORK` expands to the
 pathname of the thread work area.
 
 The debugging log is split into multiple logs, one per thread, only if the
@@ -49,7 +49,7 @@ int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count,
 	Tester::purge_work_area(n);
 	@<Perform and report on the test@>;
 
-@ The "brackets" here are used in the summary text; |[5]|, |(5)| and |-5-| are
+@ The "brackets" here are used in the summary text; `[5]`, `(5)` and `-5-` are
 all possible.
 
 @<Perform and report on the test@> =
@@ -69,7 +69,7 @@ all possible.
 	if (tc->HTML_report) @<Write an HTML-format report on this test@>;
 	DISCARD_TEXT(verdict)
 
-@ Running with |-diff| or |-bbdiff| delegates the displaying of match errors
+@ Running with `-diff` or `-bbdiff` delegates the displaying of match errors
 to those superior tools:
 
 @<Issue any necessary diff or bbdiff commands@> =
@@ -459,9 +459,9 @@ dictionary.
 	}
 
 @h Steps.
-The |step| and |fail step| commands are essentially the same: expand the
+The `step` and `fail step` commands are essentially the same: expand the
 tokens into a command, call the shell to run it, and require the return value
-to be zero (for |step|) or non-zero (for |fail step|).
+to be zero (for `step`) or non-zero (for `fail step`).
 
 @<Carry out a step@> =
 	if (action_type != CURSE_ACTION) {
@@ -492,7 +492,7 @@ to be zero (for |step|) or non-zero (for |fail step|).
 		DISCARD_TEXT(COMMAND)
 	}
 
-@ If the next command is an |or|, then use its text rather than our bland
+@ If the next command is an `or`, then use its text rather than our bland
 one in the event of failure.
 
 @<Or@> =
@@ -513,8 +513,8 @@ one in the event of failure.
 @h Variables.
 If the given value is a single word then we expand it as such, but otherwise
 we use quote expansion on each token. This is important because if "options"
-is set to, say, |frog $toad| before expansion, and the value of "toad" is,
-say, "green amphibian", then we get |'frog' 'green amphibian'|. See the
+is set to, say, `frog $toad` before expansion, and the value of "toad" is,
+say, "green amphibian", then we get `'frog' 'green amphibian'`. See the
 documentation.
 
 @<Set a local variable@> =
@@ -733,7 +733,7 @@ for these, three of which are highly specific to Inform 7.
 	DISCARD_TEXT(COMMAND)
 
 @h Miscellaneous other commands.
-The |extract| command only makes sense for Inform 7 test cases.
+The `extract` command only makes sense for Inform 7 test cases.
 
 @<Make an extract@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
@@ -767,7 +767,7 @@ The |extract| command only makes sense for Inform 7 test cases.
 	}
 	if (script_file) Tester::populate_file(D, I"SCRIPT", script_file);
 
-@ The |exists| command requires a file to exist on disc.
+@ The `exists` command requires a file to exist on disc.
 
 @<Require existence of file@> =
 	if (action_type == TEST_ACTION) {
@@ -780,7 +780,7 @@ The |extract| command only makes sense for Inform 7 test cases.
 		}
 	}
 
-@ The |show| command has an optional second token:
+@ The `show` command has an optional second token:
 
 @<Show file@> =
 	recipe_token *what_token = NULL;
@@ -812,7 +812,7 @@ The |extract| command only makes sense for Inform 7 test cases.
 		}
 	}
 
-@ The |hash| command hashes the first-named file, writing the resulting
+@ The `hash` command hashes the first-named file, writing the resulting
 checksum to the second-named file, and also remembering its value.
 
 @<Carry out a hash@> =
@@ -835,7 +835,7 @@ checksum to the second-named file, and also remembering its value.
 		DISCARD_TEXT(hash)
 	}
 
-@ The |copy| command copies the first-named file to the second filename.
+@ The `copy` command copies the first-named file to the second filename.
 
 @<Copy a file@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
@@ -844,14 +844,14 @@ checksum to the second-named file, and also remembering its value.
 	filename *to = Tester::extract_as_filename(second, D);
 	BinaryFiles::copy(from, to, TRUE);
 
-@ The |mkdir| command ensures that a named directory exists.
+@ The `mkdir` command ensures that a named directory exists.
 
 @<Make a directory@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
 	pathname *to_make = Tester::extract_as_pathname(first, D);
 	Pathnames::create_in_file_system(to_make);
 
-@ |remove| deletes a file:
+@ `remove` deletes a file:
 
 @<Remove a file@> =
 	recipe_token *first = ENTRY_IN_LINKED_LIST(0, recipe_token, L->recipe_tokens);
@@ -951,9 +951,9 @@ At run-time, the contents of a token usually need to be expanded before they
 can be used; the result will depend on what test case is being run through
 the recipe, which is why this isn't done at compile time.
 
-Expansion is the process of replacing variables like |$PATH| with their
+Expansion is the process of replacing variables like `$PATH` with their
 values. We have two versions of this. Simple expansion, as follows, does
-just that and no more. Note that the |$$| notation is meaningful only for
+just that and no more. Note that the `$$` notation is meaningful only for
 filenames in the settings file, not for local variables.
 
 =
@@ -1009,9 +1009,9 @@ void Tester::quote_expand(OUTPUT_STREAM, recipe_token *T, dictionary *D, int raw
 	DISCARD_TEXT(unquoted)
 }
 
-@ Note the manoeuvre to avoid trouble with shell redirection: |>'Fred'| is
-a legal redirection, but |'>Fred'| is not; and |2>&1| joins standard errors
-to standard output, but |2>'&1'| sends errors to a file literally called |&1|.
+@ Note the manoeuvre to avoid trouble with shell redirection: `>'Fred'` is
+a legal redirection, but `'>Fred'` is not; and `2>&1` joins standard errors
+to standard output, but `2>'&1'` sends errors to a file literally called `&1`.
 
 @<Apply quotation marks as needed@> =
 	TEMPORARY_TEXT(quoted)
@@ -1123,8 +1123,8 @@ int Tester::mask_G(uint64_t pos) {
 
 @h Spotting show targets.
 This is quite slow and memory-profligate, which really doesn't matter. If
-|target| is something shown by at least one command in the recipe, return
-|NULL|; otherwise, release a linked list of the different targets which
+`target` is something shown by at least one command in the recipe, return
+`NULL`; otherwise, release a linked list of the different targets which
 are allowed.
 
 =
@@ -1204,7 +1204,7 @@ linked_list *Tester::spot_show_target(recipe *R, text_stream *target) {
 	}
 
 @h Verbosity.
-This is just for the sake of good output in |-verbose| mode:
+This is just for the sake of good output in `-verbose` mode:
 
 =
 int tester_verbose = FALSE;
