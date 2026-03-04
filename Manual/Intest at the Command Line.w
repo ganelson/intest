@@ -260,7 +260,7 @@ or in extensions).
 script of player inputs to be used when running the story file produced
 by compiling this test case; the script being drawn from the
 
->> Test me with "...".
+> Test me with "...".
 
 line inside the source, if one is present. If no script is there, this
 produces empty output, but does not throw an error. For example:
