@@ -269,14 +269,13 @@ There are five basic search path types:
 @e EXAMPLE_SPT
 
 =
-typedef struct test_source {
+classdef test_source {
 	int search_path_type; /* one of the `_SPT` cases above */
 	int multiple; /* is this a pathname to a folder? */
 	struct filename *exactly_this;
 	struct pathname *within_this;
 	struct linked_list *contents; /* of `test_case` */
-	CLASS_DEFINITION
-} test_source;
+}
 
 @<Create a search path item@> =
 	test_source *spi = CREATE(test_source);
@@ -439,7 +438,7 @@ arise only for Inform 7.
 @d MAX_METADATA_PAIRS 10
 
 =
-typedef struct test_case {
+classdef test_case {
 	struct filename *test_location;
 	int format_reference; /* one of the `_FORMAT` constants above */
 	int letter_reference; /* 1 for A, 2 for B, ..., or 0 for none */
@@ -461,8 +460,7 @@ typedef struct test_case {
 	int left_bracket, right_bracket;
 	
 	struct text_stream *HTML_report;
-	CLASS_DEFINITION
-} test_case;
+}
 
 @ =
 test_case *RecipeFiles::new_case(int t, filename *F, int fref, int ref,

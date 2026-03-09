@@ -30,15 +30,14 @@ Skein text can be supplied in a variety of formats:
 @e PLAIN_SKF /* for plain text matching, nothing to do with I7 */
 
 =
-typedef struct skein {
+classdef skein {
 	int from_format; /* one of the `*_SKF` constants above */
 	struct text_stream *text; /* the real content, the text of what happened */
 	struct text_stream *label;
 	int line_count_label;
 	int disposed_of;
 	struct skein *down; /* thus making this a linked list of `skein` */
-	CLASS_DEFINITION
-} skein;
+}
 
 @ =
 void Skeins::write(OUTPUT_STREAM, skein *sk) {
@@ -280,9 +279,11 @@ we are at a node whose contents we care about:
 compiler. We ignore `Offending filename` lines for much the reason above —
 they exist only in fatal file-system problem messages in any case. A line
 in the form
-= (text)
+
+``` None
 	Problem__ PM_ActivityVariableNameless
-=
+```
+
 is printed by I7 only on test runs, and lets us check that the right
 problem message is being produced. We don't ignore such a line: we capture
 the problem name and label the Skein node with it.

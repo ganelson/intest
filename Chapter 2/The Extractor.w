@@ -169,7 +169,8 @@ after the first line not matching this.
 
 @ See the Inform 7 documentation examples to explain this more fully, but
 this is a typical start of an EXAMPLE file:
-= (text)
+
+``` None
 	* Printing the banner text
 	Several lines of metadata
 	
@@ -178,7 +179,8 @@ this is a typical start of an EXAMPLE file:
 	    {*}"Bikini Atoll" by Edward Teller
 	
 	    The Hut and the Tropical Beach are rooms.
-=
+```
+
 The test case can only begin after the header, lines of which can never open
 with the paste markers `{*}` or `{**}`, so the following safely ignores
 the header:
@@ -369,11 +371,13 @@ sentence. Again, useful only for Inform 7.
 
 @ This unpacks a script like `yes / no / maybe` into a column with one
 command per line:
-= (text)
+
+``` None
 	yes
 	no
 	maybe
-=
+```
+
 which it pours into the given text stream. All white space around the slashes
 is soaked up.
 

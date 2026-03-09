@@ -4,13 +4,17 @@ To parse and carry out requests to do something.
 
 @h Reading the command line.
 Suppose the tester invoked Intest as
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inweb -bless plain twinprimes
-=
+```
+
 The following routine will be called to take care of the actual command:
-= (text)
+
+``` None
 	-bless plain twinprimes
-=
+```
+
 The tokens `-bless`, `plain` and `twinprimes` will be in the array `argv`,
 at indexes `from_arg_n` onwards. `to_arg_n` is the index after the last one.
 The token list can contain multiple actions, one after the other.
@@ -221,7 +225,7 @@ instances of the "action item" structure to be created, of type `TEST_ACTION`
 on `alpha`, `beta` and `gamma` respectively.
 
 =
-typedef struct action_item {
+classdef action_item {
 	int action_type; /* one of the `_ACTION` cases above */
 	int test_form;
 	struct case_specifier operand;
@@ -231,8 +235,7 @@ typedef struct action_item {
 	struct filename *assoc_file1;
 	struct filename *assoc_file2;
 	struct text_stream *assoc_text;
-	CLASS_DEFINITION
-} action_item;
+}
 
 @ As each action item is created, it is added to the "to-do list" for this
 run of Intest. (There is just one global to-do list.)

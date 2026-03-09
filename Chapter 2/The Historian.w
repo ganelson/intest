@@ -8,11 +8,10 @@ stored in memory thus. The "epoch" is a number representing when this was;
 for `?2`, it would be 2.
 
 =
-typedef struct historic_moment {
+classdef historic_moment {
 	int epoch;
 	struct linked_list *token_list; /* of `text_stream` */
-	CLASS_DEFINITION
-} historic_moment;
+}
 
 @ =
 int present_epoch = 1;

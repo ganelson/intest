@@ -22,9 +22,11 @@ Intest is a C program, so it begins at //main//. This works out where Intest
 is installed, which project Intest is to test, and where the file specifying
 the universe of tests is, but otherwise soaks up the command line arguments
 into an array of "instructions". For example, if the user typed:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7 -verbose 1 2 Gelato
-=
+```
+
 then the instructions array will be `-verbose`, `1`, `2`, `Gelato`.
 
 //main// then calls out to //Historian::research// to look at the project's
@@ -69,10 +71,12 @@ conventional switches (a);
 - a USING block, introduced by `-using`.
 
 In the case of our example, there are just two blocks:
-= (text)
+
+``` None
 	OPTIONS    DO
 	-verbose   Sackcloth Beatles Gelato
-=
+```
+
 USING blocks are passed to //RecipeFiles::read_using_instructions//. DO blocks
 are passed to //Actions::read_do_instructions//, but only after the OPTIONS
 block has been acted on, and after //RecipeFiles::read// has parsed the recipe
@@ -85,17 +89,23 @@ For example, it will be known that `Gelato` is the name of an available test cas
 USING blocks are essential and are needed on every run. This paradox is explained
 by the fact that non-recipe commands in recipe files are in fact USING blocks.
 Thus, if you type
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest example all
-=
+```
+
 you've given only a DO block (`all`), but if `example/Tests/example.intest` begins:
-= (text as Delia)
+
+``` Delia
 	-cases 'example/Tests/Test Cases'
-=
+```
+
 then it's as if you had typed
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest example -using -cases 'example/Tests/Test Cases' -do all
-=
+```
+
 because lines like that in the recipe file are sent to //RecipeFiles::read_using_instructions//
 as USING blocks.
 

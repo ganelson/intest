@@ -55,42 +55,32 @@ across multiple threads so that the batch can be finished as soon as
 possible, and results are tidily collated. Intest has a command-line syntax
 which makes a sort of conversation possible: start by testing a batch, then
 retest those which fail, fixing them one by one, and so on. For example,</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject all</span>
-<span class="ConsoleText-plain-syntax">    myproject -&gt; cases: [1] [2] [3] [4]</span>
-<span class="ConsoleText-plain-syntax">    Discrepancy at line 7:</span>
-<span class="ConsoleText-plain-syntax">        Planet is: Joopiter</span>
-<span class="ConsoleText-plain-syntax">    [5] planets produced incorrect output</span>
-<span class="ConsoleText-plain-syntax">    [6] [7] [8] [9]</span>
-<span class="ConsoleText-plain-syntax">      8 tests succeeded but 1 failed (time taken 0:02, 9 simultaneous threads)</span>
-<span class="ConsoleText-plain-syntax">    Failed: 1=planets</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject all
+	myproject -&gt; cases: [1] [2] [3] [4]
+	Discrepancy at line 7:
+	    Planet is: Joopiter
+	[5] planets produced incorrect output
+	[6] [7] [8] [9]
+	  8 tests succeeded but 1 failed (time taken 0:02, 9 simultaneous threads)
+	Failed: 1=planets
+</span></pre>
 <p>Suppose we go fix that bug, and then retest:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject 1</span>
-<span class="ConsoleText-plain-syntax">    Expanded to: ?322. planets</span>
-<span class="ConsoleText-plain-syntax">    [1] planets passed</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject 1
+	Expanded to: ?322. planets
+	[1] planets passed
+</span></pre>
 <p>Note that <code>1</code> was understood by Intest here as referring to the test case
 <code>planets</code> which failed earlier. Intest is recording a history of recent
 tests run, too: this one was test run <code>?322</code>. We could have listed those by</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject ?</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject ?
+</span></pre>
 <p>and recalled any of them by number:</p>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject ?315
+	Repeating: ?315. rockets moons
+	[1] rockets passed
+	[2] moons passed
+</span></pre>
 </div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject ?315</span>
-<span class="ConsoleText-plain-syntax">    Repeating: ?315. rockets moons</span>
-<span class="ConsoleText-plain-syntax">    [1] rockets passed</span>
-<span class="ConsoleText-plain-syntax">    [2] moons passed</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Recipes.</b>  Intest assumes that each project will have its own universe of tests.
 These can take many forms, but the commonest are to give valid input and
@@ -100,37 +90,28 @@ to see that some expected error message is produced.</p>
 mini-language called Delia, which sits on top of the host operating system's
 command-line shell. For example, here is Delia code for testing what ought to
 be a valid input to a tool called <code>zap</code> inside the <code>myproject</code> folder:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="type-syntax">    step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span>
-<span class="type-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
-<span class="type-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'produced the wrong output'</span>
-<span class="type-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt
+</span><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt
+</span><span class="type-syntax">	step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span><span class="plain-syntax">
+</span><span class="type-syntax">	show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax">
+</span><span class="type-syntax">	match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span><span class="plain-syntax">
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'produced the wrong output'
+</span><span class="type-syntax">	pass</span><span class="plain-syntax">: 'passed'
+</span></pre>
 <p>This looks more forbidding than it is. Variables start with a dollar, as in
 most Unix mini-languages: they usually hold filenames. <code>$CASE</code> is the name
 of the current test case: perhaps &quot;planets&quot;. <code>$PATH</code> is the pathname to its
 folder, which might be, for example, &quot;myproject/tests&quot;. What happens is:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_actual/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt
+</span><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/_ideal/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt
+</span></pre>
 <p>This sets two filenames — it doesn't create these files, simply creates
 two names. <code>$A</code> is going to be the actual output printed out by the program
 being tested, while <code>$I</code> is the ideal output, that is, what it should have
 printed. Next:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	step</span><span class="plain-syntax">: myproject/zap </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1
+</span></pre>
 <p>A &quot;step&quot; is a stage in a test which involves issuing a shell command, and
 which passes or fails according to the exit code from that command, exactly
 as it would in a tool like <code>make</code>. We're going to assume <code>zap</code> is a simple
@@ -138,19 +119,13 @@ sort of program, which takes one command-line argument — a filename —
 does something with that file, and prints out something interesting about it.</p>
 <p>Intest substitutes in values for the variables, so the actual shell command
 might be:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">myproject/zap</span><span class="ConsoleText-plain-syntax"> myproject/tests/planets.txt &gt;myproject/tests/_actual/planets.txt 2&gt;&amp;1</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">myproject/zap</span><span class="ConsoleText-plain-syntax"> myproject/tests/planets.txt &gt;myproject/tests/_actual/planets.txt 2&gt;&amp;1
+</span></pre>
 <p>which uses bash shell notation to redirect both printed output, and error
 messages, to the <code>$A</code> file. That, as promised, is the &quot;actual output&quot;.</p>
 <p>The next line in the recipe is then:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	or</span><span class="plain-syntax">: 'failed zap' </span><span class="function-syntax">$A</span><span class="plain-syntax">
+</span></pre>
 <p>This tells Intest to halt the test if the shell command failed (i.e., if
 <code>zap</code> exited with a non-zero exit value). Intest uses the brief epitaph
 &quot;failed zap&quot; when summarising what happened, and prints out <code>$A</code>,
@@ -158,46 +133,31 @@ because presumably it ends with some error messages which the tester will
 want to see.</p>
 <p>So the recipe is only continued if, in fact, <code>zap</code> did not produce error
 messages. The next line is not quite what it seems:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	show</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax">
+</span></pre>
 <p>This tells Intest that if the tester ran the test specifying <code>-show</code> on
 the command line then <code>$A</code> is the right file to print out. If the tester
 didn't say <code>-show</code>, we print nothing here, and continue. The next steps
 in the recipe are more consequential:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'produced the wrong output'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span><span class="plain-syntax">
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'produced the wrong output'
+</span></pre>
 <p>This does what it looks as if it should, but it has hidden powers. If the
 tester hasn't yet created a file of ideal output, then there's nothing to
 compare against. In that case Intest doesn't fail the stage, but it does
 mark it in the summary:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject planets</span>
-<span class="ConsoleText-plain-syntax">    -1- planets passed</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject planets
+	-1- planets passed
+</span></pre>
 <p>The notation <code>-1-</code>, rather than the more usual <code>[1]</code>, conveys that the
 test was incompletely passed in this way. This is easy to fix. If we're
 happy with the actual output, we &quot;bless&quot; it:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject</span><span class="ConsoleText-identifier-syntax"> -bless</span><span class="ConsoleText-plain-syntax"> planets</span>
-<span class="ConsoleText-plain-syntax">    [1] planets passed</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> myproject</span><span class="ConsoleText-identifier-syntax"> -bless</span><span class="ConsoleText-plain-syntax"> planets
+	[1] planets passed
+</span></pre>
 <p>With <code>-bless</code> specified, when the recipe hits:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span><span class="plain-syntax">
+</span></pre>
 <p>Intest sets the ideal output to the actual output: the two then necessarily
 match, so the stage passes. (It's also possible to <code>-curse</code> a test, which deletes its ideal
 output, or to <code>-rebless</code> it, which replaces the current ideal output
@@ -206,11 +166,8 @@ immediately followed by a blessing.)</p>
 <p>Either way, if the recipe is still running at this point, all is good:
 <code>zap</code> produced no error messages, and we have output which is not known
 to be incorrect. So we conclude with a triumphant:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	pass</span><span class="plain-syntax">: 'passed'
+</span></pre>
 <p>Recipes can be substantially longer and more elaborate, running through
 a sequence of tools, or running the same test material in a sequence of
 different ways. The recipes used by the main Inform compiler occupy about
@@ -226,47 +183,29 @@ Github.)</p>
 <p>To begin, place the distribution directories <code>intest</code> and <code>inweb</code> in the
 same parent directory, and then change working directory to that. Thus, you
 should reach:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
-<span class="ConsoleText-plain-syntax">    intest   inweb</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span><span class="ConsoleText-plain-syntax">
+	intest   inweb
+</span></pre>
 <p>(and perhaps lots of other stuff too). Be sure to make Inweb first: see
 its own documentation for that. Then:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> intest</span><span class="ConsoleText-identifier-syntax"> -makefile</span><span class="ConsoleText-plain-syntax"> intest/intest.mk</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> intest</span><span class="ConsoleText-identifier-syntax"> -makefile</span><span class="ConsoleText-plain-syntax"> intest/intest.mk
+</span></pre>
 <p>This makes the makefile we will use. It will automatically be configured
 suitably for the operating system we're using: the MacOS version of Inweb
 will make us a MacOS version of this makefile, and so on. Now we can make:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> intest/intest.mk</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> intest/intest.mk
+</span></pre>
 <p>All being well, you now have a working Intest. The executable is in
 <code>intest/Tangled/intest</code>, so:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -help</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -help</span><span class="ConsoleText-plain-syntax">
+</span></pre>
 <p>should verify that it's in working order. A more interesting test is:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> inweb all</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -from</span><span class="ConsoleText-plain-syntax"> inweb all
+</span></pre>
 <p>which runs the Inweb test suite (a very modest one, as it happens).</p>
 <p>Users of, for example, the <code>bash</code> shell may want to</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">alias</span><span class="ConsoleText-plain-syntax"> intest='intest/Tangled/intest'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">alias</span><span class="ConsoleText-plain-syntax"> intest='intest/Tangled/intest'
+</span></pre>
 <p>to save a little typing, but in this documentation we always spell it out.</p>
 </div>
 <div class="lsmarkdown">

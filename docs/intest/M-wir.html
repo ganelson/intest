@@ -51,24 +51,21 @@ written by an American, it would have been called Julia.</p>
 is to be called using <code>$SOURCE</code> as the filename of its input. Its output is
 then redirected into the file <code>$A</code>, which is compared against <code>$I</code> to see
 if the right output was printed.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt</span>
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--A.txt</span>
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--I.txt</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt
+</span><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--A.txt
+</span><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax"> = </span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">--I.txt
 
-<span class="type-syntax">    step</span><span class="plain-syntax">: launcher </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'launcher produced error messages' </span><span class="function-syntax">$A</span>
+</span><span class="type-syntax">	step</span><span class="plain-syntax">: launcher </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'launcher produced error messages' </span><span class="function-syntax">$A</span><span class="plain-syntax">
 
-<span class="type-syntax">    exists</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'launcher produced no errors, but no blessed output existed'</span>
+</span><span class="type-syntax">	exists</span><span class="plain-syntax">: </span><span class="function-syntax">$I</span><span class="plain-syntax">
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'launcher produced no errors, but no blessed output existed'
 
-<span class="type-syntax">    match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'produced incorrect output'</span>
+</span><span class="type-syntax">	match text</span><span class="plain-syntax">: </span><span class="function-syntax">$A</span><span class="plain-syntax"> </span><span class="function-syntax">$I</span><span class="plain-syntax">
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'produced incorrect output'
 
-<span class="type-syntax">    pass</span><span class="plain-syntax">: 'passed'</span>
-</pre>
-<div class="lsmarkdown">
+</span><span class="type-syntax">	pass</span><span class="plain-syntax">: 'passed'
+</span></pre>
 <p>In this example the test has four possible outcomes at which it might
 halt: at the three <code>or:...</code> lines, which halt a test because the previous
 instruction failed in some way; or, if things go better, on the last line
@@ -77,20 +74,14 @@ where the <code>pass:</code> instruction says that the test has completed as it 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Syntax and tokens.</b>  Blanks lines and lines beginning with exclamation marks <code>!</code> are ignored.
 All other lines must have the form</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    command</span><span class="plain-syntax">: token1 ... tokenN</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	command</span><span class="plain-syntax">: token1 ... tokenN
+</span></pre>
 <p>where different commands need different numbers of &quot;tokens&quot;.</p>
 <p>The command and its tokens must occupy a single line and no comment is
 allowed at the end of it. Quotation marks can be used to make multiple words
 a single token; thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    exists</span><span class="plain-syntax">: 'My Tests/output.txt'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	exists</span><span class="plain-syntax">: 'My Tests/output.txt'
+</span></pre>
 <p>is a command plus a single token, not two. A backslash can be used to escape
 the quotation mark when inside quotes.</p>
 </div>
@@ -139,11 +130,8 @@ from which the extension or kit seems to be drawn.</p>
 <p>Other global variables may have been created using <code>-set</code> in the intest
 file, for which see <a href="M-tuoc.html" class="internal">The Universe of Cases</a>, or at the command line.
 For example,</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">../intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -set</span><span class="ConsoleText-plain-syntax"> WORD=plugh all</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">../intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -set</span><span class="ConsoleText-plain-syntax"> WORD=plugh all
+</span></pre>
 <p>runs the tests for <code>inform7</code> with the global variable <code>$$WORD</code> set to <code>plugh</code>.</p>
 </div>
 <div class="lsmarkdown">
@@ -178,26 +166,22 @@ local variables for it: see <a href="M-tuoc.html" class="internal">The Universe 
 the recipe <code>[Reactor]</code> starts with the given settings of <code>$TEMP</code> and <code>$STATUS</code>.</p>
 </li>
 </ul>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'</span>
-<span class="type-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Cold:STATUS=Safe] 'fusionreactor/Tests/ColdCases'</span>
-<span class="type-syntax">    -cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	-cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'
+</span><span class="type-syntax">	-cases [Reactor</span><span class="plain-syntax">:TEMP=Cold:STATUS=Safe] 'fusionreactor/Tests/ColdCases'
+</span><span class="type-syntax">	-cases [Reactor</span><span class="plain-syntax">:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'
+</span></pre>
 <ul>
 <li>If the test case itself contains annotations, those are also used to
 create local variables which the test starts with. In the following example,
 any test of <code>Nettles</code> would begin with the recipe having appropriate values
 of <code>$LANGUAGE</code>, <code>$FOR</code> and <code>$INTOPTIONS</code>.</li>
 </ul>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Test: Nettles
+	Language: Basic
+	For: Glulx
+	IntOptions: -u -q -dataresourcetext '3:$PATH/Nettles--X.txt'
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Test:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Nettles</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Language:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Basic</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">For:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Glulx</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">IntOptions:</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">u</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">q</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="identifier-syntax">dataresourcetext</span><span class="plain-syntax"> </span><span class="character-syntax">'3:$PATH/Nettles--X.txt'</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  The special variable <code>$SCRIPT</code> is created by the <code>extract:</code> instruction
 (see below), and is only useful for testing Inform. It is created if one
@@ -226,38 +210,37 @@ see below.</p>
 see what's happening to all of these variables. Running Intest in its
 <code>-verbose</code> mode will do that. For example, if we run Intest on its
 example project, we can sit back and watch what it's doing:</p>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> intest/Examples/dc</span><span class="ConsoleText-identifier-syntax"> -verbose</span><span class="ConsoleText-plain-syntax"> minus
+...
+Global variables:
+      $$platform = macos
+      $$project = intest/Examples/dc/Tests
+      $$internal = inform7/Internal
+      $$workspace = /Users/gnelson/Natural Inform/intest/Workspace
+Local variables at start:
+      $CASE &lt;--- minus
+      $TITLE &lt;---
+      $PATH &lt;--- intest/Examples/dc/Tests/Cases
+      $WORK &lt;--- /Users/gnelson/Natural Inform/intest/Workspace/T0
+      $TYPE &lt;--- case
+Recipe execution:
+0001: 	mkdir: $PATH/_actual
+shell: mkdir -p 'intest/Examples/dc/Tests/Cases/_actual'
+0002: 	mkdir: $PATH/_ideal
+shell: mkdir -p 'intest/Examples/dc/Tests/Cases/_ideal'
+0003: 	set: $A = $PATH/_actual/$CASE.txt
+      $A &lt;--- intest/Examples/dc/Tests/Cases/_actual/minus.txt
+0004: 	set: $I = $PATH/_ideal/$CASE.txt
+      $I &lt;--- intest/Examples/dc/Tests/Cases/_ideal/minus.txt
+0005: 	step: dc $[$PATH/$CASE.txt$] &gt;$A 2&gt;&amp;1
+shell: 'dc'  '-e'  '10 3 - p' &gt;'intest/Examples/dc/Tests/Cases/_actual/minus.txt'  2&gt;&amp;1
+0006: 	or: 'failed dc' $A
+0007: 	show: $A
+0008: 	match text: $A $I
+0009: 	or: 'produced the wrong output'
+0010: 	pass: 'passed'
+</span></pre>
 </div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> intest/Examples/dc</span><span class="ConsoleText-identifier-syntax"> -verbose</span><span class="ConsoleText-plain-syntax"> minus</span>
-<span class="ConsoleText-plain-syntax">...</span>
-<span class="ConsoleText-plain-syntax">Global variables:</span>
-<span class="ConsoleText-plain-syntax">      $$platform = macos</span>
-<span class="ConsoleText-plain-syntax">      $$project = intest/Examples/dc/Tests</span>
-<span class="ConsoleText-plain-syntax">      $$internal = inform7/Internal</span>
-<span class="ConsoleText-plain-syntax">      $$workspace = /Users/gnelson/Natural Inform/intest/Workspace</span>
-<span class="ConsoleText-plain-syntax">Local variables at start:</span>
-<span class="ConsoleText-plain-syntax">      $CASE &lt;--- minus</span>
-<span class="ConsoleText-plain-syntax">      $TITLE &lt;---</span>
-<span class="ConsoleText-plain-syntax">      $PATH &lt;--- intest/Examples/dc/Tests/Cases</span>
-<span class="ConsoleText-plain-syntax">      $WORK &lt;--- /Users/gnelson/Natural Inform/intest/Workspace/T0</span>
-<span class="ConsoleText-plain-syntax">      $TYPE &lt;--- case</span>
-<span class="ConsoleText-plain-syntax">Recipe execution:</span>
-<span class="ConsoleText-plain-syntax">0001:   mkdir: $PATH/_actual</span>
-<span class="ConsoleText-plain-syntax">shell: mkdir -p 'intest/Examples/dc/Tests/Cases/_actual'</span>
-<span class="ConsoleText-plain-syntax">0002:   mkdir: $PATH/_ideal</span>
-<span class="ConsoleText-plain-syntax">shell: mkdir -p 'intest/Examples/dc/Tests/Cases/_ideal'</span>
-<span class="ConsoleText-plain-syntax">0003:   set: $A = $PATH/_actual/$CASE.txt</span>
-<span class="ConsoleText-plain-syntax">      $A &lt;--- intest/Examples/dc/Tests/Cases/_actual/minus.txt</span>
-<span class="ConsoleText-plain-syntax">0004:   set: $I = $PATH/_ideal/$CASE.txt</span>
-<span class="ConsoleText-plain-syntax">      $I &lt;--- intest/Examples/dc/Tests/Cases/_ideal/minus.txt</span>
-<span class="ConsoleText-plain-syntax">0005:   step: dc $[$PATH/$CASE.txt$] &gt;$A 2&gt;&amp;1</span>
-<span class="ConsoleText-plain-syntax">shell: 'dc'  '-e'  '10 3 - p' &gt;'intest/Examples/dc/Tests/Cases/_actual/minus.txt'  2&gt;&amp;1</span>
-<span class="ConsoleText-plain-syntax">0006:   or: 'failed dc' $A</span>
-<span class="ConsoleText-plain-syntax">0007:   show: $A</span>
-<span class="ConsoleText-plain-syntax">0008:   match text: $A $I</span>
-<span class="ConsoleText-plain-syntax">0009:   or: 'produced the wrong output'</span>
-<span class="ConsoleText-plain-syntax">0010:   pass: 'passed'</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Expansion.</b>  Variables are only useful for their values, and their values are used by
 means of &quot;expansion&quot;.</p>
@@ -271,36 +254,24 @@ to just <code>My</code> or leave it as it stands, if the variable <code>$BARGAIN
 exist. (This is even true if the variable <code>$BARGAI</code> should exist.)</p>
 <p>The instruction <code>set:</code> either creates a new local variable, or changes the
 value of an existing one:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$NAME</span><span class="plain-syntax"> = VALUE</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$NAME</span><span class="plain-syntax"> = VALUE
+</span></pre>
 <p>Note that the <code>VALUE</code> token here is expanded, but the <code>$NAME</code> token is not,
 for obvious reasons. This is one of the exceptions hinted at above.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  A wrinkle here is that if the setting value has multiple tokens:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$NAME</span><span class="plain-syntax"> = VALUE1 VALUE2 ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$NAME</span><span class="plain-syntax"> = VALUE1 VALUE2 ...
+</span></pre>
 <p>then they are each &quot;quote-expanded&quot;, rather than being simply &quot;expanded&quot;.
 This basically means that the value is meant to be used in place of a string
 of tokens, rather than as a fragment or the whole of a single token.
 For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$OPTIONS</span><span class="plain-syntax"> = -no-warnings -p=10 -to </span><span class="function-syntax">$FILE</span><span class="plain-syntax">.txt</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$OPTIONS</span><span class="plain-syntax"> = -no-warnings -p=10 -to </span><span class="function-syntax">$FILE</span><span class="plain-syntax">.txt
+</span></pre>
 <p>sets the value to be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    '-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt'
+</span></pre>
 <p>This precaution is in case, as happened in this example, expansion of one of
 the tokens, <code>$FILE.txt</code>, brought in new white space — here, the space between
 &quot;My&quot; and &quot;File&quot;.</p>
@@ -308,48 +279,30 @@ the tokens, <code>$FILE.txt</code>, brought in new white space — here, the spa
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The instruction <code>default:</code> is entirely the same as <code>set:</code>, except that it
 takes effect only if the variable does not yet exist. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    default</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span><span class="plain-syntax"> = Kerosene</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	default</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span><span class="plain-syntax"> = Kerosene
+</span></pre>
 <p>is exactly equivalent to</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    ifndef</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span>
-<span class="type-syntax">        set</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span><span class="plain-syntax"> = Kerosene</span>
-<span class="type-syntax">    endif</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	ifndef</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span><span class="plain-syntax">
+</span><span class="type-syntax">		set</span><span class="plain-syntax">: </span><span class="function-syntax">$FUEL</span><span class="plain-syntax"> = Kerosene
+</span><span class="type-syntax">	endif</span><span class="plain-syntax">
+</span></pre>
 <p>but is less laborious.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  Quote-expansion is not always what we want. For example, suppose we further
 defined:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$MOREOPTIONS</span><span class="plain-syntax"> = </span><span class="function-syntax">$OPTIONS</span><span class="plain-syntax"> -lang=en-uk</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$MOREOPTIONS</span><span class="plain-syntax"> = </span><span class="function-syntax">$OPTIONS</span><span class="plain-syntax"> -lang=en-uk
+</span></pre>
 <p>We would then get the value:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="character-syntax">'\'-no-warnings\' \'-p=10\' \'-verbose\' \'-to\' \'My File.txt\''</span><span class="plain-syntax"> </span><span class="character-syntax">'-lang=en-uk'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	'\'-no-warnings\' \'-p=10\' \'-verbose\' \'-to\' \'My File.txt\'' '-lang=en-uk'
+</span></pre>
 <p>which of course is wrong. We avoid this using a backtick to suppress quote
 expansion of the first token:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    set</span><span class="plain-syntax">: </span><span class="function-syntax">$MOREOPTIONS</span><span class="plain-syntax"> = `</span><span class="function-syntax">$OPTIONS</span><span class="plain-syntax"> -lang=en-uk</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$MOREOPTIONS</span><span class="plain-syntax"> = `</span><span class="function-syntax">$OPTIONS</span><span class="plain-syntax"> -lang=en-uk
+</span></pre>
 <p>which gets it right:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="character-syntax">'-no-warnings'</span><span class="plain-syntax"> </span><span class="character-syntax">'-p=10'</span><span class="plain-syntax"> </span><span class="character-syntax">'-verbose'</span><span class="plain-syntax"> </span><span class="character-syntax">'-to'</span><span class="plain-syntax"> </span><span class="character-syntax">'My File.txt'</span><span class="plain-syntax"> </span><span class="character-syntax">'-lang=en-uk'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt' '-lang=en-uk'
+</span></pre>
 <p>Note that quote expansion respects the Unix shell redirection markers like
 <code>&gt;file</code> or <code>2&gt;&amp;1</code>, quoting just the file parts.</p>
 </div>
@@ -358,31 +311,21 @@ expansion of the first token:</p>
 expands to the (tokenised and further expanded) contents of the file named.
 Thus for example if the file <code>Frog.txt</code> contains the words &quot;never turn your
 back on a frog&quot;, then</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    $[Frog.txt$]</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	$[Frog.txt$]
+</span></pre>
 <p>will quote-expand to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="character-syntax">'never'</span><span class="plain-syntax"> </span><span class="character-syntax">'turn'</span><span class="plain-syntax"> </span><span class="character-syntax">'your'</span><span class="plain-syntax"> </span><span class="character-syntax">'back'</span><span class="plain-syntax"> </span><span class="character-syntax">'on'</span><span class="plain-syntax"> </span><span class="character-syntax">'a'</span><span class="plain-syntax"> </span><span class="character-syntax">'frog'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	'never' 'turn' 'your' 'back' 'on' 'a' 'frog'
+</span></pre>
 <p>By default, the contents of the file will themselves be expanded, if they
 contain names with <code>$</code> or <code>$$</code> prefixes. To avoid that (and thus treat dollar
 signs in the file as being literal), use yet another backtick:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	$[`Toad.txt$]
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    $[`Toad.txt$]</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Finally, the syntax</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ${Salamander.mp3$}</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	${Salamander.mp3$}
+</span></pre>
 <p>will quote-expand to an MD5 hash of the file named. This should exactly match
 what the <code>md5</code> tool supplied on most Unixes would give; for example, an empty
 file would quote-expand to <code>d41d8cd98f00b204e9800998ecf8427e</code>.</p>
@@ -403,23 +346,14 @@ rather than from a file. See the example supplied with Intest for testing
 most Unix systems (including MacOS). In that example, a test case such as
 <code>dc/Tests/Cases/plus.txt</code> contains what to put on the command line when
 running dc:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="identifier-syntax">e</span><span class="plain-syntax"> </span><span class="character-syntax">'1 1 + p'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	-e '1 1 + p'
+</span></pre>
 <p>The important step in the recipe for using this then reads:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    step</span><span class="plain-syntax">: dc $[</span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt$]</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	step</span><span class="plain-syntax">: dc $[</span><span class="function-syntax">$PATH</span><span class="plain-syntax">/</span><span class="function-syntax">$CASE</span><span class="plain-syntax">.txt$]
+</span></pre>
 <p>and this causes Intest to run the command:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">dc</span><span class="ConsoleText-identifier-syntax"> -e</span><span class="ConsoleText-plain-syntax"> '1 1 + p'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">dc</span><span class="ConsoleText-identifier-syntax"> -e</span><span class="ConsoleText-plain-syntax"> '1 1 + p'
+</span></pre>
 <p>which produces the concise output &quot;2&quot;.</p>
 </div>
 <div class="lsmarkdown">
@@ -443,41 +377,29 @@ will usually stop immediately and will be marked as a failure. However:</p>
 <p><code>or: 'NOTE' FILE</code>. If the step or match performed immediately before this line
 failed, the failure message <code>'NOTE'</code> is used. The <code>FILE</code>, which is optional,
 is then printed out when Intest describes what went wrong. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'dc produced an error'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span><span class="plain-syntax">
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'dc produced an error'
+</span></pre>
 <p>More generally, the conditional <code>iffail:</code> can be used, which causes the rest
 to continue despite the failure of a step. In fact, that last example is
 equivalent to:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span>
-<span class="type-syntax">    iffail</span><span class="plain-syntax">:</span>
-<span class="type-syntax">        fail</span><span class="plain-syntax">: 'dc produced an error'</span>
-<span class="type-syntax">    endif</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	step</span><span class="plain-syntax">: dc -e </span><span class="function-syntax">$EXPRESSION</span><span class="plain-syntax">
+</span><span class="type-syntax">	iffail</span><span class="plain-syntax">:
+</span><span class="type-syntax">		fail</span><span class="plain-syntax">: 'dc produced an error'
+</span><span class="type-syntax">	endif</span><span class="plain-syntax">
+</span></pre>
 <p><code>iffail:</code> can thus be used to send tests down differing paths if steps fail.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  Control also stops, with a pass for the test, if it runs into a <code>show: ...</code>
 command of the right sort when the tester is looking for that. For example,
 suppose the command being used is:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -show-transcript</span><span class="ConsoleText-plain-syntax"> Pine2</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -show-transcript</span><span class="ConsoleText-plain-syntax"> Pine2
+</span></pre>
 <p>The tester then runs the test case <code>Pine2</code> in hopes of running into an
 instruction like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    show</span><span class="plain-syntax">: transcript </span><span class="function-syntax">$TF</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	show</span><span class="plain-syntax">: transcript </span><span class="function-syntax">$TF</span><span class="plain-syntax">
+</span></pre>
 <p>If it finds such an instruction, it prints out the file which <code>$TF</code> (i.e.,
 the second token, whatever it is) and ends the test then and there.</p>
 <p>If the tester is not looking to show a transcript, it will pass over
@@ -493,11 +415,10 @@ on the command line, rather than a more general <code>-show-TARGET</code>.</p>
 <p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  If the file does not exist for some reason, the test continues, but the
 step is considered a fail. This possibility can be picked up by placing
 an <code>or:</code> immediately following:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	show</span><span class="plain-syntax">: transcript </span><span class="function-syntax">$TF</span><span class="plain-syntax">
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'heaven knows why, but the transcript file does not exist'
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    show</span><span class="plain-syntax">: transcript </span><span class="function-syntax">$TF</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'heaven knows why, but the transcript file does not exist'</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Steps.</b>  A &quot;step&quot; is a shell command issued to the host system: it actually does
 something as part of the test, in other words, rather than simply preparing
@@ -511,13 +432,10 @@ code, and failing on zero.</p>
 <p><code>debugger: COMMAND</code>. The same as <code>step:</code>, but runs the command in only when
 the test is being run by the <code>-debug</code> action. The idea is to do something
 like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    debugger</span><span class="plain-syntax">: lldb -f launcher -- </span><span class="function-syntax">$SOURCE</span>
-<span class="type-syntax">    step</span><span class="plain-syntax">: launcher </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'launcher produced error messages' </span><span class="function-syntax">$A</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	debugger</span><span class="plain-syntax">: lldb -f launcher -- </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax">
+</span><span class="type-syntax">	step</span><span class="plain-syntax">: launcher </span><span class="function-syntax">$SOURCE</span><span class="plain-syntax"> &gt;</span><span class="function-syntax">$A</span><span class="plain-syntax"> 2&gt;&amp;1
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'launcher produced error messages' </span><span class="function-syntax">$A</span><span class="plain-syntax">
+</span></pre>
 <p>The idea is that if the test is mysteriously crashing at this stage then
 running it with <code>-debug</code> will divert into the debugger instead, what that
 crash can be investigated.</p>
@@ -565,12 +483,9 @@ equal texts to &quot;match&quot; each other. In particular:</p>
 <p>On a <code>match text: A B</code>, a line of A and a line of B will match even if they
 disagree about the decimal number appearing in a use of <code>/Tn/</code>, where <code>n</code>
 is that number. For example, these two lines match:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Opened</span><span class="plain-syntax"> </span><span class="identifier-syntax">intest</span><span class="plain-syntax">/</span><span class="identifier-syntax">Workspace</span><span class="plain-syntax">/</span><span class="identifier-syntax">T4</span><span class="plain-syntax">/</span><span class="identifier-syntax">intermediate</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Opened</span><span class="plain-syntax"> </span><span class="identifier-syntax">intest</span><span class="plain-syntax">/</span><span class="identifier-syntax">Workspace</span><span class="plain-syntax">/</span><span class="identifier-syntax">T11</span><span class="plain-syntax">/</span><span class="identifier-syntax">intermediate</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Opened intest/Workspace/T4/intermediate.txt
+	Opened intest/Workspace/T11/intermediate.txt
+</span></pre>
 <p>This example should suggest why — when Intest is spreading tests across
 multiple processors, we cannot predict which thread number a test will run
 on; and as a result, we cannot say which sandbox area of the file system
@@ -578,11 +493,8 @@ it is allowed to use. That may cause the program under test to print
 output which will contain the thread number it is running on. But since
 we want to verify that output, we need to allow such output to match. What
 happens internally is that both lines are converted to</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Opened</span><span class="plain-syntax"> </span><span class="identifier-syntax">intest</span><span class="plain-syntax">/</span><span class="identifier-syntax">Workspace</span><span class="plain-syntax">/</span><span class="identifier-syntax">Txx</span><span class="plain-syntax">/</span><span class="identifier-syntax">intermediate</span><span class="plain-syntax">.</span><span class="identifier-syntax">txt</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Opened intest/Workspace/Txx/intermediate.txt
+</span></pre>
 <p>and then, of course, they match exactly. This makes runs of the same test
 comparable even when the runs occur on different threads.</p>
 <p>This is the only important case of &quot;forgiveness&quot;: the others apply only
@@ -594,67 +506,46 @@ out into I7 console output or into story file transcripts.</p>
 <p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Files and directories.</b>  There is one other commonly used pass/fail command:</p>
 <p><code>exists: F</code>. This passes if the file at <code>F</code> exists on disc, and fails otherwise.
 For example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    exists</span><span class="plain-syntax">: </span><span class="function-syntax">$TRANSCRIPT</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'no transcript was written'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	exists</span><span class="plain-syntax">: </span><span class="function-syntax">$TRANSCRIPT</span><span class="plain-syntax">
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'no transcript was written'
+</span></pre>
 <p>(When testing a program which doesn't return exit codes, sometimes the best
 way to see whether it worked or not is to see whether it produced any output.)</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. </b>  In addition, Delia has a very limited ability to write to the file system itself:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    copy</span><span class="plain-syntax">: FROM TO</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	copy</span><span class="plain-syntax">: FROM TO
+</span></pre>
 <p>copies a file. This should only be used to copy into the work area <code>$WORK</code>.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    mkdir</span><span class="plain-syntax">: PATH</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	mkdir</span><span class="plain-syntax">: PATH
+</span></pre>
 <p>ensures the existence of directory at the given <code>PATH</code>. (Again, this should
 be used only to make subdirectories of <code>$WORK</code>.)</p>
 <p>There is now also a deletion command:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    remove</span><span class="plain-syntax">: FILE</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	remove</span><span class="plain-syntax">: FILE
+</span></pre>
 <p>to remove a single file. Use this as little as possible and don't try to clean
 up the work area yourself: Intest will handle that automatically.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Conditionals.</b>  As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    if</span><span class="plain-syntax">: TOKEN EXPRESSION</span>
-<span class="plain-syntax">        ...</span>
-<span class="type-syntax">    else</span>
-<span class="plain-syntax">        ...</span>
-<span class="type-syntax">    endif</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if</span><span class="plain-syntax">: TOKEN EXPRESSION
+	    ...
+</span><span class="type-syntax">	else</span><span class="plain-syntax">
+	    ...
+</span><span class="type-syntax">	endif</span><span class="plain-syntax">
+</span></pre>
 <p>The <code>else</code> clause is optional, and these conditionals can be nested in the
 usual way.</p>
 <p>What the test does is to expand both <code>TOKEN</code> and <code>EXPRESSION</code>, and then see
 if the expanded token matches the regular expression defined by the expanded
 expression. That can be just a simple textual match:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> Balloons</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> Balloons
+</span></pre>
 <p>tests if the current test case name is &quot;Balloons&quot;. On the other hand,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> Party-%d+</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> Party-%d+
+</span></pre>
 <p>would match cases such as <code>Party-12</code>, because <code>%d+</code> is regular expression
 syntax for &quot;one or more digits here&quot;.</p>
 <p>The regular expression syntax here is a slightly non-standard one used in
@@ -665,29 +556,20 @@ any of the characters <code>a</code>, <code>b</code> or <code>c</code>, <code>+<
 of whitespace&quot;.</p>
 <p>Moreover, if the <code>EXPRESSION</code> is quoted, the quotes are removed again
 before the test is performed. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> 'More Balloons'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> 'More Balloons'
+</span></pre>
 <p>then <code>$CASE</code> is tested against the text <code>More Balloons</code>, not <code>'More Balloons'</code>.
 Similarly,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> ''</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> ''
+</span></pre>
 <p>tests if <code>$CASE</code> is the empty text.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b>  If round brackets are used to match subexpressions, then the result of
 such matches is written to the variables <code>$SUBEXPRESSION1</code> to <code>$SUBEXPRESSION4</code>.
 For example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> '(%C+) (%d+) *(%c*)'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> '(%C+) (%d+) *(%c*)'
+</span></pre>
 <p>matches the text <code>price 200 ringgit</code> and sets <code>$SUBEXPRESSION1</code> to <code>$SUBEXPRESSION3</code>
 to &quot;price&quot;, &quot;200&quot; and &quot;ringgit&quot; respectively.</p>
 </div>
@@ -721,22 +603,16 @@ when somebody wants to see it.</p>
 <p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. </b>  <code>if compatible: FORMAT COMPATIBILITY</code> is true if and only if the
 Inform platform text <code>FORMAT</code> matches the compatibility text <code>COMPATIBILITY</code>.
 For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    if compatible</span><span class="plain-syntax">: inform6/32 'Glulx only'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if compatible</span><span class="plain-syntax">: inform6/32 'Glulx only'
+</span></pre>
 <p>will be true. This is meaningful only when testing Inform, of course.
 Errors are generated if either <code>FORMAT</code> or <code>COMPATIBILITY</code> is malformed.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b>  <code>if format valid: FORMAT</code> is true if and only if <code>FORMAT</code> is a valid
 Inform platform text. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    if format valid</span><span class="plain-syntax">: Python/gil</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if format valid</span><span class="plain-syntax">: Python/gil
+</span></pre>
 <p>is currently not true.</p>
 </div>
 <div class="lsmarkdown">
@@ -761,12 +637,9 @@ This is a pass/fail command, which means that it can be followed by an <code>or:
 but perhaps unexpectedly, it fails if the checksum is the same as the last time
 this checksum was performed for the test case in question. That enables
 something like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    hash</span><span class="plain-syntax">: </span><span class="function-syntax">$I6SOURCE</span><span class="plain-syntax"> </span><span class="function-syntax">$WORK</span><span class="plain-syntax">/checksum.txt</span>
-<span class="type-syntax">    or</span><span class="plain-syntax">: 'passed (matching cached I6 known to work)'</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	hash</span><span class="plain-syntax">: </span><span class="function-syntax">$I6SOURCE</span><span class="plain-syntax"> </span><span class="function-syntax">$WORK</span><span class="plain-syntax">/checksum.txt
+</span><span class="type-syntax">	or</span><span class="plain-syntax">: 'passed (matching cached I6 known to work)'
+</span></pre>
 <p>(Uniquely, the <code>or:</code> in this case causes the overall test to pass, not fail.)
 A side-effect here is that the hash value is also stored in the local variable
 <code>$HASHCODE</code>, which is why you can't create your own <code>$HASHCODE</code> variable.</p>
@@ -790,11 +663,8 @@ on Windows: this is the &quot;locale&quot;, in operating system jargon.</p>
 <p>As a result, a test which recorded the console output on a Mac could not be
 compared with the same test on Windows if that output included non-ASCII
 characters. That would affect any Delia step written like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    step</span><span class="plain-syntax">: insomething/Tangled/insomething whatever &gt;result.txt</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	step</span><span class="plain-syntax">: insomething/Tangled/insomething whatever &gt;result.txt
+</span></pre>
 <p>in that the program might be operating identically on these platforms but
 still produce a different <code>result.txt</code> file on Mac vs Windows, one being
 UTF-8 encoded, the other ISO.</p>
@@ -804,26 +674,20 @@ setting:</p>
 <code>ENCODING</code> is one of <code>platform</code>, <code>utf-8</code> or <code>iso-latin1</code>. (The <code>platform</code>
 encoding means &quot;whatever is normal on the current platform&quot;.) Running with the
 <code>-verbose</code> option in <a href="../inweb/index.html" class="internal">inweb</a> or <a href="index.html" class="internal">intest</a> will show the locales being used:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -verbose</span>
-<span class="ConsoleText-plain-syntax">    Installation path is /Users/gnelson/dev/intest</span>
-<span class="ConsoleText-plain-syntax">    Locales are: shell = utf-8, console = utf-8</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -locale</span><span class="ConsoleText-plain-syntax"> console=iso-latin1</span><span class="ConsoleText-identifier-syntax"> -verbose</span>
-<span class="ConsoleText-plain-syntax">    Installation path is /Users/gnelson/dev/intest</span>
-<span class="ConsoleText-plain-syntax">    Locales are: shell = utf-8, console = iso-latin1</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -verbose</span><span class="ConsoleText-plain-syntax">
+	Installation path is /Users/gnelson/dev/intest
+	Locales are: shell = utf-8, console = utf-8
+	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-identifier-syntax"> -locale</span><span class="ConsoleText-plain-syntax"> console=iso-latin1</span><span class="ConsoleText-identifier-syntax"> -verbose</span><span class="ConsoleText-plain-syntax">
+	Installation path is /Users/gnelson/dev/intest
+	Locales are: shell = utf-8, console = iso-latin1
+</span></pre>
 <p>It's probably best not to change the <code>shell</code> locale, which affects the
 encoding on (a) environment variables, (b) filenames when scanning directories,
 and (c) command-line parameters, either in or out. Changing the <code>console</code>
 locale, though, effectively makes standard output from an Inform tool conform
 to the given locale. So:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">    step</span><span class="plain-syntax">: insomething/Tangled/insomething -locale console=utf-8 whatever &gt;result.txt</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	step</span><span class="plain-syntax">: insomething/Tangled/insomething -locale console=utf-8 whatever &gt;result.txt
+</span></pre>
 <p>would produce the same result on MacOS as on Windows.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">

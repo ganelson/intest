@@ -271,7 +271,7 @@ blank.</p>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">test</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">test</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_be_tested</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for example, <code>TEST_ACTION</code> or <code>BLESS_ACTION</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirect</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where to redirect console output */</span>
@@ -279,8 +279,7 @@ blank.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">passed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or <code>NOT_APPLICABLE</code> if not yet run */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">full_results</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">test</span><span class="plain-syntax"> *</span><span class="identifier-syntax">previous_completed_test</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">test</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Scheduler::schedule</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Scheduler::schedule</span></span>:<br/>Actions - <a href="2-act.html#SP9_2">&#167;9.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">test_case</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tc</span><span class="plain-syntax">, </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirect</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">test_action</span><span class="plain-syntax">) {</span>
@@ -337,7 +336,7 @@ most recent.</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">s</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">use_threads</span><span class="plain-syntax">; </span><span class="identifier-syntax">s</span><span class="plain-syntax">++)</span>
-<span class="plain-syntax">        </span><a href="../foundation/2-str.html#SP36" class="function-link"><span class="function-syntax">Streams::close</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">thread_slots</span><span class="plain-syntax">[</span><span class="identifier-syntax">s</span><span class="plain-syntax">].</span><span class="element-syntax">split_log</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><a href="../foundation/2-str.html#SP34" class="function-link"><span class="function-syntax">Streams::close</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">thread_slots</span><span class="plain-syntax">[</span><span class="identifier-syntax">s</span><span class="plain-syntax">].</span><span class="element-syntax">split_log</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">main_DL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">TESTER</span><span class="plain-syntax">, </span><span class="string-syntax">"Back to a single debugging log here\n"</span><span class="plain-syntax">);</span>
 </pre>
@@ -419,11 +418,8 @@ cases to look at.</p>
 <p class="commentary firstcommentary"><a id="SP9_3_2" class="paragraph-anchor"></a><b>&#167;9.3.2. </b>  The only purpose of the following is to print something to the terminal so
 that the user has some comforting evidence that work is going on. This is
 where Intest's familiar chains of bracketed case numbers are printed:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">cases:</span><span class="plain-syntax"> [1] [2] [3] [4] [5] [6] [7] (8) [9] [10] </span><span class="constant-syntax">-11</span><span class="plain-syntax">- [12] [13]</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	inter -&gt; cases: [1] [2] [3] [4] [5] [6] [7] (8) [9] [10] -11- [12] [13]
+</span></pre>
 <p>Note that they are grouped by &quot;wildcard&quot;, in effect, by their case type.
 The symbols placed either side of the case number, loosely called its
 &quot;brackets&quot;, are chosen by the Tester on the basis of the test's outcome.</p>
@@ -457,11 +453,8 @@ The symbols placed either side of the case number, loosely called its
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9_4" class="paragraph-anchor"></a><b>&#167;9.4. </b>  And, now the hurly-burly's done: now the battle's lost and won. We need to
 print out the summary of what happened, e.g.:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">All</span><span class="plain-syntax"> </span><span class="constant-syntax">27</span><span class="plain-syntax"> </span><span class="identifier-syntax">tests</span><span class="plain-syntax"> </span><span class="identifier-syntax">succeeded</span><span class="plain-syntax"> (</span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">taken</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">:02, </span><span class="constant-syntax">16</span><span class="plain-syntax"> </span><span class="identifier-syntax">simultaneous</span><span class="plain-syntax"> </span><span class="identifier-syntax">threads</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	All 27 tests succeeded (time taken 0:02, 16 simultaneous threads)
+</span></pre>
 <p>The &quot;bottom line&quot; text here is &quot;All 27 tests succeeded&quot;.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write results banner</span><span class="named-paragraph-number">9.4</span></span> =</p>

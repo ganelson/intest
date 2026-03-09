@@ -95,7 +95,7 @@ Are stored in the following hierarchy, with a recipe being essentially a
 linked list of lines, and a line being essentially a linked list of tokens.
 
 =
-typedef struct recipe {
+classdef recipe {
 	struct filename *compiled_from;
 	struct linked_list *lines; /* of `recipe_line` */
 	struct text_stream *recipe_name;
@@ -103,23 +103,20 @@ typedef struct recipe {
 	int conditional_nesting;
 	int end_found;
 	struct recipe_command *last_command;
-	CLASS_DEFINITION
-} recipe;
+}
 
-typedef struct recipe_line {
+classdef recipe_line {
 	struct recipe_command *command_used;
 	struct linked_list *recipe_tokens; /* of `recipe_token` */
 	struct text_stream *from_text;
-	CLASS_DEFINITION
-} recipe_line;
+}
 
-typedef struct recipe_token {
+classdef recipe_token {
 	struct text_stream *token_text;
 	int token_quoted;
 	int token_indirects_to_file;
 	int token_indirects_to_hash;
-	CLASS_DEFINITION
-} recipe_token;
+}
 
 @ =
 void Delia::log_line(OUTPUT_STREAM, void *vL) {

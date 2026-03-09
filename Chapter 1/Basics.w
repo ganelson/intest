@@ -60,31 +60,3 @@ respectively.
 @<Declare new writers and loggers@> =
 	Writers::register_writer('k', &Skeins::write_node_label);
 	Writers::register_logger('L', &Delia::log_line);
-
-@h Setting up the memory manager.
-We need to itemise the structures we'll want to allocate:
-
-@e action_item_CLASS
-@e test_case_CLASS
-@e test_source_CLASS
-@e skein_CLASS
-@e edit_CLASS
-@e diff_results_CLASS
-@e test_CLASS
-@e historic_moment_CLASS
-@e recipe_CLASS
-@e recipe_line_CLASS
-@e recipe_token_CLASS
-
-@ =
-DECLARE_CLASS(action_item)
-DECLARE_CLASS(test_case)
-DECLARE_CLASS(test_source)
-DECLARE_CLASS(skein)
-DECLARE_CLASS(edit)
-DECLARE_CLASS(diff_results)
-DECLARE_CLASS(test)
-DECLARE_CLASS(historic_moment)
-DECLARE_CLASS(recipe)
-DECLARE_CLASS(recipe_line)
-DECLARE_CLASS(recipe_token)

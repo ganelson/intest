@@ -10,9 +10,11 @@ is likely to act on only a few in any given run.
 
 As previously noted, Intest needs a recipe file in order to run in any
 useful fashion; by default, Intest expects to find this file at
-= (text)
+
+``` None
 	PROJECT/Tests/PROJECT.intest
-=
+```
+
 where `PROJECT` is the name of the tested project's home directory. But
 with the `-using` switch at the command line, an alternative file can be
 used somewhere else.
@@ -32,7 +34,7 @@ the location of a directory of test cases which will have type `case`, and
 then gives a single recipe, which Intest will use on whatever cases it
 discovered in that directory.
 
-= (text as Delia)
+``` Delia
 ! This is my first try at testing the launcher program
 
 -cases 'inform7/kinds-test/Tests/Test Cases'
@@ -54,7 +56,7 @@ discovered in that directory.
 	or: 'produced incorrect output'
 
 -end
-=
+```
 
 The details of a recipe (written between `-recipe` and `-end` above) are
 in a special language called Delia, which is described in //Writing Intest Recipes//.
@@ -71,9 +73,11 @@ very important to Intest, but names are.
 
 Names typically come from the filenames of the files in which tests are
 written. In the above example:
-= (text as Delia)
+
+``` Delia
 -cases 'inform7/kinds-test/Tests/Test Cases'
-=
+```
+
 if the directory given contained three files, `numerical.txt`, `text.txt`
 and `lists.txt`, then the universe would consist of three tests with
 the names `numerical`, `text` and `lists`.
@@ -135,7 +139,8 @@ file, a format which takes even more decoding.
 @ In addition, some tests are "annotated", meaning that details about them
 are given at the top of the file in question. For example, here is an
 unannotated test case file:
-= (text)
+
+``` None
 	The internal text file of Tall Nettles is called "Nettles.txt".
 
 	To begin:
@@ -144,9 +149,11 @@ unannotated test case file:
 		repeat with T running through the file of Tall Nettles:
 			say "[line count]  [T][line break]";
 			increase the line count by 1.
-=
+```
+
 And here is the same thing as an annotated file:
-= (text)
+
+``` None
 	Test: Nettles
 	Language: Basic
 	For: Glulx
@@ -160,7 +167,8 @@ And here is the same thing as an annotated file:
 		repeat with T running through the file of Tall Nettles:
 			say "[line count]  [T][line break]";
 			increase the line count by 1.
-=
+```
+
 The difference, of course, is that the file begins with a run of header
 lines, each of which sets one detail. These take the form "Key: Value",
 where Key must be a single word. In a test case file, the first line must
@@ -170,9 +178,11 @@ key must be "Problem" rather than "Test".
 
 @ All Inform example files are annotated. There, the opening line is a little
 more elaborate:
-= (text)
+
+``` None
 	Example: ** Alpaca Farm 2
-=
+```
+
 Here the opening line must have the key "Example" and the value is a row
 of one to four asterisks, rating the example by difficulty, and then a title.
 (This exactly follows the format used by the "indoc" tool for Inform:
@@ -206,10 +216,12 @@ Often the same recipe will be assigned to every case, but not all always.
 Recipes are named, with names put in square brackets. The default one is
 called just `[Recipe]`, but any test case declaration can override that.
 For example:
-= (text as Delia)
+
+``` Delia
 	-cases [KindRecipe] 'inform7/kinds-test/Tests/Test Cases'
 	-possible-annotated-case [SpecialHack] 'inform7/kinds-test/Tests/debugging.txt'
-=
+```
+
 Here any cases found in `inform7/kinds-test/Tests/Test Cases` are given the
 recipe `[KindRecipe]`, and if the file `inform7/kinds-test/Tests/debugging.txt`
 is present, then it gets the recipe `[SpecialHack]`.
@@ -220,10 +232,12 @@ for how to do that.
 @ If, for whatever reason, you would like a given test not to be included
 in Intest's wildcard names such as `all`, then you can write, say,
 `-singular NAME`, where `NAME` is the test's name. For example, you might say:
-= (text as Delia)
+
+``` Delia
 	-possible-annotated-case [SpecialHack] 'inform7/kinds-test/Tests/debugging.txt'
 	-singular debugging
-=
+```
+
 to mark the test `debugging`, which arises from the declaration, to be
 excluded from `all`.
 
@@ -231,37 +245,45 @@ excluded from `all`.
 though similar to each other, involve subtle variations in how they should be
 carried out. One answer to that would be to have numerous recipes which are
 all variations on a theme:
-= (text as Delia)
+
+``` Delia
 	-cases [Reactor1] 'fusionreactor/Tests/HotCases'
 	-cases [Reactor2] 'fusionreactor/Tests/ColdCases'
 	-cases [Reactor3] 'fusionreactor/Tests/UnsafeCases'
-=
+```
+
 But that is likely to result in having to write multiple, repetitive recipes.
 A neater solution is to use "stipulations", like so:
-= (text as Delia)
+
+``` Delia
 	-cases [Reactor:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'
 	-cases [Reactor:TEMP=Cold:STATUS=Safe] 'fusionreactor/Tests/ColdCases'
 	-cases [Reactor:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'
-=
+```
+
 Here the recipe `[Reactor]` will be used for all of these cases, but it will
 start with the variables `$TEMP` and `$STATUS` set to values depending on
 which bucket the tests came from. Note that those are local variables (i.e.,
 different for each individual test), not global ones (the same for all).
 
 @ It is also possible to set global variables which will apply to all recipes:
-= (text as Delia)
+
+``` Delia
 	-set MAXTEMPERATURE 4000
-=
+```
+
 This would create the variable `$$MAXTEMPERATURE`, which can be used by
 every recipe. See below for more on Delia variables: the doubled dollar sign
 means global, single means local.
 
 @ Finally, test cases can be made available and globals can be set on a
 platform-specific basis:
-= (text as Delia)
+
+``` Delia
 	-if Windows -set EXESUFFIX '.exe'
 	-if MacOS -annotated-cases [Main:EXTERNAL=inform7/Tests] 'inform7/Tests/Test Releases'
-=
+```
+
 A line beginning `-if PLATFORM` will be obeyed only if `$$platform` matches the
 value `PLATFORM`, case insensitively.
 
@@ -272,44 +294,52 @@ test cases for some particular aspect of testing.
 
 A typical test group file is just a list of lines, each of which specifies
 some tests drawn from the Universe. Most often these are literal test names:
-= (text)
+
+``` None
 	PM_RelationOtoVContradiction
 	PM_BadRelationCondition
 	Asym1to1
 	ExoticCreation
 	KOVEquivRelation
 	OToORouteFinding
-=
+```
+
 Blank lines are skipped, as are lines beginning with the comment character `!`.
 
 More ambitiously, lines can give regular expressions for tests to match. This
 group consists of the test `Soyuz` and anything whose name begins `Ariane-`.
-= (text)
+
+``` None
 	Soyuz
 	Ariane-%C+
-=
+```
+
 By default, these are matched against either the name or the title of a case:
 a successful match against either gets the test included in the group. But
 we can say exactly what we want to match against by writing the line
 `KEY includes PATTERN` or `KEY is PATTERN`:
-= (text)
+
+``` None
 	Title includes %d%d
 	Name is Pine2
 	Language is Basic
 	Description includes quick
-=
+```
+
 This improbable group includes any test whose title has two consecutive digits
 somewhere in it, or whose name is `Pine2`, or which sets the key `Language`
 to the value `Basic` in its annotations (see below), or which sets the
 key `Description` to something with the word "quick" in it.
 
 It can sometimes be useful to see what tests this sort of thing actually implies:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest launcher -list :rockets
 	Soyuz
 	Ariane-5
 	Ariane-6
-=
+```
+
 which lists all tests in the universe for `launcher` which match one of the
 lines from the `rockets.testgroup`.
 
@@ -321,12 +351,14 @@ to do this:
 text file.
 
 `-recipe [NAME]` followed by a definition written in the intest file itself:
-= (text as Delia)
+
+``` Delia
 	-recipe [NAME]
 	    ...
 	    ...
 	-end
-=
+```
+
 where the definition occupies the lines in between the `-recipe` line and the
 `-end` line. (Those lines in between are not commands and don't start with
 dashes.) If no `[NAME]` is given, the name is assumed to be just `[Recipe]`.
@@ -339,12 +371,14 @@ details about it: this run ends with a blank line, and then the actual
 test material begins.
 
 For example, this might be the block of annotations at the top of a test case:
-= (text)
+
+``` None
 	Test: Nettles
 	Language: Basic
 	For: Glulx
 	IntOptions: -u -q -dataresourcetext '3:$PATH/Nettles--X.txt'
-=
+```
+
 What does Intest do with this information? The answer is not much. The opening
 line is significant, in that it tells Intest that this file is indeed a
 test case, and supplies a title for the test. (Without such an annotation,
@@ -354,14 +388,16 @@ The other key-value pairs here are for the benefit of other programs. Examples,
 which are intended as documentation for Inform, use some of these to say where
 they should appear in the manual (or in an extension's documentation), how
 they should be indexed, and so on:
-= (text)
+
+``` None
 	Example: ** Alpha
 	Location: Regular expression matching
 	RecipeLocation: Testing
 	Index: Testing command
 	Description: Creating a beta-testing command that matches any line starting with punctuation.
 	For: Z-Machine
-=
+```
+
 So here, the keys `Location`, `RecipeLocation`, `Index`, and `Description` are
 all for use by Indoc, and are not likely to matter to how the test is conducted.
 There's actually a hidden key-value pair in this case: `Stars`, which is set

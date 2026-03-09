@@ -5,14 +5,18 @@ Intest is controlled with a flexible range of command-line instructions.
 @h Specifying what to test.
 Intest tests just one project at a time, and the first thing to do is
 specify which. The general form is:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest PROJECT COMMAND
-=
+```
+
 or, in case the `PROJECT` directory happens to begin with a hyphen and could
 be confused with the name of a command-line switch,
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest -from PROJECT COMMAND
-=
+```
+
 `PROJECT` is optional if the `COMMAND` is simply `-help` or `-version`,
 when of course no actual testing will happen.
 
@@ -26,9 +30,11 @@ must provide detailed instructions on how the tests are to be performed.
 
 @ But for the benefit of Inform users, Intest can also be used in a simplified
 way in which `PROJECT` is an Inform extension (if stored in directory form) or kit. For example:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest -from 'Extensions/Emily Short/Locksmith-v15.i7xd' all
-=
+```
+
 What makes this simpler is that the user need not write any instructions
 specifying what to test and how to test it: Intest knows how to test an Inform
 extension or kit, and handles it all automatically. That does come with a
@@ -44,9 +50,11 @@ have Inform installed then there would be no way to test such extensions or
 kits anyway. But Intest needs to know where in the filing system the internals
 directory can be found. By default it assumes the path `inform7/Internal`,
 but this can be overridden with the `-internal` switch:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest -internal '/Volumes/Experimental HD/unstable-inform/inform7/Internal' -from 'Extensions/Emily Short/Locksmith-v15.i7xd' all
-=
+```
+
 Note that this exactly follows the conventions used by the `inform7` and
 `inbuild` command-line tools, which also have an optional `-internal`
 command-line switch and the same default.
@@ -54,9 +62,11 @@ command-line switch and the same default.
 @h History and substitution.
 For each different project `PROJECT`, Intest maintains a history of recent
 commands in a file stored at:
-= (text)
+
+``` None
 	PROJECT/Tests/intest-history.txt
-=
+```
+
 If Intest can't find this file, it silently continues; it will rewrite, or
 create, this file when it exits, unless the `-no-history` setting is used.
 (When Intest is being used less interactively — for example, inside the
@@ -64,14 +74,16 @@ Inform user interface app — this setting avoids clutter.)
 
 The first thing Intest does with a `COMMAND` is to make substitutions.
 A `COMMAND` consisting of just "?" lists the project's current history, like so:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7 ?
 	?1. cases
 	?2. Abolition
 	?3. Beatles Sackcloth Gelato
 	?4. problems
 	1 = PM_ActivityOf; 2 = PM_AdjectiveIsValue
-=
+```
+
 (If there's no recorded history, output is empty.) What this means is that
 there have been four previous commands, called `?1` to `?4`. There are also
 two test cases recently found to be troublesome, called `1` and `2`. History
@@ -79,48 +91,62 @@ is maintained for the previous 20 commands.
 
 Intest uses both of these notations to save typing. The command `?3`, for
 example, abbreviates `Beatles Sackcloth Gelato`. Thus:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7 ?3
 	Repeating: ?3. Beatles Sackcloth Gelato
 	...
-=
+```
+
 is equivalent to typing:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7 Beatles Sackcloth Gelato
-=
+```
+
 except that it doesn't add a new line to the history file, since this is a repeat of an old command, not a new one.
 
 Calling intest with an empty command repeats its most recent new command:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7
 	Repeating: ?4. problems
 	...
-=
+```
+
 Finally, intest automatically expands any command line arguments consisting 
 only of positive decimal numbers into the names recorded in the history. Thus
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7 1 2
 	Expanded to: ?5. PM_ActivityOf PM_AdjectiveIsValue
 	...
+```
 
 @h Command line arguments.
 At this point, then, the command no longer has any `?`, `?n` or `n` tokens
 in it, because those have all been taken care of. What remains is a "raw
 command". This takes the form:
-= (text)
+
+``` None
 	OPTIONS -using USING -do DO
-=
+```
+
 `OPTIONS`, which can be nothing at all, sets overall switches such as
 `-no-history`. See below. `-using` tells Intest where to find test cases;
 that too is optional. `-do` tells Intest which test cases to run. If there
 isn't a `-using` block, there's no need to say `-do`, so simply
-= (text)
+
+``` None
 	OPTIONS DO
-=
+```
+
 will work. For example,
-= (text)
+
+``` None
 	-no-history bigarrays badvariables
-=
+```
+
 would set the option `-no-history` and then perform a "do" on the two test
 cases named.
 
@@ -153,35 +179,45 @@ Before it can do any testing, Intest has to discover the universe of possible
 named test cases available, and work out which recipe to use with each.
 
 It normally does that by reading a recipe file stored at:
-= (text)
+
+``` None
 	PROJECT/Tests/PROJECT.intest
-=
+```
+
 This is because the default `-using` setting is
-= (text)
+
+``` None
 	-using PROJECT/Tests/PROJECT.intest
-=
+```
+
 You can alternatively say `-using R` for any intest file `R`, which need not
 be in the project folder.
 
 It is also possible, though seldom useful, to give your recipe instructions
 at the command line and not in an intest file at all. Newcomers to Intest
 should simply skip the following discussion, but:
-= (text)
+
+``` None
 	-using USE1 USE2 ... USEn
-=
+```
+
 can instead be a list of use commands, some of a single token, some of
 two or more. In effect, those are lines in an intest file.
 
 @h Doing.
 The "doing" part of an Intest command is usually a list of test cases to
 be tried. For example,
-= (text)
+
+``` None
 	alpha beta gamma
-=
+```
+
 is implicitly read as
-= (text)
+
+``` None
 	-test alpha beta gamma
-=
+```
+
 since `-test` is understood if no other do command is given.
 
 Any number of names can be supplied, each of which must be one of the
@@ -196,7 +232,7 @@ tests of the given type of origin;
 extension case";
 
 - `^1`, `^2`, `^3`, ..., mean "the 1st (2nd, 3rd, ...) test case known",
--- this is not to be confused with the `1`, `2`, `3`, ... notation used
+— this is not to be confused with the `1`, `2`, `3`, ... notation used
 to call back previously failed cases: typically `^1` will be the first
 test case alphabetically;
 
@@ -218,13 +254,15 @@ For more on test types and groups, see //The Universe of Cases//.
 `-catalogue`: List all the known test cases. For large projects this might
 produce an enormous list, but `-using` can cut that down. To give an example
 from Inform,
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7 -using -extension 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x' -do -catalogue
 	Locksmith Example A = John Malkovich's Toilet
 	Locksmith Example B = Tobacco
 	Locksmith Example C = Rekeying
 	Locksmith Example D = Watchtower
-=
+```
+
 Here the universe of possible tests is reduced to just those which are given
 in the documentation for this specific Inform extension. The `-catalogue`
 then gives a full list of those four.
@@ -233,7 +271,8 @@ then gives a full list of those four.
 titles match `<text>`. This can in fact be a regular expression, using
 `[...]`, `%c` for any character (not `.`), `%C` for any non-white-space, `%d`
 for a digit, and so on. For example:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7 -find %d%d%d%d
 	Test cases matching '%d%d%d%d':
 	Jamaica1688 = Jamaica 1688
@@ -243,7 +282,8 @@ for a digit, and so on. For example:
 	Royal3 = 1691
 	SP = Space Patrol #57 - 1953-10-31 - Stranded on Jupiter!
 	Stoppers = Trachypachidae Maturin 1803
-=
+```
+
 (The reason for the equals signs here, and in the above example too, is that
 an individual test case can have both a "name" — such as `Stoppers` — and also
 a "title" — such as "Trachypachidae Maturin 1803". The name is derived from
@@ -264,30 +304,36 @@ by compiling this test case; the script being drawn from the
 
 line inside the source, if one is present. If no script is there, this
 produces empty output, but does not throw an error. For example:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest -using -extension 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x' -do -script C
 	i
 	x key
 	unlock box
 	i
 	x key
-=
+```
+
 which is the command script for Example C of Locksmith:
 
 `-concordance <cases>`: Output a concordance table for comparing line numbers
 between the source text extracted by Intest vs. the original file they came
 from. This is a sequence of lines of the form:
-= (text)
+
+``` None
 	1 +404
-=
+```
+
 which means "from line 1 of the extracted output onwards, you have to add
 404 to get the corresponding line of the original from which it came". There can
 be any number of such lines, including none at all (which means: the line
 numbers match); e.g.
-= (text)
+
+``` None
 	1 +404
 	21 +409
-=
+```
+
 means add 404 to lines 1 to 20, then add 409 from then on, presumably because
 5 lines have been skipped. The list is always of minimal length and any offsets
 quoted are always positive, so `+0` or `+-7` can't occur.
@@ -350,16 +396,20 @@ file already existing with that name). In a `-to` destination, any usage in
 the filename of the text `[NAME]` expands to the name of the test case; any
 usage of `[NUMBER]` expands to a unique integer, counting upwards from 1, for
 each test case being applied to by this action. Thus, for example:
-= (text)
+
+``` None
 	-source A B C D -to source_[NAME].txt
-=
+```
+
 might write four files, called, say,
-= (text)
+
+``` None
 	source_Locksmith Example A.txt
 	source_Locksmith Example B.txt
 	source_Locksmith Example C.txt
 	source_Locksmith Example D.txt
-=
+```
+
 Note that if you write multiple do commands, they can each have independent
 `-to` destinations.
 
@@ -369,9 +419,11 @@ it's hard to think of anyone else who would need them). The idea here is that
 after the Inform app has conducted a test, it asks intest to produce an HTML
 page to describe the results of the test, passing over the information needed
 to do this:
-= (text)
+
+``` None
 	-report <case> <code> <problems-file> <skein-file>
-=
+```
+
 Here `<case>` is a single case, not a list, and `<code>` is one of:
 
 - `i7`: meaning, failed i7, i.e., `inform7` produced problem messages
@@ -384,16 +436,20 @@ Here `<case>` is a single case, not a list, and `<code>` is one of:
 `<skein-file>` is only looked at (potentially) in case (c), and is the skein file for the example in question; at present it's ignored.
 
 For example:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7
 	    -using -extension Locksmith.i7xp/Source/extension.i7x
 	    -do -report C i7 Locksmith.i7xp/Build/Problems.html Locksmith.i7xp/Skein.skein
-=
+```
+
 reports on the failure of example C from the `Locksmith.i7xp` project. The
 output is HTML, but sent to stdout by default; use something like
-= (text as ConsoleText)
+
+``` ConsoleText
 	-to Locksmith.i7xp/Build/Problems-3.html
-=
+```
+
 to redirect this to a particular file.
 
 The second special action is `-combine`. This assumes that the Inform app has
@@ -402,30 +458,40 @@ the `-report` action on each in turn, redirecting the output to a series of
 files. What `-combine` does is to read all of those files in and merge them
 into a consolidated report, which, once again, it writes as HTML. The format
 here is:
-= (text)
+
+``` None
 	-combine <base-filename> -<N>
-=
+```
+
 The filenames of the individual reports are assumed to be `<base-filename>`
 but with "-1", "-2", ..., tacked on before the file extension. Thus:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest -using -extension Locksmith.i7xp/Source/extension.i7x
 	    -do -combine Locksmith.i7xp/Build/Problems.html -4
 	    -to Locksmith.i7xp/Build/Consolidated.html
-=
+```
+
 reads in
-= (text)
+
+``` None
 	Locksmith.i7xp/Build/Problems-1.html
 	Locksmith.i7xp/Build/Problems-2.html
 	Locksmith.i7xp/Build/Problems-3.html
 	Locksmith.i7xp/Build/Problems-4.html
-=
+```
+
 and writes out a consolidated report into
-= (text)
+
+``` None
 	Locksmith.i7xp/Build/Consolidated.html
+```
 
 @h Skein file testing.
 In order to be used by the Testing panel in the Inform app, intest also supports the following:
-= (text)
+
+``` None
 	-test-skein <file> <node-id>
-=
+```
+
 This reads the specified `.skein` file, looks for the node in it with the given ID, and runs intest's diff algorithm on the actual versus blessed transcript at that node. The output is in simple HTML format.

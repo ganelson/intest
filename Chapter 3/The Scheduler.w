@@ -219,7 +219,7 @@ blank.
 @d DONE_AND_NO_LONGER_NEEDS_SLOT -2
 
 @ =
-typedef struct test {
+classdef test {
 	struct test_case *to_be_tested;
 	int action_type; /* for example, `TEST_ACTION` or `BLESS_ACTION` */
 	struct filename *redirect; /* where to redirect console output */
@@ -227,8 +227,7 @@ typedef struct test {
 	int passed; /* or `NOT_APPLICABLE` if not yet run */
 	struct text_stream *full_results;
 	struct test *previous_completed_test;
-	CLASS_DEFINITION
-} test;
+}
 
 
 void Scheduler::schedule(test_case *tc, filename *redirect, int test_action) {
@@ -345,9 +344,11 @@ cases to look at.
 @ The only purpose of the following is to print something to the terminal so
 that the user has some comforting evidence that work is going on. This is
 where Intest's familiar chains of bracketed case numbers are printed:
-= (text)
+
+``` None
 	inter -> cases: [1] [2] [3] [4] [5] [6] [7] (8) [9] [10] -11- [12] [13]
-=
+```
+
 Note that they are grouped by "wildcard", in effect, by their case type.
 The symbols placed either side of the case number, loosely called its
 "brackets", are chosen by the Tester on the basis of the test's outcome.
@@ -377,9 +378,11 @@ The symbols placed either side of the case number, loosely called its
 
 @ And, now the hurly-burly's done: now the battle's lost and won. We need to
 print out the summary of what happened, e.g.:
-= (text)
+
+``` None
 	All 27 tests succeeded (time taken 0:02, 16 simultaneous threads)
-=
+```
+
 The "bottom line" text here is "All 27 tests succeeded".
 
 @<Write results banner@> =

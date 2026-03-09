@@ -13,7 +13,7 @@ is to be called using `$SOURCE` as the filename of its input. Its output is
 then redirected into the file `$A`, which is compared against `$I` to see
 if the right output was printed.
 
-= (text as Delia)
+``` Delia
 	set: $SOURCE = $PATH/$CASE.txt
 	set: $A = $PATH/$CASE--A.txt
 	set: $I = $PATH/$CASE--I.txt
@@ -28,7 +28,7 @@ if the right output was printed.
 	or: 'produced incorrect output'
 
 	pass: 'passed'
-=
+```
 
 In this example the test has four possible outcomes at which it might
 halt: at the three `or:...` lines, which halt a test because the previous
@@ -38,17 +38,21 @@ where the `pass:` instruction says that the test has completed as it should.
 @h Syntax and tokens.
 Blanks lines and lines beginning with exclamation marks `!` are ignored.
 All other lines must have the form
-= (text as Delia)
+
+``` Delia
 	command: token1 ... tokenN
-=
+```
+
 where different commands need different numbers of "tokens".
 
 The command and its tokens must occupy a single line and no comment is
 allowed at the end of it. Quotation marks can be used to make multiple words
 a single token; thus:
-= (text as Delia)
+
+``` Delia
 	exists: 'My Tests/output.txt'
-=
+```
+
 is a command plus a single token, not two. A backslash can be used to escape
 the quotation mark when inside quotes.
 
@@ -91,9 +95,11 @@ from which the extension or kit seems to be drawn.
 Other global variables may have been created using `-set` in the intest
 file, for which see //The Universe of Cases//, or at the command line.
 For example,
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ ../intest/Tangled/intest inform7 -set WORD=plugh all
-=
+```
+
 runs the tests for `inform7` with the global variable `$$WORD` set to `plugh`.
 
 @ For the most part, a Delia recipe can create its own local variables quite
@@ -119,23 +125,24 @@ it never needs to think about this complication.
 - If the Intest file specifies "stipulations" on the test case, those set
 local variables for it: see //The Universe of Cases//. In this example,
 the recipe `[Reactor]` starts with the given settings of `$TEMP` and `$STATUS`.
-= (text as Delia)
+
+``` Delia
 	-cases [Reactor:TEMP=Hot:STATUS=Safe] 'fusionreactor/Tests/HotCases'
 	-cases [Reactor:TEMP=Cold:STATUS=Safe] 'fusionreactor/Tests/ColdCases'
 	-cases [Reactor:TEMP=Hot:STATUS=Unsafe] 'fusionreactor/Tests/UnsafeCases'
-=
+```
 
 - If the test case itself contains annotations, those are also used to
 create local variables which the test starts with. In the following example,
 any test of `Nettles` would begin with the recipe having appropriate values
 of `$LANGUAGE`, `$FOR` and `$INTOPTIONS`.
 
-= (text)
+``` None
 	Test: Nettles
 	Language: Basic
 	For: Glulx
 	IntOptions: -u -q -dataresourcetext '3:$PATH/Nettles--X.txt'
-=
+```
 
 @ The special variable `$SCRIPT` is created by the `extract:` instruction
 (see below), and is only useful for testing Inform. It is created if one
@@ -158,7 +165,8 @@ see below.
 see what's happening to all of these variables. Running Intest in its
 `-verbose` mode will do that. For example, if we run Intest on its
 example project, we can sit back and watch what it's doing:
-= (text as ConsoleText)
+
+``` ConsoleText
 $ intest/Tangled/intest intest/Examples/dc -verbose minus
 ...
 Global variables:
@@ -188,7 +196,7 @@ shell: 'dc'  '-e'  '10 3 - p' >'intest/Examples/dc/Tests/Cases/_actual/minus.txt
 0008: 	match text: $A $I
 0009: 	or: 'produced the wrong output'
 0010: 	pass: 'passed'
-=
+```
 
 @h Expansion.
 Variables are only useful for their values, and their values are used by
@@ -206,62 +214,82 @@ exist. (This is even true if the variable `$BARGAI` should exist.)
 
 The instruction `set:` either creates a new local variable, or changes the
 value of an existing one:
-= (text as Delia)
+
+``` Delia
 	set: $NAME = VALUE
-=
+```
+
 Note that the `VALUE` token here is expanded, but the `$NAME` token is not,
 for obvious reasons. This is one of the exceptions hinted at above.
 
 @ A wrinkle here is that if the setting value has multiple tokens:
-= (text as Delia)
+
+``` Delia
 	set: $NAME = VALUE1 VALUE2 ...
-=
+```
+
 then they are each "quote-expanded", rather than being simply "expanded".
 This basically means that the value is meant to be used in place of a string
 of tokens, rather than as a fragment or the whole of a single token.
 For example:
-= (text as Delia)
+
+``` Delia
 	set: $OPTIONS = -no-warnings -p=10 -to $FILE.txt
-=
+```
+
 sets the value to be
-= (text as Delia)
+
+``` Delia
 	'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt'
-=
+```
+
 This precaution is in case, as happened in this example, expansion of one of
 the tokens, `$FILE.txt`, brought in new white space — here, the space between
 "My" and "File".
 
 @ The instruction `default:` is entirely the same as `set:`, except that it
 takes effect only if the variable does not yet exist. Thus:
-= (text as Delia)
+
+``` Delia
 	default: $FUEL = Kerosene
-=
+```
+
 is exactly equivalent to
-= (text as Delia)
+
+``` Delia
 	ifndef: $FUEL
 		set: $FUEL = Kerosene
 	endif
-=
+```
+
 but is less laborious.
 
 @ Quote-expansion is not always what we want. For example, suppose we further
 defined:
-= (text as Delia)
+
+``` Delia
 	set: $MOREOPTIONS = $OPTIONS -lang=en-uk
-=
+```
+
 We would then get the value:
-= (text)
+
+``` None
 	'\'-no-warnings\' \'-p=10\' \'-verbose\' \'-to\' \'My File.txt\'' '-lang=en-uk'
-=
+```
+
 which of course is wrong. We avoid this using a backtick to suppress quote
 expansion of the first token:
-= (text as Delia)
+
+``` Delia
 	set: $MOREOPTIONS = `$OPTIONS -lang=en-uk
-=
+```
+
 which gets it right:
-= (text)
+
+``` None
 	'-no-warnings' '-p=10' '-verbose' '-to' 'My File.txt' '-lang=en-uk'
-=
+```
+
 Note that quote expansion respects the Unix shell redirection markers like
 `>file` or `2>&1`, quoting just the file parts.
 
@@ -269,24 +297,31 @@ Note that quote expansion respects the Unix shell redirection markers like
 expands to the (tokenised and further expanded) contents of the file named.
 Thus for example if the file `Frog.txt` contains the words "never turn your
 back on a frog", then
-= (text as Delia)
+
+``` Delia
 	$[Frog.txt$]
-=
+```
+
 will quote-expand to:
-= (text)
+
+``` None
 	'never' 'turn' 'your' 'back' 'on' 'a' 'frog'
-=
+```
+
 By default, the contents of the file will themselves be expanded, if they
 contain names with `$` or `$$` prefixes. To avoid that (and thus treat dollar
 signs in the file as being literal), use yet another backtick:
-= (text as Delia)
+
+``` Delia
 	$[`Toad.txt$]
-=
+```
 
 @ Finally, the syntax
-= (text as Delia)
+
+``` Delia
 	${Salamander.mp3$}
-=
+```
+
 will quote-expand to an MD5 hash of the file named. This should exactly match
 what the `md5` tool supplied on most Unixes would give; for example, an empty
 file would quote-expand to `d41d8cd98f00b204e9800998ecf8427e`.
@@ -307,17 +342,23 @@ rather than from a file. See the example supplied with Intest for testing
 most Unix systems (including MacOS). In that example, a test case such as
 `dc/Tests/Cases/plus.txt` contains what to put on the command line when
 running dc:
-= (text)
+
+``` None
 	-e '1 1 + p'
-=
+```
+
 The important step in the recipe for using this then reads:
-= (text as Delia)
+
+``` Delia
 	step: dc $[$PATH/$CASE.txt$]
-=
+```
+
 and this causes Intest to run the command:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ dc -e '1 1 + p'
-=
+```
+
 which produces the concise output "2".
 
 @h Control flow.
@@ -347,33 +388,40 @@ will usually stop immediately and will be marked as a failure. However:
 `or: 'NOTE' FILE`. If the step or match performed immediately before this line
 failed, the failure message `'NOTE'` is used. The `FILE`, which is optional,
 is then printed out when Intest describes what went wrong. For example:
-= (text as Delia)
+
+``` Delia
 	step: dc -e $EXPRESSION
 	or: 'dc produced an error'
-=
+```
 
 More generally, the conditional `iffail:` can be used, which causes the rest
 to continue despite the failure of a step. In fact, that last example is
 equivalent to:
-= (text as Delia)
+
+``` Delia
 	step: dc -e $EXPRESSION
 	iffail:
 		fail: 'dc produced an error'
 	endif
-=
+```
+
 `iffail:` can thus be used to send tests down differing paths if steps fail.
 
 @ Control also stops, with a pass for the test, if it runs into a `show: ...`
 command of the right sort when the tester is looking for that. For example,
 suppose the command being used is:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest inform7 -show-transcript Pine2
-=
+```
+
 The tester then runs the test case `Pine2` in hopes of running into an
 instruction like this:
-= (text as Delia)
+
+``` Delia
 	show: transcript $TF
-=
+```
+
 If it finds such an instruction, it prints out the file which `$TF` (i.e.,
 the second token, whatever it is) and ends the test then and there.
 
@@ -388,10 +436,11 @@ on the command line, rather than a more general `-show-TARGET`.
 @ If the file does not exist for some reason, the test continues, but the
 step is considered a fail. This possibility can be picked up by placing
 an `or:` immediately following:
-= (text as Delia)
+
+``` Delia
 	show: transcript $TF
 	or: 'heaven knows why, but the transcript file does not exist'
-=
+```
 
 @h Steps.
 A "step" is a shell command issued to the host system: it actually does
@@ -410,11 +459,13 @@ code, and failing on zero.
 `debugger: COMMAND`. The same as `step:`, but runs the command in only when
 the test is being run by the `-debug` action. The idea is to do something
 like this:
-= (text as Delia)
+
+``` Delia
 	debugger: lldb -f launcher -- $SOURCE
 	step: launcher $SOURCE >$A 2>&1
 	or: 'launcher produced error messages' $A
-=
+```
+
 The idea is that if the test is mysteriously crashing at this stage then
 running it with `-debug` will divert into the debugger instead, what that
 crash can be investigated.
@@ -466,10 +517,12 @@ equal texts to "match" each other. In particular:
 On a `match text: A B`, a line of A and a line of B will match even if they
 disagree about the decimal number appearing in a use of `/Tn/`, where `n`
 is that number. For example, these two lines match:
-= (text)
+
+``` None
 	Opened intest/Workspace/T4/intermediate.txt
 	Opened intest/Workspace/T11/intermediate.txt
-=
+```
+
 This example should suggest why — when Intest is spreading tests across
 multiple processors, we cannot predict which thread number a test will run
 on; and as a result, we cannot say which sandbox area of the file system
@@ -477,9 +530,11 @@ it is allowed to use. That may cause the program under test to print
 output which will contain the thread number it is running on. But since
 we want to verify that output, we need to allow such output to match. What
 happens internally is that both lines are converted to
-= (text)
+
+``` None
 	Opened intest/Workspace/Txx/intermediate.txt
-=
+```
+
 and then, of course, they match exactly. This makes runs of the same test
 comparable even when the runs occur on different threads.
 
@@ -493,55 +548,68 @@ There is one other commonly used pass/fail command:
 
 `exists: F`. This passes if the file at `F` exists on disc, and fails otherwise.
 For example,
-= (text as Delia)
+
+``` Delia
 	exists: $TRANSCRIPT
 	or: 'no transcript was written'
-=
+```
+
 (When testing a program which doesn't return exit codes, sometimes the best
 way to see whether it worked or not is to see whether it produced any output.)
 
 @ In addition, Delia has a very limited ability to write to the file system itself:
-= (text as Delia)
+
+``` Delia
 	copy: FROM TO
-=
+```
+
 copies a file. This should only be used to copy into the work area `$WORK`.
 
-= (text as Delia)
+``` Delia
 	mkdir: PATH
-=
+```
+
 ensures the existence of directory at the given `PATH`. (Again, this should
 be used only to make subdirectories of `$WORK`.)
 
 There is now also a deletion command:
-= (text as Delia)
+
+``` Delia
 	remove: FILE
-=
+```
+
 to remove a single file. Use this as little as possible and don't try to clean
 up the work area yourself: Intest will handle that automatically.
 
 @h Conditionals.
 As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.
-= (text as Delia)
+
+``` Delia
 	if: TOKEN EXPRESSION
 	    ...
 	else
 	    ...
 	endif
-=
+```
+
 The `else` clause is optional, and these conditionals can be nested in the
 usual way.
 
 What the test does is to expand both `TOKEN` and `EXPRESSION`, and then see
 if the expanded token matches the regular expression defined by the expanded
 expression. That can be just a simple textual match:
-= (text as Delia)
+
+``` Delia
 	if: $CASE Balloons
-=
+```
+
 tests if the current test case name is "Balloons". On the other hand,
-= (text as Delia)
+
+``` Delia
 	if: $CASE Party-%d+
-=
+```
+
 would match cases such as `Party-12`, because `%d+` is regular expression
 syntax for "one or more digits here".
 
@@ -554,22 +622,28 @@ of whitespace".
 
 Moreover, if the `EXPRESSION` is quoted, the quotes are removed again
 before the test is performed. Thus:
-= (text as Delia)
+
+``` Delia
 	if: $CASE 'More Balloons'
-=
+```
+
 then `$CASE` is tested against the text `More Balloons`, not `'More Balloons'`.
 Similarly,
-= (text as Delia)
+
+``` Delia
 	if: $CASE ''
-=
+```
+
 tests if `$CASE` is the empty text.
 
 @ If round brackets are used to match subexpressions, then the result of
 such matches is written to the variables `$SUBEXPRESSION1` to `$SUBEXPRESSION4`.
 For example,
-= (text as Delia)
+
+``` Delia
 	if: $CASE '(%C+) (%d+) *(%c*)'
-=
+```
+
 matches the text `price 200 ringgit` and sets `$SUBEXPRESSION1` to `$SUBEXPRESSION3`
 to "price", "200" and "ringgit" respectively.
 
@@ -599,17 +673,21 @@ when somebody wants to see it.
 @ `if compatible: FORMAT COMPATIBILITY` is true if and only if the
 Inform platform text `FORMAT` matches the compatibility text `COMPATIBILITY`.
 For example:
-= (text as Delia)
+
+``` Delia
 	if compatible: inform6/32 'Glulx only'
-=
+```
+
 will be true. This is meaningful only when testing Inform, of course.
 Errors are generated if either `FORMAT` or `COMPATIBILITY` is malformed.
 
 @ `if format valid: FORMAT` is true if and only if `FORMAT` is a valid
 Inform platform text. For example:
-= (text as Delia)
+
+``` Delia
 	if format valid: Python/gil
-=
+```
+
 is currently not true.
 
 @ Suppose the program to be tested produces output which takes a long time
@@ -636,10 +714,12 @@ This is a pass/fail command, which means that it can be followed by an `or:`,
 but perhaps unexpectedly, it fails if the checksum is the same as the last time
 this checksum was performed for the test case in question. That enables
 something like this:
-= (text as Delia)
+
+``` Delia
 	hash: $I6SOURCE $WORK/checksum.txt
 	or: 'passed (matching cached I6 known to work)'
-=
+```
+
 (Uniquely, the `or:` in this case causes the overall test to pass, not fail.)
 A side-effect here is that the hash value is also stored in the local variable
 `$HASHCODE`, which is why you can't create your own `$HASHCODE` variable.
@@ -664,9 +744,11 @@ on Windows: this is the "locale", in operating system jargon.
 As a result, a test which recorded the console output on a Mac could not be
 compared with the same test on Windows if that output included non-ASCII
 characters. That would affect any Delia step written like this:
-= (text as Delia)
+
+``` Delia
 	step: insomething/Tangled/insomething whatever >result.txt
-=
+```
+
 in that the program might be operating identically on these platforms but
 still produce a different `result.txt` file on Mac vs Windows, one being
 UTF-8 encoded, the other ISO.
@@ -678,20 +760,24 @@ setting:
 `ENCODING` is one of `platform`, `utf-8` or `iso-latin1`. (The `platform`
 encoding means "whatever is normal on the current platform".) Running with the
 `-verbose` option in //inweb// or //intest// will show the locales being used:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ intest/Tangled/intest -verbose
 	Installation path is /Users/gnelson/dev/intest
 	Locales are: shell = utf-8, console = utf-8
 	$ intest/Tangled/intest -locale console=iso-latin1 -verbose
 	Installation path is /Users/gnelson/dev/intest
 	Locales are: shell = utf-8, console = iso-latin1
-=
+```
+
 It's probably best not to change the `shell` locale, which affects the
 encoding on (a) environment variables, (b) filenames when scanning directories,
 and (c) command-line parameters, either in or out. Changing the `console`
 locale, though, effectively makes standard output from an Inform tool conform
 to the given locale. So:
-= (text as Delia)
+
+``` Delia
 	step: insomething/Tangled/insomething -locale console=utf-8 whatever >result.txt
-=
+```
+
 would produce the same result on MacOS as on Windows.

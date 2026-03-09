@@ -21,12 +21,11 @@ some minor discrepancies are allowed.
 Our main routine, then, will return (a pointer to) the following structure.
 
 =
-typedef struct diff_results {
+classdef diff_results {
 	struct text_stream *ideal; /* record a copy of the question as well as the answer */
 	struct text_stream *actual;
 	struct linked_list *edits; /* of `edit` */
-	CLASS_DEFINITION
-} diff_results;
+}
 
 @ Each edit consists of a nonempty chunk of text to be deleted, preserved
 or inserted:
@@ -36,11 +35,10 @@ or inserted:
 @d INSERT_EDIT 1
 
 =
-typedef struct edit {
+classdef edit {
 	struct text_stream *fragment;
 	int form_of_edit; /* one of the `*_EDIT` values */
-	CLASS_DEFINITION
-} edit;
+}
 
 @h Edit lists.
 We start with some boring routines to handle linked lists of edits in general.
