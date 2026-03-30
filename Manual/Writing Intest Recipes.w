@@ -334,6 +334,35 @@ the conventions used by Andrew Plotkin's test program for Inform 6. The idea
 is that we want to ignore things like the time-stamp and compiler version,
 which will change daily.
 
+@ Particular issues can arise with spaces in explicit file or pathnames, since
+these are easily tokenised in an unexpected way. The trouble with this:
+
+``` Delia
+	set: $MAGICFILE = My Files/Fun Stuff/magic.txt
+	step: cat $MAGICFILE
+```
+
+is that it sets `$MAGICFILE` to `'My' 'Files/Fun' 'Stuff/magic.txt'`, and
+then the `cat` command tries to read three files which don't exist. Moreover,
+this doesn't help either:
+
+``` Delia
+	set: $MAGICFILE = 'My Files/Fun Stuff/magic.txt'
+	step: cat `$MAGICFILE
+```
+
+but for the more subtle reason that it works only on platforms where `'` is the
+shell quote character: fine for Linux and MacOS, but not Windows, where it's `"`.
+This works in all cases:
+
+``` Delia
+	setquoted: $MAGICFILE = My Files/Fun Stuff/magic.txt
+	step: cat `$MAGICFILE
+```
+
+since it sets `$MAGICFILE` to the platform-appropriately-quoted text, and then
+does not requote this in the `cat` command because of the backtick.
+
 @ Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,

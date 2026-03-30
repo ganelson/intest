@@ -435,6 +435,7 @@ dictionary.
 		case FAIL_STEP_RCOM:          @<Carry out a step@>; break;
 
 		case SET_RCOM:                @<Set a local variable@>; break;
+		case SETQUOTED_RCOM:          @<Set a quoted local variable@>; break;
 		case DEFAULT_RCOM:            @<Set a local variable@>; break;
 
 		case MATCH_TEXT_RCOM:         @<Carry out a match@>; break;
@@ -534,6 +535,22 @@ documentation.
 	} else {
 		Tester::populate(D, name, V);
 	}
+	DISCARD_TEXT(V)
+
+@<Set a quoted local variable@> =
+	recipe_token *first = FIRST_IN_LINKED_LIST(recipe_token, L->recipe_tokens);
+	text_stream *name = first->token_text;
+	TEMPORARY_TEXT(V)
+	PUT_TO(V, SHELL_QUOTE_CHARACTER);
+	recipe_token *T;
+	int tc = 0;
+	LOOP_OVER_LINKED_LIST(T, recipe_token, L->recipe_tokens) {
+		tc++;
+		if (tc > 2) PUT_TO(V, ' ');
+		if (tc > 1) Tester::expand(V, T, D);
+	}
+	PUT_TO(V, SHELL_QUOTE_CHARACTER);
+	Tester::populate(D, name, V);
 	DISCARD_TEXT(V)
 
 @h Matches.

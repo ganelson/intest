@@ -38,6 +38,7 @@ set of commands, enumerated as follows.
 @e PASS_RCOM
 @e REMOVE_RCOM
 @e SET_RCOM
+@e SETQUOTED_RCOM
 @e SHOW_RCOM
 @e STEP_RCOM
 
@@ -85,6 +86,7 @@ recipe_command instruction_set[] = {
 	{ PASS_RCOM, U"pass", 1, FALSE, 0 },
 	{ REMOVE_RCOM, U"remove", 1, FALSE, 0 },
 	{ SET_RCOM, U"set", -1, FALSE, 0 },
+	{ SETQUOTED_RCOM, U"setquoted", -1, FALSE, 0 },
 	{ SHOW_RCOM, U"show", -1, TRUE, 0 },
 	{ STEP_RCOM, U"step", -1, TRUE, 0 },
 	{ -1, NULL, 0, FALSE, 0 }
@@ -221,7 +223,8 @@ void Delia::compile_command(recipe *R, text_stream *text,
 
 		@<Make sure the number of tokens is reasonable@>;
 		if (rc->rc_code == OR_RCOM) @<Make sure the or is allowed@>;
-		if ((rc->rc_code == SET_RCOM) || (rc->rc_code == DEFAULT_RCOM))
+		if ((rc->rc_code == SET_RCOM) || (rc->rc_code == SETQUOTED_RCOM) ||
+			(rc->rc_code == DEFAULT_RCOM))
 			@<Make sure the set is well-formatted@>;
 		if ((rc->rc_code == IFDEF_RCOM) || (rc->rc_code == IFNDEF_RCOM))
 			@<Make sure the ifdef is well-formatted@>;

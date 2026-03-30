@@ -3,20 +3,20 @@
 	<head>
 		<title>Writing Intest Recipes</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -40,7 +40,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">intest</a></li><li><a href="index.html#M">Manual</a></li><li><b>Writing Intest Recipes</b></li></ul></div>
 <p class="purpose">A guide to writing in Delia, Intest's recipe language.</p>
 
-<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. Writing Delia</a></li><li><a href="M-wir.html#SP2">&#167;2. Syntax and tokens</a></li><li><a href="M-wir.html#SP3">&#167;3. Variables</a></li><li><a href="M-wir.html#SP9">&#167;9. Expansion</a></li><li><a href="M-wir.html#SP16">&#167;16. Control flow</a></li><li><a href="M-wir.html#SP20">&#167;20. Steps</a></li><li><a href="M-wir.html#SP22">&#167;22. Matches</a></li><li><a href="M-wir.html#SP25">&#167;25. Files and directories</a></li><li><a href="M-wir.html#SP27">&#167;27. Conditionals</a></li><li><a href="M-wir.html#SP37">&#167;37. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wir.html#SP1">&#167;1. Writing Delia</a></li><li><a href="M-wir.html#SP2">&#167;2. Syntax and tokens</a></li><li><a href="M-wir.html#SP3">&#167;3. Variables</a></li><li><a href="M-wir.html#SP9">&#167;9. Expansion</a></li><li><a href="M-wir.html#SP17">&#167;17. Control flow</a></li><li><a href="M-wir.html#SP21">&#167;21. Steps</a></li><li><a href="M-wir.html#SP23">&#167;23. Matches</a></li><li><a href="M-wir.html#SP26">&#167;26. Files and directories</a></li><li><a href="M-wir.html#SP28">&#167;28. Conditionals</a></li><li><a href="M-wir.html#SP38">&#167;38. Cautionary tale about encodings</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Writing Delia.</b>  Recipe definitions are written in a very simple mini-language called Delia,
@@ -338,7 +338,28 @@ is that we want to ignore things like the time-stamp and compiler version,
 which will change daily.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  Note that the filename is itself expanded before use, so that it can be
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  Particular issues can arise with spaces in explicit file or pathnames, since
+these are easily tokenised in an unexpected way. The trouble with this:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$MAGICFILE</span><span class="plain-syntax"> = My Files/Fun Stuff/magic.txt
+</span><span class="type-syntax">	step</span><span class="plain-syntax">: cat </span><span class="function-syntax">$MAGICFILE</span><span class="plain-syntax">
+</span></pre>
+<p>is that it sets <code>$MAGICFILE</code> to <code>'My' 'Files/Fun' 'Stuff/magic.txt'</code>, and
+then the <code>cat</code> command tries to read three files which don't exist. Moreover,
+this doesn't help either:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	set</span><span class="plain-syntax">: </span><span class="function-syntax">$MAGICFILE</span><span class="plain-syntax"> = 'My Files/Fun Stuff/magic.txt'
+</span><span class="type-syntax">	step</span><span class="plain-syntax">: cat `</span><span class="function-syntax">$MAGICFILE</span><span class="plain-syntax">
+</span></pre>
+<p>but for the more subtle reason that it works only on platforms where <code>'</code> is the
+shell quote character: fine for Linux and MacOS, but not Windows, where it's <code>&quot;</code>.
+This works in all cases:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	setquoted</span><span class="plain-syntax">: </span><span class="function-syntax">$MAGICFILE</span><span class="plain-syntax"> = My Files/Fun Stuff/magic.txt
+</span><span class="type-syntax">	step</span><span class="plain-syntax">: cat `</span><span class="function-syntax">$MAGICFILE</span><span class="plain-syntax">
+</span></pre>
+<p>since it sets <code>$MAGICFILE</code> to the platform-appropriately-quoted text, and then
+does not requote this in the <code>cat</code> command because of the backtick.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  Note that the filename is itself expanded before use, so that it can be
 defined using variables. This can be very useful when we want to test a
 program which takes its input mainly in the form of command-line arguments,
 rather than from a file. See the example supplied with Intest for testing
@@ -357,7 +378,7 @@ running dc:</p>
 <p>which produces the concise output &quot;2&quot;.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Control flow.</b>  As we shall see, there are conditionals in the Delia language, but no loops
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Control flow.</b>  As we shall see, there are conditionals in the Delia language, but no loops
 and no subroutines, macros, function or procedure calls. Delia is intentionally
 not Turing-complete: it tries to balance flexibility with simplicity.</p>
 <p>A test therefore flows from top to bottom of the recipe, perhaps skipping some
@@ -391,7 +412,7 @@ equivalent to:</p>
 <p><code>iffail:</code> can thus be used to send tests down differing paths if steps fail.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  Control also stops, with a pass for the test, if it runs into a <code>show: ...</code>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  Control also stops, with a pass for the test, if it runs into a <code>show: ...</code>
 command of the right sort when the tester is looking for that. For example,
 suppose the command being used is:</p>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">intest/Tangled/intest</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -show-transcript</span><span class="ConsoleText-plain-syntax"> Pine2
@@ -406,13 +427,13 @@ the second token, whatever it is) and ends the test then and there.</p>
 <code>show: transcript ...</code> doing nothing.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  If a target is considered especially important to see, it can be given
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  If a target is considered especially important to see, it can be given
 the empty target name. The command for that is then <code>show: $X</code>, with just
 one token, and the tester looks for this in response to just <code>-show</code>
 on the command line, rather than a more general <code>-show-TARGET</code>.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  If the file does not exist for some reason, the test continues, but the
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>  If the file does not exist for some reason, the test continues, but the
 step is considered a fail. This possibility can be picked up by placing
 an <code>or:</code> immediately following:</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	show</span><span class="plain-syntax">: transcript </span><span class="function-syntax">$TF</span><span class="plain-syntax">
@@ -420,7 +441,7 @@ an <code>or:</code> immediately following:</p>
 </span></pre>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Steps.</b>  A &quot;step&quot; is a shell command issued to the host system: it actually does
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Steps.</b>  A &quot;step&quot; is a shell command issued to the host system: it actually does
 something as part of the test, in other words, rather than simply preparing
 to do things or looking at the result.</p>
 <p>There are two sorts of step:</p>
@@ -441,14 +462,14 @@ running it with <code>-debug</code> will divert into the debugger instead, what 
 crash can be investigated.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b>  What happens if a step &quot;fails&quot;? The answer is that nothing happens and the
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. </b>  What happens if a step &quot;fails&quot;? The answer is that nothing happens and the
 recipe simply carries on, unless the next line is an <code>or:</code> command, as noted
 above. So if the shell command doesn't follow Unix conventions with its exit
 code, or if we just don't care, we needn't worry that the test will halt. It
 will only do so on our explicit instruction.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Matches.</b>  Matching simply means comparing the contents of two files.</p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Matches.</b>  Matching simply means comparing the contents of two files.</p>
 <p><code>match text: A B</code>. Here <code>A</code> and <code>B</code> are text files, and Intest will show
 diffs if they disagree.</p>
 <p><code>match platform text: A B</code>. The same, but now forward and backslashes are
@@ -471,14 +492,14 @@ which are roughly the same as <code>match text</code>, but display differences i
 contextual way. Details here would be tiresome: see the Intest source code.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  However, the <code>match</code> commands have a very useful side-effect if the test
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>  However, the <code>match</code> commands have a very useful side-effect if the test
 is being run by <code>-curse</code>, <code>-bless</code> or <code>-rebless</code> at the command line. If we
 are cursing, then <code>match text: A B</code> will delete <code>B</code>, the ideal form. If we
 are blessing, then <code>match text: A B</code> will copy <code>A</code> into <code>B</code>, thus declaring
 that the actual form this time should serve as ideal from now on.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>  <code>match</code> is also just a little forgiving, in that it allows a few not quite
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. </b>  <code>match</code> is also just a little forgiving, in that it allows a few not quite
 equal texts to &quot;match&quot; each other. In particular:</p>
 <p>On a <code>match text: A B</code>, a line of A and a line of B will match even if they
 disagree about the decimal number appearing in a use of <code>/Tn/</code>, where <code>n</code>
@@ -503,7 +524,7 @@ arrangements to ignore the exact build number of Inform when it leaks
 out into I7 console output or into story file transcripts.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Files and directories.</b>  There is one other commonly used pass/fail command:</p>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Files and directories.</b>  There is one other commonly used pass/fail command:</p>
 <p><code>exists: F</code>. This passes if the file at <code>F</code> exists on disc, and fails otherwise.
 For example,</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	exists</span><span class="plain-syntax">: </span><span class="function-syntax">$TRANSCRIPT</span><span class="plain-syntax">
@@ -513,7 +534,7 @@ For example,</p>
 way to see whether it worked or not is to see whether it produced any output.)</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. </b>  In addition, Delia has a very limited ability to write to the file system itself:</p>
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. </b>  In addition, Delia has a very limited ability to write to the file system itself:</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	copy</span><span class="plain-syntax">: FROM TO
 </span></pre>
 <p>copies a file. This should only be used to copy into the work area <code>$WORK</code>.</p>
@@ -528,7 +549,7 @@ be used only to make subdirectories of <code>$WORK</code>.)</p>
 up the work area yourself: Intest will handle that automatically.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Conditionals.</b>  As noted above, Delia has no loops. But it does have one control construct:
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Conditionals.</b>  As noted above, Delia has no loops. But it does have one control construct:
 an if/then/else command, working in the obvious way.</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if</span><span class="plain-syntax">: TOKEN EXPRESSION
 	    ...
@@ -565,7 +586,7 @@ Similarly,</p>
 <p>tests if <code>$CASE</code> is the empty text.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b>  If round brackets are used to match subexpressions, then the result of
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  If round brackets are used to match subexpressions, then the result of
 such matches is written to the variables <code>$SUBEXPRESSION1</code> to <code>$SUBEXPRESSION4</code>.
 For example,</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if</span><span class="plain-syntax">: </span><span class="function-syntax">$CASE</span><span class="plain-syntax"> '(%C+) (%d+) *(%c*)'
@@ -574,12 +595,12 @@ For example,</p>
 to &quot;price&quot;, &quot;200&quot; and &quot;ringgit&quot; respectively.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  An alternative condition is <code>if exists: FILE</code> tests if the named file
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  An alternative condition is <code>if exists: FILE</code> tests if the named file
 exists. This can allow for certain checks to be performed only where
 there is something to check against, for example.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  <code>ifdef: $NAME</code> is true if and only if the local variable <code>$NAME</code> exists.
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. </b>  <code>ifdef: $NAME</code> is true if and only if the local variable <code>$NAME</code> exists.
 Note that this will pass if <code>$NAME</code> has the empty text has its value, i.e.,
 is currently blank: it will only fail if the variable has never been created.
 Note also that some variables are automatically created before the recipe
@@ -588,19 +609,19 @@ even begins — see above.</p>
 if <code>$NAME</code> has never been created.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. </b>  As we have seen, <code>iffail:</code> is true if and only if the previous step or
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. </b>  As we have seen, <code>iffail:</code> is true if and only if the previous step or
 match failed, and <code>ifpass:</code> is similarly defined. (Note that these cause
 execution to continue where it otherwise would not.)</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. </b>  <code>if showing: ITEM</code> is true if and only if the test is being run with
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. </b>  <code>if showing: ITEM</code> is true if and only if the test is being run with
 the action <code>-show-ITEM</code>. This is useful if you want a recipe to make it
 possible to show some elaborate intermediate data which is usually not
 needed at all: with <code>if showing:</code>, you can have that data created only
 when somebody wants to see it.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. </b>  <code>if compatible: FORMAT COMPATIBILITY</code> is true if and only if the
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b>  <code>if compatible: FORMAT COMPATIBILITY</code> is true if and only if the
 Inform platform text <code>FORMAT</code> matches the compatibility text <code>COMPATIBILITY</code>.
 For example:</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if compatible</span><span class="plain-syntax">: inform6/32 'Glulx only'
@@ -609,14 +630,14 @@ For example:</p>
 Errors are generated if either <code>FORMAT</code> or <code>COMPATIBILITY</code> is malformed.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b>  <code>if format valid: FORMAT</code> is true if and only if <code>FORMAT</code> is a valid
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>  <code>if format valid: FORMAT</code> is true if and only if <code>FORMAT</code> is a valid
 Inform platform text. For example:</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="type-syntax">	if format valid</span><span class="plain-syntax">: Python/gil
 </span></pre>
 <p>is currently not true.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>  Suppose the program to be tested produces output which takes a long time
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  Suppose the program to be tested produces output which takes a long time
 to verify the correctness of. (This is the case for Inform 7, because its
 output needs to be fed through Inform 6 and then executed in a virtual
 machine before any results can be seen. Both steps take a second or so,
@@ -645,7 +666,7 @@ A side-effect here is that the hash value is also stored in the local variable
 <code>$HASHCODE</code>, which is why you can't create your own <code>$HASHCODE</code> variable.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  And finally, a great convenience for testing Inform 7, but useless for
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>  And finally, a great convenience for testing Inform 7, but useless for
 anything else:</p>
 <p><code>extract: FILE VM</code>. This extracts a clean copy of the Inform 7 source text in
 the test case and stores it in the <code>FILE</code>. For a test case which is a <code>case</code>
@@ -655,7 +676,7 @@ in question, <code>Z</code> or <code>G</code>. If the <code>FILE</code> contains
 automatically written into the local variable <code>$SCRIPT</code>.</p>
 </div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Cautionary tale about encodings.</b>  When we first ported <a href="../inweb/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. Cautionary tale about encodings.</b>  When we first ported <a href="../inweb/index.html" class="internal">inweb</a> and <a href="index.html" class="internal">intest</a> to Windows, we realised that
 locale differences meant that some tests weren't portable between MacOS and
 Windows. The issue was that the console environment (i.e., the standard
 output and standard error stream) was encoded as UTF-8 on MacOS, but ISO Latin1
