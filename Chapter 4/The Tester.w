@@ -22,7 +22,7 @@ performance is greatly reduced if so.
 
 =
 int Tester::test(OUTPUT_STREAM, test_case *tc, int count, int thread_count,
-	int action_type, text_stream *action_details) {
+	int action_type, text_stream *action_details, int hashing) {
 	if (tc == NULL) internal_error(((char *) tc) /* "no test case" */);
 	int passed = TRUE;
 	if (splitting_logs) {
@@ -840,7 +840,7 @@ checksum to the second-named file, and also remembering its value.
 		BinaryFiles::md5(hash, to_hash, NULL);
 		Tester::populate(D, I"HASHCODE", hash);
 		hash_value_written = TRUE;
-		if (Hasher::compare_hashes(tc, hash)) {
+		if ((Hasher::compare_hashes(tc, hash)) && (hashing)) {
 			still_going = FALSE;
 			passed = TRUE;
 			Str::clear(verdict);

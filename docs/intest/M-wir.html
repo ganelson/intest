@@ -664,6 +664,12 @@ something like this:</p>
 <p>(Uniquely, the <code>or:</code> in this case causes the overall test to pass, not fail.)
 A side-effect here is that the hash value is also stored in the local variable
 <code>$HASHCODE</code>, which is why you can't create your own <code>$HASHCODE</code> variable.</p>
+<p>Something to be wary of is that if the test in question goes on to compare
+output with a blessed version, and you then change that blessed version by
+hand (i.e., not using <code>-bless</code>), then the hash test will pass because the
+recipe never even reaches the output consideration. You can get around this
+either by never modifying your blessed output except with <code>-bless</code> and <code>-rebless</code>,
+or by using the <code>-no-hashing</code> switch.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>  And finally, a great convenience for testing Inform 7, but useless for

@@ -608,7 +608,8 @@ substitute in the case number for `[NUMBER]`, and similarly for `[NAME]`.
 		case SHOW_ACTION:
 		case REBLESS_ACTION:
 		case TEST_ACTION:
-			if (itc) Tester::test(TO, itc, count, -1, ai->action_type, ai->assoc_text); break;
+			if (itc) Tester::test(TO, itc, count, -1, ai->action_type, ai->assoc_text,
+				args->hashing_switch); break;
 		case REPORT_ACTION:
 			Reporter::report_single(TO, itc, ai); break;
 		case COMBINE_REPORTS_ACTION:
@@ -618,7 +619,7 @@ substitute in the case number for `[NUMBER]`, and similarly for `[NAME]`.
 		default:
 			if (ai->action_type >= SCHEDULED_TEST_ACTION) {
 				ai->action_type -= SCHEDULED_TEST_ACTION;
-				Scheduler::schedule(itc, ai->redirection_filename, ai->test_form);
+				Scheduler::schedule(itc, ai->redirection_filename, ai->test_form, args->hashing_switch);
 				ai->action_type += SCHEDULED_TEST_ACTION;
 				break;
 			}

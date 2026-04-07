@@ -24,6 +24,7 @@ and heading text in the normal Foundation way:
 @e SET_CLSW
 @e HISTORY_CLSW
 @e COLOURS_CLSW
+@e HASHING_CLSW
 @e VERBOSE_CLSW
 @e THREADS_CLSW
 @e INTERNAL_CLSW
@@ -54,6 +55,8 @@ and heading text in the normal Foundation way:
 		U"use command history", TRUE);
 	CommandLine::declare_boolean_switch(COLOURS_CLSW, U"colours", 1,
 		U"show discrepancies in red and green using terminal emulation", TRUE);
+	CommandLine::declare_boolean_switch(HASHING_CLSW, U"hashing", 1,
+		U"terminate tests early at a hash point in recipe if hashes on files match", TRUE);
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
 		U"print out all shell commands issued", FALSE);
 	CommandLine::declare_numerical_switch(THREADS_CLSW, U"threads", 1,
@@ -71,6 +74,7 @@ from the command line) about what Intest should do on this run:
 =
 typedef struct intest_instructions {
 	int colours_switch;
+	int hashing_switch;
 	int verbose_switch;
 	int version_switch;
 	int purge_switch;
@@ -93,6 +97,7 @@ typedef struct intest_instructions {
 
 @<Initialise the arguments state@> =
 	args.colours_switch = TRUE;
+	args.hashing_switch = TRUE;
 	args.verbose_switch = FALSE;
 	args.version_switch = FALSE;
 	args.purge_switch = FALSE;
@@ -231,6 +236,7 @@ void Instructions::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case PURGE_CLSW: args->purge_switch = TRUE; return;
 		case HISTORY_CLSW: args->history_switch = val; return;
+		case HASHING_CLSW: args->hashing_switch = val; return;
 		case COLOURS_CLSW: args->colours_switch = val; return;
 		case VERBOSE_CLSW: args->verbose_switch = val; return;
 		case THREADS_CLSW:

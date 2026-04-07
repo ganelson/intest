@@ -753,6 +753,13 @@ something like this:
 A side-effect here is that the hash value is also stored in the local variable
 `$HASHCODE`, which is why you can't create your own `$HASHCODE` variable.
 
+Something to be wary of is that if the test in question goes on to compare
+output with a blessed version, and you then change that blessed version by
+hand (i.e., not using `-bless`), then the hash test will pass because the
+recipe never even reaches the output consideration. You can get around this
+either by never modifying your blessed output except with `-bless` and `-rebless`,
+or by using the `-no-hashing` switch.
+
 @ And finally, a great convenience for testing Inform 7, but useless for
 anything else:
 

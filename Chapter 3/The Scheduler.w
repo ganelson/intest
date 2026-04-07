@@ -225,12 +225,13 @@ classdef test {
 	struct filename *redirect; /* where to redirect console output */
 	int allocated_to; /* an index into `thread_slots`, or else one of the values above */
 	int passed; /* or `NOT_APPLICABLE` if not yet run */
+	int hashing;
 	struct text_stream *full_results;
 	struct test *previous_completed_test;
 }
 
 
-void Scheduler::schedule(test_case *tc, filename *redirect, int test_action) {
+void Scheduler::schedule(test_case *tc, filename *redirect, int test_action, int hashing) {
 	if (tc == NULL) internal_error("no test case");
 	test *T = CREATE(test);
 	T->to_be_tested = tc;
@@ -238,6 +239,7 @@ void Scheduler::schedule(test_case *tc, filename *redirect, int test_action) {
 	T->allocated_to = NO_SLOT_AS_YET;
 	T->passed = NOT_APPLICABLE;
 	T->action_type = test_action;
+	T->hashing = hashing;
 	T->full_results = Str::new_with_capacity(20480);
 	T->previous_completed_test = NULL;
 }
@@ -455,7 +457,7 @@ void *Scheduler::perform_work(void *argument) {
 	LOOP_OVER(T, test)
 		if (T->allocated_to == s) {
 			int result = Tester::test(T->full_results, T->to_be_tested,
-				T->allocation_id + 1, s, T->action_type, NULL);
+				T->allocation_id + 1, s, T->action_type, NULL, T->hashing);
 			@<Mark test T as completed@>;
 		}
 	if (TRACE_THREADING) printf("(Thread in slot %d has finished.)\n", s);
