@@ -609,7 +609,8 @@ substitute in the case number for `[NUMBER]`, and similarly for `[NAME]`.
 		case REBLESS_ACTION:
 		case TEST_ACTION:
 			if (itc) Tester::test(TO, itc, count, -1, ai->action_type, ai->assoc_text,
-				args->hashing_switch); break;
+				args->hashing_switch);
+			break;
 		case REPORT_ACTION:
 			Reporter::report_single(TO, itc, ai); break;
 		case COMBINE_REPORTS_ACTION:
